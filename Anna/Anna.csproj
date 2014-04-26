@@ -55,7 +55,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Themes\Default.xaml">
+    <Resource Include="Themes\Light.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>

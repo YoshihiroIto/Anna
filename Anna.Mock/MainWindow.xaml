@@ -3,10 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Anna.Mock.MainWindow"
         Title="MainWindow" Height="350" Width="525">
-	<Grid Background="{DynamicResource ControlBackgroundBrushKey}">
+	<Grid>
+		<Grid.Background>
+			<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+				<GradientStop Color="#FFECECEC" Offset="0"/>
+				<GradientStop Color="#FFE4E4E4" Offset="1"/>
+			</LinearGradientBrush>
+		</Grid.Background>
 
 		<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,133,0,0" Width="100" Height="30"/>
-		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="61,168,0,0" Width="100" Height="30"/>
-		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="166,133,0,0" Width="65" Height="65"/>
+		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,177.9,0,0" Width="100" Height="30"/>
+		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="229,133,0,0" Width="65" Height="65" Click="Button_Click"/>
+		<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="130,133,0,0" Width="80" Height="30"/>
 	</Grid>
 </Window>

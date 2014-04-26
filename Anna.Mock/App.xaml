@@ -5,8 +5,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Anna;component/Themes/Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Anna;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/Anna;component/Themes/Default.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

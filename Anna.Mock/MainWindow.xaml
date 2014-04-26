@@ -3,13 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Anna.Mock.MainWindow"
         Title="MainWindow" Height="350" Width="525">
-	<Grid>
-		<Grid.Background>
-			<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-				<GradientStop Color="#FF484848" Offset="0"/>
-				<GradientStop Color="#FF2A2A2A" Offset="1"/>
-			</LinearGradientBrush>
-		</Grid.Background>
+	<Grid Background="{DynamicResource ControlBackgroundBrushKey}">
 
 		<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,133,0,0" Width="100" Height="30"/>
 		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="61,168,0,0" Width="100" Height="30"/>

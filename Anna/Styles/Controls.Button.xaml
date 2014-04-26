@@ -30,7 +30,7 @@
 							<Setter Property="Fill" TargetName="Inner" Value="{DynamicResource ControlMouseOverBackgroundBrush}"/>
 						</Trigger>
 						<Trigger Property="IsPressed" Value="True">
-							<Setter Property="Margin" TargetName="contentPresenter" Value="0,1,0,0"/>
+							<Setter Property="Margin" TargetName="contentPresenter" Value="0,2,0,0"/>
 							<Setter Property="Fill" TargetName="Inner" Value="{DynamicResource ControlPressedBackgroundBrush}"/>
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False"/>

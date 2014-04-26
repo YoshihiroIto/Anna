@@ -7,5 +7,6 @@
 
 		<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,133,0,0" Width="100" Height="30"/>
 		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="61,168,0,0" Width="100" Height="30"/>
+		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="166,133,0,0" Width="65" Height="65"/>
 	</Grid>
 </Window>

@@ -6,19 +6,19 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
-					<Grid>
-						<Rectangle x:Name="outer_Copy" Margin="1,0"  RadiusX="3" RadiusY="3" Fill="#FFCDCDCD" Height="12" VerticalAlignment="Bottom">
+					<Grid x:Name="grid" ClipToBounds="False">
+						<Rectangle x:Name="DropShadow" Margin="0"  RadiusX="3" RadiusY="3" Fill="#FFCDCDCD" Height="12" VerticalAlignment="Bottom">
 							<Rectangle.Effect>
 								<DropShadowEffect Direction="270" Color="Black" Opacity="0.08" BlurRadius="10" ShadowDepth="10"/>
 							</Rectangle.Effect>
 						</Rectangle>
-						<Rectangle x:Name="outer" Margin="1,-2,1,2"  RadiusX="3" RadiusY="3" Fill="#FFCDCDCD">
+						<Rectangle x:Name="Edge" Margin="0,-2,0,2"  RadiusX="3" RadiusY="3" Fill="#FFCDCDCD">
 							<Rectangle.Effect>
 								<DropShadowEffect Direction="270" Color="Black" Opacity="0.3" BlurRadius="5" ShadowDepth="5"/>
 							</Rectangle.Effect>
 						</Rectangle>
-						<Rectangle x:Name="Inner_Copy" Margin="1,-1,1,0"  RadiusX="3" RadiusY="3" Fill="White"/>
-						<Rectangle x:Name="Inner" Margin="1,0"  RadiusX="3" RadiusY="3">
+						<Rectangle x:Name="Highlight" Margin="0,-1,0,0"  RadiusX="3" RadiusY="3" Fill="White"/>
+						<Rectangle x:Name="Body" Margin="0"  RadiusX="3" RadiusY="3" ClipToBounds="True">
 							<Rectangle.Fill>
 								<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
 									<GradientStop Color="#FFF7F7F7" Offset="0"/>
@@ -26,8 +26,7 @@
 								</LinearGradientBrush>
 							</Rectangle.Fill>
 						</Rectangle>
-
-						<ContentPresenter x:Name="contentPresenter" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Center" VerticalAlignment="Center">
+						<ContentPresenter x:Name="contentPresenter" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,1">
 
 							<ContentPresenter.Resources>
 								<Style TargetType="{x:Type TextBlock}">
@@ -39,20 +38,49 @@
 							</ContentPresenter.BindingGroup>
 
 						</ContentPresenter>
-						<Path Data="M9.375,33.5" HorizontalAlignment="Left" Height="0" Margin="9.375,33.5,0,-3.5" Stretch="Fill" VerticalAlignment="Top" Width="0">
-							<Path.Fill>
-								<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-									<GradientStop Color="LightGray" Offset="0"/>
-									<GradientStop Color="#FFB9B9B9" Offset="1"/>
-								</LinearGradientBrush>
-							</Path.Fill>
-						</Path>
+
+						<Border BorderBrush="#00808080" 
+							  BorderThickness="0" ClipToBounds="True" Width="Auto" Height="Auto" CornerRadius="2" Background="#00000000" d:IsHidden="True" >
+						  <Border x:Name="border" Background="Transparent" BorderBrush="#00808080" 
+								BorderThickness="1,1,1,0" Margin="0" CornerRadius="2"/>
+						</Border>
+
 					</Grid>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsFocused" Value="True" />
 						<Trigger Property="IsDefaulted" Value="True"/>
 						<Trigger Property="IsMouseOver" Value="True"/>
-						<Trigger Property="IsPressed" Value="True"/>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter Property="Margin" TargetName="Highlight" Value="0,0,0,1"/>
+							<Setter Property="Margin" TargetName="Edge" Value="-1,-1,-1,0"/>
+							<Setter Property="Fill" TargetName="Body">
+								<Setter.Value>
+									<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+										<GradientStop Color="#FFDEDEDE" Offset="0"/>
+										<GradientStop Color="#FFE8E8E8" Offset="1"/>
+									</LinearGradientBrush>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="Margin" TargetName="Body" Value="0,0,0,2"/>
+							<Setter Property="Effect" TargetName="Edge">
+								<Setter.Value>
+									<DropShadowEffect BlurRadius="0" Color="Black" Direction="270" Opacity="0" ShadowDepth="0"/>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="Effect" TargetName="DropShadow">
+								<Setter.Value>
+									<DropShadowEffect BlurRadius="0" Color="Black" Direction="270" Opacity="0" ShadowDepth="0"/>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="BorderBrush" TargetName="border" Value="#7F7F7F7F"/>
+							<Setter Property="BorderThickness" TargetName="border" Value="1,1,1,0"/>
+							<Setter Property="Effect" TargetName="border">
+								<Setter.Value>
+									<BlurEffect/>
+								</Setter.Value>
+							</Setter>
+							<Setter Property="Margin" TargetName="contentPresenter" Value="0,0,0,-1"/>
+						</Trigger>
 						<Trigger Property="IsEnabled" Value="False"/>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>

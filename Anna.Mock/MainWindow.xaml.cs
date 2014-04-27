@@ -23,11 +23,8 @@ namespace Anna.Mock
         public MainWindow()
         {
             InitializeComponent();
-        }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
+			this.MouseLeftButtonDown += (sender, e) => this.DragMove();
         }
     }
 }

@@ -12,8 +12,12 @@
 		</Grid.Background>
 
 		<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,133,0,0" Width="100" Height="30"/>
-		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,177.9,0,0" Width="100" Height="30"/>
-		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="229,133,0,0" Width="65" Height="65" Click="Button_Click"/>
+		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,178.4,0,0" Width="100" Height="30"/>
+		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="229,133,0,0" Width="65" Height="65"/>
 		<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="130,133,0,0" Width="80" Height="30"/>
+		<Button Content="✔" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="28,41.7,0,0" Width="30" Height="30" FontSize="22.667"/>
+		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="194,40.4,0,0" Width="100" Height="30"/>
+		<Button Content="✔" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="63,41.7,0,0" Width="30" Height="30" FontSize="22.667"/>
+		<Button Content="✔" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="98,41.7,0,0" Width="30" Height="30" FontSize="22.667"/>
 	</Grid>
 </Window>

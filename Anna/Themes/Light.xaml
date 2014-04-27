@@ -2,4 +2,16 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 	<SolidColorBrush x:Key="ControlTextBrush" Color="#FF646464"/>
+	<LinearGradientBrush x:Key="ControlBackgorundBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#FFF7F7F7" Offset="0"/>
+		<GradientStop Color="#FFE2E2E2" Offset="1"/>
+	</LinearGradientBrush>
+	<SolidColorBrush x:Key="ControlHighlightBrush" Color="White"/>
+	<SolidColorBrush x:Key="ControlEdgeBrush" Color="#FFCDCDCD"/>
+	<SolidColorBrush x:Key="ControlDropShadowBrush" Color="#FFCDCDCD"/>
+	<LinearGradientBrush x:Key="ControlPressedBackgroundBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+		<GradientStop Color="#FFDEDEDE" Offset="0"/>
+		<GradientStop Color="#FFE8E8E8" Offset="1"/>
+	</LinearGradientBrush>
+	<SolidColorBrush x:Key="ControlInnerDropShadowBrush" Color="#7F7F7F7F"/>
 </ResourceDictionary>

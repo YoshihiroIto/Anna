@@ -1,5 +1,5 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:System="clr-namespace:System;assembly=mscorlib">
 
 	<SolidColorBrush x:Key="ControlTextBrush" Color="#FF646464"/>
 	<LinearGradientBrush x:Key="ControlBackgorundBrush" EndPoint="0.5,1" StartPoint="0.5,0">
@@ -14,4 +14,5 @@
 		<GradientStop Color="#FFE8E8E8" Offset="1"/>
 	</LinearGradientBrush>
 	<SolidColorBrush x:Key="ControlInnerDropShadowBrush" Color="#7F7F7F7F"/>
+	<System:Double x:Key="ControlRoundedCorner">3</System:Double>
 </ResourceDictionary>

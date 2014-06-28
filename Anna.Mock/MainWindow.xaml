@@ -5,6 +5,9 @@
         Title="MainWindow"
 		SnapsToDevicePixels="True"
 		Height="350" Width="525">
+	<Window.Resources>
+		<SolidColorBrush x:Key="TextInputBackgroundBrush" Color="#FFD0D0D0"/>
+	</Window.Resources>
 	
 	<!--
 	    <WindowChrome.WindowChrome>
@@ -22,9 +25,6 @@
 		</Grid.Background>
 
 
-	    <Border BorderBrush="#D0D0D0" BorderThickness="1" />
-
-
 		<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="112,10,0,0" Width="100" Height="30"/>
 		<Button Content="ボタン" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="231,10,0,0" Width="65" Height="65"/>
 		<Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="132,64.7,0,0" Width="80" Height="30"/>
@@ -34,5 +34,6 @@
 		<Button Content="✔" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="23,10,0,0" Width="20" Height="20" FontSize="13.333"/>
 		<Button Content="✔" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="48,10,0,0" Width="20" Height="20" FontSize="13.333"/>
 		<Button Content="✔" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="73,10,0,0" Width="20" Height="20" FontSize="13.333"/>
+		<TextBox HorizontalAlignment="Left" Height="19" Margin="88,140,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="124"/>
 	</Grid>
 </Window>

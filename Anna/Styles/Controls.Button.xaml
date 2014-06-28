@@ -7,18 +7,18 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
 					<Grid x:Name="grid" ClipToBounds="False">
-						<Rectangle x:Name="DropShadow" Margin="0"  RadiusX="3" RadiusY="3" Fill="{DynamicResource ControlDropShadowBrush}" Height="12" VerticalAlignment="Bottom">
+						<Rectangle x:Name="DropShadow" Margin="0"  RadiusX="{DynamicResource ControlRoundedCorner}" RadiusY="{DynamicResource ControlRoundedCorner}" Fill="{DynamicResource ControlDropShadowBrush}" Height="12" VerticalAlignment="Bottom">
 							<Rectangle.Effect>
 								<DropShadowEffect Direction="270" Color="Black" Opacity="0.08" BlurRadius="10" ShadowDepth="10"/>
 							</Rectangle.Effect>
 						</Rectangle>
-						<Rectangle x:Name="Edge" Margin="0,-2,0,2"  RadiusX="3" RadiusY="3" Fill="{DynamicResource ControlEdgeBrush}">
+						<Rectangle x:Name="Edge" Margin="0,-2,0,2"  RadiusX="{DynamicResource ControlRoundedCorner}" RadiusY="{DynamicResource ControlRoundedCorner}" Fill="{DynamicResource ControlEdgeBrush}">
 							<Rectangle.Effect>
 								<DropShadowEffect Direction="270" Color="Black" Opacity="0.3" BlurRadius="5" ShadowDepth="5"/>
 							</Rectangle.Effect>
 						</Rectangle>
-						<Rectangle x:Name="Highlight" Margin="0,-1,0,0"  RadiusX="3" RadiusY="3" Fill="{DynamicResource ControlHighlightBrush}"/>
-						<Rectangle x:Name="Body" Margin="0"  RadiusX="3" RadiusY="3" ClipToBounds="True" Fill="{DynamicResource ControlBackgorundBrush}"/>
+						<Rectangle x:Name="Highlight" Margin="0,-1,0,0"  RadiusX="{DynamicResource ControlRoundedCorner}" RadiusY="{DynamicResource ControlRoundedCorner}" Fill="{DynamicResource ControlHighlightBrush}"/>
+						<Rectangle x:Name="Body" Margin="0"  RadiusX="{DynamicResource ControlRoundedCorner}" RadiusY="{DynamicResource ControlRoundedCorner}" ClipToBounds="True" Fill="{DynamicResource ControlBackgorundBrush}"/>
 						<ContentPresenter x:Name="contentPresenter" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,1">
 
 							<ContentPresenter.Resources>
@@ -33,9 +33,9 @@
 						</ContentPresenter>
 
 						<Border x:Name="InnerDropShadow" BorderBrush="#00808080" 
-							  BorderThickness="0" ClipToBounds="True" Width="Auto" Height="Auto" CornerRadius="2" Background="#00000000" d:IsHidden="True" >
+							  BorderThickness="0" ClipToBounds="True" Width="Auto" Height="Auto" CornerRadius="3" Background="#00000000" >
 						  <Border x:Name="border" Background="Transparent" BorderBrush="#00808080" 
-								BorderThickness="1,1,1,0" Margin="0" CornerRadius="2"/>
+								BorderThickness="1,1,1,0" Margin="0" CornerRadius="3"/>
 						</Border>
 
 					</Grid>

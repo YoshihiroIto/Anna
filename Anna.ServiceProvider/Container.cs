@@ -11,7 +11,7 @@ public class Container : SimpleInjector.Container
 #if DEBUG
             DefaultObjectLifetimeChecker
 #else
-            NopLifeCycleChecker
+            NopObjectLifetimeChecker
 #endif
         >();
 

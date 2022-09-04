@@ -10,7 +10,7 @@
         Icon="/Assets/avalonia-logo.ico"
         mc:Ignorable="d">
     <Design.DataContext>
-        <viewModels:MainViewModel />
+        <viewModels:MainWindowViewModel />
     </Design.DataContext>
 
     <TextBlock HorizontalAlignment="Center"

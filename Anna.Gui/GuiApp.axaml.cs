@@ -1,3 +1,4 @@
+using Anna.ServiceProvider;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -19,17 +20,15 @@ namespace Anna
             switch (ApplicationLifetime)
             {
                 case IClassicDesktopStyleApplicationLifetime desktop:
-                    desktop.MainWindow = new MainWindow
-                    {
-                        DataContext = new MainViewModel()
-                    };
+                    desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() }; 
                     break;
                 
                 default:
                     throw new NotImplementedException();
             }
-
             base.OnFrameworkInitializationCompleted();
         }
+
+        private readonly Container _dic = new();
     }
 }

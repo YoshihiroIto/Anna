@@ -8,38 +8,37 @@ using Anna.Views;
 using System;
 using System.Diagnostics;
 
-namespace Anna
+namespace Anna;
+
+public class GuiApp : Application
 {
-    public class GuiApp : Application
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
-
-        public override void OnFrameworkInitializationCompleted()
-        {
-            switch (ApplicationLifetime)
-            {
-                case IClassicDesktopStyleApplicationLifetime desktop:
-                    _dic.GetInstance<IObjectLifetimeChecker>().Start(s => Debug.WriteLine(s)); // todo:MessageDialog
-
-                    desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
-                    desktop.MainWindow.Closed += (sender, _) =>
-                    {
-                        ((sender as StyledElement)?.DataContext as IDisposable)?.Dispose();
-                        _dic.GetInstance<IObjectLifetimeChecker>().End();
-                    };
-
-                    break;
-
-                default:
-                    throw new NotImplementedException();
-            }
-
-            base.OnFrameworkInitializationCompleted();
-        }
-
-        private readonly Container _dic = new();
+        AvaloniaXamlLoader.Load(this);
     }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        switch (ApplicationLifetime)
+        {
+            case IClassicDesktopStyleApplicationLifetime desktop:
+                _dic.GetInstance<IObjectLifetimeChecker>().Start(s => Debug.WriteLine(s)); // todo:MessageDialog
+
+                desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
+                desktop.MainWindow.Closed += (sender, _) =>
+                {
+                    ((sender as StyledElement)?.DataContext as IDisposable)?.Dispose();
+                    _dic.GetInstance<IObjectLifetimeChecker>().End();
+                };
+
+                break;
+
+            default:
+                throw new NotImplementedException();
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+
+    private readonly Container _dic = new();
 }

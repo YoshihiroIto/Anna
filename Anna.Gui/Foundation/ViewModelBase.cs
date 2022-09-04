@@ -8,7 +8,7 @@ namespace Anna.Foundation;
 
 public class ViewModelBase : NotificationObject, IDisposable
 {
-    public CompositeDisposable Trash =>
+    protected CompositeDisposable Trash =>
         LazyInitializer.EnsureInitialized(ref _trashes, () => new CompositeDisposable()) ??
         throw new NullReferenceException();
 

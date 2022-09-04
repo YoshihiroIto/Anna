@@ -9,11 +9,6 @@ namespace Anna.Interactor.Foundation
 {
     public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeChecker
     {
-        public DefaultObjectLifetimeChecker()
-        {
-            
-        }
-        
         public void Start(Action<string> showError)
         {
             var old = Interlocked.Exchange(ref _nestCount, 1);

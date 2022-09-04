@@ -2,18 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SimpleInjector" Version="5.4.0" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Anna.DomainModel.Interface\Anna.DomainModel.Interface.csproj" />
-      <ProjectReference Include="..\Anna.Interactor\Anna.Interactor.csproj" />
     </ItemGroup>
 
 </Project>

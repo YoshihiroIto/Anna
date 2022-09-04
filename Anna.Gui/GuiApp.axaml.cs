@@ -1,3 +1,4 @@
+using Anna.DomainModel.Interface;
 using Anna.ServiceProvider;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -5,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Anna.ViewModels;
 using Anna.Views;
 using System;
+using System.Diagnostics;
 
 namespace Anna
 {
@@ -20,12 +22,21 @@ namespace Anna
             switch (ApplicationLifetime)
             {
                 case IClassicDesktopStyleApplicationLifetime desktop:
-                    desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() }; 
+                    _dic.GetInstance<IObjectLifetimeChecker>().Start(s => Debug.WriteLine(s)); // todo:MessageDialog
+
+                    desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
+                    desktop.MainWindow.Closed += (sender, _) =>
+                    {
+                        ((sender as StyledElement)?.DataContext as IDisposable)?.Dispose();
+                        _dic.GetInstance<IObjectLifetimeChecker>().End();
+                    };
+
                     break;
-                
+
                 default:
                     throw new NotImplementedException();
             }
+
             base.OnFrameworkInitializationCompleted();
         }
 

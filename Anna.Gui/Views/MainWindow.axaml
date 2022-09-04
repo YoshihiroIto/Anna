@@ -5,15 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Anna.ViewModels"
         Title="Anna.Gui"
+        Width="400"
+        Height="600"
         d:DesignHeight="450"
         d:DesignWidth="800"
         Icon="/Assets/avalonia-logo.ico"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Design.DataContext>
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
         <viewModels:MainWindowViewModel />
     </Design.DataContext>
 
-    <TextBlock HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               Text="{Binding Greeting}" />
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Button Command="{Binding CountUp, Mode=OneTime}" Content="Count Up" />
+        <TextBlock Text="{Binding Caption.Value, Mode=OneWay}" />
+    </StackPanel>
 </Window>

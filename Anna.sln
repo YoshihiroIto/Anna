@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel", "Anna.Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel.Tests", "Anna.DomainModel.Tests\Anna.DomainModel.Tests.csproj", "{D7F2456B-E3C3-4A99-BC91-F3F6A4A6630E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel.Interface", "Anna.DomainModel.Interface\Anna.DomainModel.Interface.csproj", "{01B67294-8EA1-468A-A20A-71D22DF2F565}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Interactor", "Anna.Interactor\Anna.Interactor.csproj", "{385E419F-31F7-45A0-95DD-1154C167AA6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{D7F2456B-E3C3-4A99-BC91-F3F6A4A6630E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7F2456B-E3C3-4A99-BC91-F3F6A4A6630E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7F2456B-E3C3-4A99-BC91-F3F6A4A6630E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B67294-8EA1-468A-A20A-71D22DF2F565}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01B67294-8EA1-468A-A20A-71D22DF2F565}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01B67294-8EA1-468A-A20A-71D22DF2F565}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B67294-8EA1-468A-A20A-71D22DF2F565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{385E419F-31F7-45A0-95DD-1154C167AA6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{385E419F-31F7-45A0-95DD-1154C167AA6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{385E419F-31F7-45A0-95DD-1154C167AA6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{385E419F-31F7-45A0-95DD-1154C167AA6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

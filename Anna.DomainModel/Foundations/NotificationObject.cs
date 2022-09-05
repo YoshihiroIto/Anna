@@ -25,14 +25,14 @@ public class NotificationObject : INotifyPropertyChanged
         // ReSharper disable once InconsistentlySynchronizedField
         var pc = (PropertyChangedEventArgs?)PropChanged[propertyName];
 
-        if (pc == null)
+        if (pc is null)
         {
             // double-checked;
             lock (PropChangedLockObj)
             {
                 pc = (PropertyChangedEventArgs?)PropChanged[propertyName];
 
-                if (pc == null)
+                if (pc is null)
                 {
                     pc = new PropertyChangedEventArgs(propertyName);
                     PropChanged[propertyName] = pc;

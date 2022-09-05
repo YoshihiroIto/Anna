@@ -1,10 +1,10 @@
-﻿using Anna.DomainModel.Foundation;
+﻿using Anna.DomainModel.Foundations;
 using Anna.DomainModel.Interface;
 using System;
 using System.Reactive.Disposables;
 using System.Threading;
 
-namespace Anna.Foundation;
+namespace Anna.Foundations;
 
 public class ViewModelBase : NotificationObject, IDisposable
 {

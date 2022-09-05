@@ -5,7 +5,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Anna.ViewModels;
 using Anna.Views;
-using Avalonia.Xaml.Interactivity;
 using System;
 using System.Diagnostics;
 

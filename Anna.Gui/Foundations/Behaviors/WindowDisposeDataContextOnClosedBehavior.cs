@@ -2,7 +2,7 @@
 using Avalonia.Xaml.Interactivity;
 using System;
 
-namespace Anna.Foundation.Behaviors;
+namespace Anna.Foundations.Behaviors;
 
 public class WindowDisposeDataContextOnClosedBehavior : Behavior<Window>
 {

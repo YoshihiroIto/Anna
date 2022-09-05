@@ -1,5 +1,5 @@
 ﻿using Anna.DomainModel.Interface;
-using Anna.Interactor.Foundation;
+using Anna.Interactor.Foundations;
 
 namespace Anna.ServiceProvider;
 

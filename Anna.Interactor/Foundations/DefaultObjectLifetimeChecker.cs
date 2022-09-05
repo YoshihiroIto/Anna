@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 using System.Text;
 using System.Threading;
 
-namespace Anna.Interactor.Foundation;
+namespace Anna.Interactor.Foundations;
 
 public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeChecker
 {

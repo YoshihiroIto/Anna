@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Anna.ViewModels"
-        xmlns:behaviors="clr-namespace:Anna.Foundation.Behaviors"
+        xmlns:behaviors="clr-namespace:Anna.Foundations.Behaviors"
         Title="Anna.Gui"
         Width="400"
         Height="600"

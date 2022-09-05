@@ -17,6 +17,7 @@ public class Directory : NotificationObject
 
     #endregion
     
+    
     #region Directories
 
     private ObservableCollection<FileObject> _Directories = new();
@@ -29,6 +30,7 @@ public class Directory : NotificationObject
 
     #endregion
 
+    
     #region Files
 
     private ObservableCollection<FileObject> _Files = new();

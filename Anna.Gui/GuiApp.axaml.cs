@@ -22,7 +22,11 @@ public class GuiApp : Application
         switch (ApplicationLifetime)
         {
             case IClassicDesktopStyleApplicationLifetime desktop:
-                _dic.GetInstance<IObjectLifetimeChecker>().Start(s => Debug.WriteLine(s)); // todo:MessageDialog
+                _dic.GetInstance<IObjectLifetimeChecker>().Start(s =>
+                {
+                    Debug.WriteLine(s);
+                    Debugger.Break();
+                }); // todo:MessageDialog
 
                 desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
                 desktop.MainWindow.Closed += (sender, _) => _dic.GetInstance<IObjectLifetimeChecker>().End();

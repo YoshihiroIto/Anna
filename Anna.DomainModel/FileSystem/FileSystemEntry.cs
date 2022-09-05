@@ -2,7 +2,7 @@
 
 namespace Anna.DomainModel.FileSystem;
 
-public class FileObject : NotificationObject
+public class FileSystemEntry : NotificationObject
 {
     #region Name
 

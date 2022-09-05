@@ -20,9 +20,9 @@ public class Directory : NotificationObject
     
     #region Directories
 
-    private ObservableCollection<FileObject> _Directories = new();
+    private ObservableCollection<FileSystemEntry> _Directories = new();
 
-    public ObservableCollection<FileObject> Directories
+    public ObservableCollection<FileSystemEntry> Directories
     {
         get => _Directories;
         private set => SetProperty(ref _Directories, value);
@@ -33,9 +33,9 @@ public class Directory : NotificationObject
     
     #region Files
 
-    private ObservableCollection<FileObject> _Files = new();
+    private ObservableCollection<FileSystemEntry> _Files = new();
 
-    public ObservableCollection<FileObject> Files
+    public ObservableCollection<FileSystemEntry> Files
     {
         get => _Files;
         private set => SetProperty(ref _Files, value);

@@ -5,6 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Anna.ViewModels;
 using Anna.Views;
+using Avalonia.Xaml.Interactivity;
 using System;
 using System.Diagnostics;
 
@@ -25,11 +26,7 @@ public class GuiApp : Application
                 _dic.GetInstance<IObjectLifetimeChecker>().Start(s => Debug.WriteLine(s)); // todo:MessageDialog
 
                 desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
-                desktop.MainWindow.Closed += (sender, _) =>
-                {
-                    ((sender as StyledElement)?.DataContext as IDisposable)?.Dispose();
-                    _dic.GetInstance<IObjectLifetimeChecker>().End();
-                };
+                desktop.MainWindow.Closed += (sender, _) => _dic.GetInstance<IObjectLifetimeChecker>().End();
 
                 break;
 

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Anna.ViewModels"
+        xmlns:behaviors="clr-namespace:Anna.Foundation.Behaviors"
         Title="Anna.Gui"
         Width="400"
         Height="600"
@@ -12,6 +13,10 @@
         Icon="/Assets/avalonia-logo.ico"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
+    <Interaction.Behaviors>
+        <behaviors:WindowDisposeDataContextOnClosedBehavior />
+    </Interaction.Behaviors>
+
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <Button Command="{Binding CountUp, Mode=OneTime}" Content="Count Up" />
         <TextBlock Text="{Binding Caption.Value, Mode=OneWay}" />

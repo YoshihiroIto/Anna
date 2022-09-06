@@ -19,22 +19,16 @@ public class GuiApp : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        switch (ApplicationLifetime)
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            case IClassicDesktopStyleApplicationLifetime desktop:
-                _dic.GetInstance<IObjectLifetimeChecker>().Start(s =>
-                {
-                    Debug.WriteLine(s);
-                    Debugger.Break();
-                }); // todo:MessageDialog
+            _dic.GetInstance<IObjectLifetimeChecker>().Start(s =>
+            {
+                Debug.WriteLine(s);
+                Debugger.Break();
+            });// todo:MessageDialog
 
-                desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
-                desktop.MainWindow.Closed += (sender, _) => _dic.GetInstance<IObjectLifetimeChecker>().End();
-
-                break;
-
-            default:
-                throw new NotImplementedException();
+            desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
+            desktop.MainWindow.Closed += (sender, _) => _dic.GetInstance<IObjectLifetimeChecker>().End();
         }
 
         base.OnFrameworkInitializationCompleted();

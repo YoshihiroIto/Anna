@@ -10,8 +10,34 @@
     <Design.DataContext>
         <viewModels:DesignDirectoryViewViewModel />
     </Design.DataContext>
-    
-    <TextBlock HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               Text="DirectoryView" />
+
+    <ItemsControl Items="{Binding DirectoriesAndFiles, Mode=OneWay}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel Orientation="Vertical" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <TextBlock Width="100"
+                           FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
+                           Margin="16,0"
+                           Text="{Binding Name, Mode=OneWay}"
+                           TextTrimming="CharacterEllipsis" />
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+
+        <!--
+        <ItemsControl.Template>
+            <ControlTemplate>
+                <ScrollViewer Focusable="False"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Disabled">
+                    <ItemsPresenter Items="{TemplateBinding Property=Items, Mode=OneWay}" />
+                </ScrollViewer>
+            </ControlTemplate>
+        </ItemsControl.Template>
+        -->
+    </ItemsControl>
 </UserControl>

@@ -4,23 +4,25 @@
         xmlns:behaviors="clr-namespace:Anna.Foundations.Behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:Anna.Views"
         xmlns:viewModels="clr-namespace:Anna.ViewModels"
+        xmlns:views="clr-namespace:Anna.Views"
         Title="DirectoryWindow"
         Width="450"
         Height="450"
+        MinWidth="200"
+        MinHeight="100"
         d:DesignHeight="450"
         d:DesignWidth="450"
         x:DataType="viewModels:DirectoryWindowViewModel"
         mc:Ignorable="d">
     <Design.DataContext>
-        <!-- ReSharper disable once Xaml.ConstructorWarning -->
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
         <viewModels:DirectoryWindowViewModel />
     </Design.DataContext>
-    
+
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
     </Interaction.Behaviors>
 
-    <views:DirectoryView DataContext="{Binding ViewViewModel, Mode=OneTime}"/>
+    <views:DirectoryView DataContext="{Binding ViewViewModel, Mode=OneWay}" />
 </Window>

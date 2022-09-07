@@ -1,6 +1,5 @@
 ﻿using Anna.DomainModel.Interface;
 using Anna.Foundations;
-using Anna.Interactor.Foundations;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Reactive.Linq;

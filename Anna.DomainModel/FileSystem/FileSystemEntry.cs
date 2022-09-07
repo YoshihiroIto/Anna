@@ -11,7 +11,7 @@ public class FileSystemEntry : NotificationObject
     public string Name
     {
         get => _Name;
-        private set => SetProperty(ref _Name, value);
+        internal set => SetProperty(ref _Name, value);
     }
 
     #endregion
@@ -24,7 +24,7 @@ public class FileSystemEntry : NotificationObject
     public DateTime Timestamp
     {
         get => _Timestamp;
-        private set => SetProperty(ref _Timestamp, value);
+        internal set => SetProperty(ref _Timestamp, value);
     }
 
     #endregion
@@ -37,7 +37,7 @@ public class FileSystemEntry : NotificationObject
     public ulong Size
     {
         get => _Size;
-        private set => SetProperty(ref _Size, value);
+        internal set => SetProperty(ref _Size, value);
     }
 
     #endregion

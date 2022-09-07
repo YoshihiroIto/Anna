@@ -3,16 +3,15 @@ using Anna.Foundations;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
 
-namespace Anna.ViewModels
+namespace Anna.ViewModels;
+
+public class DirectoryWindowViewModel : ViewModelBase
 {
-    public class DirectoryWindowViewModel : ViewModelBase
-    {
-        public DirectoryViewViewModel ViewViewModel { get; }
+    public DirectoryViewViewModel ViewViewModel { get; }
         
-        public DirectoryWindowViewModel(Container dic, IObjectLifetimeChecker objectLifetimeChecker)
-            : base(objectLifetimeChecker)
-        {
-            ViewViewModel = dic.GetInstance<DirectoryViewViewModel>().AddTo(Trash);
-        }
+    public DirectoryWindowViewModel(Container dic, IObjectLifetimeChecker objectLifetimeChecker)
+        : base(objectLifetimeChecker)
+    {
+        ViewViewModel = dic.GetInstance<DirectoryViewViewModel>().AddTo(Trash);
     }
 }

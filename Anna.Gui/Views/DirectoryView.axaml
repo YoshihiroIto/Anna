@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="Anna.Views.DirectoryView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Anna.ViewModels"
+             d:DesignHeight="450"
+             d:DesignWidth="450"
+             mc:Ignorable="d">
+    <Design.DataContext>
+        <viewModels:DesignDirectoryViewViewModel />
+    </Design.DataContext>
+    
+    <TextBlock HorizontalAlignment="Center"
+               VerticalAlignment="Center"
+               Text="DirectoryView" />
+</UserControl>

@@ -5,7 +5,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Anna.ViewModels;
 using Anna.Views;
-using System;
 using System.Diagnostics;
 
 namespace Anna;
@@ -29,6 +28,10 @@ public class GuiApp : Application
 
             desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
             desktop.MainWindow.Closed += (sender, _) => _dic.GetInstance<IObjectLifetimeChecker>().End();
+
+            //
+            var d = new DirectoryWindow { DataContext = _dic.GetInstance<DirectoryWindowViewModel>() };
+            d.Show();
         }
 
         base.OnFrameworkInitializationCompleted();

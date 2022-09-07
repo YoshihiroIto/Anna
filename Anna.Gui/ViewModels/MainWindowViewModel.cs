@@ -28,11 +28,3 @@ public class MainWindowViewModel : ViewModelBase
             .AddTo(Trash);
     }
 }
-
-public class DesignMainWindowViewModel : MainWindowViewModel
-{
-    public DesignMainWindowViewModel()
-        : base(new NopObjectLifetimeChecker())
-    {
-    }
-}

@@ -2,9 +2,9 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:fileSystem="clr-namespace:Anna.DomainModel.FileSystem;assembly=Anna.DomainModel"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Anna.ViewModels"
-             xmlns:fileSystem="clr-namespace:Anna.DomainModel.FileSystem;assembly=Anna.DomainModel"
              d:DesignHeight="450"
              d:DesignWidth="450"
              mc:Ignorable="d">
@@ -15,12 +15,14 @@
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <ItemsRepeater Items="{Binding FileSystemEntries, Mode=OneWay}">
             <ItemsRepeater.Layout>
-                <UniformGridLayout MinItemWidth="140" Orientation="Vertical" />
+                <UniformGridLayout MinItemWidth="144" Orientation="Vertical" />
             </ItemsRepeater.Layout>
 
             <ItemsRepeater.ItemTemplate>
                 <DataTemplate DataType="fileSystem:FileSystemEntry">
-                    <TextBlock Margin="24,0,0,0"
+                    <TextBlock Width="120"
+                               Height="17"
+                               Margin="24,0,0,0"
                                FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
                                Text="{Binding Name, Mode=OneWay}"
                                TextTrimming="CharacterEllipsis" />

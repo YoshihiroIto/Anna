@@ -9,16 +9,15 @@ namespace Anna.ViewModels;
 
 public class DirectoryViewViewModel : ViewModelBase
 {
-    // public ReadOnlyReactiveCollection<FileSystemEntry> Directories { get; }
-    // public ReadOnlyReactiveCollection<FileSystemEntry> Files { get; }
-    public ReadOnlyReactiveCollection<FileSystemEntry> DirectoriesAndFiles { get; }
+    public ReadOnlyReactiveCollection<FileSystemEntry> FileSystemEntries { get; }
 
     public DirectoryViewViewModel(Directory directory, IObjectLifetimeChecker objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
-        // Directories = directory.Directories.ToReadOnlyReactiveCollection().AddTo(Trash);
-        // Files = directory.Files.ToReadOnlyReactiveCollection().AddTo(Trash);
-        DirectoriesAndFiles = directory.DirectoriesAndFiles.ToReadOnlyReactiveCollection().AddTo(Trash);
+        lock (directory.UpdateLockObj)
+        {
+            FileSystemEntries = directory.FileSystemEntries.ToReadOnlyReactiveCollection().AddTo(Trash);
+        }
     }
 }
 

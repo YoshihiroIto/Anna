@@ -17,7 +17,13 @@ public class Directory : NotificationObject
             if (SetProperty(ref _Path, value) == false)
                 return;
 
-            Task.Run(Update);
+            Task.Run(() =>
+            {
+                lock (UpdateLockObj)
+                {
+                    Update();
+                }
+            });
         }
     }
 
@@ -52,16 +58,17 @@ public class Directory : NotificationObject
 
     #region DirectoriesAndFiles
 
-    private ObservableCollection<FileSystemEntry> _DirectoriesAndFiles = new();
+    private ObservableCollection<FileSystemEntry> _fileSystemEntries = new();
 
-    public ObservableCollection<FileSystemEntry> DirectoriesAndFiles
+    public ObservableCollection<FileSystemEntry> FileSystemEntries
     {
-        get => _DirectoriesAndFiles;
-        private set => SetProperty(ref _DirectoriesAndFiles, value);
+        get => _fileSystemEntries;
+        private set => SetProperty(ref _fileSystemEntries, value);
     }
 
     #endregion
 
+    public readonly object UpdateLockObj = new();
 
     public Directory()
     {
@@ -72,20 +79,20 @@ public class Directory : NotificationObject
     {
         Directories.Clear();
         Files.Clear();
-        DirectoriesAndFiles.Clear();
+        FileSystemEntries.Clear();
 
         foreach (var p in System.IO.Directory.EnumerateDirectories(Path))
         {
             var e = new FileSystemEntry { Name = System.IO.Path.GetRelativePath(Path, p) };
             Directories.Add(e);
-            DirectoriesAndFiles.Add(e);
+            FileSystemEntries.Add(e);
         }
-        
+
         foreach (var p in System.IO.Directory.EnumerateFiles(Path))
         {
             var e = new FileSystemEntry { Name = System.IO.Path.GetRelativePath(Path, p) };
             Files.Add(e);
-            DirectoriesAndFiles.Add(e);
+            FileSystemEntries.Add(e);
         }
     }
 }

@@ -11,7 +11,7 @@
         <viewModels:DesignDirectoryViewViewModel />
     </Design.DataContext>
 
-    <ItemsControl Items="{Binding DirectoriesAndFiles, Mode=OneWay}">
+    <ItemsControl Items="{Binding FileSystemEntries, Mode=OneWay}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <WrapPanel Orientation="Vertical" />

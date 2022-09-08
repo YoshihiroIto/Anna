@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Anna.ViewModels"
+             xmlns:fileSystem="clr-namespace:Anna.DomainModel.FileSystem;assembly=Anna.DomainModel"
              d:DesignHeight="450"
              d:DesignWidth="450"
              mc:Ignorable="d">
@@ -11,33 +12,20 @@
         <viewModels:DesignDirectoryViewViewModel />
     </Design.DataContext>
 
-    <ItemsControl Items="{Binding FileSystemEntries, Mode=OneWay}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <WrapPanel Orientation="Vertical" />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+        <ItemsRepeater Items="{Binding FileSystemEntries, Mode=OneWay}">
+            <ItemsRepeater.Layout>
+                <UniformGridLayout MinItemWidth="140" Orientation="Vertical" />
+            </ItemsRepeater.Layout>
 
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <TextBlock Width="100"
-                           FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
-                           Margin="16,0"
-                           Text="{Binding Name, Mode=OneWay}"
-                           TextTrimming="CharacterEllipsis" />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-
-        <!--
-        <ItemsControl.Template>
-            <ControlTemplate>
-                <ScrollViewer Focusable="False"
-                              HorizontalScrollBarVisibility="Auto"
-                              VerticalScrollBarVisibility="Disabled">
-                    <ItemsPresenter Items="{TemplateBinding Property=Items, Mode=OneWay}" />
-                </ScrollViewer>
-            </ControlTemplate>
-        </ItemsControl.Template>
-        -->
-    </ItemsControl>
+            <ItemsRepeater.ItemTemplate>
+                <DataTemplate DataType="fileSystem:FileSystemEntry">
+                    <TextBlock Margin="24,0,0,0"
+                               FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
+                               Text="{Binding Name, Mode=OneWay}"
+                               TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </ItemsRepeater.ItemTemplate>
+        </ItemsRepeater>
+    </ScrollViewer>
 </UserControl>

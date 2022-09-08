@@ -7,12 +7,12 @@
         xmlns:viewModels="clr-namespace:Anna.ViewModels"
         xmlns:views="clr-namespace:Anna.Views"
         Title="DirectoryWindow"
-        Width="450"
-        Height="450"
+        Width="600"
+        Height="600"
         MinWidth="200"
         MinHeight="100"
-        d:DesignHeight="450"
-        d:DesignWidth="450"
+        d:DesignHeight="600"
+        d:DesignWidth="600"
         x:DataType="viewModels:DirectoryWindowViewModel"
         mc:Ignorable="d">
     <Design.DataContext>

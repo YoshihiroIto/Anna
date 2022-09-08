@@ -72,7 +72,8 @@ public class Directory : NotificationObject
 
     public Directory()
     {
-        Path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        //Path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+         Path = "C:/Windows/System32";
     }
 
     private void Update()

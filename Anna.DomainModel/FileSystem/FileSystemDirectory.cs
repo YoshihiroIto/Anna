@@ -1,8 +1,11 @@
-﻿namespace Anna.DomainModel.FileSystem;
+﻿using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("Anna.DomainModel.Operator")]
+
+namespace Anna.DomainModel.FileSystem;
 
 public class FileSystemDirectory : Directory
 {
-    public FileSystemDirectory(string path)
+    internal FileSystemDirectory(string path)
         : base(path)
     {
     }

@@ -32,9 +32,9 @@ public class Directory : NotificationObject
 
     #region Directories
 
-    private ObservableCollection<FileSystemEntry> _Directories = new();
+    private ObservableCollection<Entry> _Directories = new();
 
-    public ObservableCollection<FileSystemEntry> Directories
+    public ObservableCollection<Entry> Directories
     {
         get => _Directories;
         private set => SetProperty(ref _Directories, value);
@@ -45,9 +45,9 @@ public class Directory : NotificationObject
 
     #region Files
 
-    private ObservableCollection<FileSystemEntry> _Files = new();
+    private ObservableCollection<Entry> _Files = new();
 
-    public ObservableCollection<FileSystemEntry> Files
+    public ObservableCollection<Entry> Files
     {
         get => _Files;
         private set => SetProperty(ref _Files, value);
@@ -58,12 +58,12 @@ public class Directory : NotificationObject
 
     #region DirectoriesAndFiles
 
-    private ObservableCollection<FileSystemEntry> _fileSystemEntries = new();
+    private ObservableCollection<Entry> _entries = new();
 
-    public ObservableCollection<FileSystemEntry> FileSystemEntries
+    public ObservableCollection<Entry> Entries
     {
-        get => _fileSystemEntries;
-        private set => SetProperty(ref _fileSystemEntries, value);
+        get => _entries;
+        private set => SetProperty(ref _entries, value);
     }
 
     #endregion
@@ -80,20 +80,20 @@ public class Directory : NotificationObject
     {
         Directories.Clear();
         Files.Clear();
-        FileSystemEntries.Clear();
+        Entries.Clear();
 
         foreach (var p in System.IO.Directory.EnumerateDirectories(Path))
         {
-            var e = new FileSystemEntry { Name = System.IO.Path.GetRelativePath(Path, p) };
+            var e = new Entry { Name = System.IO.Path.GetRelativePath(Path, p) };
             Directories.Add(e);
-            FileSystemEntries.Add(e);
+            Entries.Add(e);
         }
 
         foreach (var p in System.IO.Directory.EnumerateFiles(Path))
         {
-            var e = new FileSystemEntry { Name = System.IO.Path.GetRelativePath(Path, p) };
+            var e = new Entry { Name = System.IO.Path.GetRelativePath(Path, p) };
             Files.Add(e);
-            FileSystemEntries.Add(e);
+            Entries.Add(e);
         }
     }
 }

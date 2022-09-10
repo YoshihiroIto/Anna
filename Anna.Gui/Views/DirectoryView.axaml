@@ -13,13 +13,13 @@
     </Design.DataContext>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-        <ItemsRepeater Items="{Binding FileSystemEntries, Mode=OneWay}">
+        <ItemsRepeater Items="{Binding Entries, Mode=OneWay}">
             <ItemsRepeater.Layout>
                 <UniformGridLayout MinItemWidth="144" Orientation="Vertical" />
             </ItemsRepeater.Layout>
 
             <ItemsRepeater.ItemTemplate>
-                <DataTemplate DataType="fileSystem:FileSystemEntry">
+                <DataTemplate DataType="fileSystem:Entry">
                     <TextBlock Width="120"
                                Height="17"
                                Margin="24,0,0,0"

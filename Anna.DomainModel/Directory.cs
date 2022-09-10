@@ -29,34 +29,7 @@ public abstract class Directory : NotificationObject
 
     #endregion
 
-
-    #region Directories
-
-    private ObservableCollection<Entry> _Directories = new();
-
-    public ObservableCollection<Entry> Directories
-    {
-        get => _Directories;
-        private set => SetProperty(ref _Directories, value);
-    }
-
-    #endregion
-
-
-    #region Files
-
-    private ObservableCollection<Entry> _Files = new();
-
-    public ObservableCollection<Entry> Files
-    {
-        get => _Files;
-        private set => SetProperty(ref _Files, value);
-    }
-
-    #endregion
-
-
-    #region DirectoriesAndFiles
+    #region Entries
 
     private ObservableCollection<Entry> _entries = new();
 

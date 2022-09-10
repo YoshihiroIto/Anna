@@ -1,5 +1,6 @@
 ﻿using Anna.DomainModel.Interface;
-using Anna.Interactor.Foundations;
+using Anna.DomainModel.Operator;
+using Anna.Interactor;
 
 namespace Anna.ServiceProvider;
 
@@ -14,6 +15,8 @@ public class Container : SimpleInjector.Container
             NopObjectLifetimeChecker
 #endif
         >();
+
+        RegisterSingleton<IDomainModelOperator, DomainModelOperator>();
 
         Options.ResolveUnregisteredConcreteTypes = true;
 

@@ -1,5 +1,5 @@
-﻿using Anna.DomainModel.Foundations;
-using Anna.DomainModel.Interface;
+﻿using Anna.DomainModel.Interface;
+using Anna.Foundation;
 using System;
 using System.Reactive.Disposables;
 using System.Threading;

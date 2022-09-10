@@ -7,4 +7,8 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Anna.Foundation\Anna.Foundation.csproj" />
+    </ItemGroup>
+
 </Project>

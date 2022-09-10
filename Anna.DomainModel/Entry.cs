@@ -1,6 +1,6 @@
-﻿using Anna.DomainModel.Foundations;
+﻿using Anna.Foundation;
 
-namespace Anna.DomainModel.FileSystem;
+namespace Anna.DomainModel;
 
 public class Entry : NotificationObject
 {

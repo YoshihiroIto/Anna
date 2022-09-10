@@ -5,6 +5,7 @@
         <!--Temporal hack that fixes compilation in VS-->
         <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
         <RootNamespace>Anna.Web</RootNamespace>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <!-- In debug, make builds faster by reducing optimizations -->

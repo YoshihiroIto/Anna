@@ -9,6 +9,7 @@
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
         <AndroidPackageFormat>apk</AndroidPackageFormat>
         <RootNamespace>Anna.Android</RootNamespace>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <ItemGroup>
         <AndroidResource Include="Icon.png">

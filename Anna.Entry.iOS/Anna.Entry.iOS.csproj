@@ -7,6 +7,7 @@
         <Nullable>enable</Nullable>
         <RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
         <RootNamespace>Anna.iOS</RootNamespace>
+        <LangVersion>latest</LangVersion>
 
         <!-- These properties need to be set in order to run on a real iDevice -->
         <!--<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>-->

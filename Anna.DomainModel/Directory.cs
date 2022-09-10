@@ -1,9 +1,9 @@
-﻿using Anna.DomainModel.Foundations;
+﻿using Anna.Foundation;
 using System.Collections.ObjectModel;
 
-namespace Anna.DomainModel.FileSystem;
+namespace Anna.DomainModel;
 
-public class Directory : NotificationObject
+public abstract class Directory : NotificationObject
 {
     #region Path
 
@@ -70,29 +70,10 @@ public class Directory : NotificationObject
 
     public readonly object UpdateLockObj = new();
 
-    public Directory(string path)
+    protected Directory(string path)
     {
         Path = path;
     }
 
-    private void Update()
-    {
-        Directories.Clear();
-        Files.Clear();
-        Entries.Clear();
-
-        foreach (var p in System.IO.Directory.EnumerateDirectories(Path))
-        {
-            var e = new Entry { Name = System.IO.Path.GetRelativePath(Path, p) };
-            Directories.Add(e);
-            Entries.Add(e);
-        }
-
-        foreach (var p in System.IO.Directory.EnumerateFiles(Path))
-        {
-            var e = new Entry { Name = System.IO.Path.GetRelativePath(Path, p) };
-            Files.Add(e);
-            Entries.Add(e);
-        }
-    }
+    protected abstract void Update();
 }

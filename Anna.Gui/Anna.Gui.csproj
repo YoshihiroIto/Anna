@@ -18,7 +18,6 @@
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\Anna.DomainModel.Interface\Anna.DomainModel.Interface.csproj" />
       <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
       <ProjectReference Include="..\Anna.ServiceProvider\Anna.ServiceProvider.csproj" />
     </ItemGroup>

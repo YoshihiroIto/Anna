@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Anna.DomainModel.Interface;
+﻿namespace Anna.DomainModel.Interface;
 
 public interface IObjectLifetimeChecker
 {

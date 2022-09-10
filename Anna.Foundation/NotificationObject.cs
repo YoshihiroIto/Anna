@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Anna.DomainModel.Foundations;
+namespace Anna.Foundation;
 
 public class NotificationObject : INotifyPropertyChanged
 {

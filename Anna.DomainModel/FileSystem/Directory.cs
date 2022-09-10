@@ -70,10 +70,9 @@ public class Directory : NotificationObject
 
     public readonly object UpdateLockObj = new();
 
-    public Directory()
+    public Directory(string path)
     {
-        //Path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-         Path = "C:/Windows/System32";
+        Path = path;
     }
 
     private void Update()

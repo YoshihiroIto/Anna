@@ -9,21 +9,28 @@ namespace Anna.ViewModels;
 
 public class DirectoryViewViewModel : ViewModelBase
 {
-    public ReadOnlyReactiveCollection<Entry> Entries { get; }
+    public ReadOnlyReactiveCollection<Entry>? Entries { get; private set; }
 
-    public DirectoryViewViewModel(Directory directory, IObjectLifetimeChecker objectLifetimeChecker)
+    public DirectoryViewViewModel(IObjectLifetimeChecker objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
-        lock (directory.UpdateLockObj)
+    }
+
+    public DirectoryViewViewModel Setup(Directory model)
+    {
+        lock (model.UpdateLockObj)
         {
-            Entries = directory.Entries.ToReadOnlyReactiveCollection().AddTo(Trash);
+            Entries = model.Entries.ToReadOnlyReactiveCollection().AddTo(Trash);
         }
+
+        return this;
     }
 }
 
 public class DesignDirectoryViewViewModel : DirectoryViewViewModel
 {
-    public DesignDirectoryViewViewModel() : base(new Directory(), new NopObjectLifetimeChecker())
+    public DesignDirectoryViewViewModel() : base(new NopObjectLifetimeChecker())
     {
+        Setup(new Directory("C:/Windows/System32"));
     }
 }

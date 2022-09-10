@@ -1,4 +1,5 @@
-﻿using Anna.DomainModel.Interface;
+﻿using Anna.DomainModel.FileSystem;
+using Anna.DomainModel.Interface;
 using Anna.Foundations;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
@@ -12,6 +13,8 @@ public class DirectoryWindowViewModel : ViewModelBase
     public DirectoryWindowViewModel(Container dic, IObjectLifetimeChecker objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
-        ViewViewModel = dic.GetInstance<DirectoryViewViewModel>().AddTo(Trash);
+        ViewViewModel = dic.GetInstance<DirectoryViewViewModel>()
+            .Setup(new Directory("C:/Windows/System32"))
+            .AddTo(Trash);
     }
 }

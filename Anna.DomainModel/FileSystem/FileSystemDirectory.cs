@@ -4,7 +4,7 @@
 
 namespace Anna.DomainModel.FileSystem;
 
-public class FileSystemDirectory : Directory
+public sealed class FileSystemDirectory : Directory
 {
     internal FileSystemDirectory(string path)
         : base(path)

@@ -12,6 +12,7 @@ namespace Anna.DomainModel.FileSystem;
 public sealed class FileSystemDirectory : Directory, IDisposable
 {
     private readonly IObjectLifetimeChecker _objectLifetimeChecker;
+    private readonly CompositeDisposable _trash = new();
 
     internal FileSystemDirectory(string path, IObjectLifetimeChecker objectLifetimeChecker)
         : base(path)
@@ -53,29 +54,53 @@ public sealed class FileSystemDirectory : Directory, IDisposable
 
         watcher.Created
             .Subscribe(
-                x => Debug.WriteLine("Created:" + x.FullPath)
+            e =>
+            {
+                Entries.Add(new Entry { Name = e.Name ?? "??????????????????" });
+            }
             ).AddTo(_trash);
 
         watcher.Changed
             .Subscribe(
-                x => Debug.WriteLine("Changed:" + x.FullPath)
+            e =>
+            {
+                Debug.WriteLine("Changed:" + e.FullPath);
+            }
             ).AddTo(_trash);
 
         watcher.Deleted
             .Subscribe(
-                x => Debug.WriteLine("Deleted:" + x.FullPath)
+            e =>
+            {
+                var target = Entries.FirstOrDefault(x => x.Name == e.Name);
+                if (target is null)
+                {
+                    // todo: logging
+                    return;
+                }
+
+                Entries.Remove(target);
+            }
             ).AddTo(_trash);
 
         watcher.Renamed
             .Subscribe(
-                x => Debug.WriteLine("Renamed:" + x.FullPath)
+            e =>
+            {
+                var target = Entries.FirstOrDefault(x => x.Name == e.OldName);
+                if (target is null)
+                {
+                    // todo: logging
+                    return;
+                }
+
+                target.Name = e.Name ?? "??????????????????";
+            }
             ).AddTo(_trash);
 
         watcher.Errors
             .Subscribe(
-                x => Debug.WriteLine("Errors:" + x.GetException())
+            x => Debug.WriteLine("Errors:" + x.GetException())
             ).AddTo(_trash);
     }
-
-    private readonly CompositeDisposable _trash = new();
 }

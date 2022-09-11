@@ -14,7 +14,7 @@ public class DirectoryWindowViewModel : ViewModelBase
     public DirectoryViewViewModel? ViewViewModel
     {
         get => _ViewViewModel;
-        set
+        private set
         {
             var old = _ViewViewModel;
             if (SetProperty(ref _ViewViewModel, value))

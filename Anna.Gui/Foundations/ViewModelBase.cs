@@ -6,6 +6,7 @@ namespace Anna.Foundations;
 public class ViewModelBase : DisposableNotificationObject
 {
     private readonly IObjectLifetimeChecker _objectLifetimeChecker;
+    
     protected ViewModelBase(IObjectLifetimeChecker objectLifetimeChecker)
     {
         _objectLifetimeChecker = objectLifetimeChecker;

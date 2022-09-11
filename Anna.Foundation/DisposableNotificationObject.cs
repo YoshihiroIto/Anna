@@ -19,7 +19,7 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
         _disposed = true;
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);

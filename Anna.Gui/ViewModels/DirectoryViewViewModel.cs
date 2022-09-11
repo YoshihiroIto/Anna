@@ -1,8 +1,6 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Interface;
-using Anna.DomainModel.Operator;
 using Anna.Foundations;
-using Anna.Interactor;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
@@ -25,13 +23,5 @@ public class DirectoryViewViewModel : ViewModelBase
         }
 
         return this;
-    }
-}
-
-public class DesignDirectoryViewViewModel : DirectoryViewViewModel
-{
-    public DesignDirectoryViewViewModel() : base(new NopObjectLifetimeChecker())
-    {
-        Setup(new DomainModelOperator().CreateDirectory("C:/Windows/System32"));
     }
 }

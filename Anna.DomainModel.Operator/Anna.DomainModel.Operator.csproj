@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="SimpleInjector" Version="5.4.0" />
+    </ItemGroup>
+
 </Project>

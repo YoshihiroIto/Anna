@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Anna.Foundation\Anna.Foundation.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="ReactiveProperty" Version="8.1.2" />
+    </ItemGroup>
+
 </Project>

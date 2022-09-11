@@ -1,15 +1,22 @@
 ﻿using Anna.DomainModel.Interface;
 using Anna.Foundation;
-using System.Reactive.Disposables;
 
 namespace Anna.Foundations;
 
 public class ViewModelBase : DisposableNotificationObject
 {
+    private readonly IObjectLifetimeChecker _objectLifetimeChecker;
     protected ViewModelBase(IObjectLifetimeChecker objectLifetimeChecker)
     {
-        objectLifetimeChecker.Add(this);
+        _objectLifetimeChecker = objectLifetimeChecker;
         
-        Trash.Add(Disposable.Create(objectLifetimeChecker, c => c.Remove(this)));
+        _objectLifetimeChecker.Add(this);
+    }
+
+    public override void Dispose()
+    {
+        _objectLifetimeChecker.Remove(this);
+           
+        base.Dispose();
     }
 }

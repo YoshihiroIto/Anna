@@ -1,21 +1,51 @@
-﻿using Anna.DomainModel.Interface;
+﻿using Anna.DomainModel;
+using Anna.DomainModel.Interface;
 using Anna.Foundations;
-using Reactive.Bindings.Extensions;
 using SimpleInjector;
 
 namespace Anna.ViewModels;
 
 public class DirectoryWindowViewModel : ViewModelBase
 {
-    public DirectoryViewViewModel ViewViewModel { get; }
+    #region ViewViewModel
 
-    public DirectoryWindowViewModel(Container dic,
-        IDomainModelOperator domainModelOperator,
+    private DirectoryViewViewModel? _ViewViewModel;
+
+    public DirectoryViewViewModel? ViewViewModel
+    {
+        get => _ViewViewModel;
+        set
+        {
+            var old = _ViewViewModel;
+            if (SetProperty(ref _ViewViewModel, value))
+                old?.Dispose();
+        }
+    }
+
+    #endregion
+
+    private readonly Container _dic;
+
+    public DirectoryWindowViewModel(
+        Container dic,
         IObjectLifetimeChecker objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
-        ViewViewModel = dic.GetInstance<DirectoryViewViewModel>()
-            .Setup(domainModelOperator.CreateDirectory("C:/Windows/System32"))
-            .AddTo(Trash);
+        _dic = dic;
+    }
+
+    public DirectoryWindowViewModel Setup(Directory model)
+    {
+        ViewViewModel = _dic.GetInstance<DirectoryViewViewModel>()
+            .Setup(model);
+        
+        return this;
+    }
+
+    public override void Dispose()
+    {
+        ViewViewModel = null;
+        
+        base.Dispose();
     }
 }

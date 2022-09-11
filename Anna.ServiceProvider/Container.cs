@@ -1,4 +1,5 @@
-﻿using Anna.DomainModel.Interface;
+﻿using Anna.DomainModel;
+using Anna.DomainModel.Interface;
 using Anna.DomainModel.Operator;
 using Anna.Interactor;
 
@@ -16,6 +17,7 @@ public class Container : SimpleInjector.Container
 #endif
         >();
 
+        RegisterSingleton<App>();
         RegisterSingleton<IDomainModelOperator, DomainModelOperator>();
 
         Options.ResolveUnregisteredConcreteTypes = true;

@@ -32,13 +32,36 @@ public class Entry : NotificationObject
 
     #region Size
 
-    private ulong _Size;
+    private long _Size;
 
-    public ulong Size
+    public long Size
     {
         get => _Size;
         internal set => SetProperty(ref _Size, value);
     }
 
     #endregion
+    
+    
+    #region Attributes
+
+    private FileAttributes _Attributes;
+
+    public FileAttributes Attributes
+    {
+        get => _Attributes;
+        set => SetProperty(ref _Attributes, value);
+    }
+
+    #endregion
+
+    public bool IsDirectory => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+
+    public void CopyTo(Entry target)
+    {
+        target.Name = Name;
+        target.Timestamp = Timestamp;
+        target.Size = Size;
+        target.Attributes = Attributes;
+    }
 }

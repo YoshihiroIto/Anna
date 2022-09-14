@@ -16,12 +16,12 @@
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
         <ItemsRepeater Items="{Binding Entries, Mode=OneWay}">
             <ItemsRepeater.Layout>
-                <UniformGridLayout MinItemWidth="144" Orientation="Vertical" />
+                <UniformGridLayout MinItemWidth="284" Orientation="Vertical" />
             </ItemsRepeater.Layout>
 
             <ItemsRepeater.ItemTemplate>
                 <DataTemplate DataType="domainModel:Entry">
-                    <TextBlock Width="120"
+                    <TextBlock Width="260"
                                Height="17"
                                Margin="24,0,0,0"
                                FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"

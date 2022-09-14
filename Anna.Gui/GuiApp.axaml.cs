@@ -6,6 +6,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Anna.ViewModels;
 using Anna.Views;
+using Avalonia.Threading;
+using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Diagnostics;
@@ -30,6 +32,8 @@ public class GuiApp : Application
 
     private void Setup(IClassicDesktopStyleApplicationLifetime desktop)
     {
+        ReactivePropertyScheduler.SetDefault(AvaloniaScheduler.Instance);
+    
         _dic.GetInstance<IObjectLifetimeChecker>().Start(s =>
         {
             Debug.WriteLine(s);

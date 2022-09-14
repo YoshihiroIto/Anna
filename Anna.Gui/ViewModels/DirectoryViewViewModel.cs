@@ -3,6 +3,9 @@ using Anna.DomainModel.Interface;
 using Anna.Foundations;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Diagnostics;
+using System;
+using System.Reactive.Linq;
 
 namespace Anna.ViewModels;
 

@@ -3,6 +3,7 @@ using Anna.Foundation;
 using Reactive.Bindings.Extensions;
 using System.Diagnostics;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Anna.DomainModel.Operator")]
@@ -23,23 +24,16 @@ public sealed class FileSystemDirectory : Directory, IDisposable
         SetupWatcher(path);
     }
 
-    protected override void Update()
+    protected override IEnumerable<Entry> EnumerateDirectories()
     {
-        Entries.Clear();
+        return System.IO.Directory.EnumerateDirectories(Path)
+            .Select(p => CreateEntity(p, System.IO.Path.GetRelativePath(Path, p)));
+    }
 
-        foreach (var p in System.IO.Directory.EnumerateDirectories(Path))
-        {
-            Entries.Add(
-            new Entry { Name = System.IO.Path.GetRelativePath(Path, p) }
-            );
-        }
-
-        foreach (var p in System.IO.Directory.EnumerateFiles(Path))
-        {
-            Entries.Add(
-            new Entry { Name = System.IO.Path.GetRelativePath(Path, p) }
-            );
-        }
+    protected override IEnumerable<Entry> EnumerateFiles()
+    {
+        return System.IO.Directory.EnumerateFiles(Path)
+            .Select(p => CreateEntity(p, System.IO.Path.GetRelativePath(Path, p)));
     }
 
     public void Dispose()
@@ -53,54 +47,50 @@ public sealed class FileSystemDirectory : Directory, IDisposable
         var watcher = new ObservableFileSystemWatcher(path).AddTo(_trash);
 
         watcher.Created
-            .Subscribe(
-            e =>
-            {
-                Entries.Add(new Entry { Name = e.Name ?? "??????????????????" });
-            }
-            ).AddTo(_trash);
+            .Subscribe(e => OnCreated(CreateEntity(e.FullPath, e.Name ?? "????")))
+            .AddTo(_trash);
 
         watcher.Changed
-            .Subscribe(
-            e =>
-            {
-                Debug.WriteLine("Changed:" + e.FullPath);
-            }
-            ).AddTo(_trash);
+            .Subscribe(e => OnChanged(CreateEntity(e.FullPath, e.Name ?? "????")))
+            .AddTo(_trash);
 
         watcher.Deleted
-            .Subscribe(
-            e =>
-            {
-                var target = Entries.FirstOrDefault(x => x.Name == e.Name);
-                if (target is null)
-                {
-                    // todo: logging
-                    return;
-                }
-
-                Entries.Remove(target);
-            }
-            ).AddTo(_trash);
+            .Subscribe(e => OnDeleted(e.Name ?? "????"))
+            .AddTo(_trash);
 
         watcher.Renamed
-            .Subscribe(
-            e =>
-            {
-                var target = Entries.FirstOrDefault(x => x.Name == e.OldName);
-                if (target is null)
-                {
-                    // todo: logging
-                    return;
-                }
-
-                target.Name = e.Name ?? "??????????????????";
-            }
-            ).AddTo(_trash);
+            .Subscribe(e => OnRenamed(e.OldName ?? "????", e.Name ?? "????"))
+            .AddTo(_trash);
 
         watcher.Errors
-            .Subscribe(
-            x => Debug.WriteLine("Errors:" + x.GetException())
-            ).AddTo(_trash);
+            .Subscribe(x => Debug.WriteLine("Errors:" + x.GetException()))
+            .AddTo(_trash);
+
+#if false
+        Observable
+            .Merge(watcher.Created)
+            .Merge(watcher.Changed)
+            .Merge(watcher.Deleted)
+            .Merge(watcher.Renamed)
+            .Subscribe(x =>
+            {
+                Debug.WriteLine($"----------------------------{x.ChangeType}");
+            }).AddTo(_trash);
+#endif
+    }
+
+    private static Entry CreateEntity(string fillPath, string name)
+    {
+        var fi = new FileInfo(fillPath);
+
+        var isDirectory = (fi.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+
+        return new Entry
+        {
+            Name = name,
+            Timestamp = fi.LastWriteTime,
+            Size = isDirectory ? 0 : fi.Length,
+            Attributes = fi.Attributes
+        };
     }
 }

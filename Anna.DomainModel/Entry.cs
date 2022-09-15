@@ -85,6 +85,7 @@ public class Entry : NotificationObject
 
     public void CopyTo(Entry target)
     {
+        target.NameWithExtension = NameWithExtension;
         target.Name = Name;
         target.Extension = Extension;
         target.Timestamp = Timestamp;

@@ -2,14 +2,15 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:domainModel="clr-namespace:Anna.DomainModel;assembly=Anna.DomainModel"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Anna.ViewModels"
-             xmlns:domainModel="clr-namespace:Anna.DomainModel;assembly=Anna.DomainModel"
              d:DesignHeight="450"
              d:DesignWidth="450"
+             FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
              mc:Ignorable="d">
     <Design.DataContext>
-        <!-- ReSharper disable once Xaml.ConstructorWarning -->
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
         <viewModels:DirectoryViewViewModel />
     </Design.DataContext>
 
@@ -21,12 +22,16 @@
 
             <ItemsRepeater.ItemTemplate>
                 <DataTemplate DataType="domainModel:Entry">
-                    <TextBlock Width="260"
-                               Height="17"
-                               Margin="24,0,0,0"
-                               FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
-                               Text="{Binding Name, Mode=OneWay}"
-                               TextTrimming="CharacterEllipsis" />
+                    <StackPanel Height="17"
+                                Margin="24,0,0,0"
+                                Orientation="Horizontal">
+                        <TextBlock Width="220"
+                                   Text="{Binding Name, Mode=OneWay}"
+                                   TextTrimming="CharacterEllipsis" />
+                        <TextBlock Width="40"
+                                   Text="{Binding Extension, Mode=OneWay}"
+                                   TextTrimming="CharacterEllipsis" />
+                    </StackPanel>
                 </DataTemplate>
             </ItemsRepeater.ItemTemplate>
         </ItemsRepeater>

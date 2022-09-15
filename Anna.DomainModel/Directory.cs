@@ -90,7 +90,7 @@ public abstract class Directory : NotificationObject
 
     protected void OnCreated(Entry newEntry)
     {
-        Debug.WriteLine($"OnCreated: {newEntry.Name}");
+        Debug.WriteLine($"OnCreated: {newEntry.NameWithExtension}");
 
         lock (UpdateLockObj)
         {
@@ -100,11 +100,11 @@ public abstract class Directory : NotificationObject
 
     protected void OnChanged(Entry entry)
     {
-        Debug.WriteLine($"OnChanged: {entry.Name}");
+        Debug.WriteLine($"OnChanged: {entry.NameWithExtension}");
 
         lock (UpdateLockObj)
         {
-            if (_entriesDict.TryGetValue(entry.Name, out var target) == false)
+            if (_entriesDict.TryGetValue(entry.NameWithExtension, out var target) == false)
                 return;// todo: logging
 
             entry.CopyTo(target);
@@ -136,7 +136,7 @@ public abstract class Directory : NotificationObject
             RemoveEntityInternal(target);
 
             var newEntry = Entry.Create(target);
-            newEntry.Name = newName;
+            newEntry.SetName(newName);
 
             AddEntityInternal(newEntry);
         }
@@ -161,7 +161,7 @@ public abstract class Directory : NotificationObject
             //
             _entriesDict.Clear();
             foreach (var e in Entries)
-                _entriesDict.Add(e.Name, e);
+                _entriesDict.Add(e.NameWithExtension, e);
         }
         finally
         {
@@ -190,7 +190,7 @@ public abstract class Directory : NotificationObject
             ++_filesCount;
         }
 
-        _entriesDict.Add(entry.Name, entry);
+        _entriesDict.Add(entry.NameWithExtension, entry);
     }
 
     private void RemoveEntityInternal(Entry entry)
@@ -202,8 +202,8 @@ public abstract class Directory : NotificationObject
         else
             --_filesCount;
 
-        if (_entriesDict.Remove(entry.Name) == false)
-            Debug.WriteLine(entry.Name);
+        if (_entriesDict.Remove(entry.NameWithExtension) == false)
+            Debug.WriteLine(entry.NameWithExtension);
     }
 
     private void UpdateEntryCompare()

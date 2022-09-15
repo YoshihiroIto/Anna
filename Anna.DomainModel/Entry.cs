@@ -4,6 +4,19 @@ namespace Anna.DomainModel;
 
 public class Entry : NotificationObject
 {
+    #region NameWithExtension
+
+    private string _NameWithExtension = "";
+
+    public string NameWithExtension
+    {
+        get => _NameWithExtension;
+        set => SetProperty(ref _NameWithExtension, value);
+    }
+
+    #endregion
+    
+    
     #region Name
 
     private string _Name = "";
@@ -12,6 +25,19 @@ public class Entry : NotificationObject
     {
         get => _Name;
         internal set => SetProperty(ref _Name, value);
+    }
+
+    #endregion
+
+
+    #region Extension
+
+    private string _Extension = "";
+
+    public string Extension
+    {
+        get => _Extension;
+        set => SetProperty(ref _Extension, value);
     }
 
     #endregion
@@ -60,24 +86,45 @@ public class Entry : NotificationObject
     public void CopyTo(Entry target)
     {
         target.Name = Name;
+        target.Extension = Extension;
         target.Timestamp = Timestamp;
         target.Size = Size;
         target.Attributes = Attributes;
     }
 
-    public static Entry Create(string fillPath, string name)
+    public void SetName(string nameWithExtension)
+    {
+        NameWithExtension = nameWithExtension;
+        
+        // dotfile
+        if (nameWithExtension.Length > 0 && nameWithExtension[0] == '.')
+        {
+            Name = Path.GetExtension(nameWithExtension);
+            Extension = "";
+        }
+        else
+        {
+            Name = Path.GetFileNameWithoutExtension(nameWithExtension);
+            Extension = string.Intern(Path.GetExtension(nameWithExtension));
+        }
+    }
+    
+    public static Entry Create(string fillPath, string nameWithExtension)
     {
         var fi = new FileInfo(fillPath);
 
         var isDirectory = (fi.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
-
-        return new Entry
+        
+        var e = new Entry
         {
-            Name = name,
             Timestamp = fi.LastWriteTime,
             Size = isDirectory ? 0 : fi.Length,
             Attributes = fi.Attributes
         };
+
+        e.SetName(nameWithExtension);
+
+        return e;
     }
 
     public static Entry Create(Entry from)

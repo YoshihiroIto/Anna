@@ -41,8 +41,8 @@ public class Entry : NotificationObject
     }
 
     #endregion
-    
-    
+
+
     #region Attributes
 
     private FileAttributes _Attributes;
@@ -63,5 +63,32 @@ public class Entry : NotificationObject
         target.Timestamp = Timestamp;
         target.Size = Size;
         target.Attributes = Attributes;
+    }
+
+    public static Entry Create(string fillPath, string name)
+    {
+        var fi = new FileInfo(fillPath);
+
+        var isDirectory = (fi.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+
+        return new Entry
+        {
+            Name = name,
+            Timestamp = fi.LastWriteTime,
+            Size = isDirectory ? 0 : fi.Length,
+            Attributes = fi.Attributes
+        };
+    }
+
+    public static Entry Create(Entry from)
+    {
+        var entry = new Entry();
+        from.CopyTo(entry);
+
+        return entry;
+    }
+
+    private Entry()
+    {
     }
 }

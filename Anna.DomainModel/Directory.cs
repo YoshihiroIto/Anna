@@ -135,8 +135,7 @@ public abstract class Directory : NotificationObject
 
             RemoveEntityInternal(target);
 
-            var newEntry = new Entry();
-            target.CopyTo(newEntry);
+            var newEntry = Entry.Create(target);
             newEntry.Name = newName;
 
             AddEntityInternal(newEntry);

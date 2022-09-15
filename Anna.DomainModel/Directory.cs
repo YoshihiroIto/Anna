@@ -160,7 +160,7 @@ public abstract class Directory : NotificationObject
         if (entry.IsDirectory)
         {
             Span<Entry> span = Entries.AsSpan().Slice(0, _directoriesCount);
-            var pos = SpanHelper.UpperBound(span, entry, CompareByName);
+            var pos = SpanHelper.UpperBound(span, entry, EntryComparison.ByName);
 
             Entries.Insert(pos, entry);
 
@@ -169,7 +169,7 @@ public abstract class Directory : NotificationObject
         else
         {
             Span<Entry> span = Entries.AsSpan().Slice(_directoriesCount, _filesCount);
-            var pos = SpanHelper.UpperBound(span, entry, CompareByName);
+            var pos = SpanHelper.UpperBound(span, entry, EntryComparison.ByName);
 
             Entries.Insert(_directoriesCount + pos, entry);
 
@@ -198,11 +198,6 @@ public abstract class Directory : NotificationObject
     private int _directoriesCount;
     private int _filesCount;
     private readonly Dictionary<string, Entry> _entriesDict = new();
-
-    private static int CompareByName(Entry x, Entry y)
-    {
-        return string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
-    }
 }
 
 public enum DirectorySortModes

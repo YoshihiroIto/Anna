@@ -1,9 +1,9 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Interface;
 using Anna.Foundations;
+using Anna.ServiceProvider;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using System.Diagnostics;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
@@ -12,11 +12,13 @@ namespace Anna.ViewModels;
 
 public class DirectoryViewViewModel : ViewModelBase
 {
-    public ReadOnlyReactiveCollection<Entry>? Entries { get; private set; }
+    private readonly Container _dic;
+    public ReadOnlyReactiveCollection<EntryViewModel>? Entries { get; private set; }
 
-    public DirectoryViewViewModel(IObjectLifetimeChecker objectLifetimeChecker)
+    public DirectoryViewViewModel(Container dic, IObjectLifetimeChecker objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
+        _dic = dic;
     }
 
     public DirectoryViewViewModel Setup(Directory model)
@@ -30,7 +32,9 @@ public class DirectoryViewViewModel : ViewModelBase
 
         lock (model.UpdateLockObj)
         {
-            Entries = model.Entries.ToReadOnlyReactiveCollection(bufferedCollectionChanged)
+            Entries = model.Entries.ToReadOnlyReactiveCollection(
+                bufferedCollectionChanged,
+                x => _dic.GetInstance<EntryViewModel>().Setup(x))
                 .AddTo(Trash);
         }
 

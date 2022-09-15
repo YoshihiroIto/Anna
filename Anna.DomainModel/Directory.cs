@@ -44,12 +44,19 @@ public abstract class Directory : NotificationObject
 
     #region SortOrder
 
-    private DirectorySortModes _SortOrder = DirectorySortModes.Name;
+    private SortModes _SortMode = SortModes.Name;
 
-    public DirectorySortModes SortOrder
+    public SortModes SortMode
     {
-        get => _SortOrder;
-        set => SetProperty(ref _SortOrder, value);
+        get => _SortMode;
+        set
+        {
+            if (SetProperty(ref _SortMode, value) == false)
+                return;
+
+            UpdateEntryCompare();
+            SortEntries();
+        }
     }
 
     #endregion
@@ -57,12 +64,19 @@ public abstract class Directory : NotificationObject
 
     #region SortMode
 
-    private DirectorySortOrders _SortMode = DirectorySortOrders.Ascending;
+    private SortOrders _SortOrder = SortOrders.Ascending;
 
-    public DirectorySortOrders SortMode
+    public SortOrders SortOrder
     {
-        get => _SortMode;
-        set => SetProperty(ref _SortMode, value);
+        get => _SortOrder;
+        set
+        {
+            if (SetProperty(ref _SortOrder, value) == false)
+                return;
+
+            UpdateEntryCompare();
+            SortEntries();
+        }
     }
 
     #endregion
@@ -137,12 +151,13 @@ public abstract class Directory : NotificationObject
 
             Entries.Clear();
 
-            // todo: sort
-            Entries.AddRange(EnumerateDirectories().OrderBy(x => x.Name));
+            Entries.AddRange(EnumerateDirectories());
             _directoriesCount = Entries.Count;
 
-            Entries.AddRange(EnumerateFiles().OrderBy(x => x.Name));
+            Entries.AddRange(EnumerateFiles());
             _filesCount = Entries.Count - _directoriesCount;
+
+            SortEntries();
 
             //
             _entriesDict.Clear();
@@ -160,7 +175,7 @@ public abstract class Directory : NotificationObject
         if (entry.IsDirectory)
         {
             Span<Entry> span = Entries.AsSpan().Slice(0, _directoriesCount);
-            var pos = SpanHelper.UpperBound(span, entry, EntryComparison.ByName);
+            var pos = SpanHelper.UpperBound(span, entry, _entryCompare);
 
             Entries.Insert(pos, entry);
 
@@ -169,7 +184,7 @@ public abstract class Directory : NotificationObject
         else
         {
             Span<Entry> span = Entries.AsSpan().Slice(_directoriesCount, _filesCount);
-            var pos = SpanHelper.UpperBound(span, entry, EntryComparison.ByName);
+            var pos = SpanHelper.UpperBound(span, entry, _entryCompare);
 
             Entries.Insert(_directoriesCount + pos, entry);
 
@@ -192,6 +207,28 @@ public abstract class Directory : NotificationObject
             Debug.WriteLine(entry.Name);
     }
 
+    private void UpdateEntryCompare()
+    {
+        _entryCompare = EntryComparison.FindEntryCompare(SortMode, SortOrder);
+    }
+
+    private void SortEntries()
+    {
+        try
+        {
+            Entries.BeginChange();
+
+            Entries.AsSpan().Slice(0, _directoriesCount).Sort(_entryCompare);
+            Entries.AsSpan().Slice(_directoriesCount, _filesCount).Sort(_entryCompare);
+        }
+        finally
+        {
+            Entries.EndChange();
+        }
+    }
+
+    private Comparison<Entry> _entryCompare = EntryComparison.ByNameAscending;
+
     protected abstract IEnumerable<Entry> EnumerateDirectories();
     protected abstract IEnumerable<Entry> EnumerateFiles();
 
@@ -200,15 +237,16 @@ public abstract class Directory : NotificationObject
     private readonly Dictionary<string, Entry> _entriesDict = new();
 }
 
-public enum DirectorySortModes
+public enum SortModes
 {
     Name,
     Extension,
     Timestamp,
-    FileSize
+    Size,
+    Attributes,
 }
 
-public enum DirectorySortOrders
+public enum SortOrders
 {
     Ascending,
     Descending

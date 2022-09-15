@@ -2,7 +2,7 @@
 
 public static class SpanHelper
 {
-    public static int LowerBound<T>(ReadOnlySpan<T> a, T v, Func<T, T, int> cmp)
+    public static int LowerBound<T>(ReadOnlySpan<T> a, T v, Comparison<T> cmp)
     {
         var l = 0;
         var r = a.Length - 1;
@@ -21,7 +21,7 @@ public static class SpanHelper
         return l;
     }
 
-    public static int UpperBound<T>(ReadOnlySpan<T> a, T v, Func<T, T, int> cmp)
+    public static int UpperBound<T>(ReadOnlySpan<T> a, T v, Comparison<T> cmp)
     {
         var l = 0;
         var r = a.Length - 1;

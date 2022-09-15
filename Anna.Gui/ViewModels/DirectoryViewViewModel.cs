@@ -5,6 +5,7 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Diagnostics;
 using System;
+using System.Linq;
 using System.Reactive.Linq;
 
 namespace Anna.ViewModels;
@@ -20,9 +21,17 @@ public class DirectoryViewViewModel : ViewModelBase
 
     public DirectoryViewViewModel Setup(Directory model)
     {
+        var bufferedCollectionChanged =
+            model.Entries
+                .ToCollectionChanged()
+                .Buffer(TimeSpan.FromMilliseconds(200))
+                .Where(x => x.Any())
+                .SelectMany(x => x);
+
         lock (model.UpdateLockObj)
         {
-            Entries = model.Entries.ToReadOnlyReactiveCollection().AddTo(Trash);
+            Entries = model.Entries.ToReadOnlyReactiveCollection(bufferedCollectionChanged)
+                .AddTo(Trash);
         }
 
         return this;

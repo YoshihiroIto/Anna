@@ -115,7 +115,7 @@ public class Entry : NotificationObject
         get => (Attributes & FileAttributes.Hidden) == FileAttributes.Hidden;
         set => SetAttribute(FileAttributes.Hidden, value);
     }
-    
+
     public bool IsSystem
     {
         get => (Attributes & FileAttributes.System) == FileAttributes.System;
@@ -149,7 +149,9 @@ public class Entry : NotificationObject
         NameWithExtension = nameWithExtension;
 
         // dotfile
-        if (nameWithExtension.Length > 0 && nameWithExtension[0] == '.')
+        if (nameWithExtension.Length > 0 &&
+            nameWithExtension[0] == '.' &&
+            HasOnlyOneDot(nameWithExtension))
         {
             Name = Path.GetExtension(nameWithExtension);
             Extension = "";
@@ -158,6 +160,23 @@ public class Entry : NotificationObject
         {
             Name = Path.GetFileNameWithoutExtension(nameWithExtension);
             Extension = string.Intern(Path.GetExtension(nameWithExtension));
+        }
+
+        bool HasOnlyOneDot(string str)
+        {
+            var count = 0;
+
+            foreach (var c in str)
+            {
+                if (c != '.')
+                    continue;
+
+                ++count;
+                if (count == 2)
+                    return false;
+            }
+
+            return count == 1;
         }
     }
 

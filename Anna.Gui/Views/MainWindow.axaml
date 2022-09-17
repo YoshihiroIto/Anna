@@ -10,11 +10,13 @@
         Height="600"
         d:DesignHeight="600"
         d:DesignWidth="400"
+        x:CompileBindings="True"
+        x:DataType="viewModels:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Design.DataContext>
-        <!-- ReSharper disable once Xaml.ConstructorWarning -->
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
         <viewModels:MainWindowViewModel />
     </Design.DataContext>
 

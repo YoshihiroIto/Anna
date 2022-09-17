@@ -13,12 +13,9 @@
         MinHeight="100"
         d:DesignHeight="600"
         d:DesignWidth="600"
+        x:CompileBindings="True"
         x:DataType="viewModels:DirectoryWindowViewModel"
         mc:Ignorable="d">
-    <Design.DataContext>
-        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
-        <viewModels:DirectoryWindowViewModel />
-    </Design.DataContext>
 
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />

@@ -1,6 +1,7 @@
 ﻿using Anna.Foundation;
 using NaturalSort.Extension;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Anna.DomainModel;
 
@@ -17,8 +18,8 @@ public class Entry : NotificationObject
     }
 
     #endregion
-    
-    
+
+
     #region Name
 
     private string _Name = "";
@@ -78,7 +79,19 @@ public class Entry : NotificationObject
     public FileAttributes Attributes
     {
         get => _Attributes;
-        private set => SetProperty(ref _Attributes, value);
+        private set
+        {
+            if (SetProperty(ref _Attributes, value) == false)
+                return;
+
+            RaisePropertyChanged(nameof(IsDirectory));
+            RaisePropertyChanged(nameof(IsReadOnly));
+            RaisePropertyChanged(nameof(IsReparsePoint));
+            RaisePropertyChanged(nameof(IsHidden));
+            RaisePropertyChanged(nameof(IsSystem));
+            RaisePropertyChanged(nameof(IsCompressed));
+            RaisePropertyChanged(nameof(IsEncrypted));
+        }
     }
 
     #endregion
@@ -88,18 +101,37 @@ public class Entry : NotificationObject
     public bool IsReadOnly
     {
         get => (Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
-        set
-        {
-            if (IsReadOnly == value)
-                return;
+        set => SetAttribute(FileAttributes.ReadOnly, value);
+    }
 
-            if (value)
-                Attributes |= FileAttributes.ReadOnly;
-            else
-                Attributes &= ~FileAttributes.ReadOnly;
-            
-            RaisePropertyChanged();
-        }
+    public bool IsReparsePoint
+    {
+        get => (Attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint;
+        set => SetAttribute(FileAttributes.ReparsePoint, value);
+    }
+
+    public bool IsHidden
+    {
+        get => (Attributes & FileAttributes.Hidden) == FileAttributes.Hidden;
+        set => SetAttribute(FileAttributes.Hidden, value);
+    }
+    
+    public bool IsSystem
+    {
+        get => (Attributes & FileAttributes.System) == FileAttributes.System;
+        set => SetAttribute(FileAttributes.System, value);
+    }
+
+    public bool IsEncrypted
+    {
+        get => (Attributes & FileAttributes.Encrypted) == FileAttributes.Encrypted;
+        set => SetAttribute(FileAttributes.Encrypted, value);
+    }
+
+    public bool IsCompressed
+    {
+        get => (Attributes & FileAttributes.Compressed) == FileAttributes.Compressed;
+        set => SetAttribute(FileAttributes.Compressed, value);
     }
 
     public void CopyTo(Entry target)
@@ -110,16 +142,12 @@ public class Entry : NotificationObject
         target.Timestamp = Timestamp;
         target.Size = Size;
         target.Attributes = Attributes;
-        
-        
-        target.RaisePropertyChanged(nameof(IsDirectory));
-        target.RaisePropertyChanged(nameof(IsReadOnly));
     }
 
     public void SetName(string nameWithExtension)
     {
         NameWithExtension = nameWithExtension;
-        
+
         // dotfile
         if (nameWithExtension.Length > 0 && nameWithExtension[0] == '.')
         {
@@ -136,7 +164,7 @@ public class Entry : NotificationObject
     public static int CompareByName(Entry x, Entry y)
     {
         Debug.Assert(x.IsDirectory == y.IsDirectory);
-        
+
         if (x.IsDirectory)
         {
             var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
@@ -148,7 +176,7 @@ public class Entry : NotificationObject
             var name = NameComparer.Compare(x.Name, y.Name);
             if (name != 0)
                 return name;
-            
+
             var ext = NameComparer.Compare(x.Extension, y.Extension);
             if (ext != 0)
                 return ext;
@@ -160,7 +188,7 @@ public class Entry : NotificationObject
     public static int CompareByExtension(Entry x, Entry y)
     {
         Debug.Assert(x.IsDirectory == y.IsDirectory);
-        
+
         if (x.IsDirectory)
         {
             var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
@@ -172,7 +200,7 @@ public class Entry : NotificationObject
             var ext = NameComparer.Compare(x.Extension, y.Extension);
             if (ext != 0)
                 return ext;
-            
+
             var name = NameComparer.Compare(x.Name, y.Name);
             if (name != 0)
                 return name;
@@ -186,7 +214,7 @@ public class Entry : NotificationObject
         var fi = new FileInfo(fillPath);
 
         var isDirectory = (fi.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
-        
+
         var e = new Entry
         {
             Timestamp = fi.LastWriteTime,
@@ -210,6 +238,20 @@ public class Entry : NotificationObject
     private Entry()
     {
     }
-    
-    private static readonly NaturalSortComparer NameComparer = new (StringComparison.OrdinalIgnoreCase);
+
+    private void SetAttribute(FileAttributes a, bool i, [CallerMemberName] string propertyName = "")
+    {
+        if ((Attributes & a) == a == i)
+            return;
+
+        if (i)
+            Attributes |= a;
+        else
+            Attributes &= ~a;
+
+        RaisePropertyChanged(propertyName);
+    }
+
+    private static readonly NaturalSortComparer NameComparer =
+        new(StringComparison.OrdinalIgnoreCase);
 }

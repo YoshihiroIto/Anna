@@ -22,6 +22,26 @@
         <Style Selector="TextBlock.IsReadOnly">
             <Setter Property="Foreground" Value="#00FF00" />
         </Style>
+
+        <Style Selector="TextBlock.IsReparsePoint">
+            <Setter Property="Foreground" Value="#FF0000" />
+        </Style>
+
+        <Style Selector="TextBlock.IsHidden">
+            <Setter Property="Foreground" Value="#9799FF" />
+        </Style>
+
+        <Style Selector="TextBlock.IsSystem">
+            <Setter Property="Foreground" Value="#FF5FD3" />
+        </Style>
+
+        <Style Selector="TextBlock.IsEncrypted">
+            <Setter Property="Foreground" Value="#80ADAF" />
+        </Style>
+
+        <Style Selector="TextBlock.IsCompressed">
+            <Setter Property="Foreground" Value="#808000" />
+        </Style>
     </UserControl.Styles>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
@@ -40,13 +60,23 @@
                                         Orientation="Horizontal">
                                 <TextBlock Width="220"
                                            Classes="File"
-                                           Classes.IsReadOnly="{Binding IsReadOnly^}"
-                                           Text="{Binding Name, Mode=OneWay}"
+                                           Classes.IsReadOnly="{Binding IsReadOnly.Value}"
+                                           Classes.IsReparsePoint="{Binding IsReparsePoint.Value}"
+                                           Classes.IsHidden="{Binding IsHidden.Value}"
+                                           Classes.IsSystem="{Binding IsSystem.Value}"
+                                           Classes.IsEncrypted="{Binding IsEncrypted.Value}"
+                                           Classes.IsCompressed="{Binding IsCompressed.Value}"
+                                           Text="{Binding Name}"
                                            TextTrimming="CharacterEllipsis" />
                                 <TextBlock Width="40"
                                            Classes="File"
-                                           Classes.IsReadOnly="{Binding IsReadOnly^}"
-                                           Text="{Binding Extension, Mode=OneWay}"
+                                           Classes.IsReadOnly="{Binding IsReadOnly.Value}"
+                                           Classes.IsReparsePoint="{Binding IsReparsePoint.Value}"
+                                           Classes.IsHidden="{Binding IsHidden.Value}"
+                                           Classes.IsSystem="{Binding IsSystem.Value}"
+                                           Classes.IsEncrypted="{Binding IsEncrypted.Value}"
+                                           Classes.IsCompressed="{Binding IsCompressed.Value}"
+                                           Text="{Binding Extension}"
                                            TextTrimming="CharacterEllipsis" />
                             </StackPanel>
                         </DataTemplate>
@@ -58,8 +88,13 @@
                                        Height="17"
                                        Margin="24,0,0,0"
                                        Classes="Directory"
-                                       Classes.IsReadOnly="{Binding IsReadOnly^}"
-                                       Text="{Binding NameWithExtension, Mode=OneWay}"
+                                       Classes.IsReadOnly="{Binding IsReadOnly.Value}"
+                                       Classes.IsReparsePoint="{Binding IsReparsePoint.Value}"
+                                       Classes.IsHidden="{Binding IsHidden.Value}"
+                                       Classes.IsSystem="{Binding IsSystem.Value}"
+                                       Classes.IsEncrypted="{Binding IsEncrypted.Value}"
+                                       Classes.IsCompressed="{Binding IsCompressed.Value}"
+                                       Text="{Binding NameWithExtension}"
                                        TextTrimming="CharacterEllipsis" />
                         </DataTemplate>
                     </views:EntryDataTemplateSelector.DirectoryDataTemplate>

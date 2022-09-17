@@ -25,68 +25,12 @@
     </UserControl.Styles>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-        <ItemsRepeater Items="{Binding Entries, Mode=OneWay}">
-            <ItemsRepeater.Layout>
-                <UniformGridLayout MinItemWidth="284" Orientation="Vertical" />
-            </ItemsRepeater.Layout>
-
-            <ItemsRepeater.ItemTemplate>
-
-                <DataTemplate DataType="viewModels:EntryViewModel">
-                    <StackPanel Height="17"
-                                Margin="24,0,0,0"
-                                Orientation="Horizontal">
-                        <TextBlock Width="220"
-                                   Classes.Directory="{Binding IsDirectory}"
-                                   Classes.File="{Binding !IsDirectory}"
-                                   Classes.IsReadOnly="{Binding IsReadOnly^}"
-                                   Text="{Binding Name, Mode=OneWay}"
-                                   TextTrimming="CharacterEllipsis" />
-                        <TextBlock Width="40"
-                                   Classes.Directory="{Binding IsDirectory}"
-                                   Classes.File="{Binding !IsDirectory}"
-                                   Classes.IsReadOnly="{Binding IsReadOnly^}"
-                                   Text="{Binding Extension, Mode=OneWay}"
-                                   TextTrimming="CharacterEllipsis" />
-                    </StackPanel>
-                </DataTemplate>
-
-                <!--
-                <views:EntryDataTemplateSelector>
-                    <views:EntryDataTemplateSelector.FileDataTemplate>
-                        <DataTemplate DataType="viewModels:EntryViewModel">
-                            <StackPanel Height="17"
-                                        Margin="24,0,0,0"
-                                        Orientation="Horizontal">
-                                <TextBlock Width="220"
-                                           Classes="File"
-                                           Text="{Binding Name, Mode=OneWay}"
-                                           TextTrimming="CharacterEllipsis" />
-                                <TextBlock Width="40"
-                                           Classes="File"
-                                           Text="{Binding Extension, Mode=OneWay}"
-                                           TextTrimming="CharacterEllipsis" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </views:EntryDataTemplateSelector.FileDataTemplate>
-
-                    <views:EntryDataTemplateSelector.DirectoryDataTemplate>
-                        <DataTemplate DataType="viewModels:EntryViewModel">
-                            <TextBlock Width="260"
-                                       Height="17"
-                                       Margin="24,0,0,0"
-                                       Classes="Directory"
-                                       Text="{Binding NameWithExtension, Mode=OneWay}"
-                                       TextTrimming="CharacterEllipsis" />
-                        </DataTemplate>
-                    </views:EntryDataTemplateSelector.DirectoryDataTemplate>
-                </views:EntryDataTemplateSelector>
-                -->
-            </ItemsRepeater.ItemTemplate>
-        </ItemsRepeater>
-
-        <!--
         <ItemsControl Items="{Binding Entries, Mode=OneWay}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <views:EntryDataTemplateSelector>
                     <views:EntryDataTemplateSelector.FileDataTemplate>
@@ -96,10 +40,12 @@
                                         Orientation="Horizontal">
                                 <TextBlock Width="220"
                                            Classes="File"
+                                           Classes.IsReadOnly="{Binding IsReadOnly^}"
                                            Text="{Binding Name, Mode=OneWay}"
                                            TextTrimming="CharacterEllipsis" />
                                 <TextBlock Width="40"
                                            Classes="File"
+                                           Classes.IsReadOnly="{Binding IsReadOnly^}"
                                            Text="{Binding Extension, Mode=OneWay}"
                                            TextTrimming="CharacterEllipsis" />
                             </StackPanel>
@@ -112,6 +58,7 @@
                                        Height="17"
                                        Margin="24,0,0,0"
                                        Classes="Directory"
+                                       Classes.IsReadOnly="{Binding IsReadOnly^}"
                                        Text="{Binding NameWithExtension, Mode=OneWay}"
                                        TextTrimming="CharacterEllipsis" />
                         </DataTemplate>
@@ -119,7 +66,5 @@
                 </views:EntryDataTemplateSelector>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        -->
-
     </ScrollViewer>
 </UserControl>

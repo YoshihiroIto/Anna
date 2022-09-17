@@ -22,14 +22,11 @@
                                             IsReadOnlyAttributeBrush="{DynamicResource IsReadOnlyAttributeBrush}"
                                             IsReparsePointAttributeBrush="{DynamicResource IsReparsePointAttributeBrush}"
                                             IsSystemAttributeBrush="{DynamicResource IsSystemAttributeBrush}" />
-        <Geometry x:Key="ArrowPathData">
-            M297.5 148.25 148 33.25v67H0v99h148v65z
-        </Geometry>
     </UserControl.Resources>
 
     <UserControl.Styles>
-        <Style Selector="TextBlock.entry">
-            <Setter x:DataType="viewModels:EntryViewModel" Property="Foreground">
+        <Style Selector="TextBlock.entry" x:DataType="viewModels:EntryViewModel">
+            <Setter Property="Foreground">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
                         <Binding Path="Attributes.Value" />
@@ -38,7 +35,7 @@
                 </Setter.Value>
             </Setter>
 
-            <Setter x:DataType="viewModels:EntryViewModel" Property="Background">
+            <Setter Property="Background">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Background}">
                         <Binding Path="Attributes.Value" />
@@ -46,69 +43,73 @@
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
+
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         </Style>
 
-        <Style Selector="Path.entry">
-            <Setter x:DataType="viewModels:EntryViewModel" Property="Fill">
+        <Style Selector="Path.entry" x:DataType="viewModels:EntryViewModel">
+            <Setter Property="Fill">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
                         <Binding Path="Attributes.Value" />
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
+
+            <Setter Property="Data" Value="M297.5 148.25 148 33.25v67H0v99h148v65z" />
+        </Style>
+
+        <Style Selector="StackPanel.entry" x:DataType="viewModels:EntryViewModel">
+            <Setter Property="Height" Value="17" />
+            <Setter Property="Margin" Value="0,0,32,0" />
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+
+        <Style Selector="Viewbox.entry" x:DataType="viewModels:EntryViewModel">
+            <Setter Property="Width" Value="{Binding $parent[StackPanel].Height}" />
+            <Setter Property="Height" Value="{Binding $parent[StackPanel].Height}" />
+            <Setter Property="Margin" Value="0,0,2,0" />
         </Style>
     </UserControl.Styles>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-        <ItemsControl Items="{Binding Entries, Mode=OneWay}">
+        <ItemsControl Items="{Binding Entries}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
+
             <ItemsControl.ItemTemplate>
                 <views:EntryDataTemplateSelector>
                     <views:EntryDataTemplateSelector.FileDataTemplate>
                         <DataTemplate DataType="viewModels:EntryViewModel">
-                            <StackPanel Height="17"
-                                        Margin="0,0,32,0"
-                                        Orientation="Horizontal">
-                                <Viewbox Width="{Binding $parent.Height}" Height="{Binding $parent.Height}">
-                                    <Path Classes="entry"
-                                          Data="{StaticResource ArrowPathData}"
-                                          IsVisible="{Binding IsSelected.Value}" />
+                            <StackPanel Classes="entry">
+                                <Viewbox Classes="entry">
+                                    <Path Classes="entry" IsVisible="{Binding IsSelected.Value}" />
                                 </Viewbox>
 
-                                <TextBlock Width="220"
-                                           Margin="2,0,0,0"
-                                           Classes="entry"
-                                           Text="{Binding Name}"
-                                           TextTrimming="CharacterEllipsis" />
+                                <TextBlock Classes="entry"
+                                           Width="220"
+                                           Text="{Binding Name}" />
 
-                                <TextBlock Width="40"
-                                           Classes="entry"
-                                           Text="{Binding Extension}"
-                                           TextTrimming="CharacterEllipsis" />
+                                <TextBlock Classes="entry"
+                                           Width="40"
+                                           Text="{Binding Extension}" />
                             </StackPanel>
                         </DataTemplate>
                     </views:EntryDataTemplateSelector.FileDataTemplate>
 
                     <views:EntryDataTemplateSelector.DirectoryDataTemplate>
                         <DataTemplate DataType="viewModels:EntryViewModel">
-                            <StackPanel Height="17"
-                                        Margin="0,0,32,0"
-                                        Orientation="Horizontal">
-                                <Viewbox Width="{Binding $parent.Height}" Height="{Binding $parent.Height}">
-                                    <Path Classes="entry"
-                                          Data="{StaticResource ArrowPathData}"
-                                          IsVisible="{Binding IsSelected.Value}" />
+                            <StackPanel Classes="entry">
+                                <Viewbox Classes="entry">
+                                    <Path Classes="entry" IsVisible="{Binding IsSelected.Value}" />
                                 </Viewbox>
 
-                                <TextBlock Width="260"
-                                           Margin="2,0,0,0"
-                                           Classes="entry"
-                                           Text="{Binding NameWithExtension}"
-                                           TextTrimming="CharacterEllipsis" />
+                                <TextBlock Classes="entry"
+                                           Width="260"
+                                           Text="{Binding NameWithExtension}" />
                             </StackPanel>
                         </DataTemplate>
                     </views:EntryDataTemplateSelector.DirectoryDataTemplate>

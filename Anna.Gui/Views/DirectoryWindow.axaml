@@ -16,7 +16,6 @@
         x:CompileBindings="True"
         x:DataType="viewModels:DirectoryWindowViewModel"
         mc:Ignorable="d">
-
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
     </Interaction.Behaviors>

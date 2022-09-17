@@ -96,14 +96,14 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
     public object? Convert(
         IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (values.Count != 2)
+        var value0 = values.Count >= 1 ? values[0] : null;
+        var value1 = values.Count >= 2 ? values[1] : null;
+        
+        if (value0 is not FileAttributes attributes)
             return null;
 
-        if (values[0] is not FileAttributes attributes)
-            return null;
-
-        if (values[1] is not bool isOnCursor)
-            return null;
+        if (value1 is not bool isOnCursor)
+            isOnCursor = false;
 
         if (parameter is not AttributeBrushConverterBrushTypes brushType)
             return null;

@@ -12,20 +12,23 @@
              x:DataType="viewModels:DirectoryViewViewModel"
              FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <converters:AttributeBrushConverter x:Key="AttributeBrushConverter"
+                                            EmptyAttributeBrush="{DynamicResource EmptyAttributeBrush}"
+                                            IsCompressedAttributeBrush="{DynamicResource IsCompressedAttributeBrush}"
+                                            IsDirectoryAttributeBrush="{DynamicResource IsDirectoryAttributeBrush}"
+                                            IsEncryptedAttributeBrush="{DynamicResource IsEncryptedAttributeBrush}"
+                                            IsHiddenAttributeBrush="{DynamicResource IsHiddenAttributeBrush}"
+                                            IsReadOnlyAttributeBrush="{DynamicResource IsReadOnlyAttributeBrush}"
+                                            IsReparsePointAttributeBrush="{DynamicResource IsReparsePointAttributeBrush}"
+                                            IsSystemAttributeBrush="{DynamicResource IsSystemAttributeBrush}" />
+        <Geometry x:Key="ArrowPathData">
+            M297.5 148.25 148 33.25v67H0v99h148v65z
+        </Geometry>
+    </UserControl.Resources>
+
     <UserControl.Styles>
         <Style Selector="TextBlock.entry">
-            <Style.Resources>
-                <converters:AttributeBrushConverter x:Key="AttributeBrushConverter"
-                                                    EmptyAttributeBrush="{DynamicResource EmptyAttributeBrush}"
-                                                    IsCompressedAttributeBrush="{DynamicResource IsCompressedAttributeBrush}"
-                                                    IsDirectoryAttributeBrush="{DynamicResource IsDirectoryAttributeBrush}"
-                                                    IsEncryptedAttributeBrush="{DynamicResource IsEncryptedAttributeBrush}"
-                                                    IsHiddenAttributeBrush="{DynamicResource IsHiddenAttributeBrush}"
-                                                    IsReadOnlyAttributeBrush="{DynamicResource IsReadOnlyAttributeBrush}"
-                                                    IsReparsePointAttributeBrush="{DynamicResource IsReparsePointAttributeBrush}"
-                                                    IsSystemAttributeBrush="{DynamicResource IsSystemAttributeBrush}" />
-            </Style.Resources>
-
             <Setter x:DataType="viewModels:EntryViewModel" Property="Foreground">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
@@ -44,6 +47,16 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style Selector="Path.entry">
+            <Setter x:DataType="viewModels:EntryViewModel" Property="Fill">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
+                        <Binding Path="Attributes.Value" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Styles>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
@@ -58,12 +71,20 @@
                     <views:EntryDataTemplateSelector.FileDataTemplate>
                         <DataTemplate DataType="viewModels:EntryViewModel">
                             <StackPanel Height="17"
-                                        Margin="24,0,0,0"
+                                        Margin="0,0,32,0"
                                         Orientation="Horizontal">
+                                <Viewbox Width="{Binding $parent.Height}" Height="{Binding $parent.Height}">
+                                    <Path Classes="entry"
+                                          Data="{StaticResource ArrowPathData}"
+                                          IsVisible="{Binding IsSelected.Value}" />
+                                </Viewbox>
+
                                 <TextBlock Width="220"
+                                           Margin="2,0,0,0"
                                            Classes="entry"
                                            Text="{Binding Name}"
                                            TextTrimming="CharacterEllipsis" />
+
                                 <TextBlock Width="40"
                                            Classes="entry"
                                            Text="{Binding Extension}"
@@ -74,12 +95,21 @@
 
                     <views:EntryDataTemplateSelector.DirectoryDataTemplate>
                         <DataTemplate DataType="viewModels:EntryViewModel">
-                            <TextBlock Width="260"
-                                       Height="17"
-                                       Margin="24,0,0,0"
-                                       Classes="entry"
-                                       Text="{Binding NameWithExtension}"
-                                       TextTrimming="CharacterEllipsis" />
+                            <StackPanel Height="17"
+                                        Margin="0,0,32,0"
+                                        Orientation="Horizontal">
+                                <Viewbox Width="{Binding $parent.Height}" Height="{Binding $parent.Height}">
+                                    <Path Classes="entry"
+                                          Data="{StaticResource ArrowPathData}"
+                                          IsVisible="{Binding IsSelected.Value}" />
+                                </Viewbox>
+
+                                <TextBlock Width="260"
+                                           Margin="2,0,0,0"
+                                           Classes="entry"
+                                           Text="{Binding NameWithExtension}"
+                                           TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
                         </DataTemplate>
                     </views:EntryDataTemplateSelector.DirectoryDataTemplate>
                 </views:EntryDataTemplateSelector>

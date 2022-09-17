@@ -25,6 +25,7 @@ namespace Anna.ViewModels
         public ReadOnlyReactivePropertySlim<FileAttributes> Attributes { get; private set; } =
             null!;
 
+        public ReactivePropertySlim<bool> IsSelected { get; }
         public ReactivePropertySlim<bool> IsOnCursor { get; }
 
         private Entry? _model;
@@ -32,6 +33,7 @@ namespace Anna.ViewModels
         public EntryViewModel(IObjectLifetimeChecker objectLifetimeChecker)
             : base(objectLifetimeChecker)
         {
+            IsSelected = new ReactivePropertySlim<bool>().AddTo(Trash);
             IsOnCursor = new ReactivePropertySlim<bool>().AddTo(Trash);
         }
 

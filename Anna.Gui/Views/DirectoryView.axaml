@@ -18,6 +18,10 @@
         <Style Selector="TextBlock.Directory">
             <Setter Property="Foreground" Value="#FFBA6D" />
         </Style>
+
+        <Style Selector="TextBlock.IsReadOnly">
+            <Setter Property="Foreground" Value="#00FF00" />
+        </Style>
     </UserControl.Styles>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
@@ -35,11 +39,13 @@
                         <TextBlock Width="220"
                                    Classes.Directory="{Binding IsDirectory}"
                                    Classes.File="{Binding !IsDirectory}"
+                                   Classes.IsReadOnly="{Binding IsReadOnly^}"
                                    Text="{Binding Name, Mode=OneWay}"
                                    TextTrimming="CharacterEllipsis" />
                         <TextBlock Width="40"
                                    Classes.Directory="{Binding IsDirectory}"
                                    Classes.File="{Binding !IsDirectory}"
+                                   Classes.IsReadOnly="{Binding IsReadOnly^}"
                                    Text="{Binding Extension, Mode=OneWay}"
                                    TextTrimming="CharacterEllipsis" />
                     </StackPanel>

@@ -78,12 +78,29 @@ public class Entry : NotificationObject
     public FileAttributes Attributes
     {
         get => _Attributes;
-        set => SetProperty(ref _Attributes, value);
+        private set => SetProperty(ref _Attributes, value);
     }
 
     #endregion
 
     public bool IsDirectory => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+
+    public bool IsReadOnly
+    {
+        get => (Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+        set
+        {
+            if (IsReadOnly == value)
+                return;
+
+            if (value)
+                Attributes |= FileAttributes.ReadOnly;
+            else
+                Attributes &= ~FileAttributes.ReadOnly;
+            
+            RaisePropertyChanged();
+        }
+    }
 
     public void CopyTo(Entry target)
     {
@@ -93,6 +110,10 @@ public class Entry : NotificationObject
         target.Timestamp = Timestamp;
         target.Size = Size;
         target.Attributes = Attributes;
+        
+        
+        target.RaisePropertyChanged(nameof(IsDirectory));
+        target.RaisePropertyChanged(nameof(IsReadOnly));
     }
 
     public void SetName(string nameWithExtension)

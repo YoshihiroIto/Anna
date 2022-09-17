@@ -1,4 +1,5 @@
 ﻿using Anna.Foundation;
+using NaturalSort.Extension;
 using System.Diagnostics;
 
 namespace Anna.DomainModel;
@@ -117,17 +118,17 @@ public class Entry : NotificationObject
         
         if (x.IsDirectory)
         {
-            var nameWithExt = string.Compare(x.NameWithExtension, y.NameWithExtension, StringComparison.OrdinalIgnoreCase);
+            var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
             if (nameWithExt != 0)
                 return nameWithExt;
         }
         else
         {
-            var name = string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
+            var name = NameComparer.Compare(x.Name, y.Name);
             if (name != 0)
                 return name;
             
-            var ext = string.Compare(x.Extension, y.Extension, StringComparison.OrdinalIgnoreCase);
+            var ext = NameComparer.Compare(x.Extension, y.Extension);
             if (ext != 0)
                 return ext;
         }
@@ -141,17 +142,17 @@ public class Entry : NotificationObject
         
         if (x.IsDirectory)
         {
-            var nameWithExt = string.Compare(x.NameWithExtension, y.NameWithExtension, StringComparison.OrdinalIgnoreCase);
+            var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
             if (nameWithExt != 0)
                 return nameWithExt;
         }
         else
         {
-            var ext = string.Compare(x.Extension, y.Extension, StringComparison.OrdinalIgnoreCase);
+            var ext = NameComparer.Compare(x.Extension, y.Extension);
             if (ext != 0)
                 return ext;
             
-            var name = string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
+            var name = NameComparer.Compare(x.Name, y.Name);
             if (name != 0)
                 return name;
         }
@@ -188,4 +189,6 @@ public class Entry : NotificationObject
     private Entry()
     {
     }
+    
+    private static readonly NaturalSortComparer NameComparer = new (StringComparison.OrdinalIgnoreCase);
 }

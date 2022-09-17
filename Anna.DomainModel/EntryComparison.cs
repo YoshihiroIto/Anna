@@ -7,7 +7,7 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByNameAscending(Entry x, Entry y)
     {
-        return string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
+        return Entry.CompareByName(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -19,7 +19,7 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByExtensionAscending(Entry x, Entry y)
     {
-        throw new NotImplementedException();
+        return Entry.CompareByExtension(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -31,7 +31,12 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByTimestampAscending(Entry x, Entry y)
     {
-        throw new NotImplementedException();
+        if (x.Timestamp < y.Timestamp)
+            return -1;
+        if (x.Timestamp > y.Timestamp)
+            return +1;
+
+        return ByNameAscending(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -43,7 +48,12 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int BySizeAscending(Entry x, Entry y)
     {
-        throw new NotImplementedException();
+        if (x.Size < y.Size)
+            return -1;
+        if (x.Size > y.Size)
+            return +1;
+
+        return ByNameAscending(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -55,7 +65,12 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByAttributesAscending(Entry x, Entry y)
     {
-        throw new NotImplementedException();
+        if (x.Attributes < y.Attributes)
+            return -1;
+        if (x.Attributes > y.Attributes)
+            return +1;
+
+        return ByNameAscending(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

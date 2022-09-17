@@ -1,4 +1,5 @@
 ﻿using Anna.Foundation;
+using System.Diagnostics;
 
 namespace Anna.DomainModel;
 
@@ -109,7 +110,55 @@ public class Entry : NotificationObject
             Extension = string.Intern(Path.GetExtension(nameWithExtension));
         }
     }
-    
+
+    public static int CompareByName(Entry x, Entry y)
+    {
+        Debug.Assert(x.IsDirectory == y.IsDirectory);
+        
+        if (x.IsDirectory)
+        {
+            var nameWithExt = string.Compare(x.NameWithExtension, y.NameWithExtension, StringComparison.OrdinalIgnoreCase);
+            if (nameWithExt != 0)
+                return nameWithExt;
+        }
+        else
+        {
+            var name = string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
+            if (name != 0)
+                return name;
+            
+            var ext = string.Compare(x.Extension, y.Extension, StringComparison.OrdinalIgnoreCase);
+            if (ext != 0)
+                return ext;
+        }
+
+        return 0;
+    }
+
+    public static int CompareByExtension(Entry x, Entry y)
+    {
+        Debug.Assert(x.IsDirectory == y.IsDirectory);
+        
+        if (x.IsDirectory)
+        {
+            var nameWithExt = string.Compare(x.NameWithExtension, y.NameWithExtension, StringComparison.OrdinalIgnoreCase);
+            if (nameWithExt != 0)
+                return nameWithExt;
+        }
+        else
+        {
+            var ext = string.Compare(x.Extension, y.Extension, StringComparison.OrdinalIgnoreCase);
+            if (ext != 0)
+                return ext;
+            
+            var name = string.Compare(x.Name, y.Name, StringComparison.OrdinalIgnoreCase);
+            if (name != 0)
+                return name;
+        }
+
+        return 0;
+    }
+
     public static Entry Create(string fillPath, string nameWithExtension)
     {
         var fi = new FileInfo(fillPath);

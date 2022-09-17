@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="Anna.Views.DirectoryView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Anna.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Anna.ViewModels"
@@ -12,35 +13,36 @@
              FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
              mc:Ignorable="d">
     <UserControl.Styles>
-        <Style Selector="TextBlock.File">
-            <Setter Property="Foreground" Value="White" />
-        </Style>
-        <Style Selector="TextBlock.Directory">
-            <Setter Property="Foreground" Value="#FFBA6D" />
-        </Style>
+        <Style Selector="TextBlock.entry">
+            <Style.Resources>
+                <converters:AttributeBrushConverter x:Key="AttributeBrushConverter"
+                                                    EmptyAttributeBrush="{DynamicResource EmptyAttributeBrush}"
+                                                    IsCompressedAttributeBrush="{DynamicResource IsCompressedAttributeBrush}"
+                                                    IsDirectoryAttributeBrush="{DynamicResource IsDirectoryAttributeBrush}"
+                                                    IsEncryptedAttributeBrush="{DynamicResource IsEncryptedAttributeBrush}"
+                                                    IsHiddenAttributeBrush="{DynamicResource IsHiddenAttributeBrush}"
+                                                    IsReadOnlyAttributeBrush="{DynamicResource IsReadOnlyAttributeBrush}"
+                                                    IsReparsePointAttributeBrush="{DynamicResource IsReparsePointAttributeBrush}"
+                                                    IsSystemAttributeBrush="{DynamicResource IsSystemAttributeBrush}" />
+            </Style.Resources>
 
-        <Style Selector="TextBlock.IsReadOnly">
-            <Setter Property="Foreground" Value="#00FF00" />
-        </Style>
+            <Setter x:DataType="viewModels:EntryViewModel" Property="Foreground">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
+                        <Binding Path="Attributes.Value" />
+                        <Binding Path="IsOnCursor.Value" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
 
-        <Style Selector="TextBlock.IsReparsePoint">
-            <Setter Property="Foreground" Value="#FF0000" />
-        </Style>
-
-        <Style Selector="TextBlock.IsHidden">
-            <Setter Property="Foreground" Value="#9799FF" />
-        </Style>
-
-        <Style Selector="TextBlock.IsSystem">
-            <Setter Property="Foreground" Value="#FF5FD3" />
-        </Style>
-
-        <Style Selector="TextBlock.IsEncrypted">
-            <Setter Property="Foreground" Value="#80ADAF" />
-        </Style>
-
-        <Style Selector="TextBlock.IsCompressed">
-            <Setter Property="Foreground" Value="#808000" />
+            <Setter x:DataType="viewModels:EntryViewModel" Property="Background">
+                <Setter.Value>
+                    <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Background}">
+                        <Binding Path="Attributes.Value" />
+                        <Binding Path="IsOnCursor.Value" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Styles>
 
@@ -59,23 +61,11 @@
                                         Margin="24,0,0,0"
                                         Orientation="Horizontal">
                                 <TextBlock Width="220"
-                                           Classes="File"
-                                           Classes.IsReadOnly="{Binding IsReadOnly.Value}"
-                                           Classes.IsReparsePoint="{Binding IsReparsePoint.Value}"
-                                           Classes.IsHidden="{Binding IsHidden.Value}"
-                                           Classes.IsSystem="{Binding IsSystem.Value}"
-                                           Classes.IsEncrypted="{Binding IsEncrypted.Value}"
-                                           Classes.IsCompressed="{Binding IsCompressed.Value}"
+                                           Classes="entry"
                                            Text="{Binding Name}"
                                            TextTrimming="CharacterEllipsis" />
                                 <TextBlock Width="40"
-                                           Classes="File"
-                                           Classes.IsReadOnly="{Binding IsReadOnly.Value}"
-                                           Classes.IsReparsePoint="{Binding IsReparsePoint.Value}"
-                                           Classes.IsHidden="{Binding IsHidden.Value}"
-                                           Classes.IsSystem="{Binding IsSystem.Value}"
-                                           Classes.IsEncrypted="{Binding IsEncrypted.Value}"
-                                           Classes.IsCompressed="{Binding IsCompressed.Value}"
+                                           Classes="entry"
                                            Text="{Binding Extension}"
                                            TextTrimming="CharacterEllipsis" />
                             </StackPanel>
@@ -87,13 +77,7 @@
                             <TextBlock Width="260"
                                        Height="17"
                                        Margin="24,0,0,0"
-                                       Classes="Directory"
-                                       Classes.IsReadOnly="{Binding IsReadOnly.Value}"
-                                       Classes.IsReparsePoint="{Binding IsReparsePoint.Value}"
-                                       Classes.IsHidden="{Binding IsHidden.Value}"
-                                       Classes.IsSystem="{Binding IsSystem.Value}"
-                                       Classes.IsEncrypted="{Binding IsEncrypted.Value}"
-                                       Classes.IsCompressed="{Binding IsCompressed.Value}"
+                                       Classes="entry"
                                        Text="{Binding NameWithExtension}"
                                        TextTrimming="CharacterEllipsis" />
                         </DataTemplate>

@@ -1,18 +1,19 @@
 ﻿using Anna.DomainModel;
 using Anna.UseCase;
 using Anna.UseCase.Interfaces;
-using Anna.Views.Dialogs;
+using Anna.Gui.Views.Dialogs;
 using System.Threading.Tasks;
-using SortModeAndOrderDialog=Anna.Gui.Views.Dialogs.SortModeAndOrderDialog;
 
 namespace Anna.Gui.Interactors
 {
     public class DialogOperator : IDialogOperator
     {
-        public (SortModes mode, SortOrders order) SelectSortModeAndOrder(
+        public async ValueTask<(SortModes mode, SortOrders order)> SelectSortModeAndOrderAsync(
             IShortcutKeyReceiver shortcutKeyReceiver, SortModes initialMode, SortOrders initialOrder)
         {
-            Debug.WriteLine("SelectSortModeAndOrder");
+            var d = new SortModeAndOrderDialog();
+
+            await d.ShowDialog(shortcutKeyReceiver.Owner);
 
             return (initialMode, initialOrder);
         }

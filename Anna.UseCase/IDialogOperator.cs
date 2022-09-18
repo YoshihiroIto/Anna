@@ -5,7 +5,7 @@ namespace Anna.UseCase
 {
     public interface IDialogOperator
     {
-        (SortModes mode, SortOrders order) SelectSortModeAndOrder(
+        ValueTask<(SortModes mode, SortOrders order)> SelectSortModeAndOrderAsync(
             IShortcutKeyReceiver shortcutKeyReceiver, SortModes initialMode, SortOrders initialOrder);
     }
 }

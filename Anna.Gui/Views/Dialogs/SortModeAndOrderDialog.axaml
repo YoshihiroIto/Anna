@@ -8,6 +8,7 @@
         Height="500"
         d:DesignHeight="450"
         d:DesignWidth="800"
+        WindowStartupLocation="CenterOwner"
         mc:Ignorable="d">
     SortModeAndOrderDialog
 </Window>

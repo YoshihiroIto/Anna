@@ -1,6 +1,6 @@
 ﻿using Anna.DomainModel;
-using Anna.DomainModel.Interactor.ObjectLifetimeChecker;
 using Anna.DomainModel.Interfaces;
+using Anna.DomainModel.ObjectLifetimeChecker;
 using Anna.Gui.UseCase;
 using Anna.Interactors;
 using Anna.ViewModels.ShortcutKey;

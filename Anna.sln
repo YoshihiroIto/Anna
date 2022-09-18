@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.ServiceProvider", "Ann
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel", "Anna.DomainModel\Anna.DomainModel.csproj", "{C9C3306B-22D9-4EF4-BA3E-69D2402F260E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel.Interactor", "Anna.DomainModel.Interactor\Anna.DomainModel.Interactor.csproj", "{6C1C360A-2D30-4888-8A46-333F1B5E59D8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Foundation", "Anna.Foundation\Anna.Foundation.csproj", "{AC1CC76B-B8A7-40B5-BDBF-502BA00A44CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Log", "Anna.Log\Anna.Log.csproj", "{2E54D7D8-8D9E-4B27-A74D-482B9FABE4C4}"
@@ -47,10 +45,6 @@ Global
 		{C9C3306B-22D9-4EF4-BA3E-69D2402F260E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9C3306B-22D9-4EF4-BA3E-69D2402F260E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9C3306B-22D9-4EF4-BA3E-69D2402F260E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C1C360A-2D30-4888-8A46-333F1B5E59D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C1C360A-2D30-4888-8A46-333F1B5E59D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C1C360A-2D30-4888-8A46-333F1B5E59D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C1C360A-2D30-4888-8A46-333F1B5E59D8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC1CC76B-B8A7-40B5-BDBF-502BA00A44CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC1CC76B-B8A7-40B5-BDBF-502BA00A44CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC1CC76B-B8A7-40B5-BDBF-502BA00A44CA}.Release|Any CPU.ActiveCfg = Release|Any CPU

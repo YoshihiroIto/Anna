@@ -3,7 +3,7 @@ using Anna.DomainModel.Interfaces;
 using System.Collections.Concurrent;
 using System.Text;
 
-namespace Anna.DomainModel.Interactor.ObjectLifetimeChecker;
+namespace Anna.DomainModel.ObjectLifetimeChecker;
 
 public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeChecker
 {

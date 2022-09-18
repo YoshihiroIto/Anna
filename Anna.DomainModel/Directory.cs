@@ -85,13 +85,13 @@ public abstract class Directory : NotificationObject
 
     protected Directory(string path, ILogger logger)
     {
-        _logger = logger;
+        _Logger = logger;
         Path = path;
     }
 
     protected void OnCreated(Entry newEntry)
     {
-        _logger.Information($"OnCreated: {Path}, {newEntry.NameWithExtension}");
+        _Logger.Information($"OnCreated: {Path}, {newEntry.NameWithExtension}");
 
         lock (UpdateLockObj)
         {
@@ -101,13 +101,13 @@ public abstract class Directory : NotificationObject
 
     protected void OnChanged(Entry entry)
     {
-        _logger.Information($"OnChanged: {Path}, {entry.NameWithExtension}");
+        _Logger.Information($"OnChanged: {Path}, {entry.NameWithExtension}");
 
         lock (UpdateLockObj)
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var target) == false)
             {
-                _logger.Error($"OnChanged: {Path}, {entry.NameWithExtension}");
+                _Logger.Error($"OnChanged: {Path}, {entry.NameWithExtension}");
                 return;
             }
 
@@ -117,13 +117,13 @@ public abstract class Directory : NotificationObject
 
     protected void OnDeleted(string name)
     {
-        _logger.Information($"OnDeleted: {Path}, {name}");
+        _Logger.Information($"OnDeleted: {Path}, {name}");
 
         lock (UpdateLockObj)
         {
             if (_entriesDict.TryGetValue(name, out var target) == false)
             {
-                _logger.Error($"OnDeleted: {Path}, {name}");
+                _Logger.Error($"OnDeleted: {Path}, {name}");
                 return;
             }
 
@@ -133,13 +133,13 @@ public abstract class Directory : NotificationObject
 
     protected void OnRenamed(string oldName, string newName)
     {
-        _logger.Information($"OnRenamed: {Path}, {oldName}, {newName}");
+        _Logger.Information($"OnRenamed: {Path}, {oldName}, {newName}");
 
         lock (UpdateLockObj)
         {
             if (_entriesDict.TryGetValue(oldName, out var target) == false)
             {
-                _logger.Error($"OnRenamed: {Path}, {oldName}, {newName}");
+                _Logger.Error($"OnRenamed: {Path}, {oldName}, {newName}");
                 return;
             }
 
@@ -213,7 +213,7 @@ public abstract class Directory : NotificationObject
             --_filesCount;
 
         if (_entriesDict.Remove(entry.NameWithExtension) == false)
-            _logger.Error($"RemoveEntityInternal: {Path}, {entry.NameWithExtension}");
+            _Logger.Error($"RemoveEntityInternal: {Path}, {entry.NameWithExtension}");
     }
 
     private void UpdateEntryCompare()
@@ -245,7 +245,7 @@ public abstract class Directory : NotificationObject
     private int _filesCount;
     private readonly Dictionary<string, Entry> _entriesDict = new();
     
-    protected readonly ILogger _logger;
+    protected readonly ILogger _Logger;
 }
 
 public enum SortModes

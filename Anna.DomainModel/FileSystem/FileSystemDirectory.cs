@@ -58,7 +58,7 @@ public sealed class FileSystemDirectory : Directory, IDisposable
             .AddTo(_trash);
 
         watcher.Errors
-            .Subscribe(x => _logger.Error(x.GetException().ToString()))
+            .Subscribe(x => _Logger.Error(x.GetException().ToString()))
             .AddTo(_trash);
     }
 

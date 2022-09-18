@@ -1,4 +1,4 @@
-﻿using Anna.DomainModel.Interface;
+﻿using Anna.DomainModel.Interfaces;
 using Anna.Foundation;
 
 namespace Anna.DomainModel;

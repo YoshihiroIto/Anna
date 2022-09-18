@@ -1,5 +1,4 @@
-﻿using Anna.Views;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using System.Diagnostics;
 
 namespace Anna.ViewModels.ShortcutKey;

@@ -1,6 +1,5 @@
-﻿namespace Anna.ViewModels.ShortcutKey
+﻿namespace Anna.ViewModels.ShortcutKey;
+
+public interface IShortcutKeyReceiver
 {
-    public interface IShortcutKeyReceiver
-    {
-    }
 }

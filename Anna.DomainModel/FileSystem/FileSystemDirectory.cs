@@ -1,10 +1,10 @@
-﻿using Anna.DomainModel.Interface;
+﻿using Anna.DomainModel.Interfaces;
 using Anna.Foundation;
 using Reactive.Bindings.Extensions;
 using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Anna.DomainModel.Operator")]
+[assembly: InternalsVisibleTo("Anna.DomainModel.Interactor")]
 
 namespace Anna.DomainModel.FileSystem;
 

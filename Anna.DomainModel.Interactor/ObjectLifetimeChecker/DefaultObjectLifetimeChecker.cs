@@ -1,9 +1,9 @@
 ﻿#if DEBUG
-using Anna.DomainModel.Interface;
+using Anna.DomainModel.Interfaces;
 using System.Collections.Concurrent;
 using System.Text;
 
-namespace Anna.Interactor;
+namespace Anna.DomainModel.Interactor.ObjectLifetimeChecker;
 
 public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeChecker
 {

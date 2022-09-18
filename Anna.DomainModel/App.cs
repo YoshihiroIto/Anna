@@ -1,4 +1,4 @@
-﻿using Anna.DomainModel.Interface;
+﻿using Anna.DomainModel.UseCases;
 using Anna.Foundation;
 using System.Collections.ObjectModel;
 
@@ -9,11 +9,11 @@ public class App : DisposableNotificationObject
     public ReadOnlyObservableCollection<Directory> Directories { get; }
 
     private readonly ObservableCollection<Directory> _Directories = new();
-    private readonly IDomainModelOperator _domainModelOperator;
+    private readonly IDomainModelUseCase _domainModelUseCase;
 
-    public App(IDomainModelOperator domainModelOperator)
+    public App(IDomainModelUseCase domainModelUseCase)
     {
-        _domainModelOperator = domainModelOperator;
+        _domainModelUseCase = domainModelUseCase;
         Directories = new ReadOnlyObservableCollection<Directory>(_Directories);
     }
 
@@ -27,6 +27,6 @@ public class App : DisposableNotificationObject
 
     public void ShowDirectory(string path)
     {
-        _Directories.Add(_domainModelOperator.CreateDirectory(path));
+        _Directories.Add(_domainModelUseCase.CreateDirectory(path));
     }
 }

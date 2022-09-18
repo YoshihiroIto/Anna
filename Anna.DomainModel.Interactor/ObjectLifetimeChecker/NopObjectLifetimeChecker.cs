@@ -1,6 +1,6 @@
-﻿using Anna.DomainModel.Interface;
+﻿using Anna.DomainModel.Interfaces;
 
-namespace Anna.Interactor;
+namespace Anna.DomainModel.Interactor.ObjectLifetimeChecker;
 
 public sealed class NopObjectLifetimeChecker : IObjectLifetimeChecker
 {

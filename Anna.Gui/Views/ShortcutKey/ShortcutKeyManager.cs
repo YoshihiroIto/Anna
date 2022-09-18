@@ -5,8 +5,18 @@ namespace Anna.Views.ShortcutKey;
 
 public class ShortcutKeyManager
 {
+    public ShortcutKeyManager()
+    {
+        _registry.Register(
+        Key.S,
+        KeyModifiers.None,
+        () => Debug.WriteLine("ShortcutKeyManager: S"));
+    }
+
     public void OnKeyDown(DirectoryView sender, KeyEventArgs e)
     {
-        Debug.WriteLine($"{sender}, {e.Key}, {e.KeyModifiers}");
+        _registry.OnKeyDown(sender, e);
     }
+
+    private readonly ShortcutKeyRegistry _registry = new();
 }

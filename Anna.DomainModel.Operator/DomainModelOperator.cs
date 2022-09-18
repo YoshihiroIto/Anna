@@ -15,7 +15,9 @@ namespace Anna.DomainModel.Operator
 
         public Directory CreateDirectory(string path)
         {
-            return new FileSystemDirectory(path, _dic.GetInstance<IObjectLifetimeChecker>());
+            return new FileSystemDirectory(path,
+            _dic.GetInstance<ILogger>(),
+            _dic.GetInstance<IObjectLifetimeChecker>());
         }
     }
 }

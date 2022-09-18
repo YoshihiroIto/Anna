@@ -4,7 +4,6 @@ using Anna.ServiceProvider;
 using System;
 using Avalonia;
 using SimpleInjector;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime;
 using Directory=System.IO.Directory;
@@ -34,24 +33,14 @@ public static class Program
             ProfileOptimization.StartProfile("Startup.Profile");
         }
 
-        {
-            var dic = new ServiceProviderContainer(configDir, appConfigFilePath);
+        using var dic = new ServiceProviderContainer(configDir, appConfigFilePath);
+        
+        dic.GetInstance<ILogger>().Information("Start");
 
-            dic.GetInstance<IObjectLifetimeChecker>().Start(s =>
-            {
-                Debug.WriteLine(s);
-                Debugger.Break();
-            });// todo:MessageDialog
+        BuildAvaloniaApp(dic)
+            .StartWithClassicDesktopLifetime(args);
 
-            BuildAvaloniaApp(dic)
-                .StartWithClassicDesktopLifetime(args);
-
-            dic.GetInstance<App>().Clean();
-
-            var checker = dic.GetInstance<IObjectLifetimeChecker>();
-            dic.Dispose();
-            checker.End();
-        }
+        dic.GetInstance<App>().Clean();
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

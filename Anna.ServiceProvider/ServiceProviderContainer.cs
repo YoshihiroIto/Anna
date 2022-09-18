@@ -17,8 +17,9 @@ public class ServiceProviderContainer : Container
             NopObjectLifetimeChecker
 #endif
         >();
-        
+
         RegisterSingleton(() => new Config { FilePath = appConfigFilePath });
+        RegisterSingleton<ILogger>(() => new Log.Logger(logOutputDir));
         RegisterSingleton<App>();
         RegisterSingleton<IDomainModelOperator, DomainModelOperator>();
 
@@ -27,5 +28,24 @@ public class ServiceProviderContainer : Container
 #if DEBUG
         Verify();
 #endif
+        
+        _logger = GetInstance<ILogger>();
+        
+        _logger.Information("Start");
+
+        GetInstance<IObjectLifetimeChecker>()
+            .Start(s => _logger.Error("ObjectLifetimeChecker:Found leak"));
     }
+
+    public new void Dispose()
+    {
+        var checker = GetInstance<IObjectLifetimeChecker>();
+
+        base.Dispose();
+
+        checker.End();
+        _logger.Information("End");
+    }
+
+    private readonly ILogger _logger;
 }

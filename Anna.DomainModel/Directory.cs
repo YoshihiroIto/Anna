@@ -1,5 +1,5 @@
-﻿using Anna.Foundation;
-using System.Diagnostics;
+﻿using Anna.DomainModel.Interface;
+using Anna.Foundation;
 
 namespace Anna.DomainModel;
 
@@ -83,14 +83,15 @@ public abstract class Directory : NotificationObject
 
     public readonly object UpdateLockObj = new();
 
-    protected Directory(string path)
+    protected Directory(string path, ILogger logger)
     {
+        _logger = logger;
         Path = path;
     }
 
     protected void OnCreated(Entry newEntry)
     {
-        Debug.WriteLine($"OnCreated: {newEntry.NameWithExtension}");
+        _logger.Information($"OnCreated: {Path}, {newEntry.NameWithExtension}");
 
         lock (UpdateLockObj)
         {
@@ -100,12 +101,15 @@ public abstract class Directory : NotificationObject
 
     protected void OnChanged(Entry entry)
     {
-        Debug.WriteLine($"OnChanged: {entry.NameWithExtension}");
+        _logger.Information($"OnChanged: {Path}, {entry.NameWithExtension}");
 
         lock (UpdateLockObj)
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var target) == false)
-                return;// todo: logging
+            {
+                _logger.Error($"OnChanged: {Path}, {entry.NameWithExtension}");
+                return;
+            }
 
             entry.CopyTo(target);
         }
@@ -113,12 +117,15 @@ public abstract class Directory : NotificationObject
 
     protected void OnDeleted(string name)
     {
-        Debug.WriteLine($"OnDeleted: {name}");
+        _logger.Information($"OnDeleted: {Path}, {name}");
 
         lock (UpdateLockObj)
         {
             if (_entriesDict.TryGetValue(name, out var target) == false)
-                return;// todo: logging
+            {
+                _logger.Error($"OnDeleted: {Path}, {name}");
+                return;
+            }
 
             RemoveEntityInternal(target);
         }
@@ -126,12 +133,15 @@ public abstract class Directory : NotificationObject
 
     protected void OnRenamed(string oldName, string newName)
     {
-        Debug.WriteLine($"OnRenamed: {oldName}, {newName}");
+        _logger.Information($"OnRenamed: {Path}, {oldName}, {newName}");
 
         lock (UpdateLockObj)
         {
             if (_entriesDict.TryGetValue(oldName, out var target) == false)
-                return;// todo: logging
+            {
+                _logger.Error($"OnRenamed: {Path}, {oldName}, {newName}");
+                return;
+            }
 
             RemoveEntityInternal(target);
 
@@ -203,7 +213,7 @@ public abstract class Directory : NotificationObject
             --_filesCount;
 
         if (_entriesDict.Remove(entry.NameWithExtension) == false)
-            Debug.WriteLine(entry.NameWithExtension);
+            _logger.Error($"RemoveEntityInternal: {Path}, {entry.NameWithExtension}");
     }
 
     private void UpdateEntryCompare()
@@ -234,6 +244,8 @@ public abstract class Directory : NotificationObject
     private int _directoriesCount;
     private int _filesCount;
     private readonly Dictionary<string, Entry> _entriesDict = new();
+    
+    protected readonly ILogger _logger;
 }
 
 public enum SortModes

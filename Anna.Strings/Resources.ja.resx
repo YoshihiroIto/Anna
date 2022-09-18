@@ -1,0 +1,38 @@
+﻿<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="DialogTitle_EntrySort" xml:space="preserve">
+        <value>エントリーのソート</value>
+    </data>
+    <data name="EntrySort_Mode_Attribute" xml:space="preserve">
+        <value>属性順(_A)</value>
+    </data>
+    <data name="EntrySort_Mode_Extension" xml:space="preserve">
+        <value>拡張子名順(_E)</value>
+    </data>
+    <data name="EntrySort_Mode_Name" xml:space="preserve">
+        <value>名前順(_N)</value>
+    </data>
+    <data name="EntrySort_Mode_Size" xml:space="preserve">
+        <value>ファイルサイズ順(_S)</value>
+    </data>
+    <data name="EntrySort_Mode_Timestamp" xml:space="preserve">
+        <value>属性順(_T)</value>
+    </data>
+    <data name="EntrySort_Order_Ascending" xml:space="preserve">
+        <value>昇順(_A)</value>
+    </data>
+    <data name="EntrySort_Order_Descending" xml:space="preserve">
+        <value>降順(_D)</value>
+    </data>
+</root>

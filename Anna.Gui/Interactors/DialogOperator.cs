@@ -9,13 +9,13 @@ namespace Anna.Gui.Interactors
     public class DialogOperator : IDialogOperator
     {
         public async ValueTask<(SortModes mode, SortOrders order)> SelectSortModeAndOrderAsync(
-            IShortcutKeyReceiver shortcutKeyReceiver, SortModes initialMode, SortOrders initialOrder)
+            IShortcutKeyReceiver shortcutKeyReceiver)
         {
             var d = new SortModeAndOrderDialog();
 
             await d.ShowDialog(shortcutKeyReceiver.Owner);
 
-            return (initialMode, initialOrder);
+            return (SortModes.Name, SortOrders.Ascending);
         }
     }
 }

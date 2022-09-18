@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 using System;
+using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Behaviors;
 
@@ -27,12 +28,12 @@ public class DirectoryViewInputBehavior : Behavior<Gui.Views.DirectoryView>
         base.OnDetaching();
     }
 
-    private void OnPreviewKeyDown(object? sender, KeyEventArgs e)
+    private ValueTask OnPreviewKeyDown(object? sender, KeyEventArgs e)
     {
         var manager = _shortcutKeyManager ??=
             (AssociatedObject?.DataContext as DirectoryViewViewModel)?.ShortcutKeyManager;
 
-        manager?.OnKeyDown(AssociatedObject ?? throw new NullReferenceException(), e);
+        return manager?.OnKeyDown(AssociatedObject ?? throw new NullReferenceException(), e) ?? ValueTask.CompletedTask;
     }
 
     private ShortcutKeyManager? _shortcutKeyManager;

@@ -1,7 +1,8 @@
-﻿using Anna.DomainModel;
-using Anna.UseCase;
+﻿using Anna.UseCase;
 using Anna.UseCase.Interfaces;
 using Avalonia.Input;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Anna.Gui.ViewModels.ShortcutKey;
 
@@ -13,14 +14,15 @@ public class ShortcutKeyManager
         KeyModifiers.None,
         async x =>
         {
-            await dialogOperator.SelectSortModeAndOrderAsync(x, SortModes.Name, SortOrders.Ascending);
-        }
-        );
+            var result = await dialogOperator.SelectSortModeAndOrderAsync(x);
+
+            Debug.WriteLine(result);
+        });
     }
 
-    public void OnKeyDown(IShortcutKeyReceiver receiver, KeyEventArgs e)
+    public ValueTask OnKeyDown(IShortcutKeyReceiver receiver, KeyEventArgs e)
     {
-        _registry.OnKeyDown(receiver, e);
+        return _registry.OnKeyDown(receiver, e);
     }
 
     private readonly ShortcutKeyRegistry _registry = new();

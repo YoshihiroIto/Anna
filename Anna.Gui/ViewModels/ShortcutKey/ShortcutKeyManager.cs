@@ -1,16 +1,14 @@
-﻿using Avalonia.Input;
-using System.Diagnostics;
+﻿using Anna.Gui.UseCase;
+using Anna.Gui.UseCase.Interfaces;
+using Avalonia.Input;
 
 namespace Anna.ViewModels.ShortcutKey;
 
 public class ShortcutKeyManager
 {
-    public ShortcutKeyManager()
+    public ShortcutKeyManager(IDialogOperator dialogOperator)
     {
-        _registry.Register(
-        Key.S,
-        KeyModifiers.None,
-        _ => Debug.WriteLine("ShortcutKeyManager: S"));
+        _registry.Register(Key.S, KeyModifiers.None, dialogOperator.ShowSortEntries);
     }
 
     public void OnKeyDown(IShortcutKeyReceiver receiver, KeyEventArgs e)

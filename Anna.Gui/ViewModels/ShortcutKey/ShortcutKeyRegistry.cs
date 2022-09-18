@@ -1,8 +1,9 @@
-﻿using Avalonia.Input;
+﻿using Anna.Views;
+using Avalonia.Input;
 using System;
 using System.Collections.Generic;
 
-namespace Anna.Views.ShortcutKey;
+namespace Anna.ViewModels.ShortcutKey;
 
 public class ShortcutKeyRegistry
 {

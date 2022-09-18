@@ -1,5 +1,5 @@
 ﻿using Anna.ViewModels;
-using Anna.Views.ShortcutKey;
+using Anna.ViewModels.ShortcutKey;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;

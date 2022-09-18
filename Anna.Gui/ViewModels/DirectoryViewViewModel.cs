@@ -1,7 +1,7 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Interface;
 using Anna.Foundations;
-using Anna.Views.ShortcutKey;
+using Anna.ViewModels.ShortcutKey;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;

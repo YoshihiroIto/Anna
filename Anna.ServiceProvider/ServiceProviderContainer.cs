@@ -2,7 +2,7 @@
 using Anna.DomainModel.Interface;
 using Anna.DomainModel.Operator;
 using Anna.Interactor;
-using Anna.Views.ShortcutKey;
+using Anna.ViewModels.ShortcutKey;
 using SimpleInjector;
 
 namespace Anna.ServiceProvider;

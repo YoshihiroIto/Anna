@@ -46,6 +46,8 @@ public class ServiceProviderContainer : Container
     {
         var checker = GetInstance<IObjectLifetimeChecker>();
 
+        Dispose();
+
         checker.End();
         _logger.Information("End");
     }

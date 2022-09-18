@@ -33,7 +33,7 @@ public static class Program
             ProfileOptimization.StartProfile("Startup.Profile");
         }
 
-        using var dic = new ServiceProviderContainer(configDir, appConfigFilePath);
+        var dic = new ServiceProviderContainer(configDir, appConfigFilePath);
         
         dic.GetInstance<ILogger>().Information("Start");
 

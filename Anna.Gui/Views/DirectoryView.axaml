@@ -7,6 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Anna.ViewModels"
              xmlns:views="clr-namespace:Anna.Views"
+             xmlns:behaviors1="clr-namespace:Anna.Views.Behaviors"
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
@@ -26,15 +27,14 @@
     </UserControl.Resources>
 
     <Interaction.Behaviors>
-        <behaviors:DirectoryViewInputBehavior />
+        <behaviors1:DirectoryViewInputBehavior />
     </Interaction.Behaviors>
 
     <UserControl.Styles>
         <Style Selector="TextBlock.entry" x:DataType="viewModels:EntryViewModel">
             <Setter Property="Foreground">
                 <Setter.Value>
-                    <MultiBinding Converter="{StaticResource AttributeBrushConverter}"
-                                  ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
+                    <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
                         <Binding Path="Attributes.Value" />
                         <Binding Path="IsOnCursor.Value" />
                     </MultiBinding>
@@ -43,8 +43,7 @@
 
             <Setter Property="Background">
                 <Setter.Value>
-                    <MultiBinding Converter="{StaticResource AttributeBrushConverter}"
-                                  ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Background}">
+                    <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Background}">
                         <Binding Path="Attributes.Value" />
                         <Binding Path="IsOnCursor.Value" />
                     </MultiBinding>
@@ -57,8 +56,7 @@
         <Style Selector="Path.entry" x:DataType="viewModels:EntryViewModel">
             <Setter Property="Fill">
                 <Setter.Value>
-                    <MultiBinding Converter="{StaticResource AttributeBrushConverter}"
-                                  ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
+                    <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
                         <Binding Path="Attributes.Value" />
                     </MultiBinding>
                 </Setter.Value>

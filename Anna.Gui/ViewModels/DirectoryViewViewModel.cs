@@ -1,6 +1,7 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Interface;
 using Anna.Foundations;
+using Anna.Views.ShortcutKey;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
@@ -12,13 +13,18 @@ namespace Anna.ViewModels;
 
 public class DirectoryViewViewModel : ViewModelBase
 {
-    private readonly Container _dic;
     public ReadOnlyReactiveCollection<EntryViewModel>? Entries { get; private set; }
 
-    public DirectoryViewViewModel(Container dic, IObjectLifetimeChecker objectLifetimeChecker)
+    public readonly ShortcutKeyManager ShortcutKeyManager;
+    
+    public DirectoryViewViewModel(
+        Container dic, 
+        ShortcutKeyManager shortcutKeyManager,
+        IObjectLifetimeChecker objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
         _dic = dic;
+        ShortcutKeyManager = shortcutKeyManager;
     }
 
     public DirectoryViewViewModel Setup(Directory model)
@@ -40,4 +46,6 @@ public class DirectoryViewViewModel : ViewModelBase
 
         return this;
     }
+    
+    private readonly Container _dic;
 }

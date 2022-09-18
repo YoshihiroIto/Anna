@@ -2,6 +2,7 @@
 using Anna.DomainModel.Interface;
 using Anna.DomainModel.Operator;
 using Anna.Interactor;
+using Anna.Views.ShortcutKey;
 using SimpleInjector;
 
 namespace Anna.ServiceProvider;
@@ -22,6 +23,7 @@ public class ServiceProviderContainer : Container
         RegisterSingleton<ILogger>(() => new Log.Logger(logOutputDir));
         RegisterSingleton<App>();
         RegisterSingleton<IDomainModelOperator, DomainModelOperator>();
+        RegisterSingleton<ShortcutKeyManager>();
 
         Options.ResolveUnregisteredConcreteTypes = true;
 

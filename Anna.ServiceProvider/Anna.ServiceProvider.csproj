@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Anna.DomainModel.Operator\Anna.DomainModel.Operator.csproj" />
+      <ProjectReference Include="..\Anna.Gui\Anna.Gui.csproj" />
       <ProjectReference Include="..\Anna.Interactor\Anna.Interactor.csproj" />
       <ProjectReference Include="..\Anna.Log\Anna.Log.csproj" />
     </ItemGroup>

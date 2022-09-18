@@ -1,5 +1,4 @@
 using Anna.DomainModel;
-using Anna.DomainModel.Interface;
 using Anna.ServiceProvider;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -10,13 +9,19 @@ using Avalonia.Threading;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
-using System.Diagnostics;
 using System.Reactive.Disposables;
 
 namespace Anna;
 
 public class GuiApp : Application
 {
+    public GuiApp Setup(Container dic)
+    {
+        _dic = dic;
+
+        return this;
+    }
+    
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -25,21 +30,17 @@ public class GuiApp : Application
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            Setup(desktop);
+            SetupDesktop(desktop);
 
         base.OnFrameworkInitializationCompleted();
     }
 
-    private void Setup(IClassicDesktopStyleApplicationLifetime desktop)
+    private void SetupDesktop(IClassicDesktopStyleApplicationLifetime desktop)
     {
+        _ = _dic ?? throw new NullReferenceException();
+        
         ReactivePropertyScheduler.SetDefault(AvaloniaScheduler.Instance);
     
-        _dic.GetInstance<IObjectLifetimeChecker>().Start(s =>
-        {
-            Debug.WriteLine(s);
-            Debugger.Break();
-        });// todo:MessageDialog
-
         desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
         desktop.MainWindow.Closed += OnClosed;
 
@@ -56,12 +57,8 @@ public class GuiApp : Application
     private void OnClosed(object? sender, EventArgs e)
     {
         _trash.Dispose();
-        
-        _dic.GetInstance<App>().Clean();
-        _dic.GetInstance<IObjectLifetimeChecker>().End();
-        _dic.Dispose();
     }
 
+    private Container? _dic;
     private readonly CompositeDisposable _trash = new();
-    private readonly Container _dic = new();
 }

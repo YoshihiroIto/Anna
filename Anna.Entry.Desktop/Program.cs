@@ -3,6 +3,7 @@ using Anna.DomainModel.Interface;
 using Anna.ServiceProvider;
 using System;
 using Avalonia;
+using SimpleInjector;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime;
@@ -34,7 +35,7 @@ public static class Program
         }
 
         {
-            var dic = new Container();
+            var dic = new ServiceProviderContainer(configDir, appConfigFilePath);
 
             dic.GetInstance<IObjectLifetimeChecker>().Start(s =>
             {

@@ -2,12 +2,13 @@
 using Anna.DomainModel.Interface;
 using Anna.DomainModel.Operator;
 using Anna.Interactor;
+using SimpleInjector;
 
 namespace Anna.ServiceProvider;
 
-public class Container : SimpleInjector.Container
+public class ServiceProviderContainer : Container
 {
-    public Container()
+    public ServiceProviderContainer(string logOutputDir, string appConfigFilePath)
     {
         RegisterSingleton<IObjectLifetimeChecker,
 #if DEBUG
@@ -16,7 +17,8 @@ public class Container : SimpleInjector.Container
             NopObjectLifetimeChecker
 #endif
         >();
-
+        
+        RegisterSingleton(() => new Config { FilePath = appConfigFilePath });
         RegisterSingleton<App>();
         RegisterSingleton<IDomainModelOperator, DomainModelOperator>();
 

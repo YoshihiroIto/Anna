@@ -1,5 +1,4 @@
 using Anna.DomainModel;
-using Anna.ServiceProvider;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -8,6 +7,7 @@ using Anna.Views;
 using Avalonia.Threading;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using SimpleInjector;
 using System;
 using System.Reactive.Disposables;
 

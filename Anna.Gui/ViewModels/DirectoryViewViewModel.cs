@@ -1,9 +1,9 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Interface;
 using Anna.Foundations;
-using Anna.ServiceProvider;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using SimpleInjector;
 using System;
 using System.Linq;
 using System.Reactive.Linq;

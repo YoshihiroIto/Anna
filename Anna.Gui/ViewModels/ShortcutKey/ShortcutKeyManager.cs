@@ -1,4 +1,5 @@
-﻿using Anna.UseCase;
+﻿using Anna.DomainModel;
+using Anna.UseCase;
 using Anna.UseCase.Interfaces;
 using Avalonia.Input;
 using System.Diagnostics;
@@ -15,8 +16,9 @@ public class ShortcutKeyManager
         async x =>
         {
             var result = await dialogOperator.SelectSortModeAndOrderAsync(x);
-
             Debug.WriteLine(result);
+
+            x.Directory.SetSortModeAndOrder(SortModes.Size, SortOrders.Descending);
         });
     }
 

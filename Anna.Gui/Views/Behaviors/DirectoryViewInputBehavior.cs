@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Behaviors;
 
-public class DirectoryViewInputBehavior : Behavior<Gui.Views.DirectoryView>
+public class DirectoryViewInputBehavior : Behavior<DirectoryView>
 {
     protected override void OnAttached()
     {

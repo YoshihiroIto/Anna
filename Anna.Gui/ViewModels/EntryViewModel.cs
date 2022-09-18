@@ -3,27 +3,23 @@ using Anna.DomainModel.Interfaces;
 using Anna.Gui.Foundations;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using System;
 using System.IO;
 
 namespace Anna.Gui.ViewModels;
 
 public class EntryViewModel : ViewModelBase
 {
-    public string NameWithExtension => _model?.NameWithExtension ?? throw new NullReferenceException();
-
-    public string Name => _model?.Name ?? throw new NullReferenceException();
-
-    public string Extension => _model?.Extension ?? throw new NullReferenceException();
-
-    public bool IsDirectory => _model?.IsDirectory ?? throw new NullReferenceException();
+    public string NameWithExtension => Model.NameWithExtension;
+    public string Name => Model.Name;
+    public string Extension => Model.Extension;
+    public bool IsDirectory => Model.IsDirectory;
 
     public ReadOnlyReactivePropertySlim<FileAttributes> Attributes { get; private set; } = null!;
 
     public ReactivePropertySlim<bool> IsSelected { get; }
     public ReactivePropertySlim<bool> IsOnCursor { get; }
 
-    private Entry? _model;
+    public Entry Model { get; private set; } = null!;
 
     public EntryViewModel(IObjectLifetimeChecker objectLifetimeChecker)
         : base(objectLifetimeChecker)
@@ -34,11 +30,11 @@ public class EntryViewModel : ViewModelBase
 
     public EntryViewModel Setup(Entry model)
     {
-        _model = model;
+        Model = model;
 
-        Attributes = _model.ObserveProperty(x => x.Attributes)
+        Attributes = Model.ObserveProperty(x => x.Attributes)
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(_model.Attributes)
+            .ToReadOnlyReactivePropertySlim(Model.Attributes)
             .AddTo(Trash);
 
         return this;

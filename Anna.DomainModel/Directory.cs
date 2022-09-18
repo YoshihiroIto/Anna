@@ -83,6 +83,18 @@ public abstract class Directory : NotificationObject
 
     public readonly object UpdateLockObj = new();
 
+    public void SetSortModeAndOrder(SortModes mode, SortOrders order)
+    {
+        if (mode == _SortMode && order == _SortOrder)
+            return;
+
+        _SortMode = mode;
+        _SortOrder = order;
+
+        UpdateEntryCompare();
+        SortEntries();
+    }
+
     protected Directory(string path, ILogger logger)
     {
         _Logger = logger;
@@ -244,7 +256,7 @@ public abstract class Directory : NotificationObject
     private int _directoriesCount;
     private int _filesCount;
     private readonly Dictionary<string, Entry> _entriesDict = new();
-    
+
     protected readonly ILogger _Logger;
 }
 

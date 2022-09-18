@@ -13,7 +13,8 @@ namespace Anna.Gui.ViewModels;
 
 public class DirectoryViewViewModel : ViewModelBase
 {
-    public ReadOnlyReactiveCollection<EntryViewModel>? Entries { get; private set; }
+    public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; private set; } = null!;
+    public Directory Model { get; private set; } = null!;
 
     public readonly ShortcutKeyManager ShortcutKeyManager;
     
@@ -29,6 +30,8 @@ public class DirectoryViewViewModel : ViewModelBase
 
     public DirectoryViewViewModel Setup(Directory model)
     {
+        Model = model;
+        
         var bufferedCollectionChanged =
             model.Entries
                 .ToCollectionChanged()
@@ -46,6 +49,23 @@ public class DirectoryViewViewModel : ViewModelBase
 
         return this;
     }
+
+    public Entry[] CollectTargetEntities()
+    {
+        var selectedEntities = Entries
+            .Where(x => x.IsSelected.Value)
+            .Select(x => x.Model)
+            .ToArray();
+
+        if (selectedEntities.Length > 0)
+            return selectedEntities;
+
+        return _cursorEntity != null
+            ? new[] { _cursorEntity.Model }
+            : Array.Empty<Entry>();
+    }
     
     private readonly Container _dic;
+
+    private EntryViewModel? _cursorEntity = null;
 }

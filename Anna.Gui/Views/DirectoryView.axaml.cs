@@ -1,4 +1,6 @@
-﻿using Anna.UseCase.Interfaces;
+﻿using Anna.DomainModel;
+using Anna.Gui.ViewModels;
+using Anna.UseCase.Interfaces;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System;
@@ -37,5 +39,22 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
                 parent = parent.Parent;
             }
         }
+    }
+
+    public Directory Directory
+    {
+        get
+        {
+            var viewModel = DataContext as DirectoryViewViewModel ?? throw new NotSupportedException();
+            
+            return viewModel.Model;
+        }
+    }
+
+    public Entry[] CollectTargetEntities()
+    {
+        var viewModel = DataContext as DirectoryViewViewModel ?? throw new NotSupportedException();
+
+        return viewModel.CollectTargetEntities();
     }
 }

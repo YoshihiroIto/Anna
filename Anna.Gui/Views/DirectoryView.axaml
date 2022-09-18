@@ -16,7 +16,7 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <converters:AttributeBrushConverter x:Key="AttributeBrushConverter"
-                                            EmptyAttributeBrush="{DynamicResource EmptyAttributeBrush}"
+                                            NoneAttributeBrush="{DynamicResource EmptyAttributeBrush}"
                                             IsCompressedAttributeBrush="{DynamicResource IsCompressedAttributeBrush}"
                                             IsDirectoryAttributeBrush="{DynamicResource IsDirectoryAttributeBrush}"
                                             IsEncryptedAttributeBrush="{DynamicResource IsEncryptedAttributeBrush}"

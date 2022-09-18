@@ -16,8 +16,8 @@ public enum AttributeBrushConverterBrushTypes
 
 public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
 {
-    public static readonly StyledProperty<IBrush> EmptyAttributeBrushProperty =
-        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(EmptyAttributeBrush));
+    public static readonly StyledProperty<IBrush> NoneAttributeBrushProperty =
+        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(NoneAttributeBrush));
 
     public static readonly StyledProperty<IBrush> IsDirectoryAttributeBrushProperty =
         AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(
@@ -45,10 +45,10 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
         AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(
         nameof(IsCompressedAttributeBrush));
 
-    public IBrush EmptyAttributeBrush
+    public IBrush NoneAttributeBrush
     {
-        get => GetValue(EmptyAttributeBrushProperty);
-        set => SetValue(EmptyAttributeBrushProperty, value);
+        get => GetValue(NoneAttributeBrushProperty);
+        set => SetValue(NoneAttributeBrushProperty, value);
     }
 
     public IBrush IsDirectoryAttributeBrush
@@ -144,6 +144,6 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
         if ((attributes & FileAttributes.Directory) == FileAttributes.Directory)
             return IsDirectoryAttributeBrush;
 
-        return EmptyAttributeBrush;
+        return NoneAttributeBrush;
     }
 }

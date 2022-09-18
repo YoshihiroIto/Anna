@@ -1,4 +1,4 @@
-﻿using Anna.ViewModels.ShortcutKey;
+﻿using Anna.Gui.UseCase.Interfaces;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 

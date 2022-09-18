@@ -1,5 +1,4 @@
-﻿using Anna.Views;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +6,7 @@ namespace Anna.ViewModels.ShortcutKey;
 
 public class ShortcutKeyRegistry
 {
-    public void Register(Key key, KeyModifiers modifierKeys, Action action)
+    public void Register(Key key, KeyModifiers modifierKeys, Action<IShortcutKeyReceiver> action)
     {
         var k = (key, modifierKeys);
 
@@ -17,16 +16,16 @@ public class ShortcutKeyRegistry
         _shortcutKeys[k] = action;
     }
 
-    public void OnKeyDown(DirectoryView sender, KeyEventArgs e)
+    public void OnKeyDown(IShortcutKeyReceiver receiver, KeyEventArgs e)
     {
         var k = (e.Key, e.KeyModifiers);
 
         if (_shortcutKeys.TryGetValue(k, out var value) == false)
             return;
 
-        value();
+        value(receiver);
         e.Handled = true;
     }
 
-    private readonly Dictionary<(Key, KeyModifiers), Action> _shortcutKeys = new();
+    private readonly Dictionary<(Key, KeyModifiers), Action<IShortcutKeyReceiver>> _shortcutKeys = new();
 }

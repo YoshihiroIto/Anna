@@ -1,9 +1,10 @@
-﻿using Avalonia.Controls;
+﻿using Anna.ViewModels.ShortcutKey;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
 namespace Anna.Views;
 
-public partial class DirectoryView : UserControl
+public partial class DirectoryView : UserControl, IShortcutKeyReceiver
 {
     public DirectoryView()
     {

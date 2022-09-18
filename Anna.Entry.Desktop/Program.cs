@@ -21,7 +21,7 @@ public static class Program
     {
         var commandLine = CommandLine.Parse(args);
 
-        var appConfigFilePath = commandLine == null
+        var appConfigFilePath = commandLine is null
             ? CommandLine.DefaultAppConfigFilePath
             : commandLine.AppConfigFilePath;
 

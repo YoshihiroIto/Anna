@@ -41,6 +41,7 @@ public static class Program
             .StartWithClassicDesktopLifetime(args);
 
         dic.GetInstance<App>().Clean();
+        dic.Destroy();
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

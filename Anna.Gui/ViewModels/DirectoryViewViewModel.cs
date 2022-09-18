@@ -32,7 +32,7 @@ public class DirectoryViewViewModel : ViewModelBase
         var bufferedCollectionChanged =
             model.Entries
                 .ToCollectionChanged()
-                .Buffer(TimeSpan.FromMilliseconds(200))
+                .Buffer(TimeSpan.FromMilliseconds(50))
                 .Where(x => x.Any())
                 .SelectMany(x => x);
 

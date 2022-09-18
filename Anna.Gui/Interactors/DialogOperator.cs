@@ -1,9 +1,11 @@
 ﻿using Anna.DomainModel;
-using Anna.Gui.UseCase;
-using Anna.Gui.UseCase.Interfaces;
-using System.Diagnostics;
+using Anna.UseCase;
+using Anna.UseCase.Interfaces;
+using Anna.Views.Dialogs;
+using System.Threading.Tasks;
+using SortModeAndOrderDialog=Anna.Gui.Views.Dialogs.SortModeAndOrderDialog;
 
-namespace Anna.Interactors
+namespace Anna.Gui.Interactors
 {
     public class DialogOperator : IDialogOperator
     {

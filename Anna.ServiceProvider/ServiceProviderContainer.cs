@@ -1,9 +1,9 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Interfaces;
 using Anna.DomainModel.ObjectLifetimeChecker;
-using Anna.Gui.UseCase;
-using Anna.Interactors;
-using Anna.ViewModels.ShortcutKey;
+using Anna.Gui.Interactors;
+using Anna.Gui.ViewModels.ShortcutKey;
+using Anna.UseCase;
 using SimpleInjector;
 
 namespace Anna.ServiceProvider;

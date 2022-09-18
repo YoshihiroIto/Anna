@@ -1,10 +1,10 @@
 ﻿using Anna.DomainModel.Interfaces;
-using Anna.Foundations;
+using Anna.Gui.Foundations;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Reactive.Linq;
 
-namespace Anna.ViewModels;
+namespace Anna.Gui.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {

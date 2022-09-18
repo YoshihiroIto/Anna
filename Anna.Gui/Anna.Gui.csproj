@@ -3,7 +3,6 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
-        <RootNamespace>Anna</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />

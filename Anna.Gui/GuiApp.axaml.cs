@@ -1,17 +1,18 @@
 using Anna.DomainModel;
+using Anna.Gui.ViewModels;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Anna.ViewModels;
-using Anna.Views;
 using Avalonia.Threading;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
 using System;
 using System.Reactive.Disposables;
+using DirectoryWindow=Anna.Gui.Views.DirectoryWindow;
+using MainWindow=Anna.Gui.Views.MainWindow;
 
-namespace Anna;
+namespace Anna.Gui;
 
 public class GuiApp : Application
 {

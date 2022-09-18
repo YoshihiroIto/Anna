@@ -1,12 +1,12 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Interfaces;
-using Anna.Foundations;
+using Anna.Gui.Foundations;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.IO;
 
-namespace Anna.ViewModels;
+namespace Anna.Gui.ViewModels;
 
 public class EntryViewModel : ViewModelBase
 {

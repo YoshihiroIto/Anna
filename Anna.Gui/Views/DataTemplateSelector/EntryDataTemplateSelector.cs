@@ -1,9 +1,9 @@
-﻿using Anna.ViewModels;
+﻿using Anna.Gui.ViewModels;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using System;
 
-namespace Anna.Views;
+namespace Anna.Gui.Views.DataTemplateSelector;
 
 public class EntryDataTemplateSelector : IDataTemplate
 {

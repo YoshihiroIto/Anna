@@ -1,7 +1,7 @@
 ﻿using Anna.DomainModel;
-using Anna.Gui.UseCase.Interfaces;
+using Anna.UseCase.Interfaces;
 
-namespace Anna.Gui.UseCase
+namespace Anna.UseCase
 {
     public interface IDialogOperator
     {

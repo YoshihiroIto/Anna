@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Anna.Views;
+namespace Anna.Gui.Views;
 
 public partial class MainWindow : Window
 {

@@ -5,11 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
-        <RootNamespace>Anna.Gui.UseCase</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="11.0.0-preview1" />
     </ItemGroup>
 
 </Project>

@@ -1,9 +1,9 @@
-﻿using Anna.Gui.UseCase.Interfaces;
+﻿using Anna.UseCase.Interfaces;
 using Avalonia.Input;
 using System;
 using System.Collections.Generic;
 
-namespace Anna.ViewModels.ShortcutKey;
+namespace Anna.Gui.ViewModels.ShortcutKey;
 
 public class ShortcutKeyRegistry
 {

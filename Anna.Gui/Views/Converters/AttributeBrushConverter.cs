@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
-namespace Anna.Views.Converters;
+namespace Anna.Gui.Views.Converters;
 
 public enum AttributeBrushConverterBrushTypes
 {

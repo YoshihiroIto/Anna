@@ -1,7 +1,7 @@
 ﻿using Anna.DomainModel.Interfaces;
 using Anna.Foundation;
 
-namespace Anna.Foundations;
+namespace Anna.Gui.Foundations;
 
 public class ViewModelBase : DisposableNotificationObject
 {

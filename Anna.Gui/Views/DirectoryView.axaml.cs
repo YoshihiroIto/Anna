@@ -1,8 +1,9 @@
-﻿using Anna.Gui.UseCase.Interfaces;
+﻿using Anna.UseCase.Interfaces;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using System;
 
-namespace Anna.Views;
+namespace Anna.Gui.Views;
 
 public partial class DirectoryView : UserControl, IShortcutKeyReceiver
 {
@@ -14,5 +15,27 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
+    }
+
+    public Window Owner
+    {
+        get
+        {
+            var parent = Parent;
+
+            while (true)
+            {
+                switch (parent)
+                {
+                    case Window window:
+                        return window;
+
+                    case null:
+                        throw new InvalidOperationException();
+                }
+
+                parent = parent.Parent;
+            }
+        }
     }
 }

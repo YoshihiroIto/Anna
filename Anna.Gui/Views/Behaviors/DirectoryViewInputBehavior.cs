@@ -1,13 +1,13 @@
-﻿using Anna.ViewModels;
-using Anna.ViewModels.ShortcutKey;
+﻿using Anna.Gui.ViewModels;
+using Anna.Gui.ViewModels.ShortcutKey;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 using System;
 
-namespace Anna.Views.Behaviors;
+namespace Anna.Gui.Views.Behaviors;
 
-public class DirectoryViewInputBehavior : Behavior<DirectoryView>
+public class DirectoryViewInputBehavior : Behavior<Gui.Views.DirectoryView>
 {
     protected override void OnAttached()
     {

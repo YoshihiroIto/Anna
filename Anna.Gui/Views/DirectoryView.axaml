@@ -1,16 +1,16 @@
-﻿<UserControl x:Class="Anna.Views.DirectoryView"
+﻿<UserControl x:Class="Anna.Gui.Views.DirectoryView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:Anna.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:Anna.ViewModels"
-             xmlns:views="clr-namespace:Anna.Views"
-             xmlns:behaviors1="clr-namespace:Anna.Views.Behaviors"
+             xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
+             xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
+             xmlns:converters="clr-namespace:Anna.Gui.Views.Converters"
+             xmlns:dataTemplateSelector="clr-namespace:Anna.Gui.Views.DataTemplateSelector"
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
-             x:DataType="viewModels:DirectoryViewViewModel"
+             x:DataType="viewModels1:DirectoryViewViewModel"
              FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -26,11 +26,11 @@
     </UserControl.Resources>
 
     <Interaction.Behaviors>
-        <behaviors1:DirectoryViewInputBehavior />
+        <behaviors:DirectoryViewInputBehavior />
     </Interaction.Behaviors>
 
     <UserControl.Styles>
-        <Style Selector="TextBlock.entry" x:DataType="viewModels:EntryViewModel">
+        <Style Selector="TextBlock.entry" x:DataType="viewModels1:EntryViewModel">
             <Setter Property="Foreground">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
@@ -52,7 +52,7 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         </Style>
 
-        <Style Selector="Path.entry" x:DataType="viewModels:EntryViewModel">
+        <Style Selector="Path.entry" x:DataType="viewModels1:EntryViewModel">
             <Setter Property="Fill">
                 <Setter.Value>
                     <MultiBinding Converter="{StaticResource AttributeBrushConverter}" ConverterParameter="{x:Static converters:AttributeBrushConverterBrushTypes.Foreground}">
@@ -64,13 +64,13 @@
             <Setter Property="Data" Value="M297.5 148.25 148 33.25v67H0v99h148v65z" />
         </Style>
 
-        <Style Selector="StackPanel.entry" x:DataType="viewModels:EntryViewModel">
+        <Style Selector="StackPanel.entry" x:DataType="viewModels1:EntryViewModel">
             <Setter Property="Height" Value="17" />
             <Setter Property="Margin" Value="0,0,32,0" />
             <Setter Property="Orientation" Value="Horizontal" />
         </Style>
 
-        <Style Selector="Viewbox.entry" x:DataType="viewModels:EntryViewModel">
+        <Style Selector="Viewbox.entry" x:DataType="viewModels1:EntryViewModel">
             <Setter Property="Width" Value="{Binding $parent[StackPanel].Height}" />
             <Setter Property="Height" Value="{Binding $parent[StackPanel].Height}" />
             <Setter Property="Margin" Value="0,0,2,0" />
@@ -86,9 +86,9 @@
             </ItemsControl.ItemsPanel>
 
             <ItemsControl.ItemTemplate>
-                <views:EntryDataTemplateSelector>
-                    <views:EntryDataTemplateSelector.FileDataTemplate>
-                        <DataTemplate DataType="viewModels:EntryViewModel">
+                <dataTemplateSelector:EntryDataTemplateSelector>
+                    <dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
+                        <DataTemplate DataType="viewModels1:EntryViewModel">
                             <StackPanel Classes="entry">
                                 <Viewbox Classes="entry">
                                     <Path Classes="entry" IsVisible="{Binding IsSelected.Value}" />
@@ -103,10 +103,10 @@
                                            Text="{Binding Extension}" />
                             </StackPanel>
                         </DataTemplate>
-                    </views:EntryDataTemplateSelector.FileDataTemplate>
+                    </dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
 
-                    <views:EntryDataTemplateSelector.DirectoryDataTemplate>
-                        <DataTemplate DataType="viewModels:EntryViewModel">
+                    <dataTemplateSelector:EntryDataTemplateSelector.DirectoryDataTemplate>
+                        <DataTemplate DataType="viewModels1:EntryViewModel">
                             <StackPanel Classes="entry">
                                 <Viewbox Classes="entry">
                                     <Path Classes="entry" IsVisible="{Binding IsSelected.Value}" />
@@ -117,8 +117,8 @@
                                            Text="{Binding NameWithExtension}" />
                             </StackPanel>
                         </DataTemplate>
-                    </views:EntryDataTemplateSelector.DirectoryDataTemplate>
-                </views:EntryDataTemplateSelector>
+                    </dataTemplateSelector:EntryDataTemplateSelector.DirectoryDataTemplate>
+                </dataTemplateSelector:EntryDataTemplateSelector>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
     </ScrollViewer>

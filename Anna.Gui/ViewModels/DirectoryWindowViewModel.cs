@@ -1,9 +1,9 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Interfaces;
-using Anna.Foundations;
+using Anna.Gui.Foundations;
 using SimpleInjector;
 
-namespace Anna.ViewModels;
+namespace Anna.Gui.ViewModels;
 
 public class DirectoryWindowViewModel : ViewModelBase
 {

@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Anna.Views;
+namespace Anna.Gui.Views;
 
 public partial class DirectoryWindow : Window
 {

@@ -93,12 +93,11 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
         set => SetValue(IsCompressedAttributeBrushProperty, value);
     }
 
-    public object? Convert(
-        IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         var value0 = values.Count >= 1 ? values[0] : null;
         var value1 = values.Count >= 2 ? values[1] : null;
-        
+
         if (value0 is not FileAttributes attributes)
             return null;
 

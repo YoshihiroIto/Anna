@@ -236,9 +236,7 @@ public class Entry : NotificationObject
 
         var e = new Entry
         {
-            Timestamp = fi.LastWriteTime,
-            Size = isDirectory ? 0 : fi.Length,
-            Attributes = fi.Attributes
+            Timestamp = fi.LastWriteTime, Size = isDirectory ? 0 : fi.Length, Attributes = fi.Attributes
         };
 
         e.SetName(nameWithExtension);

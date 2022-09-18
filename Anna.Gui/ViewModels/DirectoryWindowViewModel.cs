@@ -26,9 +26,7 @@ public class DirectoryWindowViewModel : ViewModelBase
 
     private readonly Container _dic;
 
-    public DirectoryWindowViewModel(
-        Container dic,
-        IObjectLifetimeChecker objectLifetimeChecker)
+    public DirectoryWindowViewModel(Container dic, IObjectLifetimeChecker objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
         _dic = dic;
@@ -38,14 +36,14 @@ public class DirectoryWindowViewModel : ViewModelBase
     {
         ViewViewModel = _dic.GetInstance<DirectoryViewViewModel>()
             .Setup(model);
-        
+
         return this;
     }
 
     public override void Dispose()
     {
         ViewViewModel = null;
-        
+
         base.Dispose();
     }
 }

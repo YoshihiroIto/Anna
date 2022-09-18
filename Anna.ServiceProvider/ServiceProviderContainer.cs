@@ -33,8 +33,7 @@ public class ServiceProviderContainer : Container
         
         _logger.Information("Start");
 
-        GetInstance<IObjectLifetimeChecker>()
-            .Start(s => _logger.Error("ObjectLifetimeChecker:Found leak"));
+        GetInstance<IObjectLifetimeChecker>().Start(s => _logger.Error(s));
     }
 
     public new void Dispose()

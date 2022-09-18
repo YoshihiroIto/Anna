@@ -10,10 +10,7 @@ namespace Anna.DomainModel.FileSystem;
 
 public sealed class FileSystemDirectory : Directory, IDisposable
 {
-    internal FileSystemDirectory(
-        string path,
-        ILogger logger,
-        IObjectLifetimeChecker objectLifetimeChecker)
+    internal FileSystemDirectory(string path, ILogger logger, IObjectLifetimeChecker objectLifetimeChecker)
         : base(path, logger)
     {
         _objectLifetimeChecker = objectLifetimeChecker;
@@ -64,7 +61,7 @@ public sealed class FileSystemDirectory : Directory, IDisposable
             .Subscribe(x => _logger.Error(x.GetException().ToString()))
             .AddTo(_trash);
     }
-    
+
     private readonly IObjectLifetimeChecker _objectLifetimeChecker;
     private readonly CompositeDisposable _trash = new();
 }

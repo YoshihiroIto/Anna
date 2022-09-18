@@ -20,16 +20,13 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
         AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(NoneAttributeBrush));
 
     public static readonly StyledProperty<IBrush> IsDirectoryAttributeBrushProperty =
-        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(
-        nameof(IsDirectoryAttributeBrush));
+        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsDirectoryAttributeBrush));
 
     public static readonly StyledProperty<IBrush> IsReadOnlyAttributeBrushProperty =
-        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(
-        nameof(IsReadOnlyAttributeBrush));
+        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsReadOnlyAttributeBrush));
 
     public static readonly StyledProperty<IBrush> IsReparsePointAttributeBrushProperty =
-        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(
-        nameof(IsReparsePointAttributeBrush));
+        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsReparsePointAttributeBrush));
 
     public static readonly StyledProperty<IBrush> IsHiddenAttributeBrushProperty =
         AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsHiddenAttributeBrush));
@@ -38,12 +35,10 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
         AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsSystemAttributeBrush));
 
     public static readonly StyledProperty<IBrush> IsEncryptedAttributeBrushProperty =
-        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(
-        nameof(IsEncryptedAttributeBrush));
+        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsEncryptedAttributeBrush));
 
     public static readonly StyledProperty<IBrush> IsCompressedAttributeBrushProperty =
-        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(
-        nameof(IsCompressedAttributeBrush));
+        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsCompressedAttributeBrush));
 
     public IBrush NoneAttributeBrush
     {
@@ -109,14 +104,10 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
 
         return brushType switch
         {
-            AttributeBrushConverterBrushTypes.Foreground when isOnCursor =>
-                Brushes.Black,
-            AttributeBrushConverterBrushTypes.Foreground when isOnCursor == false =>
-                FindBrush(attributes),
-            AttributeBrushConverterBrushTypes.Background when isOnCursor =>
-                FindBrush(attributes),
-            AttributeBrushConverterBrushTypes.Background when isOnCursor == false =>
-                Brushes.Transparent,
+            AttributeBrushConverterBrushTypes.Foreground when isOnCursor => Brushes.Black,
+            AttributeBrushConverterBrushTypes.Foreground when isOnCursor == false => FindBrush(attributes),
+            AttributeBrushConverterBrushTypes.Background when isOnCursor => FindBrush(attributes),
+            AttributeBrushConverterBrushTypes.Background when isOnCursor == false => Brushes.Transparent,
             _ => throw new ArgumentOutOfRangeException()
         };
     }

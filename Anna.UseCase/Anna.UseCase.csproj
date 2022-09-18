@@ -8,4 +8,8 @@
         <RootNamespace>Anna.Gui.UseCase</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
+    </ItemGroup>
+
 </Project>

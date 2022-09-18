@@ -1,4 +1,5 @@
-﻿using Anna.Gui.UseCase;
+﻿using Anna.DomainModel;
+using Anna.Gui.UseCase;
 using Anna.Gui.UseCase.Interfaces;
 using Avalonia.Input;
 
@@ -8,7 +9,13 @@ public class ShortcutKeyManager
 {
     public ShortcutKeyManager(IDialogOperator dialogOperator)
     {
-        _registry.Register(Key.S, KeyModifiers.None, dialogOperator.ShowSortEntries);
+        _registry.Register(Key.S,
+        KeyModifiers.None,
+        x =>
+        {
+            dialogOperator.SelectSortModeAndOrder(x, SortModes.Name, SortOrders.Ascending);
+        }
+        );
     }
 
     public void OnKeyDown(IShortcutKeyReceiver receiver, KeyEventArgs e)

@@ -1,9 +1,11 @@
-﻿using Anna.Gui.UseCase.Interfaces;
+﻿using Anna.DomainModel;
+using Anna.Gui.UseCase.Interfaces;
 
 namespace Anna.Gui.UseCase
 {
     public interface IDialogOperator
     {
-        void ShowSortEntries(IShortcutKeyReceiver shortcutKeyReceiver);
+        (SortModes mode, SortOrders order) SelectSortModeAndOrder(
+            IShortcutKeyReceiver shortcutKeyReceiver, SortModes initialMode, SortOrders initialOrder);
     }
 }

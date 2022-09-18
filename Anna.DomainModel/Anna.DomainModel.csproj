@@ -14,6 +14,7 @@
     <ItemGroup>
       <PackageReference Include="NaturalSort.Extension" Version="4.0.0" />
       <PackageReference Include="ReactiveProperty" Version="8.1.2" />
+      <PackageReference Include="SimpleInjector" Version="5.4.0" />
     </ItemGroup>
 
 </Project>

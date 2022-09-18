@@ -1,8 +1,6 @@
 ﻿using Anna.DomainModel;
-using Anna.DomainModel.Interactor;
 using Anna.DomainModel.Interactor.ObjectLifetimeChecker;
 using Anna.DomainModel.Interfaces;
-using Anna.DomainModel.UseCases;
 using Anna.Gui.UseCase;
 using Anna.Interactors;
 using Anna.ViewModels.ShortcutKey;
@@ -25,7 +23,7 @@ public class ServiceProviderContainer : Container
         RegisterSingleton(() => new Config { FilePath = appConfigFilePath });
         RegisterSingleton<ILogger>(() => new Log.Logger(logOutputDir));
         RegisterSingleton<App>();
-        RegisterSingleton<IDomainModelUseCase, DomainModelInteractor>();
+        RegisterSingleton<DomainModelOperator>();
         RegisterSingleton<ShortcutKeyManager>();
         RegisterSingleton<IDialogOperator, DialogOperator>();
 

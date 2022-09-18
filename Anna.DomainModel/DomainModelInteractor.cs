@@ -1,15 +1,14 @@
 ﻿using Anna.DomainModel.FileSystem;
 using Anna.DomainModel.Interfaces;
-using Anna.DomainModel.UseCases;
 using SimpleInjector;
 
-namespace Anna.DomainModel.Interactor;
+namespace Anna.DomainModel;
 
-public class DomainModelInteractor : IDomainModelUseCase
+public class DomainModelOperator
 {
     private readonly Container _dic;
 
-    public DomainModelInteractor(Container dic)
+    public DomainModelOperator(Container dic)
     {
         _dic = dic;
     }

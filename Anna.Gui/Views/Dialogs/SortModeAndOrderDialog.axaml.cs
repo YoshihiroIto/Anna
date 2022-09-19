@@ -31,8 +31,8 @@ public partial class SortModeAndOrderDialog : Window
         private set => SetAndRaise(IsEnabledOrderProperty, ref _IsEnabledOrder, value);
     }
 
-    public bool _IsEnabledMode = true;
-    public bool _IsEnabledOrder;
+    private bool _IsEnabledMode = true;
+    private bool _IsEnabledOrder;
 
     public SortModeAndOrderDialog()
     {

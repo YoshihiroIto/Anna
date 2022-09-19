@@ -15,6 +15,7 @@
         d:DesignHeight="600"
         d:DesignWidth="600"
         x:CompileBindings="True"
+        WindowStartupLocation="CenterScreen"
         x:DataType="viewModels1:DirectoryWindowViewModel"
         mc:Ignorable="d">
     <Interaction.Behaviors>

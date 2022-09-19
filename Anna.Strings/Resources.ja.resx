@@ -27,12 +27,21 @@
         <value>ファイルサイズ順(_S)</value>
     </data>
     <data name="EntrySort_Mode_Timestamp" xml:space="preserve">
-        <value>属性順(_T)</value>
+        <value>日付順(_T)</value>
     </data>
     <data name="EntrySort_Order_Ascending" xml:space="preserve">
         <value>昇順(_A)</value>
     </data>
     <data name="EntrySort_Order_Descending" xml:space="preserve">
         <value>降順(_D)</value>
+    </data>
+    <data name="Dialog_Ok" xml:space="preserve">
+        <value>_OK</value>
+    </data>
+    <data name="Dialog_Cancel" xml:space="preserve">
+        <value>キャンセル(_C)</value>
+    </data>
+    <data name="AppName" xml:space="preserve">
+        <value>Anna</value>
     </data>
 </root>

@@ -50,4 +50,11 @@ public static class Program
         => AppBuilder.Configure(() => new GuiApp().Setup(dic))
             .UsePlatformDetect()
             .LogToTrace();
+    
+    // for designer
+    private static AppBuilder BuildAvaloniaApp()
+        => AppBuilder.Configure(() => new GuiApp())
+            .UsePlatformDetect()
+            .LogToTrace();
+    
 }

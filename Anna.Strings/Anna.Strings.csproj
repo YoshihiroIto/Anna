@@ -13,30 +13,12 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
       </Compile>
-      <Compile Update="Resources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Ressouces.ja.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Ressouces.ja.resx</DependentUpon>
-      </Compile>
     </ItemGroup>
   
     <ItemGroup>
       <EmbeddedResource Update="Resources.resx">
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
         <Generator>PublicResXFileCodeGenerator</Generator>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Ressouces.ja.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Ressouces.ja.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 

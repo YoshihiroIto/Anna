@@ -18,10 +18,10 @@ namespace Anna.Strings {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -35,7 +35,7 @@ namespace Anna.Strings {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Anna.Strings.Resources", typeof(Resources).Assembly);
@@ -50,7 +50,7 @@ namespace Anna.Strings {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -60,9 +60,36 @@ namespace Anna.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Anna.
+        /// </summary>
+        public static string AppName {
+            get {
+                return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Cancel.
+        /// </summary>
+        public static string Dialog_Cancel {
+            get {
+                return ResourceManager.GetString("Dialog_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _OK.
+        /// </summary>
+        public static string Dialog_Ok {
+            get {
+                return ResourceManager.GetString("Dialog_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entry sort.
         /// </summary>
-        internal static string DialogTitle_EntrySort {
+        public static string DialogTitle_EntrySort {
             get {
                 return ResourceManager.GetString("DialogTitle_EntrySort", resourceCulture);
             }
@@ -71,7 +98,7 @@ namespace Anna.Strings {
         /// <summary>
         ///   Looks up a localized string similar to _Attribute.
         /// </summary>
-        internal static string EntrySort_Mode_Attribute {
+        public static string EntrySort_Mode_Attribute {
             get {
                 return ResourceManager.GetString("EntrySort_Mode_Attribute", resourceCulture);
             }
@@ -80,7 +107,7 @@ namespace Anna.Strings {
         /// <summary>
         ///   Looks up a localized string similar to _Extension.
         /// </summary>
-        internal static string EntrySort_Mode_Extension {
+        public static string EntrySort_Mode_Extension {
             get {
                 return ResourceManager.GetString("EntrySort_Mode_Extension", resourceCulture);
             }
@@ -89,7 +116,7 @@ namespace Anna.Strings {
         /// <summary>
         ///   Looks up a localized string similar to _Name.
         /// </summary>
-        internal static string EntrySort_Mode_Name {
+        public static string EntrySort_Mode_Name {
             get {
                 return ResourceManager.GetString("EntrySort_Mode_Name", resourceCulture);
             }
@@ -98,7 +125,7 @@ namespace Anna.Strings {
         /// <summary>
         ///   Looks up a localized string similar to _File size.
         /// </summary>
-        internal static string EntrySort_Mode_Size {
+        public static string EntrySort_Mode_Size {
             get {
                 return ResourceManager.GetString("EntrySort_Mode_Size", resourceCulture);
             }
@@ -107,7 +134,7 @@ namespace Anna.Strings {
         /// <summary>
         ///   Looks up a localized string similar to _Timestamp.
         /// </summary>
-        internal static string EntrySort_Mode_Timestamp {
+        public static string EntrySort_Mode_Timestamp {
             get {
                 return ResourceManager.GetString("EntrySort_Mode_Timestamp", resourceCulture);
             }
@@ -116,7 +143,7 @@ namespace Anna.Strings {
         /// <summary>
         ///   Looks up a localized string similar to _Ascending.
         /// </summary>
-        internal static string EntrySort_Order_Ascending {
+        public static string EntrySort_Order_Ascending {
             get {
                 return ResourceManager.GetString("EntrySort_Order_Ascending", resourceCulture);
             }
@@ -125,7 +152,7 @@ namespace Anna.Strings {
         /// <summary>
         ///   Looks up a localized string similar to _Descending.
         /// </summary>
-        internal static string EntrySort_Order_Descending {
+        public static string EntrySort_Order_Descending {
             get {
                 return ResourceManager.GetString("EntrySort_Order_Descending", resourceCulture);
             }

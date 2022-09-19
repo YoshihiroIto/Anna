@@ -4,8 +4,12 @@ using Anna.Gui;
 using Anna.ServiceProvider;
 using System;
 using Avalonia;
+using Avalonia.Xaml.Interactions.Core;
+using Avalonia.Xaml.Interactivity;
+using Reactive.Bindings.Extensions;
 using SimpleInjector;
 using System.IO;
+using System.Reflection;
 using System.Runtime;
 using Directory=System.IO.Directory;
 
@@ -53,8 +57,12 @@ public static class Program
     
     // for designer
     private static AppBuilder BuildAvaloniaApp()
-        => AppBuilder.Configure(() => new GuiApp())
+    {
+        GC.KeepAlive(Assembly.GetAssembly(typeof(Interaction)));
+        GC.KeepAlive(Assembly.GetAssembly(typeof(EventTriggerBehavior)));
+        
+        return AppBuilder.Configure(() => new GuiApp())
             .UsePlatformDetect()
             .LogToTrace();
-    
+    }
 }

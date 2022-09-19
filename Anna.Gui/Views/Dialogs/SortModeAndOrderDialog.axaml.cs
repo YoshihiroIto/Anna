@@ -11,23 +11,28 @@ namespace Anna.Gui.Views.Dialogs;
 
 public partial class SortModeAndOrderDialog : Window
 {
-    public static readonly StyledProperty<bool> IsEnabledModeProperty =
-        AvaloniaProperty.Register<SortModeAndOrderDialog, bool>(nameof(IsEnabledMode), true);
+    public static readonly DirectProperty<SortModeAndOrderDialog, bool> IsEnabledModeProperty =
+        AvaloniaProperty.RegisterDirect<SortModeAndOrderDialog, bool>(
+        nameof(IsEnabledMode), o => o.IsEnabledMode);
 
-    public static readonly StyledProperty<bool> IsEnabledOrderProperty =
-        AvaloniaProperty.Register<SortModeAndOrderDialog, bool>(nameof(IsEnabledOrder), false);
+    public static readonly DirectProperty<SortModeAndOrderDialog, bool> IsEnabledOrderProperty =
+        AvaloniaProperty.RegisterDirect<SortModeAndOrderDialog, bool>(
+        nameof(IsEnabledOrder), o => o.IsEnabledOrder);
 
     public bool IsEnabledMode
     {
-        get => GetValue(IsEnabledModeProperty);
-        set => SetValue(IsEnabledModeProperty, value);
+        get => _IsEnabledMode;
+        private set => SetAndRaise(IsEnabledModeProperty, ref _IsEnabledMode, value);
     }
 
     public bool IsEnabledOrder
     {
-        get => GetValue(IsEnabledOrderProperty);
-        set => SetValue(IsEnabledOrderProperty, value);
+        get => _IsEnabledOrder;
+        private set => SetAndRaise(IsEnabledOrderProperty, ref _IsEnabledOrder, value);
     }
+
+    public bool _IsEnabledMode = true;
+    public bool _IsEnabledOrder;
 
     public SortModeAndOrderDialog()
     {
@@ -59,7 +64,7 @@ public partial class SortModeAndOrderDialog : Window
     {
         SetSortOrder((SortOrders)((sender as Control)?.Tag ?? throw new NullReferenceException()));
     }
-    
+
     private void CancelButton_OnClick(object? sender, RoutedEventArgs e)
     {
         Cancel();
@@ -99,7 +104,7 @@ public partial class SortModeAndOrderDialog : Window
                 return;
             }
         }
-        
+
         if (e.Key == Key.C)
             Cancel();
     }
@@ -145,7 +150,7 @@ public partial class SortModeAndOrderDialog : Window
         ViewModel.DialogResult = DialogResultTypes.Cancel;
         Close();
     }
-    
+
     private static void MoveFocus(bool isNext)
     {
         var current = FocusManager.Instance?.Current;
@@ -177,8 +182,7 @@ public partial class SortModeAndOrderDialog : Window
 
     private static readonly IReadOnlyDictionary<Key, SortOrders> KeyToSortOrder = new Dictionary<Key, SortOrders>
     {
-        { Key.A, SortOrders.Ascending },
-        { Key.E, SortOrders.Descending }
+        { Key.A, SortOrders.Ascending }, { Key.E, SortOrders.Descending }
     };
 
     private enum States

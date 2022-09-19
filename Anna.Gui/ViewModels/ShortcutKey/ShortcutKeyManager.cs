@@ -1,9 +1,7 @@
-﻿using Anna.DomainModel;
-using Anna.UseCase;
+﻿using Anna.UseCase;
 using Anna.UseCase.Interfaces;
 using Avalonia.Input;
 using SimpleInjector;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Anna.Gui.ViewModels.ShortcutKey;
@@ -17,12 +15,11 @@ public class ShortcutKeyManager
         async x =>
         {
             var result = await dialogOperator.SelectSortModeAndOrderAsync(dic, x);
-            Debug.WriteLine(result);
 
-            if (result.isCancel)
+            if (result.IsCancel)
                 return;
             
-            x.Directory.SetSortModeAndOrder(SortModes.Size, SortOrders.Descending);
+            x.Directory.SetSortModeAndOrder(result.SortMode, result.SortOrder);
         });
     }
 

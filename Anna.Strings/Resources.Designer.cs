@@ -96,7 +96,7 @@ namespace Anna.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Attribute.
+        ///   Looks up a localized string similar to Att_ribute.
         /// </summary>
         public static string EntrySort_Mode_Attribute {
             get {

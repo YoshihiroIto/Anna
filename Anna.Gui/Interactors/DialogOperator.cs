@@ -9,7 +9,7 @@ namespace Anna.Gui.Interactors;
 
 public class DialogOperator : IDialogOperator
 {
-    public async ValueTask<(bool isCancel, SortModes mode, SortOrders order)> SelectSortModeAndOrderAsync(
+    public async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)> SelectSortModeAndOrderAsync(
         Container dic,
         IShortcutKeyReceiver shortcutKeyReceiver)
     {
@@ -18,6 +18,6 @@ public class DialogOperator : IDialogOperator
 
         await view.ShowDialog(shortcutKeyReceiver.Owner);
 
-        return (viewModel.DialogResult == DialogResultTypes.Cancel, SortModes.Name, SortOrders.Ascending);
+        return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.SortMode, viewModel.SortOrder);
     }
 }

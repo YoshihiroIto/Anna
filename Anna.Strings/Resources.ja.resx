@@ -15,7 +15,7 @@
         <value>エントリーのソート</value>
     </data>
     <data name="EntrySort_Mode_Attribute" xml:space="preserve">
-        <value>属性順(_A)</value>
+        <value>属性順(_R)</value>
     </data>
     <data name="EntrySort_Mode_Extension" xml:space="preserve">
         <value>拡張子名順(_E)</value>

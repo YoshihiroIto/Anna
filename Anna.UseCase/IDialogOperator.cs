@@ -6,7 +6,7 @@ namespace Anna.UseCase
 {
     public interface IDialogOperator
     {
-        ValueTask<(bool isCancel, SortModes mode, SortOrders order)> SelectSortModeAndOrderAsync(
+        ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)> SelectSortModeAndOrderAsync(
             Container dic,
             IShortcutKeyReceiver shortcutKeyReceiver);
     }

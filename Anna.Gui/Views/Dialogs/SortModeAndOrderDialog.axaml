@@ -5,13 +5,15 @@
         xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
+        xmlns:domainModel="clr-namespace:Anna.DomainModel;assembly=Anna.DomainModel"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:strings="clr-namespace:Anna.Strings;assembly=Anna.Strings"
         Title="{x:Static strings:Resources.DialogTitle_EntrySort}"
         d:DesignHeight="400"
         d:DesignWidth="400"
-        x:CompileBindings="True"
+        x:CompileBindings="False"
         x:DataType="dialogs:DialogViewModel"
+        KeyDown="OnKeyDown"
         mc:Ignorable="d">
     <Window.Styles>
         <StyleInclude Source="/Views/Resources/Styles.axaml" />
@@ -29,24 +31,56 @@
             </Style>
         </StackPanel.Styles>
 
-        <Button Content="{x:Static strings:Resources.EntrySort_Mode_Name}" />
-        <Button Content="{x:Static strings:Resources.EntrySort_Mode_Extension}" />
-        <Button Content="{x:Static strings:Resources.EntrySort_Mode_Size}" />
-        <Button Content="{x:Static strings:Resources.EntrySort_Mode_Timestamp}" />
-        <Button Content="{x:Static strings:Resources.EntrySort_Mode_Attribute}" />
+        <StackPanel IsEnabled="{Binding $parent[dialogs:SortModeAndOrderDialog].IsEnabledMode}" Spacing="12">
+            <Button x:Name="ModeNameButton"
+                    Click="ModeButton_OnClick"
+                    Content="{x:Static strings:Resources.EntrySort_Mode_Name}"
+                    TabIndex="0"
+                    Tag="{x:Static domainModel:SortModes.Name}" />
+            <Button Click="ModeButton_OnClick"
+                    Content="{x:Static strings:Resources.EntrySort_Mode_Extension}"
+                    TabIndex="1"
+                    Tag="{x:Static domainModel:SortModes.Extension}" />
+            <Button Click="ModeButton_OnClick"
+                    Content="{x:Static strings:Resources.EntrySort_Mode_Size}"
+                    TabIndex="2"
+                    Tag="{x:Static domainModel:SortModes.Size}" />
+            <Button Click="ModeButton_OnClick"
+                    Content="{x:Static strings:Resources.EntrySort_Mode_Timestamp}"
+                    TabIndex="3"
+                    Tag="{x:Static domainModel:SortModes.Timestamp}" />
+            <Button Click="ModeButton_OnClick"
+                    Content="{x:Static strings:Resources.EntrySort_Mode_Attribute}"
+                    TabIndex="4"
+                    Tag="{x:Static domainModel:SortModes.Attributes}" />
+        </StackPanel>
 
         <Rectangle Height="1"
                    HorizontalAlignment="Stretch"
                    Fill="#444444" />
 
-        <Grid  ColumnDefinitions="*,*,*">
-            <Button Grid.Column="0"
-                    Margin="0,0,12,0"
-                    Content="{x:Static strings:Resources.EntrySort_Order_Ascending}" />
+        <Grid ColumnDefinitions="Auto,*">
+            <Grid Grid.Column="0"
+                  Margin="0,0,12,0"
+                  ColumnDefinitions="*,12,*"
+                  IsEnabled="{Binding $parent[dialogs:SortModeAndOrderDialog].IsEnabledOrder}">
+                <Button x:Name="OrderAscendingButton"
+                        Grid.Column="0"
+                        Click="OrderButton_OnClick"
+                        Content="{x:Static strings:Resources.EntrySort_Order_Ascending}"
+                        TabIndex="5"
+                        Tag="{x:Static domainModel:SortOrders.Ascending}" />
+                <Button Grid.Column="2"
+                        Click="OrderButton_OnClick"
+                        Content="{x:Static strings:Resources.EntrySort_Order_Descending}"
+                        TabIndex="6"
+                        Tag="{x:Static domainModel:SortOrders.Descending}" />
+            </Grid>
+
             <Button Grid.Column="1"
-                    Margin="0,0,12,0"
-                    Content="{x:Static strings:Resources.EntrySort_Order_Descending}" />
-            <Button Grid.Column="2" Content="{x:Static strings:Resources.Dialog_Cancel}" />
+                    Click="CancelButton_OnClick"
+                    Content="{x:Static strings:Resources.Dialog_Cancel}"
+                    TabIndex="8" />
         </Grid>
     </StackPanel>
 </Window>

@@ -45,6 +45,13 @@
             </MenuItem>
         </Menu>
 
-        <views1:DirectoryView x:Name="DirectoryView" DataContext="{Binding ViewViewModel, Mode=OneWay}" />
+        <Rectangle Height="1"
+                   HorizontalAlignment="Stretch"
+                   DockPanel.Dock="Top"
+                   Fill="#444444" />
+
+        <views1:DirectoryView
+            Margin="4,8"
+            x:Name="DirectoryView" DataContext="{Binding ViewViewModel, Mode=OneWay}" />
     </DockPanel>
 </Window>

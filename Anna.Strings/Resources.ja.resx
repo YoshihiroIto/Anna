@@ -44,4 +44,28 @@
     <data name="AppName" xml:space="preserve">
         <value>Anna</value>
     </data>
+    <data name="Menu_File" xml:space="preserve">
+        <value>ファイル(_F)</value>
+    </data>
+    <data name="Menu_View" xml:space="preserve">
+        <value>表示(_V)</value>
+    </data>
+    <data name="Menu_File_Exit" xml:space="preserve">
+        <value>終了(_X)</value>
+    </data>
+    <data name="Menu_File_Open" xml:space="preserve">
+        <value>開く(_O)</value>
+    </data>
+    <data name="Menu_Help" xml:space="preserve">
+        <value>ヘルプ(_H)</value>
+    </data>
+    <data name="Menu_Help_About" xml:space="preserve">
+        <value>Anna について(_A)...</value>
+    </data>
+    <data name="Menu_File_Settings" xml:space="preserve">
+        <value>設定(_S)</value>
+    </data>
+    <data name="Menu_View_EntrySort" xml:space="preserve">
+        <value>エントリーのソート(_S)...</value>
+    </data>
 </root>

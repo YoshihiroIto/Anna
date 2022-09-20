@@ -150,4 +150,28 @@
   <data name="AppName" xml:space="preserve">
     <value>Anna</value>
   </data>
+  <data name="Menu_File" xml:space="preserve">
+    <value>_File</value>
+  </data>
+  <data name="Menu_File_Exit" xml:space="preserve">
+    <value>E_xit</value>
+  </data>
+  <data name="Menu_File_Open" xml:space="preserve">
+    <value>_Open</value>
+  </data>
+  <data name="Menu_View" xml:space="preserve">
+    <value>_View</value>
+  </data>
+  <data name="Menu_Help" xml:space="preserve">
+    <value>_Help</value>
+  </data>
+  <data name="Menu_Help_About" xml:space="preserve">
+    <value>_About Anna...</value>
+  </data>
+  <data name="Menu_File_Settings" xml:space="preserve">
+    <value>_Settings...</value>
+  </data>
+  <data name="Menu_View_EntrySort" xml:space="preserve">
+    <value>Entry _sort...</value>
+  </data>
 </root>

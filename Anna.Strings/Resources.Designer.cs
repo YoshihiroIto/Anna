@@ -157,5 +157,77 @@ namespace Anna.Strings {
                 return ResourceManager.GetString("EntrySort_Order_Descending", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _File.
+        /// </summary>
+        public static string Menu_File {
+            get {
+                return ResourceManager.GetString("Menu_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E_xit.
+        /// </summary>
+        public static string Menu_File_Exit {
+            get {
+                return ResourceManager.GetString("Menu_File_Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Open.
+        /// </summary>
+        public static string Menu_File_Open {
+            get {
+                return ResourceManager.GetString("Menu_File_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Settings....
+        /// </summary>
+        public static string Menu_File_Settings {
+            get {
+                return ResourceManager.GetString("Menu_File_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Help.
+        /// </summary>
+        public static string Menu_Help {
+            get {
+                return ResourceManager.GetString("Menu_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _About Anna....
+        /// </summary>
+        public static string Menu_Help_About {
+            get {
+                return ResourceManager.GetString("Menu_Help_About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _View.
+        /// </summary>
+        public static string Menu_View {
+            get {
+                return ResourceManager.GetString("Menu_View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entry _sort....
+        /// </summary>
+        public static string Menu_View_EntrySort {
+            get {
+                return ResourceManager.GetString("Menu_View_EntrySort", resourceCulture);
+            }
+        }
     }
 }

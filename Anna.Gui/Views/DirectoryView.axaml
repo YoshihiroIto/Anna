@@ -13,6 +13,10 @@
              x:DataType="viewModels1:DirectoryViewViewModel"
              FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
              mc:Ignorable="d">
+    <UserControl.Styles>
+        <StyleInclude Source="/Views/Resources/Styles.axaml" />
+    </UserControl.Styles>
+    
     <UserControl.Resources>
         <converters:AttributeBrushConverter x:Key="AttributeBrushConverter"
                                             NoneAttributeBrush="{DynamicResource EmptyAttributeBrush}"

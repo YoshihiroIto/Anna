@@ -15,9 +15,13 @@
         d:DesignHeight="600"
         d:DesignWidth="600"
         x:CompileBindings="True"
-        WindowStartupLocation="CenterScreen"
         x:DataType="viewModels1:DirectoryWindowViewModel"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
+    <Window.Styles>
+        <StyleInclude Source="/Views/Resources/Styles.axaml" />
+    </Window.Styles>
+
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
     </Interaction.Behaviors>

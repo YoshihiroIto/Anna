@@ -3,7 +3,12 @@
         <Setter Property="FontFamily" Value="/Assets/InGenUI-Regular.ttf#InGen UI" />
     </Style>
 
+    <Style Selector="MenuItem">
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
     <Style Selector="Window.dialog">
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="12" />
         <Setter Property="CanResize" Value="False" />
         <Setter Property="ShowInTaskbar" Value="False" />

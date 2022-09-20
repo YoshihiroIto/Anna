@@ -31,7 +31,7 @@
             </Style>
         </StackPanel.Styles>
 
-        <StackPanel IsEnabled="{Binding $parent[dialogs:SortModeAndOrderDialog].IsEnabledMode}" Spacing="12">
+        <StackPanel x:Name="ModePanel" Spacing="12">
             <Button x:Name="ModeNameButton"
                     Click="ModeButton_OnClick"
                     Content="{x:Static strings:Resources.EntrySort_Mode_Name}"
@@ -60,10 +60,10 @@
                    Fill="#444444" />
 
         <Grid ColumnDefinitions="Auto,*">
-            <Grid Grid.Column="0"
+            <Grid x:Name="OrderPanel"
+                  Grid.Column="0"
                   Margin="0,0,12,0"
-                  ColumnDefinitions="*,12,*"
-                  IsEnabled="{Binding $parent[dialogs:SortModeAndOrderDialog].IsEnabledOrder}">
+                  ColumnDefinitions="*,12,*">
                 <Button x:Name="OrderAscendingButton"
                         Grid.Column="0"
                         Click="OrderButton_OnClick"

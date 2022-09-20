@@ -11,29 +11,6 @@ namespace Anna.Gui.Views.Dialogs;
 
 public partial class SortModeAndOrderDialog : Window
 {
-    public static readonly DirectProperty<SortModeAndOrderDialog, bool> IsEnabledModeProperty =
-        AvaloniaProperty.RegisterDirect<SortModeAndOrderDialog, bool>(
-        nameof(IsEnabledMode), o => o.IsEnabledMode);
-
-    public static readonly DirectProperty<SortModeAndOrderDialog, bool> IsEnabledOrderProperty =
-        AvaloniaProperty.RegisterDirect<SortModeAndOrderDialog, bool>(
-        nameof(IsEnabledOrder), o => o.IsEnabledOrder);
-
-    public bool IsEnabledMode
-    {
-        get => _IsEnabledMode;
-        private set => SetAndRaise(IsEnabledModeProperty, ref _IsEnabledMode, value);
-    }
-
-    public bool IsEnabledOrder
-    {
-        get => _IsEnabledOrder;
-        private set => SetAndRaise(IsEnabledOrderProperty, ref _IsEnabledOrder, value);
-    }
-
-    private bool _IsEnabledMode = true;
-    private bool _IsEnabledOrder;
-
     public SortModeAndOrderDialog()
     {
         InitializeComponent();
@@ -48,6 +25,8 @@ public partial class SortModeAndOrderDialog : Window
             modeNameButton.AttachedToVisualTree += (_, _) =>
                 FocusManager.Instance?.Focus(modeNameButton, NavigationMethod.Directional);
         }
+
+        UpdateView();
     }
 
     private void InitializeComponent()
@@ -114,16 +93,16 @@ public partial class SortModeAndOrderDialog : Window
         switch (_states)
         {
             case States.Mode:
-                IsEnabledMode = true;
-                IsEnabledOrder = false;
+                this.FindControl<Panel>("ModePanel")!.IsEnabled = true;
+                this.FindControl<Panel>("OrderPanel")!.IsEnabled = false;
                 break;
 
             case States.Order:
-                IsEnabledMode = false;
-                IsEnabledOrder = true;
+                this.FindControl<Panel>("ModePanel")!.IsEnabled = false;
+                this.FindControl<Panel>("OrderPanel")!.IsEnabled = true;
 
-                var orderAscendingButton = this.FindControl<Button>("OrderAscendingButton");
-                FocusManager.Instance?.Focus(orderAscendingButton, NavigationMethod.Directional);
+                FocusManager.Instance?
+                    .Focus(this.FindControl<Button>("OrderAscendingButton"), NavigationMethod.Directional);
                 break;
 
             default:

@@ -45,7 +45,6 @@ public static class Program
         BuildAvaloniaApp(dic)
             .StartWithClassicDesktopLifetime(args);
 
-        dic.GetInstance<App>().Clean();
         dic.Destroy();
     }
 

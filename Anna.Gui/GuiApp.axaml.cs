@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Microsoft.CodeAnalysis;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
@@ -22,7 +23,7 @@ public class GuiApp : Application
 
         return this;
     }
-    
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -39,9 +40,9 @@ public class GuiApp : Application
     private void SetupDesktop(IClassicDesktopStyleApplicationLifetime desktop)
     {
         _ = _dic ?? throw new NullReferenceException();
-        
+
         ReactivePropertyScheduler.SetDefault(AvaloniaScheduler.Instance);
-    
+
         desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
         desktop.MainWindow.Closed += OnClosed;
 
@@ -50,6 +51,13 @@ public class GuiApp : Application
             {
                 var d = new DirectoryWindow { DataContext = _dic.GetInstance<DirectoryWindowViewModel>().Setup(x) };
                 d.Show();
+            }).AddTo(_trash);
+
+        _dic.GetInstance<App>().Directories.CollectionChangedAsObservable()
+            .Subscribe(x =>
+            {
+                if (_dic.GetInstance<App>().Directories.Count == 0)
+                    desktop.MainWindow.Close();
             }).AddTo(_trash);
 
         _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));

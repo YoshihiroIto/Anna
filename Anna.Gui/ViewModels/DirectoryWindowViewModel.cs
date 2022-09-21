@@ -2,6 +2,7 @@
 using Anna.DomainModel.Interfaces;
 using Anna.Gui.Foundations;
 using SimpleInjector;
+using System;
 
 namespace Anna.Gui.ViewModels;
 
@@ -24,8 +25,6 @@ public class DirectoryWindowViewModel : ViewModelBase
 
     #endregion
 
-    private readonly Container _dic;
-
     public DirectoryWindowViewModel(Container dic, IObjectLifetimeChecker objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
@@ -34,6 +33,8 @@ public class DirectoryWindowViewModel : ViewModelBase
 
     public DirectoryWindowViewModel Setup(Directory model)
     {
+        _model = model;
+        
         ViewViewModel = _dic.GetInstance<DirectoryViewViewModel>()
             .Setup(model);
 
@@ -42,8 +43,15 @@ public class DirectoryWindowViewModel : ViewModelBase
 
     public override void Dispose()
     {
+        _dic.GetInstance<App>().CloseDirectory(_model ?? throw new NullReferenceException());
+
         ViewViewModel = null;
 
         base.Dispose();
     }
+    
+
+    private readonly Container _dic;
+    private Directory? _model;
+    
 }

@@ -16,7 +16,6 @@ public class App : DisposableNotificationObject
         Directories = new ReadOnlyObservableCollection<Directory>(_Directories);
     }
 
-
     public void ShowDirectory(string path)
     {
         _Directories.Add(_domainModelOperator.CreateDirectory(path));
@@ -31,9 +30,7 @@ public class App : DisposableNotificationObject
     
     public void CloseAllDirectories()
     {
-        foreach (var d in Directories)
-            (d as IDisposable)?.Dispose();
-
-        _Directories.Clear();
+        foreach (var d in Directories.ToArray())
+            CloseDirectory(d);
     }
 }

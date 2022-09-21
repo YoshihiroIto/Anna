@@ -33,6 +33,11 @@ public sealed class FileSystemDirectory : Directory, IDisposable
 
     public void Dispose()
     {
+        if (_isDispose)
+            return;
+
+        _isDispose = true;
+        
         _objectLifetimeChecker.Remove(this);
         _trash.Dispose();
     }
@@ -62,6 +67,7 @@ public sealed class FileSystemDirectory : Directory, IDisposable
             .AddTo(_trash);
     }
 
+    private bool _isDispose;
     private readonly IObjectLifetimeChecker _objectLifetimeChecker;
     private readonly CompositeDisposable _trash = new();
 }

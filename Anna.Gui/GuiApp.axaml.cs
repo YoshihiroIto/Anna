@@ -44,7 +44,12 @@ public class GuiApp : Application
         ReactivePropertyScheduler.SetDefault(AvaloniaScheduler.Instance);
 
         desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
-        desktop.MainWindow.Closed += OnClosed;
+        desktop.MainWindow.Closed += (_, _) =>
+        {
+            desktop.MainWindow = null;
+            _dic.GetInstance<App>().CloseAllDirectories();
+            _trash.Dispose();
+        };
 
         _dic.GetInstance<App>().Directories.ObserveAddChanged()
             .Subscribe(x =>
@@ -57,15 +62,10 @@ public class GuiApp : Application
             .Subscribe(x =>
             {
                 if (_dic.GetInstance<App>().Directories.Count == 0)
-                    desktop.MainWindow.Close();
+                    desktop.MainWindow?.Close();
             }).AddTo(_trash);
 
         _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
-    }
-
-    private void OnClosed(object? sender, EventArgs e)
-    {
-        _trash.Dispose();
     }
 
     private Container? _dic;

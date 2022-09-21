@@ -39,8 +39,6 @@ public static class Program
         }
 
         var dic = new ServiceProviderContainer(configDir, appConfigFilePath);
-        
-        dic.GetInstance<ILogger>().Information("Start");
 
         BuildAvaloniaApp(dic)
             .StartWithClassicDesktopLifetime(args);

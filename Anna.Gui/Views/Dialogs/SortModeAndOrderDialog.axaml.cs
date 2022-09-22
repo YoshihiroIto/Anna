@@ -133,7 +133,7 @@ public partial class SortModeAndOrderDialog : Window
     private static void MoveFocus(bool isNext)
     {
         var current = FocusManager.Instance?.Current;
-        if (current == null)
+        if (current is null)
             return;
 
         var next = KeyboardNavigationHandler.GetNext(current,
@@ -141,7 +141,7 @@ public partial class SortModeAndOrderDialog : Window
             ? NavigationDirection.Next
             : NavigationDirection.Previous);
 
-        if (next != null)
+        if (next is not null)
             FocusManager.Instance?.Focus(next, NavigationMethod.Directional);
     }
 

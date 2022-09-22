@@ -39,7 +39,7 @@ public class ServiceProviderContainer : Container
 
         _logger = GetInstance<ILogger>();
 
-        _logger.Information("Start Application");
+        _logger.Start("Application");
 
         GetInstance<IObjectLifetimeChecker>().Start(s => _logger.Error(s));
     }
@@ -51,7 +51,7 @@ public class ServiceProviderContainer : Container
         Dispose();
 
         checker.End();
-        _logger.Information("End Application");
+        _logger.End("Application");
         _logger.Destroy();
     }
 

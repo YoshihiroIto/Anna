@@ -12,9 +12,8 @@ namespace Anna.Gui.Views.Dialogs.Base
 
         public DialogBase Setup(object viewModel)
         {
-            Logger.Information($"Start {GetType().Name}");
-            
-            Closed += (_, _) => Logger.Information($"End {GetType().Name}");
+            Loaded += (_, _) => Logger.Start(GetType().Name);
+            Closed += (_, _) => Logger.End(GetType().Name);
 
             DataContext = viewModel;
 

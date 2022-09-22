@@ -14,12 +14,12 @@ public class DialogViewModel : ViewModelBase
     {
         _logger = logger;
         
-        _logger.Information($"Start {GetType().Name}");
+        _logger.Start(GetType().Name);
     }
 
     public override void Dispose()
     {
-        _logger.Information($"End {GetType().Name}");
+        _logger.End(GetType().Name);
         
         base.Dispose();
         

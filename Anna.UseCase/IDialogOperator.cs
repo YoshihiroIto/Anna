@@ -2,12 +2,11 @@
 using Anna.UseCase.Interfaces;
 using SimpleInjector;
 
-namespace Anna.UseCase
+namespace Anna.UseCase;
+
+public interface IDialogOperator
 {
-    public interface IDialogOperator
-    {
-        ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)> SelectSortModeAndOrderAsync(
-            Container dic,
-            IShortcutKeyReceiver shortcutKeyReceiver);
-    }
+    ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)> SelectSortModeAndOrderAsync(
+        Container dic,
+        IShortcutKeyReceiver shortcutKeyReceiver);
 }

@@ -4,7 +4,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
-using Microsoft.CodeAnalysis;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
@@ -17,9 +16,10 @@ namespace Anna.Gui;
 
 public class GuiApp : Application
 {
-    public GuiApp Setup(Container dic)
+    public GuiApp Setup(Container dic, Action? onMainWindowClosed)
     {
         _dic = dic;
+        _onMainWindowClosed = onMainWindowClosed;
 
         return this;
     }
@@ -31,10 +31,10 @@ public class GuiApp : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        base.OnFrameworkInitializationCompleted();
+        
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             SetupDesktop(desktop);
-
-        base.OnFrameworkInitializationCompleted();
     }
 
     private void SetupDesktop(IClassicDesktopStyleApplicationLifetime desktop)
@@ -49,6 +49,8 @@ public class GuiApp : Application
             desktop.MainWindow = null;
             _dic.GetInstance<App>().CloseAllDirectories();
             _trash.Dispose();
+            
+            _onMainWindowClosed?.Invoke();
         };
 
         _dic.GetInstance<App>().Directories.ObserveAddChanged()
@@ -69,5 +71,6 @@ public class GuiApp : Application
     }
 
     private Container? _dic;
+    private Action? _onMainWindowClosed;
     private readonly CompositeDisposable _trash = new();
 }

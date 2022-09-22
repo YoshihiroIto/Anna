@@ -1,27 +1,55 @@
-﻿using Anna.DomainModel;
-using Anna.DomainModel.Interfaces;
+﻿using Anna.Desktop;
 using Anna.Gui;
 using Anna.ServiceProvider;
-using System;
 using Avalonia;
 using Avalonia.Xaml.Interactions.Core;
 using Avalonia.Xaml.Interactivity;
-using Reactive.Bindings.Extensions;
 using SimpleInjector;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime;
 using Directory=System.IO.Directory;
 
-namespace Anna.Desktop;
+namespace Anna.Entry.Desktop;
 
 public static class Program
 {
-    // Initialization code. Don't use any Avalonia, third-party APIs or any
-    // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-    // yet and stuff might break.
     [STAThread]
     public static void Main(string[] args)
+    {
+        var dic = CreateServiceProviderContainer(args);
+
+        BuildAvaloniaApp(dic, null)
+            .StartWithClassicDesktopLifetime(args);
+
+        dic.Destroy();
+    }
+    
+    public static AppBuilder BuildAvaloniaAppForDesktopTests(string[] args)
+    {
+        var dic = CreateServiceProviderContainer(args);
+
+        return BuildAvaloniaApp(dic, () => dic.Destroy());
+    }
+    
+    // for designer
+    private static AppBuilder BuildAvaloniaApp()
+    {
+        GC.KeepAlive(Assembly.GetAssembly(typeof(Interaction)));
+        GC.KeepAlive(Assembly.GetAssembly(typeof(EventTriggerBehavior)));
+        
+        return AppBuilder.Configure(() => new GuiApp())
+            .UsePlatformDetect()
+            .LogToTrace();
+    }
+    
+    private static AppBuilder BuildAvaloniaApp(Container dic, Action? onMainWindowClosed)
+        => AppBuilder.Configure(() => new GuiApp().Setup(dic, onMainWindowClosed))
+            .UsePlatformDetect()
+            .LogToTrace();
+
+    private static ServiceProviderContainer CreateServiceProviderContainer(string [] args)
     {
         var commandLine = CommandLine.Parse(args);
 
@@ -38,28 +66,6 @@ public static class Program
             ProfileOptimization.StartProfile("Startup.Profile");
         }
 
-        var dic = new ServiceProviderContainer(configDir, appConfigFilePath);
-
-        BuildAvaloniaApp(dic)
-            .StartWithClassicDesktopLifetime(args);
-
-        dic.Destroy();
-    }
-
-    // Avalonia configuration, don't remove; also used by visual designer.
-    private static AppBuilder BuildAvaloniaApp(Container dic)
-        => AppBuilder.Configure(() => new GuiApp().Setup(dic))
-            .UsePlatformDetect()
-            .LogToTrace();
-    
-    // for designer
-    private static AppBuilder BuildAvaloniaApp()
-    {
-        GC.KeepAlive(Assembly.GetAssembly(typeof(Interaction)));
-        GC.KeepAlive(Assembly.GetAssembly(typeof(EventTriggerBehavior)));
-        
-        return AppBuilder.Configure(() => new GuiApp())
-            .UsePlatformDetect()
-            .LogToTrace();
+        return new ServiceProviderContainer(configDir, appConfigFilePath);
     }
 }

@@ -14,7 +14,7 @@ public class SmokeTests
 
         var lines = configDir.ReadLogLines();
         Assert.Contains("Start [Application]", lines.First());
-        Assert.Contains("End [Application]", lines.Last());
+        Assert.Contains("End   [Application]", lines.Last());
 
         foreach (var line in lines)
         {

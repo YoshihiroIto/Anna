@@ -16,5 +16,5 @@ public static class LoggerExtensions
 {
     public static void Start(this ILogger logger, string name) => logger.Information($"Start [{name}]");
 
-    public static void End(this ILogger logger, string name) => logger.Information($"End [{name}]");
+    public static void End(this ILogger logger, string name) => logger.Information($"End   [{name}]");
 }

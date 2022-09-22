@@ -3,6 +3,7 @@ using Anna.DomainModel.Interfaces;
 using Anna.DomainModel.ObjectLifetimeChecker;
 using Anna.Gui.Interactors;
 using Anna.Gui.ViewModels.ShortcutKey;
+using Anna.Gui.Views.Dialogs.Base;
 using Anna.UseCase;
 using SimpleInjector;
 
@@ -27,6 +28,9 @@ public class ServiceProviderContainer : Container
         RegisterSingleton<ShortcutKeyManager>();
         RegisterSingleton<IDialogOperator, DialogOperator>();
 
+        // dialogs
+        RegisterInitializer<DialogBase>(d => d.Logger = GetInstance<ILogger>() );
+
         Options.ResolveUnregisteredConcreteTypes = true;
 
 #if DEBUG
@@ -36,7 +40,7 @@ public class ServiceProviderContainer : Container
         _logger = GetInstance<ILogger>();
 
         _logger.Information("Start Application");
-        
+
         GetInstance<IObjectLifetimeChecker>().Start(s => _logger.Error(s));
     }
 

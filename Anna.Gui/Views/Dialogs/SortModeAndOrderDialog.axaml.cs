@@ -1,4 +1,5 @@
 ﻿using Anna.DomainModel;
+using Anna.Gui.Views.Dialogs.Base;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -9,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Anna.Gui.Views.Dialogs;
 
-public partial class SortModeAndOrderDialog : Window
+public partial class SortModeAndOrderDialog : DialogBase
 {
     public SortModeAndOrderDialog()
     {

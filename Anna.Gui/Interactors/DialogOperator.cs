@@ -2,6 +2,7 @@
 using Anna.UseCase;
 using Anna.UseCase.Interfaces;
 using Anna.Gui.Views.Dialogs;
+using Anna.Gui.Views.Dialogs.Base;
 using SimpleInjector;
 using System.Threading.Tasks;
 
@@ -14,7 +15,8 @@ public class DialogOperator : IDialogOperator
         IShortcutKeyReceiver shortcutKeyReceiver)
     {
         using var viewModel = dic.GetInstance<SortModeAndOrderDialogViewModel>();
-        var view = new SortModeAndOrderDialog { DataContext = viewModel };
+
+        var view = dic.GetInstance<SortModeAndOrderDialog>().Setup(viewModel);
 
         await view.ShowDialog(shortcutKeyReceiver.Owner);
 

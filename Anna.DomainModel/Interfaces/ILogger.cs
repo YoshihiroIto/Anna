@@ -2,6 +2,8 @@
 
 public interface ILogger
 {
+    public void Destroy();
+    
     void Verbose(string message);
     void Debug(string message);
     void Information(string message);

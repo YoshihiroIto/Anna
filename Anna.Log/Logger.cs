@@ -16,8 +16,8 @@ public class Logger : ILogger
             "| {Timestamp:HH:mm:ss.fff} | {Level:u4} | {ThreadId:00}:{ThreadName} | {ProcessId:00}:{ProcessName} | {Message:j} | {AssemblyName} | {MemoryUsage} B|{NewLine}{Exception}";
 
         var logFilePath = Path.Combine(logOutputDir, "logs/log.txt");
-
-        Serilog.Log.Logger = new LoggerConfiguration()
+        
+        _logger = new LoggerConfiguration()
             .MinimumLevel.Verbose()
             .Enrich.WithThreadId()
             .Enrich.WithThreadName().Enrich.WithProperty("ThreadName", "__")
@@ -37,23 +37,30 @@ public class Logger : ILogger
             rollingInterval: RollingInterval.Day)
             .CreateLogger();
     }
-
+    
+    public void Destroy()
+    {
+        _logger.Dispose();
+    }
+    
     // ReSharper disable TemplateIsNotCompileTimeConstantProblem
-    public void Verbose(string message) => Serilog.Log.Verbose(message);
-    public void Debug(string message) => Serilog.Log.Debug(message);
-    public void Information(string message) => Serilog.Log.Information(message);
-    public void Warning(string message) => Serilog.Log.Warning(message);
+    public void Verbose(string message) => _logger.Verbose(message);
+    public void Debug(string message) => _logger.Debug(message);
+    public void Information(string message) => _logger.Information(message);
+    public void Warning(string message) => _logger.Warning(message);
     
     public void Error(string message)
     {
-        Serilog.Log.Error(message);
+        _logger.Error(message);
         Debugger.Break();
     }
     
     public void Fatal(string message)
     {
-        Serilog.Log.Fatal(message);
+        _logger.Fatal(message);
         Debugger.Break();
     }
     // ReSharper restore TemplateIsNotCompileTimeConstantProblem
+
+    private readonly Serilog.Core.Logger _logger;
 }

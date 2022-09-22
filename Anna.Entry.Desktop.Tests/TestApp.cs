@@ -9,23 +9,33 @@ using Xunit;
 
 namespace Anna.Entry.Desktop.Tests;
 
-public class TestApp : IAsyncDisposable 
+public class TestApp : IAsyncDisposable
 {
-    public MainWindow MainWindow =>
-        App.MainWindow as MainWindow ?? throw new NullReferenceException();
+    public MainWindow MainWindow => App.MainWindow as MainWindow ?? throw new NullReferenceException();
 
-    public IClassicDesktopStyleApplicationLifetime App =>
-        Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime ??
-        throw new NullReferenceException();
-
-    public TestApp(bool isHeadless = true)
+    public TestApp(TempDir? configDir = null, bool isHeadless = true)
     {
+        if (configDir is null)
+        {
+            _configDir = new TempDir();
+            _useSelfConfigDir = true;
+        }
+        else
+        {
+            _configDir = configDir;
+        }
+
         Task.Run(() => StartAsync(isHeadless)).Wait();
     }
-    
+
     public async ValueTask DisposeAsync()
     {
         await EndAsync();
+
+        if (_useSelfConfigDir)
+            _configDir.Dispose();
+        
+        GC.SuppressFinalize(this);
     }
 
     private async Task StartAsync(bool isHeadless = true)
@@ -33,7 +43,7 @@ public class TestApp : IAsyncDisposable
  #pragma warning disable CS4014
         Task.Run(() =>
         {
-            var args = Array.Empty<string>();
+            var args = new[] { "--config", _configDir.AppConfigFilePath };
 
             BuildAvaloniaApp(isHeadless, args)
                 .StartWithClassicDesktopLifetime(args);
@@ -53,6 +63,10 @@ public class TestApp : IAsyncDisposable
         Application.Current?.ApplicationLifetime is not null &&
         App.MainWindow is not null;
 
+    private IClassicDesktopStyleApplicationLifetime App =>
+        Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime ??
+        throw new NullReferenceException();
+
     private static AppBuilder BuildAvaloniaApp(bool isHeadless, string[] args)
     {
         var appBuilder = Program.BuildAvaloniaAppForDesktopTests(args);
@@ -62,4 +76,7 @@ public class TestApp : IAsyncDisposable
 
         return appBuilder;
     }
+
+    private readonly TempDir _configDir;
+    private readonly bool _useSelfConfigDir;
 }

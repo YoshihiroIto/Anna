@@ -1,4 +1,5 @@
 using Anna.DomainModel;
+using Anna.DomainModel.Interfaces;
 using Anna.Gui.ViewModels;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -32,7 +33,7 @@ public class GuiApp : Application
     public override void OnFrameworkInitializationCompleted()
     {
         base.OnFrameworkInitializationCompleted();
-        
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             SetupDesktop(desktop);
     }
@@ -49,7 +50,7 @@ public class GuiApp : Application
             desktop.MainWindow = null;
             _dic.GetInstance<App>().CloseAllDirectories();
             _trash.Dispose();
-            
+
             _onMainWindowClosed?.Invoke();
         };
 

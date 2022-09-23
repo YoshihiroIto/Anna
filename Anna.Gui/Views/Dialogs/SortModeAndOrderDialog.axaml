@@ -7,7 +7,7 @@
         xmlns:constants="clr-namespace:Anna.Constants;assembly=Anna.Constants"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        Title="{ReflectionBinding R.DialogTitle_EntrySort}"
+        Title="{ReflectionBinding R.DialogTitle_SortEntry}"
         d:DesignHeight="400"
         d:DesignWidth="400"
         x:CompileBindings="True"
@@ -39,23 +39,23 @@
         <StackPanel x:Name="ModePanel" Spacing="12">
             <Button x:Name="ModeNameButton"
                     Click="ModeButton_OnClick"
-                    Content="{ReflectionBinding R.EntrySort_Mode_Name}"
+                    Content="{ReflectionBinding R.SortEntry_Mode_Name}"
                     TabIndex="0"
                     Tag="{x:Static constants:SortModes.Name}" />
             <Button Click="ModeButton_OnClick"
-                    Content="{ReflectionBinding R.EntrySort_Mode_Extension}"
+                    Content="{ReflectionBinding R.SortEntry_Mode_Extension}"
                     TabIndex="1"
                     Tag="{x:Static constants:SortModes.Extension}" />
             <Button Click="ModeButton_OnClick"
-                    Content="{ReflectionBinding R.EntrySort_Mode_Size}"
+                    Content="{ReflectionBinding R.SortEntry_Mode_Size}"
                     TabIndex="2"
                     Tag="{x:Static constants:SortModes.Size}" />
             <Button Click="ModeButton_OnClick"
-                    Content="{ReflectionBinding R.EntrySort_Mode_Timestamp}"
+                    Content="{ReflectionBinding R.SortEntry_Mode_Timestamp}"
                     TabIndex="3"
                     Tag="{x:Static constants:SortModes.Timestamp}" />
             <Button Click="ModeButton_OnClick"
-                    Content="{ReflectionBinding R.EntrySort_Mode_Attribute}"
+                    Content="{ReflectionBinding R.SortEntry_Mode_Attribute}"
                     TabIndex="4"
                     Tag="{x:Static constants:SortModes.Attributes}" />
         </StackPanel>
@@ -72,12 +72,12 @@
                 <Button x:Name="OrderAscendingButton"
                         Grid.Column="0"
                         Click="OrderButton_OnClick"
-                        Content="{ReflectionBinding R.EntrySort_Order_Ascending}"
+                        Content="{ReflectionBinding R.SortEntry_Order_Ascending}"
                         TabIndex="5"
                         Tag="{x:Static constants:SortOrders.Ascending}" />
                 <Button Grid.Column="2"
                         Click="OrderButton_OnClick"
-                        Content="{ReflectionBinding R.EntrySort_Order_Descending}"
+                        Content="{ReflectionBinding R.SortEntry_Order_Descending}"
                         TabIndex="6"
                         Tag="{x:Static constants:SortOrders.Descending}" />
             </Grid>

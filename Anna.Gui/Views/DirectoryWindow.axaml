@@ -4,10 +4,8 @@
         xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:strings="clr-namespace:Anna.Strings;assembly=Anna.Strings"
-        xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
         xmlns:views1="clr-namespace:Anna.Gui.Views"
-        Title="{x:Static strings:Resources.AppName}"
+        Title="{ReflectionBinding R.AppName}"
         Width="1000"
         Height="600"
         MinWidth="400"
@@ -15,9 +13,14 @@
         d:DesignHeight="200"
         d:DesignWidth="400"
         x:CompileBindings="True"
-        x:DataType="viewModels1:DirectoryWindowViewModel"
+        x:DataType="views1:DirectoryWindowViewModel"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
+    <Design.DataContext>
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
+        <views1:DirectoryWindowViewModel />
+    </Design.DataContext>
+
     <Window.Styles>
         <StyleInclude Source="/Views/Resources/Styles.axaml" />
     </Window.Styles>
@@ -28,20 +31,23 @@
 
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="{x:Static strings:Resources.Menu_File}">
-                <MenuItem Header="{x:Static strings:Resources.Menu_File_Open}" />
+            <MenuItem Header="{ReflectionBinding R.Menu_File}">
+                <MenuItem Header="{ReflectionBinding R.Menu_File_Open}" />
                 <Separator />
-                <MenuItem Header="{x:Static strings:Resources.Menu_File_Settings}" />
+                <MenuItem Header="{ReflectionBinding R.Menu_File_Settings}" />
                 <Separator />
-                <MenuItem Header="{x:Static strings:Resources.Menu_File_Exit}" />
+                <MenuItem Command="{Binding ToEnglishCommand}" Header="English" />
+                <MenuItem Command="{Binding ToJapaneseCommand}" Header="日本語" />
+                <Separator />
+                <MenuItem Header="{ReflectionBinding R.Menu_File_Exit}" />
             </MenuItem>
 
-            <MenuItem Header="{x:Static strings:Resources.Menu_View}">
-                <MenuItem Header="{x:Static strings:Resources.Menu_View_EntrySort}" />
+            <MenuItem Header="{ReflectionBinding R.Menu_View}">
+                <MenuItem Header="{ReflectionBinding R.Menu_View_SortEntry}" />
             </MenuItem>
 
-            <MenuItem Header="{x:Static strings:Resources.Menu_Help}">
-                <MenuItem Header="{x:Static strings:Resources.Menu_Help_About}" />
+            <MenuItem Header="{ReflectionBinding R.Menu_Help}">
+                <MenuItem Header="{ReflectionBinding R.Menu_Help_About}" />
             </MenuItem>
         </Menu>
 
@@ -50,8 +56,9 @@
                    DockPanel.Dock="Top"
                    Fill="#444444" />
 
-        <views1:DirectoryView
-            Margin="4,8"
-            x:Name="DirectoryView" DataContext="{Binding ViewViewModel, Mode=OneWay}" />
+        <views1:DirectoryView x:Name="DirectoryView"
+                              Margin="4,8"
+                              DataContext="{Binding ViewViewModel,
+                                                    Mode=OneWay}" />
     </DockPanel>
 </Window>

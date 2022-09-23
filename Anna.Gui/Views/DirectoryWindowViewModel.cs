@@ -1,13 +1,18 @@
-﻿using Anna.DomainModel;
+﻿using Anna.Constants;
+using Anna.DomainModel;
 using Anna.Gui.Foundations;
+using Anna.Gui.Interfaces;
+using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
 using System;
+using System.Reactive.Linq;
+using System.Windows.Input;
 
-namespace Anna.Gui.ViewModels;
+namespace Anna.Gui.Views;
 
-public class DirectoryWindowViewModel : ViewModelBase
+public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
 {
     #region ViewViewModel
 
@@ -26,19 +31,39 @@ public class DirectoryWindowViewModel : ViewModelBase
 
     #endregion
 
+    public Resources R => _resourcesHolder.Instance;
+
+    public ICommand ToEnglishCommand { get; }
+    public ICommand ToJapaneseCommand { get; }
+
     // todo:impl Messenger
     public event EventHandler? Close;
 
-    public DirectoryWindowViewModel(Container dic, IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+    public DirectoryWindowViewModel(
+        Container dic,
+        ResourcesHolder resourcesHolder,
+        Config config,
+        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
         _dic = dic;
+        _resourcesHolder = resourcesHolder;
+
+        Observable
+            .FromEventPattern(
+            h => _resourcesHolder.CultureChanged += h,
+            h => _resourcesHolder.CultureChanged -= h)
+            .Subscribe(_ => RaisePropertyChanged(nameof(R)))
+            .AddTo(Trash);
+
+        ToEnglishCommand = new DelegateCommand(() => config.ConfigData.Culture = Cultures.En);
+        ToJapaneseCommand = new DelegateCommand(() => config.ConfigData.Culture = Cultures.Ja);
     }
 
     public DirectoryWindowViewModel Setup(Directory model)
     {
         _model = model;
-        
+
         ViewViewModel = _dic.GetInstance<DirectoryViewViewModel>()
             .Setup(model);
 
@@ -58,7 +83,7 @@ public class DirectoryWindowViewModel : ViewModelBase
             return;
 
         _isDispose = true;
-        
+
         _dic.GetInstance<App>().CloseDirectory(_model ?? throw new NullReferenceException());
 
         ViewViewModel = null;
@@ -68,5 +93,6 @@ public class DirectoryWindowViewModel : ViewModelBase
 
     private bool _isDispose;
     private readonly Container _dic;
+    private readonly ResourcesHolder _resourcesHolder;
     private Directory? _model;
 }

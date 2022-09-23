@@ -117,28 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DialogTitle_EntrySort" xml:space="preserve">
-    <value>Entry sort</value>
+  <data name="DialogTitle_SortEntry" xml:space="preserve">
+    <value>Sort entry</value>
   </data>
-  <data name="EntrySort_Mode_Name" xml:space="preserve">
+  <data name="SortEntry_Mode_Name" xml:space="preserve">
     <value>_Name</value>
   </data>
-  <data name="EntrySort_Mode_Extension" xml:space="preserve">
+  <data name="SortEntry_Mode_Extension" xml:space="preserve">
     <value>_Extension</value>
   </data>
-  <data name="EntrySort_Mode_Timestamp" xml:space="preserve">
+  <data name="SortEntry_Mode_Timestamp" xml:space="preserve">
     <value>_Timestamp</value>
   </data>
-  <data name="EntrySort_Mode_Size" xml:space="preserve">
+  <data name="SortEntry_Mode_Size" xml:space="preserve">
     <value>_File size</value>
   </data>
-  <data name="EntrySort_Mode_Attribute" xml:space="preserve">
+  <data name="SortEntry_Mode_Attribute" xml:space="preserve">
     <value>Att_ribute</value>
   </data>
-  <data name="EntrySort_Order_Ascending" xml:space="preserve">
+  <data name="SortEntry_Order_Ascending" xml:space="preserve">
     <value>_Ascending</value>
   </data>
-  <data name="EntrySort_Order_Descending" xml:space="preserve">
+  <data name="SortEntry_Order_Descending" xml:space="preserve">
     <value>_Descending</value>
   </data>
   <data name="Dialog_Ok" xml:space="preserve">
@@ -171,7 +171,7 @@
   <data name="Menu_File_Settings" xml:space="preserve">
     <value>_Settings...</value>
   </data>
-  <data name="Menu_View_EntrySort" xml:space="preserve">
-    <value>Entry _sort...</value>
+  <data name="Menu_View_SortEntry" xml:space="preserve">
+    <value>_Sort entry...</value>
   </data>
 </root>

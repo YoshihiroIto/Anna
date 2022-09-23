@@ -1,5 +1,5 @@
 using Anna.DomainModel;
-using Anna.Gui.ViewModels;
+using Anna.Gui.Views;
 using Anna.Strings;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;

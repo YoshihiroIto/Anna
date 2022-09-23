@@ -11,28 +11,28 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
-    <data name="DialogTitle_EntrySort" xml:space="preserve">
+    <data name="DialogTitle_SortEntry" xml:space="preserve">
         <value>エントリーのソート</value>
     </data>
-    <data name="EntrySort_Mode_Attribute" xml:space="preserve">
+    <data name="SortEntry_Mode_Attribute" xml:space="preserve">
         <value>属性順(_R)</value>
     </data>
-    <data name="EntrySort_Mode_Extension" xml:space="preserve">
+    <data name="SortEntry_Mode_Extension" xml:space="preserve">
         <value>拡張子名順(_E)</value>
     </data>
-    <data name="EntrySort_Mode_Name" xml:space="preserve">
+    <data name="SortEntry_Mode_Name" xml:space="preserve">
         <value>名前順(_N)</value>
     </data>
-    <data name="EntrySort_Mode_Size" xml:space="preserve">
+    <data name="SortEntry_Mode_Size" xml:space="preserve">
         <value>ファイルサイズ順(_S)</value>
     </data>
-    <data name="EntrySort_Mode_Timestamp" xml:space="preserve">
+    <data name="SortEntry_Mode_Timestamp" xml:space="preserve">
         <value>日付順(_T)</value>
     </data>
-    <data name="EntrySort_Order_Ascending" xml:space="preserve">
+    <data name="SortEntry_Order_Ascending" xml:space="preserve">
         <value>昇順(_A)</value>
     </data>
-    <data name="EntrySort_Order_Descending" xml:space="preserve">
+    <data name="SortEntry_Order_Descending" xml:space="preserve">
         <value>降順(_D)</value>
     </data>
     <data name="Dialog_Ok" xml:space="preserve">
@@ -63,9 +63,9 @@
         <value>Anna について(_A)...</value>
     </data>
     <data name="Menu_File_Settings" xml:space="preserve">
-        <value>設定(_S)</value>
+        <value>設定(_S)...</value>
     </data>
-    <data name="Menu_View_EntrySort" xml:space="preserve">
+    <data name="Menu_View_SortEntry" xml:space="preserve">
         <value>エントリーのソート(_S)...</value>
     </data>
 </root>

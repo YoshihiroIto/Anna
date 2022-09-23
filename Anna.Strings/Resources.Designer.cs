@@ -87,74 +87,11 @@ namespace Anna.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entry sort.
+        ///   Looks up a localized string similar to Sort entry.
         /// </summary>
-        public static string DialogTitle_EntrySort {
+        public static string DialogTitle_SortEntry {
             get {
-                return ResourceManager.GetString("DialogTitle_EntrySort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Att_ribute.
-        /// </summary>
-        public static string EntrySort_Mode_Attribute {
-            get {
-                return ResourceManager.GetString("EntrySort_Mode_Attribute", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Extension.
-        /// </summary>
-        public static string EntrySort_Mode_Extension {
-            get {
-                return ResourceManager.GetString("EntrySort_Mode_Extension", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Name.
-        /// </summary>
-        public static string EntrySort_Mode_Name {
-            get {
-                return ResourceManager.GetString("EntrySort_Mode_Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _File size.
-        /// </summary>
-        public static string EntrySort_Mode_Size {
-            get {
-                return ResourceManager.GetString("EntrySort_Mode_Size", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Timestamp.
-        /// </summary>
-        public static string EntrySort_Mode_Timestamp {
-            get {
-                return ResourceManager.GetString("EntrySort_Mode_Timestamp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Ascending.
-        /// </summary>
-        public static string EntrySort_Order_Ascending {
-            get {
-                return ResourceManager.GetString("EntrySort_Order_Ascending", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Descending.
-        /// </summary>
-        public static string EntrySort_Order_Descending {
-            get {
-                return ResourceManager.GetString("EntrySort_Order_Descending", resourceCulture);
+                return ResourceManager.GetString("DialogTitle_SortEntry", resourceCulture);
             }
         }
         
@@ -222,11 +159,74 @@ namespace Anna.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entry _sort....
+        ///   Looks up a localized string similar to _Sort entry....
         /// </summary>
-        public static string Menu_View_EntrySort {
+        public static string Menu_View_SortEntry {
             get {
-                return ResourceManager.GetString("Menu_View_EntrySort", resourceCulture);
+                return ResourceManager.GetString("Menu_View_SortEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Att_ribute.
+        /// </summary>
+        public static string SortEntry_Mode_Attribute {
+            get {
+                return ResourceManager.GetString("SortEntry_Mode_Attribute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Extension.
+        /// </summary>
+        public static string SortEntry_Mode_Extension {
+            get {
+                return ResourceManager.GetString("SortEntry_Mode_Extension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Name.
+        /// </summary>
+        public static string SortEntry_Mode_Name {
+            get {
+                return ResourceManager.GetString("SortEntry_Mode_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _File size.
+        /// </summary>
+        public static string SortEntry_Mode_Size {
+            get {
+                return ResourceManager.GetString("SortEntry_Mode_Size", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Timestamp.
+        /// </summary>
+        public static string SortEntry_Mode_Timestamp {
+            get {
+                return ResourceManager.GetString("SortEntry_Mode_Timestamp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Ascending.
+        /// </summary>
+        public static string SortEntry_Order_Ascending {
+            get {
+                return ResourceManager.GetString("SortEntry_Order_Ascending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Descending.
+        /// </summary>
+        public static string SortEntry_Order_Descending {
+            get {
+                return ResourceManager.GetString("SortEntry_Order_Descending", resourceCulture);
             }
         }
     }

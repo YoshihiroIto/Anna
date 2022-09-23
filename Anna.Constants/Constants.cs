@@ -26,3 +26,8 @@ public enum ResultCode
     Ok,
     Error
 }
+
+public enum Operations
+{
+    SortEntry
+}

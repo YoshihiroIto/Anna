@@ -8,7 +8,7 @@ namespace Anna.Gui.ViewModels.ShortcutKey;
 
 public class ShortcutKeyManager
 {
-    public ShortcutKeyManager(Container dic, IDialogOperator dialogOperator)
+    public ShortcutKeyManager(Container dic, IDialogUseCase dialogOperator)
     {
         _registry.Register(Key.S,
         KeyModifiers.None,

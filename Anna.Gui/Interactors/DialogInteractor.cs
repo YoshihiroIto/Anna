@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Interactors;
 
-public class DialogOperator : IDialogOperator
+public class DialogInteractor : IDialogUseCase
 {
     public async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)> SelectSortModeAndOrderAsync(
         Container dic,

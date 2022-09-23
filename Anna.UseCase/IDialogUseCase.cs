@@ -4,7 +4,7 @@ using SimpleInjector;
 
 namespace Anna.UseCase;
 
-public interface IDialogOperator
+public interface IDialogUseCase
 {
     ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)> SelectSortModeAndOrderAsync(
         Container dic,

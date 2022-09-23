@@ -28,7 +28,7 @@ public class ServiceProviderContainer : Container
         RegisterSingleton<App>();
         RegisterSingleton<DomainModelOperator>();
         RegisterSingleton<ShortcutKeyManager>();
-        RegisterSingleton<IDialogOperator, DialogOperator>();
+        RegisterSingleton<IDialogUseCase, DialogInteractor>();
         
         // repository
         RegisterSingleton<IObjectReader, FileSystemObjectReader>();

@@ -43,12 +43,12 @@ public class ServiceProviderContainer : Container
         _logger.Start("Application");
 
         GetInstance<IObjectLifetimeCheckerUseCase>().Start(s => _logger.Error(s));
-        GetInstance<Config>().LoadAsync().AsTask().Wait();
+        GetInstance<Config>().Load();
     }
 
     public void Destroy()
     {
-        GetInstance<Config>().SaveAsync().AsTask().Wait();
+        GetInstance<Config>().Save();
 
         var checker = GetInstance<IObjectLifetimeCheckerUseCase>();
 

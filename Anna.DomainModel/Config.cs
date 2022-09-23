@@ -36,9 +36,9 @@ public class Config : NotificationObject
         _objectSerializer = objectSerializer;
     }
 
-    public async ValueTask LoadAsync()
+    public void Load()
     {
-        var result = await _objectSerializer.ReadAsync(FilePath,
+        var result =_objectSerializer.Read(FilePath,
         () =>
         {
             var configData = new ConfigData();
@@ -48,11 +48,11 @@ public class Config : NotificationObject
 
         ConfigData = result.obj;
     }
-    public async ValueTask SaveAsync()
+    public void Save()
     {
-        await _objectSerializer.WriteAsync(FilePath, ConfigData);
+        _objectSerializer.Write(FilePath, ConfigData);
     }
-    
+
     private readonly IObjectSerializerUseCase _objectSerializer;
 }
 

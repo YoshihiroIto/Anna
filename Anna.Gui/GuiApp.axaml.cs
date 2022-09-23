@@ -54,7 +54,7 @@ public class GuiApp : Application
             _onMainWindowClosed?.Invoke();
         };
 
-        _dic.GetInstance<Config>().ConfigData
+        _dic.GetInstance<AppConfig>().AppConfigData
             .ObserveProperty(x => x.Culture)
             .ObserveOnUIDispatcher()
             .Subscribe(x => _dic.GetInstance<ResourcesHolder>().SetCulture(x))

@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Anna.DomainModel;
 
-public class Config : NotificationObject
+public class AppConfig : NotificationObject
 {
     #region FilePath
 
@@ -21,17 +21,17 @@ public class Config : NotificationObject
 
     #region ConfigData
 
-    private ConfigData _ConfigData = new();
+    private AppConfigData _appConfigData = new();
 
-    public ConfigData ConfigData
+    public AppConfigData AppConfigData
     {
-        get => _ConfigData;
-        set => SetProperty(ref _ConfigData, value);
+        get => _appConfigData;
+        set => SetProperty(ref _appConfigData, value);
     }
 
     #endregion
 
-    public Config(IObjectSerializerUseCase objectSerializer)
+    public AppConfig(IObjectSerializerUseCase objectSerializer)
     {
         _objectSerializer = objectSerializer;
     }
@@ -41,22 +41,22 @@ public class Config : NotificationObject
         var result =_objectSerializer.Read(FilePath,
         () =>
         {
-            var configData = new ConfigData();
-            configData.SetDefault();
-            return configData;
+            var data = new AppConfigData();
+            data.SetDefault();
+            return data;
         });
 
-        ConfigData = result.obj;
+        AppConfigData = result.obj;
     }
     public void Save()
     {
-        _objectSerializer.Write(FilePath, ConfigData);
+        _objectSerializer.Write(FilePath, AppConfigData);
     }
 
     private readonly IObjectSerializerUseCase _objectSerializer;
 }
 
-public class ConfigData : NotificationObject
+public class AppConfigData : NotificationObject
 {
     #region Culture
 

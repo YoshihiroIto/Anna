@@ -21,7 +21,7 @@ public class ServiceProviderContainer : Container
 #endif
         >();
 
-        RegisterSingleton(() => new Config(GetInstance<IObjectSerializerUseCase>()) { FilePath = appConfigFilePath });
+        RegisterSingleton(() => new AppConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = appConfigFilePath });
         RegisterSingleton<ILoggerUseCase>(() => new Log.Logger(logOutputDir));
         RegisterSingleton<IObjectSerializerUseCase, FileSystemObjectSerializer>();
         RegisterSingleton<App>();
@@ -43,12 +43,12 @@ public class ServiceProviderContainer : Container
         _logger.Start("Application");
 
         GetInstance<IObjectLifetimeCheckerUseCase>().Start(s => _logger.Error(s));
-        GetInstance<Config>().Load();
+        GetInstance<AppConfig>().Load();
     }
 
     public void Destroy()
     {
-        GetInstance<Config>().Save();
+        GetInstance<AppConfig>().Save();
 
         var checker = GetInstance<IObjectLifetimeCheckerUseCase>();
 

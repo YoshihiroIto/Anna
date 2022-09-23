@@ -42,7 +42,7 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
     public DirectoryWindowViewModel(
         Container dic,
         ResourcesHolder resourcesHolder,
-        Config config,
+        AppConfig appConfig,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
@@ -56,8 +56,8 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
-        ToEnglishCommand = new DelegateCommand(() => config.ConfigData.Culture = Cultures.En);
-        ToJapaneseCommand = new DelegateCommand(() => config.ConfigData.Culture = Cultures.Ja);
+        ToEnglishCommand = new DelegateCommand(() => appConfig.AppConfigData.Culture = Cultures.En);
+        ToJapaneseCommand = new DelegateCommand(() => appConfig.AppConfigData.Culture = Cultures.Ja);
     }
 
     public DirectoryWindowViewModel Setup(Directory model)

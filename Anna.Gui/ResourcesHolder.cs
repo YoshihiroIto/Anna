@@ -1,11 +1,19 @@
 ﻿using Anna.Constants;
+using Anna.Strings;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
 
-namespace Anna.Strings;
+namespace Anna.Gui;
 
 public class ResourcesHolder
 {
-    public Resources Instance { get; private set; } = new();
+    public Resources Instance
+    {
+        get => _Instance ??= ResourcesCreator.Create();
+        private set => _Instance = value;
+    }
 
     public event EventHandler? CultureChanged;
 
@@ -18,7 +26,7 @@ public class ResourcesHolder
 
         if (_resourcesCache.TryGetValue(culture, out var resources) == false)
         {
-            resources = new Resources();
+            resources = ResourcesCreator.Create();
             _resourcesCache.Add(culture, resources);
         }
 
@@ -26,6 +34,8 @@ public class ResourcesHolder
 
         CultureChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    private Resources? _Instance;
 
     private readonly Dictionary<Cultures, Resources> _resourcesCache = new();
 }

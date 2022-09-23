@@ -21,9 +21,5 @@
         <Generator>PublicResXFileCodeGenerator</Generator>
       </EmbeddedResource>
     </ItemGroup>
-  
-    <ItemGroup>
-      <ProjectReference Include="..\Anna.Constants\Anna.Constants.csproj" />
-    </ItemGroup>
 
 </Project>

@@ -4,7 +4,9 @@ using Anna.DomainModel.ObjectLifetimeChecker;
 using Anna.Gui.Interactors;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
+using Anna.Repository;
 using Anna.UseCase;
+using Anna.UseCase.Interfaces;
 using SimpleInjector;
 
 namespace Anna.ServiceProvider;
@@ -27,8 +29,12 @@ public class ServiceProviderContainer : Container
         RegisterSingleton<DomainModelOperator>();
         RegisterSingleton<ShortcutKeyManager>();
         RegisterSingleton<IDialogOperator, DialogOperator>();
+        
+        // repository
+        RegisterSingleton<IObjectReader, FileSystemObjectReader>();
+        RegisterSingleton<IObjectWriter, FileSystemObjectWriter>();
 
-        // dialogs
+        // property injection
         RegisterInitializer<DialogBase>(d => d.Logger = GetInstance<ILogger>() );
 
         Options.ResolveUnregisteredConcreteTypes = true;

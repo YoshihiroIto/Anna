@@ -20,3 +20,9 @@ public enum SortOrders
     Ascending,
     Descending
 }
+
+public enum ResultCode
+{
+    Ok,
+    Error
+}

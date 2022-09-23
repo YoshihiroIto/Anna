@@ -1,5 +1,4 @@
-﻿using Anna.DomainModel;
-using Anna.DomainModel.Constants;
+﻿using Anna.DomainModel.Constants;
 using Anna.UseCase.Interfaces;
 using SimpleInjector;
 

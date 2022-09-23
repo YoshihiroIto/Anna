@@ -1,5 +1,6 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.ObjectLifetimeChecker;
+using Anna.Gui;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Repository;
@@ -20,7 +21,7 @@ public class ServiceProviderContainer : Container
 #endif
         >();
 
-        RegisterSingleton(() => new Config { FilePath = appConfigFilePath });
+        RegisterSingleton(() => new Config(GetInstance<IObjectSerializerUseCase>()) { FilePath = appConfigFilePath });
         RegisterSingleton<ILoggerUseCase>(() => new Log.Logger(logOutputDir));
         RegisterSingleton<IObjectSerializerUseCase, FileSystemObjectSerializer>();
         RegisterSingleton<App>();
@@ -28,7 +29,7 @@ public class ServiceProviderContainer : Container
         RegisterSingleton<ShortcutKeyManager>();
 
         // property injection
-        RegisterInitializer<DialogBase>(d => d.Logger = GetInstance<ILoggerUseCase>() );
+        RegisterInitializer<DialogBase>(d => d.Logger = GetInstance<ILoggerUseCase>());
 
         Options.ResolveUnregisteredConcreteTypes = true;
 
@@ -41,10 +42,13 @@ public class ServiceProviderContainer : Container
         _logger.Start("Application");
 
         GetInstance<IObjectLifetimeCheckerUseCase>().Start(s => _logger.Error(s));
+        GetInstance<Config>().LoadAsync().AsTask().Wait();
     }
 
     public void Destroy()
     {
+        GetInstance<Config>().SaveAsync().AsTask().Wait();
+
         var checker = GetInstance<IObjectLifetimeCheckerUseCase>();
 
         Dispose();

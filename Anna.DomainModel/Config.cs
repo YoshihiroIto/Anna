@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.Foundation;
+using Anna.UseCase;
 using System.Globalization;
 
 namespace Anna.DomainModel;
@@ -29,6 +30,30 @@ public class Config : NotificationObject
     }
 
     #endregion
+
+    public Config(IObjectSerializerUseCase objectSerializer)
+    {
+        _objectSerializer = objectSerializer;
+    }
+
+    public async ValueTask LoadAsync()
+    {
+        var result = await _objectSerializer.ReadAsync(FilePath,
+        () =>
+        {
+            var configData = new ConfigData();
+            configData.SetDefault();
+            return configData;
+        });
+
+        ConfigData = result.obj;
+    }
+    public async ValueTask SaveAsync()
+    {
+        await _objectSerializer.WriteAsync(FilePath, ConfigData);
+    }
+    
+    private readonly IObjectSerializerUseCase _objectSerializer;
 }
 
 public class ConfigData : NotificationObject

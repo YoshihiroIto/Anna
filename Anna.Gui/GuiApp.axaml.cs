@@ -1,3 +1,4 @@
+using Anna.Constants;
 using Anna.DomainModel;
 using Anna.Gui.ViewModels;
 using Avalonia;
@@ -8,7 +9,9 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
 using System;
+using System.Globalization;
 using System.Reactive.Disposables;
+using System.Threading;
 using DirectoryWindow=Anna.Gui.Views.DirectoryWindow;
 using MainWindow=Anna.Gui.Views.MainWindow;
 
@@ -53,6 +56,12 @@ public class GuiApp : Application
             _onMainWindowClosed?.Invoke();
         };
 
+        _dic.GetInstance<Config>().ConfigData
+            .ObserveProperty(x => x.Culture)
+            .ObserveOnUIDispatcher()
+            .Subscribe(SetCulture)
+            .AddTo(_trash);
+
         _dic.GetInstance<App>().Directories.ObserveAddChanged()
             .Subscribe(x =>
             {
@@ -68,6 +77,14 @@ public class GuiApp : Application
             }).AddTo(_trash);
 
         _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+    }
+
+    private static void SetCulture(Cultures culture)
+    {
+        Strings.Resources.Culture = CultureInfo.GetCultureInfo(culture.ToString());
+
+        Thread.CurrentThread.CurrentCulture = Strings.Resources.Culture;
+        Thread.CurrentThread.CurrentUICulture = Strings.Resources.Culture;
     }
 
     private Container? _dic;

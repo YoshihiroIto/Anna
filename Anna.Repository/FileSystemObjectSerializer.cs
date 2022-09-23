@@ -1,13 +1,12 @@
 ﻿using Anna.Constants;
 using Anna.UseCase;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Anna.Repository;
 
 public class FileSystemObjectSerializer : IObjectSerializerUseCase
 {
-    private readonly ILoggerUseCase _logger;
-
     public FileSystemObjectSerializer(ILoggerUseCase logger)
     {
         _logger = logger;
@@ -17,14 +16,17 @@ public class FileSystemObjectSerializer : IObjectSerializerUseCase
     {
         try
         {
-            var json = await File.ReadAllTextAsync(path);
+            if (File.Exists(path))
+            {
+                var json = await File.ReadAllTextAsync(path);
 
-            var obj = JsonSerializer.Deserialize<T>(json);
+                var obj = JsonSerializer.Deserialize<T>(json, Options);
 
-            if (obj is null)
-                throw new JsonException();
+                if (obj is null)
+                    throw new JsonException();
 
-            return (obj, ResultCode.Ok);
+                return (obj, ResultCode.Ok);
+            }
         }
         catch (Exception e)
         {
@@ -33,12 +35,12 @@ public class FileSystemObjectSerializer : IObjectSerializerUseCase
 
         return (defaultGenerator(), ResultCode.Error);
     }
-    
-    public async ValueTask<ResultCode> WriteAsync<T>(T obj, string path)
+
+    public async ValueTask<ResultCode> WriteAsync<T>(string path, T obj)
     {
         try
         {
-            var json = JsonSerializer.Serialize(obj);
+            var json = JsonSerializer.Serialize(obj, Options);
 
             await File.WriteAllTextAsync(path, json);
 
@@ -51,4 +53,11 @@ public class FileSystemObjectSerializer : IObjectSerializerUseCase
 
         return ResultCode.Error;
     }
+
+    private readonly ILoggerUseCase _logger;
+
+    private static readonly JsonSerializerOptions Options = new()
+    {
+        WriteIndented = true, Converters = { new JsonStringEnumConverter() }
+    };
 }

@@ -9,5 +9,5 @@ public interface IShortcutKeyReceiver
     Window Owner { get; }
     Directory Directory { get; }
 
-    Entry[] CollectTargetEntities();
+    Entry[] CollectTargetEntries();
 }

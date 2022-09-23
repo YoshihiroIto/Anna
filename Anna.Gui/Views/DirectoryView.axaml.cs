@@ -51,10 +51,10 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
         }
     }
 
-    public Entry[] CollectTargetEntities()
+    public Entry[] CollectTargetEntries()
     {
         var viewModel = DataContext as DirectoryViewViewModel ?? throw new NotSupportedException();
 
-        return viewModel.CollectTargetEntities();
+        return viewModel.CollectTargetEntries();
     }
 }

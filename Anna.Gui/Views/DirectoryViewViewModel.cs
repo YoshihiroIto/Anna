@@ -64,23 +64,23 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         return this;
     }
 
-    public Entry[] CollectTargetEntities()
+    public Entry[] CollectTargetEntries()
     {
-        var selectedEntities = Entries
+        var selectedEntries = Entries
             .Where(x => x.IsSelected.Value)
             .Select(x => x.Model)
             .ToArray();
 
-        if (selectedEntities.Length > 0)
-            return selectedEntities;
+        if (selectedEntries.Length > 0)
+            return selectedEntries;
 
-        return _cursorEntity != null
-            ? new[] { _cursorEntity.Model }
+        return _cursorEntry != null
+            ? new[] { _cursorEntry.Model }
             : Array.Empty<Entry>();
     }
     
     private readonly Container _dic;
     private readonly ResourcesHolder _resourcesHolder;
 
-    private EntryViewModel? _cursorEntity = null;
+    private EntryViewModel? _cursorEntry = null;
 }

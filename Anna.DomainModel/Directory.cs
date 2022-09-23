@@ -108,7 +108,7 @@ public abstract class Directory : NotificationObject
 
         lock (UpdateLockObj)
         {
-            AddEntityInternal(newEntry);
+            AddEntryInternal(newEntry);
         }
     }
 
@@ -140,7 +140,7 @@ public abstract class Directory : NotificationObject
                 return;
             }
 
-            RemoveEntityInternal(target);
+            RemoveEntryInternal(target);
         }
     }
 
@@ -156,12 +156,12 @@ public abstract class Directory : NotificationObject
                 return;
             }
 
-            RemoveEntityInternal(target);
+            RemoveEntryInternal(target);
 
             var newEntry = Entry.Create(target);
             newEntry.SetName(newName);
 
-            AddEntityInternal(newEntry);
+            AddEntryInternal(newEntry);
         }
     }
 
@@ -192,7 +192,7 @@ public abstract class Directory : NotificationObject
         }
     }
 
-    private void AddEntityInternal(Entry entry)
+    private void AddEntryInternal(Entry entry)
     {
         if (entry.IsDirectory)
         {
@@ -216,7 +216,7 @@ public abstract class Directory : NotificationObject
         _entriesDict.Add(entry.NameWithExtension, entry);
     }
 
-    private void RemoveEntityInternal(Entry entry)
+    private void RemoveEntryInternal(Entry entry)
     {
         Entries.Remove(entry);
 
@@ -226,7 +226,7 @@ public abstract class Directory : NotificationObject
             --_filesCount;
 
         if (_entriesDict.Remove(entry.NameWithExtension) == false)
-            _Logger.Error($"RemoveEntityInternal: {Path}, {entry.NameWithExtension}");
+            _Logger.Error($"RemoveEntryInternal: {Path}, {entry.NameWithExtension}");
     }
 
     private void UpdateEntryCompare()

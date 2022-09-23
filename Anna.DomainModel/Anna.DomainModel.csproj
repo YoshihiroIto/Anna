@@ -8,8 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Anna.DomainModel.Constants\Anna.DomainModel.Constants.csproj" />
       <ProjectReference Include="..\Anna.Foundation\Anna.Foundation.csproj" />
+      <ProjectReference Include="..\Anna.UseCase\Anna.UseCase.csproj" />
     </ItemGroup>
 
     <ItemGroup>

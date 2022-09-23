@@ -1,12 +1,9 @@
 ﻿using Anna.DomainModel;
-using Anna.DomainModel.Interfaces;
 using Anna.DomainModel.ObjectLifetimeChecker;
-using Anna.Gui.Interactors;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Repository;
 using Anna.UseCase;
-using Anna.UseCase.Interfaces;
 using SimpleInjector;
 
 namespace Anna.ServiceProvider;
@@ -15,7 +12,7 @@ public class ServiceProviderContainer : Container
 {
     public ServiceProviderContainer(string logOutputDir, string appConfigFilePath)
     {
-        RegisterSingleton<IObjectLifetimeChecker,
+        RegisterSingleton<IObjectLifetimeCheckerUseCase,
 #if DEBUG
             DefaultObjectLifetimeChecker
 #else
@@ -24,18 +21,14 @@ public class ServiceProviderContainer : Container
         >();
 
         RegisterSingleton(() => new Config { FilePath = appConfigFilePath });
-        RegisterSingleton<ILogger>(() => new Log.Logger(logOutputDir));
+        RegisterSingleton<ILoggerUseCase>(() => new Log.Logger(logOutputDir));
+        RegisterSingleton<IObjectSerializerUseCase, FileSystemObjectSerializer>();
         RegisterSingleton<App>();
         RegisterSingleton<DomainModelOperator>();
         RegisterSingleton<ShortcutKeyManager>();
-        RegisterSingleton<IDialogUseCase, DialogInteractor>();
-        
-        // repository
-        RegisterSingleton<IObjectReader, FileSystemObjectReader>();
-        RegisterSingleton<IObjectWriter, FileSystemObjectWriter>();
 
         // property injection
-        RegisterInitializer<DialogBase>(d => d.Logger = GetInstance<ILogger>() );
+        RegisterInitializer<DialogBase>(d => d.Logger = GetInstance<ILoggerUseCase>() );
 
         Options.ResolveUnregisteredConcreteTypes = true;
 
@@ -43,16 +36,16 @@ public class ServiceProviderContainer : Container
         Verify();
 #endif
 
-        _logger = GetInstance<ILogger>();
+        _logger = GetInstance<ILoggerUseCase>();
 
         _logger.Start("Application");
 
-        GetInstance<IObjectLifetimeChecker>().Start(s => _logger.Error(s));
+        GetInstance<IObjectLifetimeCheckerUseCase>().Start(s => _logger.Error(s));
     }
 
     public void Destroy()
     {
-        var checker = GetInstance<IObjectLifetimeChecker>();
+        var checker = GetInstance<IObjectLifetimeCheckerUseCase>();
 
         Dispose();
 
@@ -61,5 +54,5 @@ public class ServiceProviderContainer : Container
         _logger.Destroy();
     }
 
-    private readonly ILogger _logger;
+    private readonly ILoggerUseCase _logger;
 }

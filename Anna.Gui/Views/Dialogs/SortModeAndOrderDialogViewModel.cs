@@ -1,6 +1,6 @@
-﻿using Anna.DomainModel.Constants;
-using Anna.DomainModel.Interfaces;
+﻿using Anna.Constants;
 using Anna.Gui.Views.Dialogs.Base;
+using Anna.UseCase;
 
 namespace Anna.Gui.Views.Dialogs;
 
@@ -8,7 +8,7 @@ public class SortModeAndOrderDialogViewModel : DialogViewModel
 {
     public SortModes SortMode { get; set; }
     public SortOrders SortOrder { get; set; }
-    public SortModeAndOrderDialogViewModel(ILogger logger, IObjectLifetimeChecker objectLifetimeChecker)
+    public SortModeAndOrderDialogViewModel(ILoggerUseCase logger, IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(logger, objectLifetimeChecker)
     {
     }

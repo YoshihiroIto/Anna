@@ -1,4 +1,4 @@
-﻿namespace Anna.DomainModel.Constants;
+﻿namespace Anna.Constants;
 
 public enum Cultures
 {

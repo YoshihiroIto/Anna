@@ -1,6 +1,6 @@
 ﻿using Anna.DomainModel;
-using Anna.DomainModel.Interfaces;
 using Anna.Gui.Foundations;
+using Anna.UseCase;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.IO;
@@ -21,7 +21,7 @@ public class EntryViewModel : ViewModelBase
 
     public Entry Model { get; private set; } = null!;
 
-    public EntryViewModel(IObjectLifetimeChecker objectLifetimeChecker)
+    public EntryViewModel(IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
         IsSelected = new ReactivePropertySlim<bool>().AddTo(Trash);

@@ -8,11 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
+      <PackageReference Include="Avalonia" Version="11.0.0-preview1" />
+      <PackageReference Include="SimpleInjector" Version="5.4.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="11.0.0-preview1" />
+      <ProjectReference Include="..\Anna.Constants\Anna.Constants.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-﻿using Anna.DomainModel.Interfaces;
-using Anna.Gui.Foundations;
+﻿using Anna.Gui.Foundations;
+using Anna.UseCase;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Reactive.Linq;
@@ -12,7 +12,7 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand CountUp { get; }
     private ReactiveProperty<int> Count { get; }
 
-    public MainWindowViewModel(IObjectLifetimeChecker objectLifetimeChecker)
+    public MainWindowViewModel(IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
         Count = new ReactiveProperty<int>().AddTo(Trash);

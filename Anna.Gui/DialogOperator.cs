@@ -1,18 +1,16 @@
-﻿using Anna.DomainModel.Constants;
-using Anna.UseCase;
-using Anna.UseCase.Interfaces;
+﻿using Anna.Constants;
+using Anna.Gui.Interfaces;
 using Anna.Gui.Views.Dialogs;
 using Anna.Gui.Views.Dialogs.Base;
 using SimpleInjector;
 using System.Threading.Tasks;
 
-namespace Anna.Gui.Interactors;
+namespace Anna.Gui;
 
-public class DialogInteractor : IDialogUseCase
+internal static class DialogOperator
 {
-    public async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)> SelectSortModeAndOrderAsync(
-        Container dic,
-        IShortcutKeyReceiver shortcutKeyReceiver)
+    public static async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)> SelectSortModeAndOrderAsync(
+        Container dic, IShortcutKeyReceiver shortcutKeyReceiver)
     {
         using var viewModel = dic.GetInstance<SortModeAndOrderDialogViewModel>();
 

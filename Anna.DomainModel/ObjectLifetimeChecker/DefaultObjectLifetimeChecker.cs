@@ -1,11 +1,11 @@
 ﻿#if DEBUG
-using Anna.DomainModel.Interfaces;
+using Anna.UseCase;
 using System.Collections.Concurrent;
 using System.Text;
 
 namespace Anna.DomainModel.ObjectLifetimeChecker;
 
-public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeChecker
+public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeCheckerUseCase
 {
     public void Start(Action<string> showError)
     {

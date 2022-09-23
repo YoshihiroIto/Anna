@@ -1,13 +1,13 @@
-﻿using Anna.DomainModel.Interfaces;
-using Anna.Foundation;
+﻿using Anna.Foundation;
+using Anna.UseCase;
 
 namespace Anna.Gui.Foundations;
 
 public class ViewModelBase : DisposableNotificationObject
 {
-    private readonly IObjectLifetimeChecker _objectLifetimeChecker;
+    private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
     
-    protected ViewModelBase(IObjectLifetimeChecker objectLifetimeChecker)
+    protected ViewModelBase(IObjectLifetimeCheckerUseCase objectLifetimeChecker)
     {
         _objectLifetimeChecker = objectLifetimeChecker;
         

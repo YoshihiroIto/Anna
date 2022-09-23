@@ -1,5 +1,5 @@
 ﻿using Anna.DomainModel.FileSystem;
-using Anna.DomainModel.Interfaces;
+using Anna.UseCase;
 using SimpleInjector;
 
 namespace Anna.DomainModel;
@@ -15,6 +15,6 @@ public class DomainModelOperator
 
     public Directory CreateDirectory(string path)
     {
-        return new FileSystemDirectory(path, _dic.GetInstance<ILogger>(), _dic.GetInstance<IObjectLifetimeChecker>());
+        return new FileSystemDirectory(path, _dic.GetInstance<ILoggerUseCase>(), _dic.GetInstance<IObjectLifetimeCheckerUseCase>());
     }
 }

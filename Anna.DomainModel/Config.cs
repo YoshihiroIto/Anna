@@ -1,4 +1,4 @@
-﻿using Anna.DomainModel.Constants;
+﻿using Anna.Constants;
 using Anna.Foundation;
 using System.Globalization;
 

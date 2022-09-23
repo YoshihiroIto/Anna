@@ -1,4 +1,4 @@
-﻿using Anna.DomainModel.Constants;
+﻿using Anna.Constants;
 using System.Runtime.CompilerServices;
 
 namespace Anna.DomainModel;

@@ -20,6 +20,5 @@
     <ItemGroup>
       <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
       <ProjectReference Include="..\Anna.Strings\Anna.Strings.csproj" />
-      <ProjectReference Include="..\Anna.UseCase\Anna.UseCase.csproj" />
     </ItemGroup>
 </Project>

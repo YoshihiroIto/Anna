@@ -1,5 +1,4 @@
-﻿using Anna.Desktop;
-using Anna.Gui;
+﻿using Anna.Gui;
 using Anna.ServiceProvider;
 using Avalonia;
 using Avalonia.Xaml.Interactions.Core;

@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Strings", "Anna.String
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Entry.Desktop.Tests", "Anna.Entry.Desktop.Tests\Anna.Entry.Desktop.Tests.csproj", "{C1231E38-7D9C-432E-95B0-6F5847C33551}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel.Constants", "Anna.DomainModel.Constants\Anna.DomainModel.Constants.csproj", "{935C084C-E96A-4777-904E-99F8D1E37BFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Constants", "Anna.Constants\Anna.Constants.csproj", "{935C084C-E96A-4777-904E-99F8D1E37BFE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Repository", "Anna.Repository\Anna.Repository.csproj", "{95DB5B93-A2F0-4170-B462-4486C5DD6A5A}"
 EndProject

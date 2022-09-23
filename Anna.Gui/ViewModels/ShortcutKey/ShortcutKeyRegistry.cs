@@ -1,4 +1,4 @@
-﻿using Anna.UseCase.Interfaces;
+﻿using Anna.Gui.Interfaces;
 using Avalonia.Input;
 using System;
 using System.Collections.Generic;

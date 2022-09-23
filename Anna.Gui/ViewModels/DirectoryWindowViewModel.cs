@@ -1,6 +1,6 @@
 ﻿using Anna.DomainModel;
-using Anna.DomainModel.Interfaces;
 using Anna.Gui.Foundations;
+using Anna.UseCase;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
 using System;
@@ -29,7 +29,7 @@ public class DirectoryWindowViewModel : ViewModelBase
     // todo:impl Messenger
     public event EventHandler? Close;
 
-    public DirectoryWindowViewModel(Container dic, IObjectLifetimeChecker objectLifetimeChecker)
+    public DirectoryWindowViewModel(Container dic, IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
         _dic = dic;

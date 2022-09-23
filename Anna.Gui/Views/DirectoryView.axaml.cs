@@ -1,6 +1,6 @@
 ﻿using Anna.DomainModel;
+using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels;
-using Anna.UseCase.Interfaces;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System;

@@ -1,15 +1,14 @@
-﻿using Anna.DomainModel.Constants;
-using Anna.DomainModel.Interfaces;
-using Anna.UseCase.Interfaces;
+﻿using Anna.Constants;
+using Anna.UseCase;
 using System.Text.Json;
 
 namespace Anna.Repository;
 
-public class FileSystemObjectReader : IObjectReader
+public class FileSystemObjectSerializer : IObjectSerializerUseCase
 {
-    private readonly ILogger _logger;
+    private readonly ILoggerUseCase _logger;
 
-    public FileSystemObjectReader(ILogger logger)
+    public FileSystemObjectSerializer(ILoggerUseCase logger)
     {
         _logger = logger;
     }
@@ -33,5 +32,23 @@ public class FileSystemObjectReader : IObjectReader
         }
 
         return (defaultGenerator(), ResultCode.Error);
+    }
+    
+    public async ValueTask<ResultCode> WriteAsync<T>(T obj, string path)
+    {
+        try
+        {
+            var json = JsonSerializer.Serialize(obj);
+
+            await File.WriteAllTextAsync(path, json);
+
+            return ResultCode.Ok;
+        }
+        catch (Exception e)
+        {
+            _logger.Error($"FileSystemObjectWriter.WriteAsync: {e.Message}");
+        }
+
+        return ResultCode.Error;
     }
 }

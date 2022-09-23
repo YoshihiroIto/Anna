@@ -1,6 +1,6 @@
-﻿using Anna.DomainModel.Constants;
-using Anna.DomainModel.Interfaces;
+﻿using Anna.Constants;
 using Anna.Foundation;
+using Anna.UseCase;
 
 namespace Anna.DomainModel;
 
@@ -96,7 +96,7 @@ public abstract class Directory : NotificationObject
         SortEntries();
     }
 
-    protected Directory(string path, ILogger logger)
+    protected Directory(string path, ILoggerUseCase logger)
     {
         _Logger = logger;
         Path = path;
@@ -258,5 +258,5 @@ public abstract class Directory : NotificationObject
     private int _filesCount;
     private readonly Dictionary<string, Entry> _entriesDict = new();
 
-    protected readonly ILogger _Logger;
+    protected readonly ILoggerUseCase _Logger;
 }

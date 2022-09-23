@@ -1,6 +1,6 @@
-﻿namespace Anna.DomainModel.Interfaces;
+﻿namespace Anna.UseCase;
 
-public interface IObjectLifetimeChecker
+public interface IObjectLifetimeCheckerUseCase
 {
     void Start(Action<string> showError);
     void End();

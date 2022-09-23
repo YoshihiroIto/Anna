@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace Anna.Desktop;
+namespace Anna.Entry.Desktop;
 
 public class CommandLine
 {

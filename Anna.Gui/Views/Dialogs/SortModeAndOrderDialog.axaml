@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:strings="clr-namespace:Anna.Strings;assembly=Anna.Strings"
         xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
-        xmlns:constants="clr-namespace:Anna.DomainModel.Constants;assembly=Anna.DomainModel.Constants"
+        xmlns:constants="clr-namespace:Anna.Constants;assembly=Anna.Constants"
         Title="{x:Static strings:Resources.DialogTitle_EntrySort}"
         d:DesignHeight="400"
         d:DesignWidth="400"

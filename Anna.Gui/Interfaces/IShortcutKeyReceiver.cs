@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Directory=Anna.DomainModel.Directory;
 
-namespace Anna.UseCase.Interfaces;
+namespace Anna.Gui.Interfaces;
 
 public interface IShortcutKeyReceiver
 {

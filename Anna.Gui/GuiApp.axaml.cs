@@ -1,5 +1,4 @@
 using Anna.DomainModel;
-using Anna.DomainModel.Interfaces;
 using Anna.Gui.ViewModels;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -62,7 +61,7 @@ public class GuiApp : Application
             }).AddTo(_trash);
 
         _dic.GetInstance<App>().Directories.CollectionChangedAsObservable()
-            .Subscribe(x =>
+            .Subscribe(_ =>
             {
                 if (_dic.GetInstance<App>().Directories.Count == 0)
                     desktop.MainWindow?.Close();

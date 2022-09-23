@@ -1,7 +1,7 @@
 ﻿using Anna.DomainModel;
-using Anna.DomainModel.Interfaces;
 using Anna.Gui.Foundations;
 using Anna.Gui.ViewModels.ShortcutKey;
+using Anna.UseCase;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
@@ -21,7 +21,7 @@ public class DirectoryViewViewModel : ViewModelBase
     public DirectoryViewViewModel(
         Container dic, 
         ShortcutKeyManager shortcutKeyManager,
-        IObjectLifetimeChecker objectLifetimeChecker)
+        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
         _dic = dic;

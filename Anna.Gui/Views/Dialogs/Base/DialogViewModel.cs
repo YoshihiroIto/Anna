@@ -1,15 +1,15 @@
-﻿using Anna.DomainModel.Interfaces;
-using Anna.Gui.Foundations;
+﻿using Anna.Gui.Foundations;
+using Anna.UseCase;
 using System;
 
 namespace Anna.Gui.Views.Dialogs.Base;
 
 public class DialogViewModel : ViewModelBase
 {
-    private readonly ILogger _logger;
+    private readonly ILoggerUseCase _logger;
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
-    protected DialogViewModel(ILogger logger, IObjectLifetimeChecker objectLifetimeChecker)
+    protected DialogViewModel(ILoggerUseCase logger, IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
         _logger = logger;

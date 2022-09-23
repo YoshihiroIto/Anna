@@ -1,5 +1,5 @@
-﻿using Anna.DomainModel.Interfaces;
-using Anna.Foundation;
+﻿using Anna.Foundation;
+using Anna.UseCase;
 using Reactive.Bindings.Extensions;
 using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
@@ -10,7 +10,7 @@ namespace Anna.DomainModel.FileSystem;
 
 public sealed class FileSystemDirectory : Directory, IDisposable
 {
-    internal FileSystemDirectory(string path, ILogger logger, IObjectLifetimeChecker objectLifetimeChecker)
+    internal FileSystemDirectory(string path, ILoggerUseCase logger, IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(path, logger)
     {
         _objectLifetimeChecker = objectLifetimeChecker;
@@ -68,6 +68,6 @@ public sealed class FileSystemDirectory : Directory, IDisposable
     }
 
     private bool _isDispose;
-    private readonly IObjectLifetimeChecker _objectLifetimeChecker;
+    private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
     private readonly CompositeDisposable _trash = new();
 }

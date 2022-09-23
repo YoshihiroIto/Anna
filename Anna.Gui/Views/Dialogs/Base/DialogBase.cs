@@ -4,20 +4,19 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Anna.ServiceProvider")]
 
-namespace Anna.Gui.Views.Dialogs.Base
+namespace Anna.Gui.Views.Dialogs.Base;
+
+public class DialogBase : Window
 {
-    public class DialogBase : Window
+    protected internal ILogger Logger { get; set; } = null!;
+
+    public DialogBase Setup(object viewModel)
     {
-        protected internal ILogger Logger { get; set; } = null!;
+        Loaded += (_, _) => Logger.Start(GetType().Name);
+        Closed += (_, _) => Logger.End(GetType().Name);
 
-        public DialogBase Setup(object viewModel)
-        {
-            Loaded += (_, _) => Logger.Start(GetType().Name);
-            Closed += (_, _) => Logger.End(GetType().Name);
+        DataContext = viewModel;
 
-            DataContext = viewModel;
-
-            return this;
-        }
+        return this;
     }
 }

@@ -33,6 +33,7 @@ public static class Program
     }
     
     // for designer
+    // ReSharper disable once UnusedMember.Local
     private static AppBuilder BuildAvaloniaApp()
     {
         GC.KeepAlive(Assembly.GetAssembly(typeof(Interaction)));

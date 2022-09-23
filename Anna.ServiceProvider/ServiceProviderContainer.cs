@@ -1,9 +1,9 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.ObjectLifetimeChecker;
-using Anna.Gui;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Repository;
+using Anna.Strings;
 using Anna.UseCase;
 using SimpleInjector;
 
@@ -25,6 +25,7 @@ public class ServiceProviderContainer : Container
         RegisterSingleton<ILoggerUseCase>(() => new Log.Logger(logOutputDir));
         RegisterSingleton<IObjectSerializerUseCase, FileSystemObjectSerializer>();
         RegisterSingleton<App>();
+        RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();
         RegisterSingleton<ShortcutKeyManager>();
 

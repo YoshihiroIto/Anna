@@ -2,13 +2,12 @@
         Classes="dialog"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
         xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
+        xmlns:constants="clr-namespace:Anna.Constants;assembly=Anna.Constants"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:strings="clr-namespace:Anna.Strings;assembly=Anna.Strings"
-        xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
-        xmlns:constants="clr-namespace:Anna.Constants;assembly=Anna.Constants"
-        Title="{x:Static strings:Resources.DialogTitle_EntrySort}"
+        Title="{ReflectionBinding R.DialogTitle_EntrySort}"
         d:DesignHeight="400"
         d:DesignWidth="400"
         x:CompileBindings="True"
@@ -16,6 +15,11 @@
         KeyDown="OnKeyDown"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d">
+    <Design.DataContext>
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
+        <base:DialogViewModel />
+    </Design.DataContext>
+
     <Window.Styles>
         <StyleInclude Source="/Views/Resources/Styles.axaml" />
     </Window.Styles>
@@ -35,23 +39,23 @@
         <StackPanel x:Name="ModePanel" Spacing="12">
             <Button x:Name="ModeNameButton"
                     Click="ModeButton_OnClick"
-                    Content="{x:Static strings:Resources.EntrySort_Mode_Name}"
+                    Content="{ReflectionBinding R.EntrySort_Mode_Name}"
                     TabIndex="0"
                     Tag="{x:Static constants:SortModes.Name}" />
             <Button Click="ModeButton_OnClick"
-                    Content="{x:Static strings:Resources.EntrySort_Mode_Extension}"
+                    Content="{ReflectionBinding R.EntrySort_Mode_Extension}"
                     TabIndex="1"
                     Tag="{x:Static constants:SortModes.Extension}" />
             <Button Click="ModeButton_OnClick"
-                    Content="{x:Static strings:Resources.EntrySort_Mode_Size}"
+                    Content="{ReflectionBinding R.EntrySort_Mode_Size}"
                     TabIndex="2"
                     Tag="{x:Static constants:SortModes.Size}" />
             <Button Click="ModeButton_OnClick"
-                    Content="{x:Static strings:Resources.EntrySort_Mode_Timestamp}"
+                    Content="{ReflectionBinding R.EntrySort_Mode_Timestamp}"
                     TabIndex="3"
                     Tag="{x:Static constants:SortModes.Timestamp}" />
             <Button Click="ModeButton_OnClick"
-                    Content="{x:Static strings:Resources.EntrySort_Mode_Attribute}"
+                    Content="{ReflectionBinding R.EntrySort_Mode_Attribute}"
                     TabIndex="4"
                     Tag="{x:Static constants:SortModes.Attributes}" />
         </StackPanel>
@@ -68,19 +72,19 @@
                 <Button x:Name="OrderAscendingButton"
                         Grid.Column="0"
                         Click="OrderButton_OnClick"
-                        Content="{x:Static strings:Resources.EntrySort_Order_Ascending}"
+                        Content="{ReflectionBinding R.EntrySort_Order_Ascending}"
                         TabIndex="5"
                         Tag="{x:Static constants:SortOrders.Ascending}" />
                 <Button Grid.Column="2"
                         Click="OrderButton_OnClick"
-                        Content="{x:Static strings:Resources.EntrySort_Order_Descending}"
+                        Content="{ReflectionBinding R.EntrySort_Order_Descending}"
                         TabIndex="6"
                         Tag="{x:Static constants:SortOrders.Descending}" />
             </Grid>
 
             <Button Grid.Column="1"
                     Click="CancelButton_OnClick"
-                    Content="{x:Static strings:Resources.Dialog_Cancel}"
+                    Content="{ReflectionBinding R.Dialog_Cancel}"
                     TabIndex="8" />
         </Grid>
     </StackPanel>

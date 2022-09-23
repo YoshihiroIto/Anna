@@ -1,4 +1,5 @@
 ﻿using Anna.Foundation;
+using System.Globalization;
 
 namespace Anna.DomainModel;
 
@@ -31,4 +32,22 @@ public class Config : NotificationObject
 
 public class ConfigData : NotificationObject
 {
+    #region Culture
+
+    private Cultures _Culture;
+
+    public Cultures Culture
+    {
+        get => _Culture;
+        set => SetProperty(ref _Culture, value);
+    }
+
+    #endregion
+
+    public void SetDefault()
+    {
+        var lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+        if (string.IsNullOrEmpty(lang) == false)
+            Culture = Enum.TryParse<Cultures>(lang, true, out var result) ? result : Cultures.En;
+    }
 }

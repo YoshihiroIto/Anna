@@ -4,10 +4,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:domainModel="clr-namespace:Anna.DomainModel;assembly=Anna.DomainModel"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:strings="clr-namespace:Anna.Strings;assembly=Anna.Strings"
         xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
+        xmlns:constants="clr-namespace:Anna.DomainModel.Constants;assembly=Anna.DomainModel.Constants"
         Title="{x:Static strings:Resources.DialogTitle_EntrySort}"
         d:DesignHeight="400"
         d:DesignWidth="400"
@@ -37,23 +37,23 @@
                     Click="ModeButton_OnClick"
                     Content="{x:Static strings:Resources.EntrySort_Mode_Name}"
                     TabIndex="0"
-                    Tag="{x:Static domainModel:SortModes.Name}" />
+                    Tag="{x:Static constants:SortModes.Name}" />
             <Button Click="ModeButton_OnClick"
                     Content="{x:Static strings:Resources.EntrySort_Mode_Extension}"
                     TabIndex="1"
-                    Tag="{x:Static domainModel:SortModes.Extension}" />
+                    Tag="{x:Static constants:SortModes.Extension}" />
             <Button Click="ModeButton_OnClick"
                     Content="{x:Static strings:Resources.EntrySort_Mode_Size}"
                     TabIndex="2"
-                    Tag="{x:Static domainModel:SortModes.Size}" />
+                    Tag="{x:Static constants:SortModes.Size}" />
             <Button Click="ModeButton_OnClick"
                     Content="{x:Static strings:Resources.EntrySort_Mode_Timestamp}"
                     TabIndex="3"
-                    Tag="{x:Static domainModel:SortModes.Timestamp}" />
+                    Tag="{x:Static constants:SortModes.Timestamp}" />
             <Button Click="ModeButton_OnClick"
                     Content="{x:Static strings:Resources.EntrySort_Mode_Attribute}"
                     TabIndex="4"
-                    Tag="{x:Static domainModel:SortModes.Attributes}" />
+                    Tag="{x:Static constants:SortModes.Attributes}" />
         </StackPanel>
 
         <Rectangle Height="1"
@@ -70,12 +70,12 @@
                         Click="OrderButton_OnClick"
                         Content="{x:Static strings:Resources.EntrySort_Order_Ascending}"
                         TabIndex="5"
-                        Tag="{x:Static domainModel:SortOrders.Ascending}" />
+                        Tag="{x:Static constants:SortOrders.Ascending}" />
                 <Button Grid.Column="2"
                         Click="OrderButton_OnClick"
                         Content="{x:Static strings:Resources.EntrySort_Order_Descending}"
                         TabIndex="6"
-                        Tag="{x:Static domainModel:SortOrders.Descending}" />
+                        Tag="{x:Static constants:SortOrders.Descending}" />
             </Grid>
 
             <Button Grid.Column="1"

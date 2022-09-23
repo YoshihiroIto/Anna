@@ -1,4 +1,4 @@
-﻿using Anna.DomainModel;
+﻿using Anna.DomainModel.Constants;
 using Anna.Gui.Views.Dialogs.Base;
 using Avalonia;
 using Avalonia.Controls;

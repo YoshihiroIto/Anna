@@ -1,4 +1,5 @@
-﻿using Anna.Foundation;
+﻿using Anna.DomainModel.Constants;
+using Anna.Foundation;
 using System.Globalization;
 
 namespace Anna.DomainModel;

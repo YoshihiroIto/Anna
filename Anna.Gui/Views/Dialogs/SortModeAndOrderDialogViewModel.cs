@@ -1,4 +1,4 @@
-﻿using Anna.DomainModel;
+﻿using Anna.DomainModel.Constants;
 using Anna.DomainModel.Interfaces;
 using Anna.Gui.Views.Dialogs.Base;
 

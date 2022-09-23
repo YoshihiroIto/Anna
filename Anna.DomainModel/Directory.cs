@@ -1,4 +1,5 @@
-﻿using Anna.DomainModel.Interfaces;
+﻿using Anna.DomainModel.Constants;
+using Anna.DomainModel.Interfaces;
 using Anna.Foundation;
 
 namespace Anna.DomainModel;
@@ -258,19 +259,4 @@ public abstract class Directory : NotificationObject
     private readonly Dictionary<string, Entry> _entriesDict = new();
 
     protected readonly ILogger _Logger;
-}
-
-public enum SortModes
-{
-    Name,
-    Extension,
-    Timestamp,
-    Size,
-    Attributes,
-}
-
-public enum SortOrders
-{
-    Ascending,
-    Descending
 }

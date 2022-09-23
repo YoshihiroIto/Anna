@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Anna.DomainModel.Constants;
+using System.Runtime.CompilerServices;
 
 namespace Anna.DomainModel;
 

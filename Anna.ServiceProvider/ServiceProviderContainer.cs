@@ -1,4 +1,5 @@
 ﻿using Anna.DomainModel;
+using Anna.DomainModel.Config;
 using Anna.DomainModel.ObjectLifetimeChecker;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;

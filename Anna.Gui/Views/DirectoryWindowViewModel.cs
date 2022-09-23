@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
+using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Strings;
@@ -56,8 +57,8 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
-        ToEnglishCommand = new DelegateCommand(() => appConfig.AppConfigData.Culture = Cultures.En);
-        ToJapaneseCommand = new DelegateCommand(() => appConfig.AppConfigData.Culture = Cultures.Ja);
+        ToEnglishCommand = new DelegateCommand(() => appConfig.Data.Culture = Cultures.En);
+        ToJapaneseCommand = new DelegateCommand(() => appConfig.Data.Culture = Cultures.Ja);
     }
 
     public DirectoryWindowViewModel Setup(Directory model)

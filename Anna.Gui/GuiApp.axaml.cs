@@ -1,4 +1,5 @@
 using Anna.DomainModel;
+using Anna.DomainModel.Config;
 using Anna.Gui.Views;
 using Anna.Strings;
 using Avalonia;
@@ -54,7 +55,7 @@ public class GuiApp : Application
             _onMainWindowClosed?.Invoke();
         };
 
-        _dic.GetInstance<AppConfig>().AppConfigData
+        _dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.Culture)
             .ObserveOnUIDispatcher()
             .Subscribe(x => _dic.GetInstance<ResourcesHolder>().SetCulture(x))

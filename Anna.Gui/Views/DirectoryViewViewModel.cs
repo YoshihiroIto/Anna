@@ -74,7 +74,7 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         if (selectedEntries.Length > 0)
             return selectedEntries;
 
-        return _cursorEntry != null
+        return _cursorEntry is not null
             ? new[] { _cursorEntry.Model }
             : Array.Empty<Entry>();
     }

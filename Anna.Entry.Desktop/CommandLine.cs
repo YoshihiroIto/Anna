@@ -19,10 +19,7 @@ public class CommandLine
 
         try
         {
-            var options = new OptionSet
-            {
-                { "config=", "config filepath", v => commandLine.AppConfigFilePath = v }
-            };
+            var options = new OptionSet { { "config=", "config filepath", v => commandLine.AppConfigFilePath = v } };
 
             options.Parse(args);
         }
@@ -37,5 +34,5 @@ public class CommandLine
     public static readonly string DefaultAppConfigFilePath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
         "Jewelry Development/Anna/AppConfig.json"
-        );
+    );
 }

@@ -52,8 +52,8 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
 
         Observable
             .FromEventPattern(
-            h => _resourcesHolder.CultureChanged += h,
-            h => _resourcesHolder.CultureChanged -= h)
+                h => _resourcesHolder.CultureChanged += h,
+                h => _resourcesHolder.CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 

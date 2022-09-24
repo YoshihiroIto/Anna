@@ -34,7 +34,7 @@ public class TestApp : IAsyncDisposable
 
         if (_useSelfConfigDir)
             _configDir.Dispose();
-        
+
         GC.SuppressFinalize(this);
     }
 

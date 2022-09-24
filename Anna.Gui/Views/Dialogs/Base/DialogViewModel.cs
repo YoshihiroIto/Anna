@@ -27,11 +27,11 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
 
         Observable
             .FromEventPattern(
-            h => _resourcesHolder.CultureChanged += h,
-            h => _resourcesHolder.CultureChanged -= h)
+                h => _resourcesHolder.CultureChanged += h,
+                h => _resourcesHolder.CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
-        
+
         _logger.Start(GetType().Name);
     }
 

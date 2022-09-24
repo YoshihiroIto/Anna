@@ -38,12 +38,12 @@ public class ConfigBase<T> : NotificationObject
     public void Load()
     {
         var result = _objectSerializer.Read(FilePath,
-        () =>
-        {
-            var data = new T();
-            data.SetDefault();
-            return data;
-        });
+            () =>
+            {
+                var data = new T();
+                data.SetDefault();
+                return data;
+            });
 
         Data = result.obj;
     }

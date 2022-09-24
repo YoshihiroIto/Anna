@@ -42,15 +42,15 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
         foreach (var key in keyConfig.Keys)
         {
             Register(
-            key.Key,
-            key.Modifier,
-            async x =>
-            {
-                if (Operators.TryGetValue(key.Operation, out var value) == false)
-                    return;
+                key.Key,
+                key.Modifier,
+                async x =>
+                {
+                    if (Operators.TryGetValue(key.Operation, out var value) == false)
+                        return;
 
-                await value(_dic, x);
-            });
+                    await value(_dic, x);
+                });
         }
     }
 
@@ -70,7 +70,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
     private readonly Container _dic;
     private readonly ILoggerUseCase _logger;
     private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
-    
+
     private static readonly IReadOnlyDictionary<Operations, Func<Container, IShortcutKeyReceiver, ValueTask>>
         Operators = new Dictionary<Operations, Func<Container, IShortcutKeyReceiver, ValueTask>>
         {

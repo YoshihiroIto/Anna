@@ -32,9 +32,9 @@ public class Logger : ILoggerUseCase
             .WriteTo.Console(outputTemplate: template)
             .WriteTo.Debug(outputTemplate: template)
             .WriteTo.File(logFilePath,
-            LogEventLevel.Verbose,
-            outputTemplate: template,
-            rollingInterval: RollingInterval.Day)
+                LogEventLevel.Verbose,
+                outputTemplate: template,
+                rollingInterval: RollingInterval.Day)
             .CreateLogger();
     }
 

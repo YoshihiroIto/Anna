@@ -138,9 +138,9 @@ public partial class SortModeAndOrderDialog : DialogBase
             return;
 
         var next = KeyboardNavigationHandler.GetNext(current,
-        isNext
-            ? NavigationDirection.Next
-            : NavigationDirection.Previous);
+            isNext
+                ? NavigationDirection.Next
+                : NavigationDirection.Previous);
 
         if (next is not null)
             FocusManager.Instance?.Focus(next, NavigationMethod.Directional);

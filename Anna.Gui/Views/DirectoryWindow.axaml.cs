@@ -29,7 +29,7 @@ public partial class DirectoryWindow : Window
             {
                 if (e.OldValue is DirectoryWindowViewModel oldViewModel)
                     oldViewModel.Close -= OnClose;
-                
+
                 if (e.NewValue is DirectoryWindowViewModel newViewModel)
                     newViewModel.Close += OnClose;
             }

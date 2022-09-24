@@ -9,8 +9,10 @@ namespace Anna.Gui;
 
 internal static class DialogOperator
 {
-    public static async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)> SelectSortModeAndOrderAsync(
-        Container dic, IShortcutKeyReceiver shortcutKeyReceiver)
+    public static async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)>
+        SelectSortModeAndOrderAsync(
+            Container dic,
+            IShortcutKeyReceiver shortcutKeyReceiver)
     {
         using var viewModel = dic.GetInstance<SortModeAndOrderDialogViewModel>();
 

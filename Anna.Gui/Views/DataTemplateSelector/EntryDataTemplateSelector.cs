@@ -16,10 +16,10 @@ public class EntryDataTemplateSelector : IDataTemplate
             throw new NotSupportedException();
 
         return vm.IsDirectory
-            ? DirectoryDataTemplate?.Build(param) 
+            ? DirectoryDataTemplate?.Build(param)
             : FileDataTemplate?.Build(param);
     }
-        
+
     public bool Match(object? data)
     {
         return data is EntryViewModel;

@@ -51,8 +51,8 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
 
         Observable
             .FromEventPattern(
-            h => _resourcesHolder.CultureChanged += h,
-            h => _resourcesHolder.CultureChanged -= h)
+                h => _resourcesHolder.CultureChanged += h,
+                h => _resourcesHolder.CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
@@ -66,8 +66,8 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         lock (model.UpdateLockObj)
         {
             Entries = model.Entries.ToReadOnlyReactiveCollection(
-                bufferedCollectionChanged,
-                x => _dic.GetInstance<EntryViewModel>().Setup(x))
+                    bufferedCollectionChanged,
+                    x => _dic.GetInstance<EntryViewModel>().Setup(x))
                 .AddTo(Trash);
         }
 

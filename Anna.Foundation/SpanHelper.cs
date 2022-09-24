@@ -6,7 +6,7 @@ public static class SpanHelper
     {
         var l = 0;
         var r = a.Length - 1;
-        
+
         while (l <= r)
         {
             var mid = l + (r - l) / 2;
@@ -25,7 +25,7 @@ public static class SpanHelper
     {
         var l = 0;
         var r = a.Length - 1;
-        
+
         while (l <= r)
         {
             var mid = l + (r - l) / 2;

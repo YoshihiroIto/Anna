@@ -20,14 +20,14 @@ public class App : DisposableNotificationObject
     {
         _Directories.Add(_domainModelOperator.CreateDirectory(path));
     }
-    
+
     public void CloseDirectory(Directory directory)
     {
         (directory as IDisposable)?.Dispose();
-        
+
         _Directories.Remove(directory);
     }
-    
+
     public void CloseAllDirectories()
     {
         foreach (var d in Directories.ToArray())

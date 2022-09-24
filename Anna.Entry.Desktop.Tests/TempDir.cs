@@ -49,9 +49,9 @@ public class TempDir : IDisposable
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? throw new NullReferenceException());
 
             File.WriteAllText(
-            fullPath,
-            string.Format("Automatically generated for testing on {0:yyyy}/{0:MM}/{0:dd} {0:hh}:{0:mm}:{0:ss}",
-            DateTime.UtcNow));
+                fullPath,
+                string.Format("Automatically generated for testing on {0:yyyy}/{0:MM}/{0:dd} {0:hh}:{0:mm}:{0:ss}",
+                    DateTime.UtcNow));
         }
 
         return this;

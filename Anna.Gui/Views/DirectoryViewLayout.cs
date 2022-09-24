@@ -145,15 +145,15 @@ public class DirectoryViewLayout : NotificationObject
         {
             var typeface = new Typeface(FontFamily);
             var ft = new FormattedText("A",
-            CultureInfo.CurrentUICulture,
-            FlowDirection.LeftToRight,
-            typeface,
-            FontSize,
-            Brushes.Black);
+                CultureInfo.CurrentUICulture,
+                FlowDirection.LeftToRight,
+                typeface,
+                FontSize,
+                Brushes.Black);
 
             value = new Size(
-            Math.Ceiling(ft.WidthIncludingTrailingWhitespace),
-            Math.Ceiling(ft.Height));
+                Math.Ceiling(ft.WidthIncludingTrailingWhitespace),
+                Math.Ceiling(ft.Height));
 
             ItemHeightCache.Add(key, value);
         }
@@ -164,13 +164,12 @@ public class DirectoryViewLayout : NotificationObject
         ExtensionWidth = 5 * _charaWidth;
         NameWithExtensionWidth = NameWidth + ExtensionWidth;
 
-        ItemWidth =
-            value.Height +// SelectedMark width
-            SelectedMarkMargin.Left +
-            SelectedMarkMargin.Right +
-            ItemMargin.Left +
-            ItemMargin.Right +
-            NameWithExtensionWidth;
+        ItemWidth = value.Height +// SelectedMark width
+                    SelectedMarkMargin.Left +
+                    SelectedMarkMargin.Right +
+                    ItemMargin.Left +
+                    ItemMargin.Right +
+                    NameWithExtensionWidth;
         ItemHeight = value.Height;
     }
 

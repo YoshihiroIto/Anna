@@ -24,32 +24,32 @@ public static class Program
 
         dic.Destroy();
     }
-    
+
     public static AppBuilder BuildAvaloniaAppForDesktopTests(string[] args)
     {
         var dic = CreateServiceProviderContainer(args);
 
         return BuildAvaloniaApp(dic, () => dic.Destroy());
     }
-    
+
     // for designer
     // ReSharper disable once UnusedMember.Local
     private static AppBuilder BuildAvaloniaApp()
     {
         GC.KeepAlive(Assembly.GetAssembly(typeof(Interaction)));
         GC.KeepAlive(Assembly.GetAssembly(typeof(EventTriggerBehavior)));
-        
+
         return AppBuilder.Configure(() => new GuiApp())
             .UsePlatformDetect()
             .LogToTrace();
     }
-    
+
     private static AppBuilder BuildAvaloniaApp(Container dic, Action? onMainWindowClosed)
         => AppBuilder.Configure(() => new GuiApp().Setup(dic, onMainWindowClosed))
             .UsePlatformDetect()
             .LogToTrace();
 
-    private static ServiceProviderContainer CreateServiceProviderContainer(string [] args)
+    private static ServiceProviderContainer CreateServiceProviderContainer(string[] args)
     {
         var commandLine = CommandLine.Parse(args);
 

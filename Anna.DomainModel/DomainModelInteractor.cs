@@ -15,6 +15,8 @@ public class DomainModelOperator
 
     public Directory CreateDirectory(string path)
     {
-        return new FileSystemDirectory(path, _dic.GetInstance<ILoggerUseCase>(), _dic.GetInstance<IObjectLifetimeCheckerUseCase>());
+        return new FileSystemDirectory(path,
+            _dic.GetInstance<ILoggerUseCase>(),
+            _dic.GetInstance<IObjectLifetimeCheckerUseCase>());
     }
 }

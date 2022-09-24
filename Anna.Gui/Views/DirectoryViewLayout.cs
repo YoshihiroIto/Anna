@@ -18,7 +18,7 @@ public class DirectoryViewLayout : NotificationObject
     public FontFamily FontFamily
     {
         get => _FontFamily;
-        private set
+        set
         {
             if (SetProperty(ref _FontFamily, value) == false)
                 return;
@@ -37,7 +37,7 @@ public class DirectoryViewLayout : NotificationObject
     public double FontSize
     {
         get => _FontSize;
-        private set
+        set
         {
             if (SetProperty(ref _FontSize, value))
                 return;
@@ -110,6 +110,18 @@ public class DirectoryViewLayout : NotificationObject
     {
         get => _NameWithExtensionWidth;
         private set => SetProperty(ref _NameWithExtensionWidth, value);
+    }
+
+    #endregion
+
+    #region Bounds
+
+    private Rect _Bounds;
+
+    public Rect Bounds
+    {
+        get => _Bounds;
+        set => SetProperty(ref _Bounds, value);
     }
 
     #endregion

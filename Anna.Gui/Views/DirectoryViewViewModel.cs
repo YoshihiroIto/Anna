@@ -1,4 +1,5 @@
 ﻿using Anna.DomainModel;
+using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels;
@@ -9,6 +10,7 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 
@@ -23,6 +25,8 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
 
     public readonly ShortcutKeyManager ShortcutKeyManager;
 
+    public ReactivePropertySlim<IntSize> ItemCellSize { get; }
+
     public DirectoryViewViewModel(
         Container dic,
         ResourcesHolder resourcesHolder,
@@ -33,6 +37,12 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         _dic = dic;
         _resourcesHolder = resourcesHolder;
         ShortcutKeyManager = shortcutKeyManager;
+
+        ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
+        ItemCellSize.Subscribe(x =>
+        {
+            Debug.WriteLine(x);
+        }).AddTo(Trash);
     }
 
     public DirectoryViewViewModel Setup(Directory model)

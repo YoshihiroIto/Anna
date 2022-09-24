@@ -1,4 +1,5 @@
 ﻿using Anna.DomainModel;
+using Anna.Foundation;
 using Anna.Gui.Interfaces;
 using Avalonia;
 using Avalonia.Controls;
@@ -9,16 +10,27 @@ namespace Anna.Gui.Views;
 
 public partial class DirectoryView : UserControl, IShortcutKeyReceiver
 {
-    public static readonly DirectProperty<DirectoryView, DirectoryViewLayout> DirectoryViewLayoutProperty =
+    internal static readonly DirectProperty<DirectoryView, DirectoryViewLayout> DirectoryViewLayoutProperty =
         AvaloniaProperty.RegisterDirect<DirectoryView, DirectoryViewLayout>(nameof(DirectoryViewLayout), o => o.Layout);
 
-    public DirectoryViewLayout Layout
+    internal static readonly DirectProperty<DirectoryView, IntSize> ItemCellSizeProperty =
+        AvaloniaProperty.RegisterDirect<DirectoryView, IntSize>(nameof(ItemCellSize), o => o.ItemCellSize);
+
+    internal DirectoryViewLayout Layout
     {
         get => _Layout;
         private set => SetAndRaise(DirectoryViewLayoutProperty, ref _Layout, value);
     }
 
+    internal IntSize ItemCellSize
+    {
+        get => _ItemCellSize;
+        private set => SetAndRaise(ItemCellSizeProperty, ref _ItemCellSize, value);
+    }
+
     private DirectoryViewLayout _Layout = new();
+    private IntSize _ItemCellSize;
+
 
     public DirectoryView()
     {
@@ -28,6 +40,8 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
+
+        LayoutUpdated += (_, _) => UpdateItemCellSize();
     }
 
     public Window Owner
@@ -67,5 +81,13 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
         var viewModel = DataContext as DirectoryViewViewModel ?? throw new NotSupportedException();
 
         return viewModel.CollectTargetEntries();
+    }
+
+    private void UpdateItemCellSize()
+    {
+        ItemCellSize = new IntSize(
+            (int)(Bounds.Width / Layout.ItemWidth),
+            (int)(Bounds.Height / Layout.ItemHeight)
+        );
     }
 }

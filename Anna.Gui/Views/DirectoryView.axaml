@@ -14,6 +14,7 @@
              x:DataType="views:DirectoryViewViewModel"
              FontFamily="{Binding $self.Layout.FontFamily}"
              FontSize="{Binding $self.Layout.FontSize}"
+             ItemCellSize="{Binding ItemCellSize.Value, Mode=OneWayToSource}"
              mc:Ignorable="d">
     <UserControl.Styles>
         <StyleInclude Source="/Views/Resources/Styles.axaml" />

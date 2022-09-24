@@ -114,19 +114,7 @@ public class DirectoryViewLayout : NotificationObject
 
     #endregion
 
-    #region Bounds
-
-    private Rect _Bounds;
-
-    public Rect Bounds
-    {
-        get => _Bounds;
-        set => SetProperty(ref _Bounds, value);
-    }
-
-    #endregion
-
-
+    
     private double _charaWidth;
 
     public static Thickness ItemMargin { get; } = new(0, 0, 32, 0);

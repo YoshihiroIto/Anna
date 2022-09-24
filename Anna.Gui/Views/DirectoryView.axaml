@@ -12,7 +12,8 @@
              d:DesignWidth="450"
              x:CompileBindings="True"
              x:DataType="views:DirectoryViewViewModel"
-             FontFamily="/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
+             FontFamily="{Binding $self.Layout.FontFamily}"
+             FontSize="{Binding $self.Layout.FontSize}"
              mc:Ignorable="d">
     <UserControl.Styles>
         <StyleInclude Source="/Views/Resources/Styles.axaml" />
@@ -70,15 +71,15 @@
         </Style>
 
         <Style Selector="StackPanel.entry" x:DataType="viewModels1:EntryViewModel">
-            <Setter Property="Height" Value="17" />
-            <Setter Property="Margin" Value="0,0,32,0" />
+            <Setter Property="Height" Value="{Binding $parent[views:DirectoryView].Layout.ItemHeight}" />
+            <Setter Property="Margin" Value="{x:Static views:DirectoryViewLayout.ItemMargin}" />
             <Setter Property="Orientation" Value="Horizontal" />
         </Style>
 
         <Style Selector="Viewbox.entry" x:DataType="viewModels1:EntryViewModel">
-            <Setter Property="Width" Value="{Binding $parent[StackPanel].Height}" />
-            <Setter Property="Height" Value="{Binding $parent[StackPanel].Height}" />
-            <Setter Property="Margin" Value="0,0,2,0" />
+            <Setter Property="Width" Value="{Binding $parent[views:DirectoryView].Layout.ItemHeight}" />
+            <Setter Property="Height" Value="{Binding $parent[views:DirectoryView].Layout.ItemHeight}" />
+            <Setter Property="Margin" Value="{x:Static views:DirectoryViewLayout.SelectedMarkMargin}" />
         </Style>
     </UserControl.Styles>
 
@@ -86,7 +87,9 @@
         <ItemsControl Items="{Binding Entries}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Orientation="Vertical" />
+                    <WrapPanel ItemWidth="{Binding $parent[views:DirectoryView].Layout.ItemWidth}"
+                               ItemHeight="{Binding $parent[views:DirectoryView].Layout.ItemHeight}"
+                               Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
 
@@ -100,11 +103,11 @@
                                 </Viewbox>
 
                                 <TextBlock Classes="entry"
-                                           Width="220"
+                                           Width="{Binding $parent[views:DirectoryView].Layout.NameWidth}"
                                            Text="{Binding Name}" />
 
                                 <TextBlock Classes="entry"
-                                           Width="40"
+                                           Width="{Binding $parent[views:DirectoryView].Layout.ExtensionWidth}"
                                            Text="{Binding Extension}" />
                             </StackPanel>
                         </DataTemplate>
@@ -118,7 +121,7 @@
                                 </Viewbox>
 
                                 <TextBlock Classes="entry"
-                                           Width="260"
+                                           Width="{Binding $parent[views:DirectoryView].Layout.NameWithExtensionWidth}"
                                            Text="{Binding NameWithExtension}" />
                             </StackPanel>
                         </DataTemplate>

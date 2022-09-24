@@ -18,13 +18,13 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
 {
     public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; private set; } = null!;
     public Directory Model { get; private set; } = null!;
-    
+
     public Resources R => _resourcesHolder.Instance;
 
     public readonly ShortcutKeyManager ShortcutKeyManager;
-    
+
     public DirectoryViewViewModel(
-        Container dic, 
+        Container dic,
         ResourcesHolder resourcesHolder,
         ShortcutKeyManager shortcutKeyManager,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
@@ -38,14 +38,14 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
     public DirectoryViewViewModel Setup(Directory model)
     {
         Model = model;
-        
+
         Observable
             .FromEventPattern(
             h => _resourcesHolder.CultureChanged += h,
             h => _resourcesHolder.CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
-        
+
         var bufferedCollectionChanged =
             model.Entries
                 .ToCollectionChanged()
@@ -78,7 +78,7 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
             ? new[] { _cursorEntry.Model }
             : Array.Empty<Entry>();
     }
-    
+
     private readonly Container _dic;
     private readonly ResourcesHolder _resourcesHolder;
 

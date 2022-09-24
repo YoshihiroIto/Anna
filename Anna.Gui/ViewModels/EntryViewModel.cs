@@ -9,7 +9,10 @@ namespace Anna.Gui.ViewModels;
 
 public class EntryViewModel : ViewModelBase
 {
-    public string NameWithExtension => Model.NameWithExtension;
+    public string NameWithExtension => Model.IsDirectory
+        ? Path.AltDirectorySeparatorChar + Model.NameWithExtension
+        : Model.NameWithExtension;
+
     public string Name => Model.Name;
     public string Extension => Model.Extension;
     public bool IsDirectory => Model.IsDirectory;

@@ -49,6 +49,44 @@ public class DirectoryViewLayout : NotificationObject
     #endregion
 
 
+    #region NameCount
+
+    private int _NameCount = 16;
+
+    public int NameCount
+    {
+        get => _NameCount;
+        set
+        {
+            if (SetProperty(ref _NameCount, value))
+                return;
+
+            UpdateItemSize();
+        }
+    }
+
+    #endregion
+
+
+    #region ExtensionCount
+
+    private int _ExtensionCount = 5;
+
+    public int ExtensionCount
+    {
+        get => _ExtensionCount;
+        set
+        {
+            if (SetProperty(ref _ExtensionCount, value))
+                return;
+
+            UpdateItemSize();
+        }
+    }
+
+    #endregion
+
+
     #region ItemWidth
 
     private double _ItemWidth;
@@ -148,8 +186,8 @@ public class DirectoryViewLayout : NotificationObject
 
         _charaWidth = value.Width;
 
-        NameWidth = 12 * _charaWidth;
-        ExtensionWidth = 5 * _charaWidth;
+        NameWidth = NameCount * _charaWidth;
+        ExtensionWidth = ExtensionCount * _charaWidth;
         NameWithExtensionWidth = NameWidth + ExtensionWidth;
 
         ItemWidth = value.Height +// SelectedMark width

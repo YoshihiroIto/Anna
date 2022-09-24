@@ -22,8 +22,15 @@ public sealed class FileSystemDirectory : Directory, IDisposable
 
     protected override IEnumerable<Entry> EnumerateDirectories()
     {
-        return System.IO.Directory.EnumerateDirectories(Path)
-            .Select(p => Entry.Create(p, System.IO.Path.GetRelativePath(Path, p)));
+        if (string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) != 0)
+        {
+            var d = new DirectoryInfo(Path);
+            yield return Entry.Create(d.Parent?.FullName ?? throw new NullReferenceException(), "..");
+        }
+
+        foreach (var entry in System.IO.Directory.EnumerateDirectories(Path)
+                     .Select(p => Entry.Create(p, System.IO.Path.GetRelativePath(Path, p))))
+            yield return entry;
     }
 
     protected override IEnumerable<Entry> EnumerateFiles()

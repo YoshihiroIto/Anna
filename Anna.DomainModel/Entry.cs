@@ -97,6 +97,7 @@ public class Entry : NotificationObject
     #endregion
 
     public bool IsDirectory => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+    public bool IsParentDirectory { get; private set; }
 
     public bool IsReadOnly
     {
@@ -142,6 +143,7 @@ public class Entry : NotificationObject
         target.Timestamp = Timestamp;
         target.Size = Size;
         target.Attributes = Attributes;
+        target.IsParentDirectory = IsParentDirectory;
     }
 
     public void SetName(string nameWithExtension)
@@ -240,6 +242,7 @@ public class Entry : NotificationObject
         };
 
         e.SetName(nameWithExtension);
+        e.IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0;
 
         return e;
     }

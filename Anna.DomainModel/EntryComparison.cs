@@ -8,30 +8,55 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByNameAscending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+        
         return Entry.CompareByName(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByNameDescending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+        
         return ByNameAscending(y, x);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByExtensionAscending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+        
         return Entry.CompareByExtension(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByExtensionDescending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+    
         return ByExtensionAscending(y, x);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByTimestampAscending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+        
         if (x.Timestamp < y.Timestamp)
             return -1;
         if (x.Timestamp > y.Timestamp)
@@ -43,12 +68,22 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByTimestampDescending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+        
         return ByTimestampAscending(y, x);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int BySizeAscending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+        
         if (x.Size < y.Size)
             return -1;
         if (x.Size > y.Size)
@@ -60,12 +95,22 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int BySizeDescending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+        
         return BySizeAscending(y, x);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByAttributesAscending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+    
         if (x.Attributes < y.Attributes)
             return -1;
         if (x.Attributes > y.Attributes)
@@ -77,6 +122,11 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int ByAttributesDescending(Entry x, Entry y)
     {
+        if (x.IsParentDirectory)
+            return -1;
+        if (y.IsParentDirectory)
+            return +1;
+    
         return ByAttributesAscending(y, x);
     }
 

@@ -17,7 +17,10 @@ public sealed class FileSystemDirectory : Directory, IDisposable
         _objectLifetimeChecker = objectLifetimeChecker;
 
         _objectLifetimeChecker.Add(this);
-        SetupWatcher(path);
+        UpdateWatcher(path);
+
+        _pathObserver = this.ObserveProperty(x => x.Path)
+            .Subscribe(UpdateWatcher);
     }
 
     protected override IEnumerable<Entry> EnumerateDirectories()
@@ -46,36 +49,41 @@ public sealed class FileSystemDirectory : Directory, IDisposable
 
         _isDispose = true;
 
+        _pathObserver.Dispose();
+        _watchTrash.Dispose();
         _objectLifetimeChecker.Remove(this);
-        _trash.Dispose();
     }
 
-    private void SetupWatcher(string path)
+    private void UpdateWatcher(string path)
     {
-        var watcher = new ObservableFileSystemWatcher(path).AddTo(_trash);
+        _watchTrash.Clear();
+
+        var watcher = new ObservableFileSystemWatcher(path).AddTo(_watchTrash);
 
         watcher.Created
             .Subscribe(e => OnCreated(Entry.Create(e.FullPath, e.Name ?? "????")))
-            .AddTo(_trash);
+            .AddTo(_watchTrash);
 
         watcher.Changed
             .Subscribe(e => OnChanged(Entry.Create(e.FullPath, e.Name ?? "????")))
-            .AddTo(_trash);
+            .AddTo(_watchTrash);
 
         watcher.Deleted
             .Subscribe(e => OnDeleted(e.Name ?? "????"))
-            .AddTo(_trash);
+            .AddTo(_watchTrash);
 
         watcher.Renamed
             .Subscribe(e => OnRenamed(e.OldName ?? "????", e.Name ?? "????"))
-            .AddTo(_trash);
+            .AddTo(_watchTrash);
 
         watcher.Errors
             .Subscribe(x => _Logger.Error(x.GetException().ToString()))
-            .AddTo(_trash);
+            .AddTo(_watchTrash);
     }
 
     private bool _isDispose;
     private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
-    private readonly CompositeDisposable _trash = new();
+
+    private readonly IDisposable _pathObserver;
+    private readonly CompositeDisposable _watchTrash = new();
 }

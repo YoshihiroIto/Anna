@@ -35,12 +35,14 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         Container dic,
         ResourcesHolder resourcesHolder,
         ShortcutKeyManager shortcutKeyManager,
+        ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
         _dic = dic;
         _resourcesHolder = resourcesHolder;
         ShortcutKeyManager = shortcutKeyManager;
+        _logger = logger;
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
@@ -128,6 +130,20 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
             MoveCursor(Directions.Down);
     }
 
+    public void OpenCursorEntry()
+    {
+        if (CursorEntry.Value == null)
+            return;
+
+        if (CursorEntry.Value.IsDirectory == false)
+        {
+            _logger.Information("Not implemented: OpenCursorEntry");
+            return;
+        }
+
+        Model.Path = CursorEntry.Value.Model.Path;
+    }
+
     private EntryViewModel? UpdateCursorEntry(int index)
     {
         if (_oldEntry != null)
@@ -167,6 +183,7 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
     }
 
     private readonly Container _dic;
+    private readonly ILoggerUseCase _logger;
     private readonly ResourcesHolder _resourcesHolder;
     private EntryViewModel? _oldEntry;
 }

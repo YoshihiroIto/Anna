@@ -43,5 +43,6 @@ public enum Operations
     MoveCursorDown,
     MoveCursorLeft,
     MoveCursorRight,
-    ToggleSelectionCursorEntry
+    ToggleSelectionCursorEntry,
+    OpenEntry
 }

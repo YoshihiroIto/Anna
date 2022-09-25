@@ -83,7 +83,8 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
             { Operations.MoveCursorDown, s => MoveCursorAsync(s, Directions.Down) },
             { Operations.MoveCursorLeft, s => MoveCursorAsync(s, Directions.Left) },
             { Operations.MoveCursorRight, s => MoveCursorAsync(s, Directions.Right) },
-            { Operations.ToggleSelectionCursorEntry, s => ToggleSelectionCursorEntry(s, true) },
+            { Operations.ToggleSelectionCursorEntry, s => ToggleSelectionCursorEntryAsync(s, true) },
+            { Operations.OpenEntry, OpenEntryAsync },
         };
     }
 

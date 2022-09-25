@@ -119,6 +119,8 @@ public class Entry : NotificationObject
     }
 
     #endregion
+    
+    public string Path { get; private set; } = "";
 
     public bool IsDirectory => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
 
@@ -169,6 +171,7 @@ public class Entry : NotificationObject
         target.IsSelected = IsSelected;
         target.IsParentDirectory = IsParentDirectory;
         target.Attributes = Attributes;
+        target.Path = Path;
     }
 
     public void SetName(string nameWithExtension)
@@ -180,13 +183,13 @@ public class Entry : NotificationObject
             nameWithExtension[0] == '.' &&
             HasOnlyOneDot(nameWithExtension))
         {
-            Name = Path.GetExtension(nameWithExtension);
+            Name = System.IO.Path.GetExtension(nameWithExtension);
             Extension = "";
         }
         else
         {
-            Name = Path.GetFileNameWithoutExtension(nameWithExtension);
-            Extension = string.Intern(Path.GetExtension(nameWithExtension));
+            Name = System.IO.Path.GetFileNameWithoutExtension(nameWithExtension);
+            Extension = string.Intern(System.IO.Path.GetExtension(nameWithExtension));
         }
 
         bool HasOnlyOneDot(string str)
@@ -207,9 +210,9 @@ public class Entry : NotificationObject
         }
     }
 
-    public static Entry Create(string fillPath, string nameWithExtension)
+    public static Entry Create(string path, string nameWithExtension)
     {
-        var fi = new FileInfo(fillPath);
+        var fi = new FileInfo(path);
 
         var isDirectory = (fi.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
 
@@ -220,6 +223,7 @@ public class Entry : NotificationObject
 
         e.SetName(nameWithExtension);
         e.IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0;
+        e.Path = path;
 
         return e;
     }

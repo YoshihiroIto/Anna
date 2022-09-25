@@ -14,7 +14,7 @@ public abstract class Directory : NotificationObject
     public string Path
     {
         get => _Path;
-        private set
+        set
         {
             if (SetProperty(ref _Path, value) == false)
                 return;

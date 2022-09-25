@@ -22,9 +22,15 @@ public partial class ShortcutKeyManager
         return ValueTask.CompletedTask;
     }
 
-    private static ValueTask ToggleSelectionCursorEntry(IShortcutKeyReceiver shortcutKeyReceiver, bool isMoveDown)
+    private static ValueTask ToggleSelectionCursorEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver, bool isMoveDown)
     {
         shortcutKeyReceiver.DirectoryViewViewModel.ToggleSelectionCursorEntry(isMoveDown);
+        return ValueTask.CompletedTask;
+    }
+    
+    private static ValueTask OpenEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        shortcutKeyReceiver.DirectoryViewViewModel.OpenCursorEntry();
         return ValueTask.CompletedTask;
     }
 }

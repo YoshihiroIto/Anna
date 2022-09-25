@@ -57,7 +57,11 @@ public abstract class Directory : NotificationObject
                 return;
 
             UpdateEntryCompare();
-            SortEntries();
+
+            lock (UpdateLockObj)
+            {
+                SortEntries();
+            }
         }
     }
 
@@ -77,7 +81,11 @@ public abstract class Directory : NotificationObject
                 return;
 
             UpdateEntryCompare();
-            SortEntries();
+
+            lock (UpdateLockObj)
+            {
+                SortEntries();
+            }
         }
     }
 
@@ -94,7 +102,11 @@ public abstract class Directory : NotificationObject
         _SortOrder = order;
 
         UpdateEntryCompare();
-        SortEntries();
+
+        lock (UpdateLockObj)
+        {
+            SortEntries();
+        }
     }
 
     protected Directory(string path, ILoggerUseCase logger)

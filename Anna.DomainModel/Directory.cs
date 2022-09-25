@@ -258,7 +258,7 @@ public abstract class Directory : NotificationObject
         }
     }
 
-    private Comparison<Entry> _entryCompare = EntryComparison.ByNameAscending;
+    private Comparison<Entry> _entryCompare = EntryComparison.FindEntryCompare(SortModes.Name, SortOrders.Ascending);
 
     protected abstract IEnumerable<Entry> EnumerateDirectories();
     protected abstract IEnumerable<Entry> EnumerateFiles();

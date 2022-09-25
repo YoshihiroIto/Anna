@@ -44,8 +44,8 @@ public static class Program
             .LogToTrace();
     }
 
-    private static AppBuilder BuildAvaloniaApp(Container dic, Action? onMainWindowClosed)
-        => AppBuilder.Configure(() => new GuiApp().Setup(dic, onMainWindowClosed))
+    private static AppBuilder BuildAvaloniaApp(Container dic, Action? onExit)
+        => AppBuilder.Configure(() => new GuiApp().Setup(dic, onExit))
             .UsePlatformDetect()
             .LogToTrace();
 

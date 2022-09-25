@@ -11,7 +11,10 @@ namespace Anna.Entry.Desktop.Tests;
 
 public class TestApp : IAsyncDisposable
 {
-    public MainWindow MainWindow => App.MainWindow as MainWindow ?? throw new NullReferenceException();
+ #pragma warning disable CA1822
+    // ReSharper disable once MemberCanBeMadeStatic.Global
+    public IEnumerable<DirectoryWindow> DirectoryWindows => App.Windows.OfType<DirectoryWindow>();
+ #pragma warning restore CA1822
 
     public TestApp(TempDir? configDir = null, bool isHeadless = true)
     {
@@ -30,7 +33,10 @@ public class TestApp : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        await EndAsync();
+        await WaitForAllWindowClosedAsync();
+
+        await _sema.WaitAsync(); 
+        _sema.Dispose();
 
         if (_useSelfConfigDir)
             _configDir.Dispose();
@@ -38,8 +44,10 @@ public class TestApp : IAsyncDisposable
         GC.SuppressFinalize(this);
     }
 
-    private async Task StartAsync(bool isHeadless = true)
+    private async Task StartAsync(bool isHeadless)
     {
+        await _sema.WaitAsync(); 
+        
  #pragma warning disable CS4014
         Task.Run(() =>
         {
@@ -47,23 +55,29 @@ public class TestApp : IAsyncDisposable
 
             BuildAvaloniaApp(isHeadless, args)
                 .StartWithClassicDesktopLifetime(args);
+
+            _sema.Release();
         });
  #pragma warning restore CS4014
 
-        while (IsAvailableMainWindow == false)
+        while (IsAvailableWindows == false)
             await Task.Delay(TimeSpan.FromMilliseconds(50));
     }
 
-    private Task EndAsync()
+    private Task WaitForAllWindowClosedAsync()
     {
-        return Dispatcher.UIThread.InvokeAsync(() => MainWindow.Close());
+        return Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            foreach (var dw in DirectoryWindows.ToArray())
+                dw.Close();
+        });
     }
 
-    private bool IsAvailableMainWindow =>
+    private static bool IsAvailableWindows =>
         Application.Current?.ApplicationLifetime is not null &&
-        App.MainWindow is not null;
+        App.Windows.Count > 0;
 
-    private IClassicDesktopStyleApplicationLifetime App =>
+    private static IClassicDesktopStyleApplicationLifetime App =>
         Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime ??
         throw new NullReferenceException();
 
@@ -79,4 +93,6 @@ public class TestApp : IAsyncDisposable
 
     private readonly TempDir _configDir;
     private readonly bool _useSelfConfigDir;
+    private readonly SemaphoreSlim _sema = new(1, 1);
+    
 }

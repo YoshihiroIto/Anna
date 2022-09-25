@@ -1,7 +1,6 @@
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Views;
-using Anna.Strings;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -12,16 +11,15 @@ using SimpleInjector;
 using System;
 using System.Reactive.Disposables;
 using DirectoryWindow=Anna.Gui.Views.DirectoryWindow;
-using MainWindow=Anna.Gui.Views.MainWindow;
 
 namespace Anna.Gui;
 
 public class GuiApp : Application
 {
-    public GuiApp Setup(Container dic, Action? onMainWindowClosed)
+    public GuiApp Setup(Container dic, Action? onExit)
     {
         _dic = dic;
-        _onMainWindowClosed = onMainWindowClosed;
+        _onExit = onExit;
 
         return this;
     }
@@ -45,14 +43,11 @@ public class GuiApp : Application
 
         ReactivePropertyScheduler.SetDefault(AvaloniaScheduler.Instance);
 
-        desktop.MainWindow = new MainWindow { DataContext = _dic.GetInstance<MainWindowViewModel>() };
-        desktop.MainWindow.Closed += (_, _) =>
+        desktop.Exit += async (_, _) =>
         {
-            desktop.MainWindow = null;
-            _dic.GetInstance<App>().CloseAllDirectories();
-            _trash.Dispose();
+            await Dispatcher.UIThread.InvokeAsync(() => {}, DispatcherPriority.Normal);
 
-            _onMainWindowClosed?.Invoke();
+            _onExit?.Invoke();
         };
 
         _dic.GetInstance<AppConfig>().Data
@@ -68,17 +63,11 @@ public class GuiApp : Application
                 d.Show();
             }).AddTo(_trash);
 
-        _dic.GetInstance<App>().Directories.CollectionChangedAsObservable()
-            .Subscribe(_ =>
-            {
-                if (_dic.GetInstance<App>().Directories.Count == 0)
-                    desktop.MainWindow?.Close();
-            }).AddTo(_trash);
-
+        _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
         _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
     }
 
     private Container? _dic;
-    private Action? _onMainWindowClosed;
+    private Action? _onExit;
     private readonly CompositeDisposable _trash = new();
 }

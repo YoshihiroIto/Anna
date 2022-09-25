@@ -74,22 +74,14 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
         }
     }
 
-    public Directory Directory
-    {
-        get
-        {
-            var viewModel = DataContext as DirectoryViewViewModel ?? throw new NotSupportedException();
+    public Directory Directory =>
+        DirectoryViewViewModel.Model;
 
-            return viewModel.Model;
-        }
-    }
+    public DirectoryViewViewModel DirectoryViewViewModel =>
+        DataContext as DirectoryViewViewModel ?? throw new NotSupportedException();
 
     public Entry[] CollectTargetEntries()
-    {
-        var viewModel = DataContext as DirectoryViewViewModel ?? throw new NotSupportedException();
-
-        return viewModel.CollectTargetEntries();
-    }
+        => DirectoryViewViewModel.CollectTargetEntries();
 
     private void UpdateItemCellSize()
     {

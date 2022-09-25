@@ -1,18 +1,24 @@
-﻿using Anna.Gui.Interfaces;
-using SimpleInjector;
+﻿using Anna.Constants;
+using Anna.Gui.Interfaces;
 using System.Threading.Tasks;
 
 namespace Anna.Gui.ViewModels.ShortcutKey;
 
 public partial class ShortcutKeyManager
 {
-    private static async ValueTask SelectSortModeAndOrderAsync(Container dic, IShortcutKeyReceiver shortcutKeyReceiver)
+    private async ValueTask SelectSortModeAndOrderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var result = await DialogOperator.SelectSortModeAndOrderAsync(dic, shortcutKeyReceiver);
+        var result = await DialogOperator.SelectSortModeAndOrderAsync(_dic, shortcutKeyReceiver);
 
         if (result.IsCancel)
             return;
 
         shortcutKeyReceiver.Directory.SetSortModeAndOrder(result.SortMode, result.SortOrder);
+    }
+
+    private static ValueTask MoveCursorAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)
+    {
+        shortcutKeyReceiver.DirectoryViewViewModel.MoveCursor(dir);
+        return ValueTask.CompletedTask;
     }
 }

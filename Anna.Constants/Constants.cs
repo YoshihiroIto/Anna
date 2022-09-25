@@ -29,5 +29,18 @@ public enum ResultCode
 
 public enum Operations
 {
-    SortEntry
+    SortEntry,
+    MoveCursorUp,
+    MoveCursorDown,
+    MoveCursorLeft,
+    MoveCursorRight
+}
+
+[Flags]
+public enum Directions
+{
+    Up = 1 << 0,
+    Down = 1 << 1,
+    Left = 1 << 2,
+    Right = 1 << 3
 }

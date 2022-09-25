@@ -28,13 +28,15 @@ public class KeyConfigData : ConfigData
 
     public override void SetDefault()
     {
-        Keys = new[] { new KeyData { Key = Key.S, Modifier = KeyModifiers.None, Operation = Operations.SortEntry } };
+        Keys = new KeyData[]
+        {
+            new(Key.S, KeyModifiers.None, Operations.SortEntry),
+            new(Key.Up, KeyModifiers.None, Operations.MoveCursorUp),
+            new(Key.Down, KeyModifiers.None, Operations.MoveCursorDown),
+            new(Key.Left, KeyModifiers.None, Operations.MoveCursorLeft),
+            new(Key.Right, KeyModifiers.None, Operations.MoveCursorRight),
+        };
     }
 }
 
-public struct KeyData
-{
-    public Key Key { get; set; }
-    public KeyModifiers Modifier { get; set; }
-    public Operations Operation { get; set; }
-}
+public readonly record struct KeyData(Key Key, KeyModifiers Modifier, Operations Operation);

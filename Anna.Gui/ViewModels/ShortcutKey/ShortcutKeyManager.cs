@@ -19,6 +19,8 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
         _dic = dic;
         _logger = logger;
 
+        SetupOperators();
+
         keyConfig.ObserveProperty(x => x.Data)
             .Subscribe(UpdateShortcutKeys)
             .AddTo(Trash);
@@ -46,10 +48,15 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
                 key.Modifier,
                 async x =>
                 {
-                    if (Operators.TryGetValue(key.Operation, out var value) == false)
+                    _ = _operators ?? throw new NullReferenceException();
+                    
+                    if (_operators.TryGetValue(key.Operation, out var value) == false)
+                    {
+                        _logger.Error($"UpdateShortcutKeys: Not found ({key.Key}, {key.Modifier})");
                         return;
+                    }
 
-                    await value(_dic, x);
+                    await value(x);
                 });
         }
     }
@@ -63,17 +70,25 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
             _logger.Warning("Already registered");
             return;
         }
-
+        
         _shortcutKeys[k] = action;
     }
 
+    private void SetupOperators()
+    {
+        _operators = new Dictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>
+        {
+            { Operations.SortEntry, SelectSortModeAndOrderAsync },
+            { Operations.MoveCursorUp, s => MoveCursorAsync(s, Directions.Up) },
+            { Operations.MoveCursorDown, s => MoveCursorAsync(s, Directions.Down) },
+            { Operations.MoveCursorLeft, s => MoveCursorAsync(s, Directions.Left) },
+            { Operations.MoveCursorRight, s => MoveCursorAsync(s, Directions.Right) },
+        };
+    }
+    
     private readonly Container _dic;
     private readonly ILoggerUseCase _logger;
     private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
 
-    private static readonly IReadOnlyDictionary<Operations, Func<Container, IShortcutKeyReceiver, ValueTask>>
-        Operators = new Dictionary<Operations, Func<Container, IShortcutKeyReceiver, ValueTask>>
-        {
-            { Operations.SortEntry, SelectSortModeAndOrderAsync }
-        };
+    private IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>? _operators;
 }

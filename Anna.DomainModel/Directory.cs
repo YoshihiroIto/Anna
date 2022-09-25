@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.Foundation;
 using Anna.UseCase;
+using System.Buffers;
 
 namespace Anna.DomainModel;
 
@@ -236,16 +237,24 @@ public abstract class Directory : NotificationObject
 
     private void SortEntries()
     {
+        var source = Entries.AsSpan();
+        var length = source.Length;
+
+        var temp = ArrayPool<Entry>.Shared.Rent(length);
         try
         {
-            Entries.BeginChange();
+            for (var i = 0; i != length; ++i)
+                temp[i] = Entry.Create(source[i]);
 
-            Entries.AsSpan().Slice(0, _directoriesCount).Sort(_entryCompare);
-            Entries.AsSpan().Slice(_directoriesCount, _filesCount).Sort(_entryCompare);
+            temp.AsSpan().Slice(0, _directoriesCount).Sort(_entryCompare);
+            temp.AsSpan().Slice(_directoriesCount, _filesCount).Sort(_entryCompare);
+
+            for (var i = 0; i != length; ++i)
+                temp[i].CopyTo(source[i]);
         }
         finally
         {
-            Entries.EndChange();
+            ArrayPool<Entry>.Shared.Return(temp);
         }
     }
 

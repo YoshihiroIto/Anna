@@ -1,6 +1,4 @@
 ﻿using Anna.Foundation;
-using NaturalSort.Extension;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Anna.DomainModel;
@@ -83,6 +81,19 @@ public class Entry : NotificationObject
     }
 
     #endregion
+    
+
+    #region IsParentDirectory
+
+    private bool _IsParentDirectory;
+
+    public bool IsParentDirectory
+    {
+        get => _IsParentDirectory;
+        private set => SetProperty(ref _IsParentDirectory, value);
+    }
+
+    #endregion
 
 
     #region Attributes
@@ -110,7 +121,7 @@ public class Entry : NotificationObject
     #endregion
 
     public bool IsDirectory => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
-    public bool IsParentDirectory { get; private set; }
+
 
     public bool IsReadOnly
     {
@@ -155,8 +166,9 @@ public class Entry : NotificationObject
         target.Extension = Extension;
         target.Timestamp = Timestamp;
         target.Size = Size;
-        target.Attributes = Attributes;
+        target.IsSelected = IsSelected;
         target.IsParentDirectory = IsParentDirectory;
+        target.Attributes = Attributes;
     }
 
     public void SetName(string nameWithExtension)
@@ -193,54 +205,6 @@ public class Entry : NotificationObject
 
             return count == 1;
         }
-    }
-
-    public static int CompareByName(Entry x, Entry y)
-    {
-        Debug.Assert(x.IsDirectory == y.IsDirectory);
-
-        if (x.IsDirectory)
-        {
-            var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
-            if (nameWithExt != 0)
-                return nameWithExt;
-        }
-        else
-        {
-            var name = NameComparer.Compare(x.Name, y.Name);
-            if (name != 0)
-                return name;
-
-            var ext = NameComparer.Compare(x.Extension, y.Extension);
-            if (ext != 0)
-                return ext;
-        }
-
-        return 0;
-    }
-
-    public static int CompareByExtension(Entry x, Entry y)
-    {
-        Debug.Assert(x.IsDirectory == y.IsDirectory);
-
-        if (x.IsDirectory)
-        {
-            var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
-            if (nameWithExt != 0)
-                return nameWithExt;
-        }
-        else
-        {
-            var ext = NameComparer.Compare(x.Extension, y.Extension);
-            if (ext != 0)
-                return ext;
-
-            var name = NameComparer.Compare(x.Name, y.Name);
-            if (name != 0)
-                return name;
-        }
-
-        return 0;
     }
 
     public static Entry Create(string fillPath, string nameWithExtension)
@@ -284,7 +248,4 @@ public class Entry : NotificationObject
 
         RaisePropertyChanged(propertyName);
     }
-
-    private static readonly NaturalSortComparer NameComparer =
-        new(StringComparison.OrdinalIgnoreCase);
 }

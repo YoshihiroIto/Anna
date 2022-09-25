@@ -106,11 +106,11 @@
 
                                 <TextBlock Classes="entry"
                                            Width="{Binding $parent[views:DirectoryView].Layout.NameWidth}"
-                                           Text="{Binding Name}" />
+                                           Text="{Binding Name.Value}" />
 
                                 <TextBlock Classes="entry"
                                            Width="{Binding $parent[views:DirectoryView].Layout.ExtensionWidth}"
-                                           Text="{Binding Extension}" />
+                                           Text="{Binding Extension.Value}" />
                             </StackPanel>
                         </DataTemplate>
                     </dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
@@ -124,7 +124,7 @@
 
                                 <TextBlock Classes="entry"
                                            Width="{Binding $parent[views:DirectoryView].Layout.NameWithExtensionWidth}"
-                                           Text="{Binding NameWithExtension}" />
+                                           Text="{Binding NameWithExtension.Value}" />
                             </StackPanel>
                         </DataTemplate>
                     </dataTemplateSelector:EntryDataTemplateSelector.DirectoryDataTemplate>

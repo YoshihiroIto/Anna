@@ -1,4 +1,6 @@
 ﻿using Anna.Constants;
+using NaturalSort.Extension;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Anna.DomainModel;
@@ -13,7 +15,7 @@ public static class EntryComparison
         if (y.IsParentDirectory)
             return +1;
         
-        return Entry.CompareByName(x, y);
+        return CompareByName(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -35,7 +37,7 @@ public static class EntryComparison
         if (y.IsParentDirectory)
             return +1;
         
-        return Entry.CompareByExtension(x, y);
+        return CompareByExtension(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -149,4 +151,55 @@ public static class EntryComparison
             _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
         };
     }
+    
+    private static int CompareByName(Entry x, Entry y)
+    {
+        Debug.Assert(x.IsDirectory == y.IsDirectory);
+
+        if (x.IsDirectory)
+        {
+            var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
+            if (nameWithExt != 0)
+                return nameWithExt;
+        }
+        else
+        {
+            var name = NameComparer.Compare(x.Name, y.Name);
+            if (name != 0)
+                return name;
+
+            var ext = NameComparer.Compare(x.Extension, y.Extension);
+            if (ext != 0)
+                return ext;
+        }
+
+        return 0;
+    }
+
+    private static int CompareByExtension(Entry x, Entry y)
+    {
+        Debug.Assert(x.IsDirectory == y.IsDirectory);
+
+        if (x.IsDirectory)
+        {
+            var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
+            if (nameWithExt != 0)
+                return nameWithExt;
+        }
+        else
+        {
+            var ext = NameComparer.Compare(x.Extension, y.Extension);
+            if (ext != 0)
+                return ext;
+
+            var name = NameComparer.Compare(x.Name, y.Name);
+            if (name != 0)
+                return name;
+        }
+
+        return 0;
+    }
+
+    private static readonly NaturalSortComparer NameComparer =
+        new(StringComparison.OrdinalIgnoreCase);
 }

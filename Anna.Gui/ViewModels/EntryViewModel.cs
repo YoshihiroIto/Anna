@@ -40,8 +40,7 @@ public class EntryViewModel : ViewModelBase
             .ToReadOnlyReactivePropertySlim(Model.Attributes)
             .AddTo(Trash);
 
-        IsSelected.Value = Model.Name.Contains("a");
-        IsOnCursor.Value = Model.Name.Contains("b");
+        // IsSelected.Value = Model.Name.Contains("a");
 
         return this;
     }

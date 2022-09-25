@@ -10,6 +10,15 @@ namespace Anna.Gui.Views;
 
 public partial class DirectoryView : UserControl, IShortcutKeyReceiver
 {
+    public static readonly StyledProperty<int> SelectedIndexProperty =
+        AvaloniaProperty.Register<DirectoryView, int>(nameof(SelectedIndex));
+    
+    public int SelectedIndex
+    {
+        get => GetValue(SelectedIndexProperty);
+        set => SetValue(SelectedIndexProperty, value);
+    }
+    
     internal static readonly DirectProperty<DirectoryView, DirectoryViewLayout> DirectoryViewLayoutProperty =
         AvaloniaProperty.RegisterDirect<DirectoryView, DirectoryViewLayout>(nameof(DirectoryViewLayout), o => o.Layout);
 
@@ -30,7 +39,6 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
 
     private DirectoryViewLayout _Layout = new();
     private IntSize _ItemCellSize;
-
 
     public DirectoryView()
     {

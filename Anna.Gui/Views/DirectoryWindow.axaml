@@ -59,6 +59,7 @@
         <views1:DirectoryView x:Name="DirectoryView"
                               Margin="4,8"
                               DataContext="{Binding ViewViewModel,
-                                                    Mode=OneWay}" />
+                                                    Mode=OneWay}"
+                              SelectedIndex="{Binding CursorIndex.Value}" />
     </DockPanel>
 </Window>

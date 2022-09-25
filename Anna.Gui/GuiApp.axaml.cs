@@ -63,7 +63,7 @@ public class GuiApp : Application
                 d.Show();
             }).AddTo(_trash);
 
-        _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+        // _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
         _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
     }
 

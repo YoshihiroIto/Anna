@@ -5,7 +5,6 @@ using Anna.Gui;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Repository;
-using Anna.Strings;
 using Anna.UseCase;
 using SimpleInjector;
 

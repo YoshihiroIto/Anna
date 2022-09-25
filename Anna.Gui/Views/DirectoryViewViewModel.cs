@@ -19,11 +19,15 @@ namespace Anna.Gui.Views;
 public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
 {
     public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; private set; } = null!;
+    public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; private set; } = null!;
+
     public Directory Model { get; private set; } = null!;
 
     public Resources R => _resourcesHolder.Instance;
 
     public readonly ShortcutKeyManager ShortcutKeyManager;
+
+    public ReactivePropertySlim<int> CursorIndex { get; }
 
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
 
@@ -38,10 +42,16 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         _resourcesHolder = resourcesHolder;
         ShortcutKeyManager = shortcutKeyManager;
 
+        CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
+        CursorIndex.Subscribe(x =>
+        {
+            Debug.WriteLine("CursorIndexIndex:" + x);
+        }).AddTo(Trash);
+
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
         ItemCellSize.Subscribe(x =>
         {
-            Debug.WriteLine(x);
+            Debug.WriteLine("ItemCellSize:" + x);
         }).AddTo(Trash);
     }
 
@@ -71,6 +81,10 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
                 .AddTo(Trash);
         }
 
+        CursorEntry = CursorIndex.Select(UpdateCursorEntry)
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash);
+
         return this;
     }
 
@@ -84,13 +98,30 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         if (selectedEntries.Length > 0)
             return selectedEntries;
 
-        return _cursorEntry is not null
-            ? new[] { _cursorEntry.Model }
+        return CursorEntry.Value is not null
+            ? new[] { CursorEntry.Value.Model }
             : Array.Empty<Entry>();
+    }
+
+    private EntryViewModel? UpdateCursorEntry(int index)
+    {
+        if (_oldEntry != null)
+            _oldEntry.IsOnCursor.Value = false;
+
+        EntryViewModel? newEntity = null;
+
+        if (index >= 0 && index < Entries.Count)
+            newEntity = Entries[index];
+
+        if (newEntity != null)
+            newEntity.IsOnCursor.Value = true;
+
+        _oldEntry = newEntity;
+
+        return newEntity;
     }
 
     private readonly Container _dic;
     private readonly ResourcesHolder _resourcesHolder;
-
-    private EntryViewModel? _cursorEntry = null;
+    private EntryViewModel? _oldEntry;
 }

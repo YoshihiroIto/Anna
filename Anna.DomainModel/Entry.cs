@@ -72,6 +72,19 @@ public class Entry : NotificationObject
     #endregion
 
 
+    #region IsSelected
+
+    private bool _IsSelected;
+
+    public bool IsSelected
+    {
+        get => _IsSelected;
+        set => SetProperty(ref _IsSelected, value);
+    }
+
+    #endregion
+
+
     #region Attributes
 
     private FileAttributes _Attributes;

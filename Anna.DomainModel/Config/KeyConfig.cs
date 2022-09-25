@@ -35,6 +35,7 @@ public class KeyConfigData : ConfigData
             new(Key.Down, KeyModifiers.None, Operations.MoveCursorDown),
             new(Key.Left, KeyModifiers.None, Operations.MoveCursorLeft),
             new(Key.Right, KeyModifiers.None, Operations.MoveCursorRight),
+            new(Key.Space, KeyModifiers.None, Operations.ToggleSelectionCursorEntry),
         };
     }
 }

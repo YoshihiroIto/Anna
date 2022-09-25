@@ -16,10 +16,11 @@ public class EntryViewModel : ViewModelBase
     public string Name => Model.Name;
     public string Extension => Model.Extension;
     public bool IsDirectory => Model.IsDirectory;
+    public bool IsSelectable => Model.IsParentDirectory == false;
 
     public ReadOnlyReactivePropertySlim<FileAttributes> Attributes { get; private set; } = null!;
 
-    public ReactivePropertySlim<bool> IsSelected { get; }
+    public ReactivePropertySlim<bool> IsSelected { get; private set; } = null!;
     public ReactivePropertySlim<bool> IsOnCursor { get; }
 
     public Entry Model { get; private set; } = null!;
@@ -27,7 +28,6 @@ public class EntryViewModel : ViewModelBase
     public EntryViewModel(IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(objectLifetimeChecker)
     {
-        IsSelected = new ReactivePropertySlim<bool>().AddTo(Trash);
         IsOnCursor = new ReactivePropertySlim<bool>().AddTo(Trash);
     }
 
@@ -39,8 +39,10 @@ public class EntryViewModel : ViewModelBase
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim(Model.Attributes)
             .AddTo(Trash);
-
-        // IsSelected.Value = Model.Name.Contains("a");
+        
+        IsSelected = model
+            .ToReactivePropertySlimAsSynchronized(x => x.IsSelected)
+            .AddTo(Trash);
 
         return this;
     }

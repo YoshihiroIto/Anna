@@ -49,7 +49,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
                 async x =>
                 {
                     _ = _operators ?? throw new NullReferenceException();
-                    
+
                     if (_operators.TryGetValue(key.Operation, out var value) == false)
                     {
                         _logger.Error($"UpdateShortcutKeys: Not found ({key.Key}, {key.Modifier})");
@@ -70,7 +70,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
             _logger.Warning("Already registered");
             return;
         }
-        
+
         _shortcutKeys[k] = action;
     }
 
@@ -83,9 +83,10 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
             { Operations.MoveCursorDown, s => MoveCursorAsync(s, Directions.Down) },
             { Operations.MoveCursorLeft, s => MoveCursorAsync(s, Directions.Left) },
             { Operations.MoveCursorRight, s => MoveCursorAsync(s, Directions.Right) },
+            { Operations.ToggleSelectionCursorEntry, s => ToggleSelectionCursorEntry(s, true) },
         };
     }
-    
+
     private readonly Container _dic;
     private readonly ILoggerUseCase _logger;
     private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();

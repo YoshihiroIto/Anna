@@ -116,6 +116,18 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         CursorIndex.Value = index;
     }
 
+    public void ToggleSelectionCursorEntry(bool isMoveDown)
+    {
+        if (CursorEntry.Value == null)
+            return;
+
+        if (CursorEntry.Value.IsSelectable)
+            CursorEntry.Value.IsSelected.Value = !CursorEntry.Value.IsSelected.Value;
+        
+        if (isMoveDown)
+            MoveCursor(Directions.Down);
+    }
+
     private EntryViewModel? UpdateCursorEntry(int index)
     {
         if (_oldEntry != null)
@@ -144,7 +156,7 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         {
             // If no entry is found under the cursor,
             // the entry at the current cursor position is assumed to be under the cursor.
-            
+
             index = Math.Clamp(CursorIndex.Value, 0, Entries.Count - 1);
             UpdateCursorEntry(index);
             return;

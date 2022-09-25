@@ -27,15 +27,6 @@ public enum ResultCode
     Error
 }
 
-public enum Operations
-{
-    SortEntry,
-    MoveCursorUp,
-    MoveCursorDown,
-    MoveCursorLeft,
-    MoveCursorRight
-}
-
 [Flags]
 public enum Directions
 {
@@ -43,4 +34,14 @@ public enum Directions
     Down = 1 << 1,
     Left = 1 << 2,
     Right = 1 << 3
+}
+
+public enum Operations
+{
+    SortEntry,
+    MoveCursorUp,
+    MoveCursorDown,
+    MoveCursorLeft,
+    MoveCursorRight,
+    ToggleSelectionCursorEntry
 }

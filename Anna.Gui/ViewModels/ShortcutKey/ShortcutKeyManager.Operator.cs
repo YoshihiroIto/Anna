@@ -21,4 +21,10 @@ public partial class ShortcutKeyManager
         shortcutKeyReceiver.DirectoryViewViewModel.MoveCursor(dir);
         return ValueTask.CompletedTask;
     }
+
+    private static ValueTask ToggleSelectionCursorEntry(IShortcutKeyReceiver shortcutKeyReceiver, bool isMoveDown)
+    {
+        shortcutKeyReceiver.DirectoryViewViewModel.ToggleSelectionCursorEntry(isMoveDown);
+        return ValueTask.CompletedTask;
+    }
 }

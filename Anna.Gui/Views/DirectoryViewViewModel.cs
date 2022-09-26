@@ -158,7 +158,7 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
     public void JumpToDirectory(string path)
     {
         _oldPath = Model.Path;
-        Model.Path = path;
+        Model.Path = PathStringHelper.Normalize(path);
     }
 
     private string _oldPath = "";

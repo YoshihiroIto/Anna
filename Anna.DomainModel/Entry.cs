@@ -178,10 +178,7 @@ public class Entry : NotificationObject
     {
         NameWithExtension = nameWithExtension;
 
-        // dotfile
-        if (nameWithExtension.Length > 0 &&
-            nameWithExtension[0] == '.' &&
-            HasOnlyOneDot(nameWithExtension))
+        if (PathStringHelper.IsDotfile(nameWithExtension))
         {
             Name = System.IO.Path.GetExtension(nameWithExtension);
             Extension = "";
@@ -190,23 +187,6 @@ public class Entry : NotificationObject
         {
             Name = System.IO.Path.GetFileNameWithoutExtension(nameWithExtension);
             Extension = string.Intern(System.IO.Path.GetExtension(nameWithExtension));
-        }
-
-        bool HasOnlyOneDot(string str)
-        {
-            var count = 0;
-
-            foreach (var c in str)
-            {
-                if (c != '.')
-                    continue;
-
-                ++count;
-                if (count == 2)
-                    return false;
-            }
-
-            return count == 1;
         }
     }
 

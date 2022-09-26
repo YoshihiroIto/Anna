@@ -112,7 +112,7 @@ public abstract class Directory : NotificationObject
     protected Directory(string path, ILoggerUseCase logger)
     {
         _Logger = logger;
-        Path = path;
+        Path = PathStringHelper.Normalize(path);
     }
 
     protected void OnCreated(Entry newEntry)

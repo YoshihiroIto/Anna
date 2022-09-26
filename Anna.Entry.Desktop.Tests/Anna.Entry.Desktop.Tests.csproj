@@ -26,6 +26,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Anna.Entry.Desktop\Anna.Entry.Desktop.csproj" />
+      <ProjectReference Include="..\Anna.TestFoundation\Anna.TestFoundation.csproj" />
     </ItemGroup>
 
 </Project>

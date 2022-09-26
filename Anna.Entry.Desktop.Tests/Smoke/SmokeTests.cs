@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using Anna.TestFoundation;
+using Xunit;
 
 namespace Anna.Entry.Desktop.Tests.Smoke;
 

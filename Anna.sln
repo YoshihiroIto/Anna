@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Repository", "Anna.Rep
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel.Tests", "Anna.DomainModel.Tests\Anna.DomainModel.Tests.csproj", "{1AD67712-FF50-4446-B9EC-845E58172FB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.TestFoundation", "Anna.TestFoundation\Anna.TestFoundation.csproj", "{5FAD6C7A-808F-43F9-80B1-405E63BCFBC6}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.ObjectLifetimeChecker", "Anna.ObjectLifetimeChecker\Anna.ObjectLifetimeChecker.csproj", "{F5E9977A-022C-4006-93EF-E5846144F16D}"
 EndProject
 Global
@@ -89,6 +91,10 @@ Global
 		{1AD67712-FF50-4446-B9EC-845E58172FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AD67712-FF50-4446-B9EC-845E58172FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AD67712-FF50-4446-B9EC-845E58172FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FAD6C7A-808F-43F9-80B1-405E63BCFBC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FAD6C7A-808F-43F9-80B1-405E63BCFBC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FAD6C7A-808F-43F9-80B1-405E63BCFBC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FAD6C7A-808F-43F9-80B1-405E63BCFBC6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F5E9977A-022C-4006-93EF-E5846144F16D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F5E9977A-022C-4006-93EF-E5846144F16D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5E9977A-022C-4006-93EF-E5846144F16D}.Release|Any CPU.ActiveCfg = Release|Any CPU

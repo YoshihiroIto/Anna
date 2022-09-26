@@ -1,4 +1,4 @@
-﻿namespace Anna.Entry.Desktop.Tests;
+﻿namespace Anna.TestFoundation;
 
 public class TempDir : IDisposable
 {

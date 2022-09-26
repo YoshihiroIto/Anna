@@ -57,10 +57,19 @@
                    DockPanel.Dock="Top"
                    Fill="#444444" />
 
+        <panels:InfoPanel Margin="0,8,0,0"
+                          DataContext="{Binding InfoPanelViewModel}"
+                          DockPanel.Dock="Top" />
+
+        <Rectangle Height="1"
+                   Margin="0,8,0,0"
+                   HorizontalAlignment="Stretch"
+                   DockPanel.Dock="Top"
+                   Fill="#444444" />
+
         <panels:DirectoryPanel x:Name="DirectoryPanel"
-                              Margin="4,8"
-                              DataContext="{Binding DirectoryPanelViewModel,
-                                                    Mode=OneWay}"
-                              SelectedIndex="{Binding CursorIndex.Value}" />
+                               Margin="0,8,0,0"
+                               DataContext="{Binding DirectoryPanelViewModel}"
+                               SelectedIndex="{Binding CursorIndex.Value}" />
     </DockPanel>
 </Window>

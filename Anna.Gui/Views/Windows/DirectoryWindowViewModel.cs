@@ -9,6 +9,7 @@ using Anna.UseCase;
 using Reactive.Bindings.Extensions;
 using SimpleInjector;
 using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Windows.Input;
 
@@ -25,9 +26,26 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
         get => _directoryPanelViewModel;
         private set
         {
-            var old = _directoryPanelViewModel;
-            if (SetProperty(ref _directoryPanelViewModel, value))
-                old?.Dispose();
+            // Setup only once 
+            Debug.Assert(_directoryPanelViewModel is null);
+            SetProperty(ref _directoryPanelViewModel, value);
+        }
+    }
+
+    #endregion
+
+    #region InfoPanelViewModel
+
+    private InfoPanelViewModel? _InfoPanelViewModel;
+
+    public InfoPanelViewModel? InfoPanelViewModel
+    {
+        get => _InfoPanelViewModel;
+        private set
+        {
+            // Setup only once 
+            Debug.Assert(_InfoPanelViewModel is null);
+            SetProperty(ref _InfoPanelViewModel, value);
         }
     }
 
@@ -66,8 +84,13 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
     {
         _model = model;
 
+        InfoPanelViewModel = _dic.GetInstance<InfoPanelViewModel>()
+            .Setup(model)
+            .AddTo(Trash);
+
         DirectoryPanelViewModel = _dic.GetInstance<DirectoryPanelViewModel>()
-            .Setup(model);
+            .Setup(model)
+            .AddTo(Trash);
 
         _dic.GetInstance<App>().Directories.CollectionChangedAsObservable()
             .Subscribe(_ =>
@@ -87,8 +110,6 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
         _isDispose = true;
 
         _dic.GetInstance<App>().CloseDirectory(_model ?? throw new NullReferenceException());
-
-        DirectoryPanelViewModel = null;
 
         base.Dispose();
     }

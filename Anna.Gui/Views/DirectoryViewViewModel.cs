@@ -149,14 +149,16 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         if (CursorEntry.Value == null)
             return;
 
-        if (CursorEntry.Value.IsDirectory == false)
-        {
+        if (CursorEntry.Value.IsDirectory)
+            JumpToDirectory(CursorEntry.Value.Model.Path);
+        else
             _logger.Information("Not implemented: OpenCursorEntry");
-            return;
-        }
+    }
 
+    public void JumpToDirectory(string path)
+    {
         _oldPath = Model.Path;
-        Model.Path = CursorEntry.Value.Model.Path;
+        Model.Path = path;
     }
 
     private string _oldPath = "";

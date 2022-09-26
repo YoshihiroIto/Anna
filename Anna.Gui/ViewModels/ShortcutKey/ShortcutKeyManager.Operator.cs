@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.Gui.Interfaces;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Anna.Gui.ViewModels.ShortcutKey;
@@ -27,10 +28,20 @@ public partial class ShortcutKeyManager
         shortcutKeyReceiver.DirectoryViewViewModel.ToggleSelectionCursorEntry(isMoveDown);
         return ValueTask.CompletedTask;
     }
-    
+
     private static ValueTask OpenEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         shortcutKeyReceiver.DirectoryViewViewModel.OpenCursorEntry();
+        return ValueTask.CompletedTask;
+    }
+
+    private static ValueTask JumpToParentDirectoryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var parentDir = new DirectoryInfo(shortcutKeyReceiver.DirectoryViewViewModel.Model.Path).Parent?.FullName;
+
+        if (parentDir is not null)
+            shortcutKeyReceiver.DirectoryViewViewModel.JumpToDirectory(parentDir);
+
         return ValueTask.CompletedTask;
     }
 }

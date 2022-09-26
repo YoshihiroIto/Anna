@@ -57,7 +57,7 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
     public ICommand ToJapaneseCommand { get; }
 
     // todo:impl Messenger
-    public event EventHandler? Close;
+    public event EventHandler? CloseRequested;
 
     public DirectoryWindowViewModel(
         Container dic,
@@ -96,7 +96,7 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
             .Subscribe(_ =>
             {
                 if (_dic.GetInstance<App>().Directories.IndexOf(_model) == -1)
-                    Close?.Invoke(this, EventArgs.Empty);
+                    CloseRequested?.Invoke(this, EventArgs.Empty);
             }).AddTo(Trash);
 
         return this;

@@ -29,14 +29,14 @@ public partial class DirectoryWindow : Window
             if (e.Property == Control.DataContextProperty)
             {
                 if (e.OldValue is DirectoryWindowViewModel oldViewModel)
-                    oldViewModel.Close -= OnClose;
+                    oldViewModel.CloseRequested -= OnCloseRequested;
 
                 if (e.NewValue is DirectoryWindowViewModel newViewModel)
-                    newViewModel.Close += OnClose;
+                    newViewModel.CloseRequested += OnCloseRequested;
             }
         };
     }
-    private void OnClose(object? sender, EventArgs e)
+    private void OnCloseRequested(object? sender, EventArgs e)
     {
         Close();
     }

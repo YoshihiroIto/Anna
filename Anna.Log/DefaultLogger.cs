@@ -6,9 +6,9 @@ using System.Diagnostics;
 
 namespace Anna.Log;
 
-public class Logger : ILoggerUseCase
+public class DefaultLogger : ILoggerUseCase
 {
-    public Logger(string logOutputDir)
+    public DefaultLogger(string logOutputDir)
     {
         // https://qiita.com/soi/items/e74918a924c02e3a3097
 

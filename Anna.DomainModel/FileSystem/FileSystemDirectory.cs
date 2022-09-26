@@ -5,7 +5,6 @@ using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Anna.DomainModel.Interactor")]
-[assembly: InternalsVisibleTo("Anna.DomainModel.Tests")]
 
 namespace Anna.DomainModel.FileSystem;
 

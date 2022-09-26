@@ -28,7 +28,7 @@ public class ServiceProviderContainer : Container
             new AppConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = appConfigFilePath });
         RegisterSingleton(() =>
             new KeyConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = keyConfigFilePath });
-        RegisterSingleton<ILoggerUseCase>(() => new Log.Logger(logOutputDir));
+        RegisterSingleton<ILoggerUseCase>(() => new Log.DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerUseCase, FileSystemObjectSerializer>();
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();

@@ -59,7 +59,7 @@
 
         <panels:DirectoryPanel x:Name="DirectoryPanel"
                               Margin="4,8"
-                              DataContext="{Binding ViewViewModel,
+                              DataContext="{Binding DirectoryPanelViewModel,
                                                     Mode=OneWay}"
                               SelectedIndex="{Binding CursorIndex.Value}" />
     </DockPanel>

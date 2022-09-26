@@ -16,17 +16,17 @@ namespace Anna.Gui.Views.Windows;
 
 public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
 {
-    #region ViewViewModel
+    #region DirectoryPanelViewModel
 
-    private DirectoryPanelViewModel? _ViewViewModel;
+    private DirectoryPanelViewModel? _directoryPanelViewModel;
 
-    public DirectoryPanelViewModel? ViewViewModel
+    public DirectoryPanelViewModel? DirectoryPanelViewModel
     {
-        get => _ViewViewModel;
+        get => _directoryPanelViewModel;
         private set
         {
-            var old = _ViewViewModel;
-            if (SetProperty(ref _ViewViewModel, value))
+            var old = _directoryPanelViewModel;
+            if (SetProperty(ref _directoryPanelViewModel, value))
                 old?.Dispose();
         }
     }
@@ -66,7 +66,7 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
     {
         _model = model;
 
-        ViewViewModel = _dic.GetInstance<DirectoryPanelViewModel>()
+        DirectoryPanelViewModel = _dic.GetInstance<DirectoryPanelViewModel>()
             .Setup(model);
 
         _dic.GetInstance<App>().Directories.CollectionChangedAsObservable()
@@ -88,7 +88,7 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
 
         _dic.GetInstance<App>().CloseDirectory(_model ?? throw new NullReferenceException());
 
-        ViewViewModel = null;
+        DirectoryPanelViewModel = null;
 
         base.Dispose();
     }

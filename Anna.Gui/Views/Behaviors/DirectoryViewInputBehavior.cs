@@ -1,9 +1,10 @@
-﻿using Anna.Gui.ViewModels;
+﻿using Anna.Gui.Foundations;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
@@ -50,15 +51,25 @@ public class DirectoryViewInputBehavior : Behavior<DirectoryView>
         base.OnDetaching();
     }
 
-    private ValueTask OnPreviewKeyDown(object? sender, KeyEventArgs e)
+    private async ValueTask OnPreviewKeyDown(object? sender, KeyEventArgs e)
     {
         if (FocusManager.Instance?.Current is MenuItem)
-            return ValueTask.CompletedTask;
+            return;
 
-        var manager = _shortcutKeyManager ??=
-            (AssociatedObject?.DataContext as DirectoryViewViewModel)?.ShortcutKeyManager;
+        var viewModel = AssociatedObject?.DataContext as DirectoryViewViewModel;
 
-        return manager?.OnKeyDown(AssociatedObject ?? throw new NullReferenceException(), e) ?? ValueTask.CompletedTask;
+        if (viewModel is not null)
+        {
+            await DispatcherHelper.DoEventsAsync();
+
+            if (viewModel.Model.IsInEntriesUpdating)
+                return;
+        }
+
+        var manager = _shortcutKeyManager ??= viewModel?.ShortcutKeyManager;
+        
+        if (manager is not null)
+            await manager.OnKeyDownAsync(AssociatedObject ?? throw new NullReferenceException(), e);
     }
 
     private Window? _parentWindow;

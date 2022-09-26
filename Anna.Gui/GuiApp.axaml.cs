@@ -1,5 +1,6 @@
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
+using Anna.Gui.Foundations;
 using Anna.Gui.Views;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -45,8 +46,7 @@ public class GuiApp : Application
 
         desktop.Exit += async (_, _) =>
         {
-            await Dispatcher.UIThread.InvokeAsync(() => {}, DispatcherPriority.Normal);
-
+            await DispatcherHelper.DoEventsAsync();
             _onExit?.Invoke();
         };
 

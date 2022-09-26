@@ -180,8 +180,10 @@ public abstract class Directory : NotificationObject
 
     private void UpdateEntries()
     {
+
         try
         {
+            IsInEntriesUpdating = true;
             Entries.BeginChange();
 
             Entries.Clear();
@@ -202,6 +204,7 @@ public abstract class Directory : NotificationObject
         finally
         {
             Entries.EndChange();
+            IsInEntriesUpdating = false;
         }
     }
 
@@ -269,6 +272,8 @@ public abstract class Directory : NotificationObject
             ArrayPool<Entry>.Shared.Return(temp);
         }
     }
+
+    public bool IsInEntriesUpdating { get; private set; }
 
     private Comparison<Entry> _entryCompare = EntryComparison.FindEntryCompare(SortModes.Name, SortOrders.Ascending);
 

@@ -26,7 +26,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
             .AddTo(Trash);
     }
 
-    public ValueTask OnKeyDown(IShortcutKeyReceiver receiver, KeyEventArgs e)
+    public ValueTask OnKeyDownAsync(IShortcutKeyReceiver receiver, KeyEventArgs e)
     {
         var k = (e.Key, e.KeyModifiers);
 

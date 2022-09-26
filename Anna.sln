@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Constants", "Anna.Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Repository", "Anna.Repository\Anna.Repository.csproj", "{95DB5B93-A2F0-4170-B462-4486C5DD6A5A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel.Tests", "Anna.DomainModel.Tests\Anna.DomainModel.Tests.csproj", "{1AD67712-FF50-4446-B9EC-845E58172FB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{95DB5B93-A2F0-4170-B462-4486C5DD6A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95DB5B93-A2F0-4170-B462-4486C5DD6A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95DB5B93-A2F0-4170-B462-4486C5DD6A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AD67712-FF50-4446-B9EC-845E58172FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AD67712-FF50-4446-B9EC-845E58172FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AD67712-FF50-4446-B9EC-845E58172FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AD67712-FF50-4446-B9EC-845E58172FB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

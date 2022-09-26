@@ -48,6 +48,8 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
     }
 
+    private readonly bool _isBufferingUpdate = false;
+
     public DirectoryViewViewModel Setup(Directory model)
     {
         Model = model;
@@ -60,20 +62,29 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
-        var bufferedCollectionChanged =
-            model.Entries
-                .ToCollectionChanged()
-                .Buffer(TimeSpan.FromMilliseconds(50))
-                .Where(x => x.Any())
-                .SelectMany(x => x);
-
         lock (model.UpdateLockObj)
         {
-            Entries = model.Entries
-                .ToReadOnlyReactiveCollection(
-                    bufferedCollectionChanged,
-                    x => _dic.GetInstance<EntryViewModel>().Setup(x))
-                .AddTo(Trash);
+            if (_isBufferingUpdate)
+            {
+                var bufferedCollectionChanged =
+                    model.Entries
+                        .ToCollectionChanged()
+                        .Buffer(TimeSpan.FromMilliseconds(50))
+                        .Where(x => x.Any())
+                        .SelectMany(x => x);
+
+                Entries = model.Entries
+                    .ToReadOnlyReactiveCollection(
+                        bufferedCollectionChanged,
+                        x => _dic.GetInstance<EntryViewModel>().Setup(x))
+                    .AddTo(Trash);
+            }
+            else
+            {
+                Entries = model.Entries
+                    .ToReadOnlyReactiveCollection(x => _dic.GetInstance<EntryViewModel>().Setup(x))
+                    .AddTo(Trash);
+            }
 
             Entries
                 .CollectionChangedAsObservable()

@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace Anna.DomainModel.FileSystem;
 
-public sealed class FileSystemDirectory : Directory, IDisposable
+public sealed class FileSystemDirectory : Directory
 {
     internal FileSystemDirectory(string path, ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
@@ -42,7 +42,7 @@ public sealed class FileSystemDirectory : Directory, IDisposable
             .Select(p => Entry.Create(p, System.IO.Path.GetRelativePath(Path, p)));
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         if (_isDispose)
             return;

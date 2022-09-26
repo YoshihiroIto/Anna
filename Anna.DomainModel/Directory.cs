@@ -5,7 +5,7 @@ using System.Buffers;
 
 namespace Anna.DomainModel;
 
-public abstract class Directory : NotificationObject
+public abstract class Directory : NotificationObject, IDisposable
 {
     #region Path
 
@@ -284,4 +284,8 @@ public abstract class Directory : NotificationObject
     private readonly Dictionary<string, Entry> _entriesDict = new();
 
     protected readonly ILoggerUseCase _Logger;
+    
+    public virtual void Dispose()
+    {
+    }
 }

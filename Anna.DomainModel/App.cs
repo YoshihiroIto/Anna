@@ -23,7 +23,7 @@ public class App : DisposableNotificationObject
 
     public void CloseDirectory(Directory directory)
     {
-        (directory as IDisposable)?.Dispose();
+        directory.Dispose();
 
         _Directories.Remove(directory);
     }

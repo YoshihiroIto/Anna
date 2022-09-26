@@ -17,9 +17,9 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
 {
     #region ViewViewModel
 
-    private DirectoryViewViewModel? _ViewViewModel;
+    private DirectoryPanelViewModel? _ViewViewModel;
 
-    public DirectoryViewViewModel? ViewViewModel
+    public DirectoryPanelViewModel? ViewViewModel
     {
         get => _ViewViewModel;
         private set
@@ -65,7 +65,7 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
     {
         _model = model;
 
-        ViewViewModel = _dic.GetInstance<DirectoryViewViewModel>()
+        ViewViewModel = _dic.GetInstance<DirectoryPanelViewModel>()
             .Setup(model);
 
         _dic.GetInstance<App>().Directories.CollectionChangedAsObservable()

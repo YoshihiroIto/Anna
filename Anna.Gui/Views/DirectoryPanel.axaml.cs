@@ -8,10 +8,10 @@ using System;
 
 namespace Anna.Gui.Views;
 
-public partial class DirectoryView : UserControl, IShortcutKeyReceiver
+public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
 {
     public static readonly StyledProperty<int> SelectedIndexProperty =
-        AvaloniaProperty.Register<DirectoryView, int>(nameof(SelectedIndex));
+        AvaloniaProperty.Register<DirectoryPanel, int>(nameof(SelectedIndex));
     
     public int SelectedIndex
     {
@@ -19,16 +19,16 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
         set => SetValue(SelectedIndexProperty, value);
     }
     
-    internal static readonly DirectProperty<DirectoryView, DirectoryViewLayout> DirectoryViewLayoutProperty =
-        AvaloniaProperty.RegisterDirect<DirectoryView, DirectoryViewLayout>(nameof(DirectoryViewLayout), o => o.Layout);
+    internal static readonly DirectProperty<DirectoryPanel, DirectoryPanelLayout> LayoutProperty =
+        AvaloniaProperty.RegisterDirect<DirectoryPanel, DirectoryPanelLayout>(nameof(DirectoryPanelLayout), o => o.Layout);
 
-    internal static readonly DirectProperty<DirectoryView, IntSize> ItemCellSizeProperty =
-        AvaloniaProperty.RegisterDirect<DirectoryView, IntSize>(nameof(ItemCellSize), o => o.ItemCellSize);
+    internal static readonly DirectProperty<DirectoryPanel, IntSize> ItemCellSizeProperty =
+        AvaloniaProperty.RegisterDirect<DirectoryPanel, IntSize>(nameof(ItemCellSize), o => o.ItemCellSize);
 
-    internal DirectoryViewLayout Layout
+    internal DirectoryPanelLayout Layout
     {
         get => _Layout;
-        private set => SetAndRaise(DirectoryViewLayoutProperty, ref _Layout, value);
+        private set => SetAndRaise(LayoutProperty, ref _Layout, value);
     }
 
     internal IntSize ItemCellSize
@@ -37,10 +37,10 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
         private set => SetAndRaise(ItemCellSizeProperty, ref _ItemCellSize, value);
     }
 
-    private DirectoryViewLayout _Layout = new();
+    private DirectoryPanelLayout _Layout = new();
     private IntSize _ItemCellSize;
 
-    public DirectoryView()
+    public DirectoryPanel()
     {
         InitializeComponent();
     }
@@ -75,13 +75,13 @@ public partial class DirectoryView : UserControl, IShortcutKeyReceiver
     }
 
     public Directory Directory =>
-        DirectoryViewViewModel.Model;
+        DirectoryPanelViewModel.Model;
 
-    public DirectoryViewViewModel DirectoryViewViewModel =>
-        DataContext as DirectoryViewViewModel ?? throw new NotSupportedException();
+    public DirectoryPanelViewModel DirectoryPanelViewModel =>
+        DataContext as DirectoryPanelViewModel ?? throw new NotSupportedException();
 
     public Entry[] CollectTargetEntries()
-        => DirectoryViewViewModel.CollectTargetEntries();
+        => DirectoryPanelViewModel.CollectTargetEntries();
 
     private void UpdateItemCellSize()
     {

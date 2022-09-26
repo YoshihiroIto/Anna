@@ -19,38 +19,38 @@ public partial class ShortcutKeyManager
 
     private static ValueTask MoveCursorAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)
     {
-        shortcutKeyReceiver.DirectoryViewViewModel.MoveCursor(dir);
+        shortcutKeyReceiver.DirectoryPanelViewModel.MoveCursor(dir);
         return ValueTask.CompletedTask;
     }
 
     private static ValueTask ToggleSelectionCursorEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver, bool isMoveDown)
     {
-        shortcutKeyReceiver.DirectoryViewViewModel.ToggleSelectionCursorEntry(isMoveDown);
+        shortcutKeyReceiver.DirectoryPanelViewModel.ToggleSelectionCursorEntry(isMoveDown);
         return ValueTask.CompletedTask;
     }
 
     private static ValueTask OpenEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        shortcutKeyReceiver.DirectoryViewViewModel.OpenCursorEntry();
+        shortcutKeyReceiver.DirectoryPanelViewModel.OpenCursorEntry();
         return ValueTask.CompletedTask;
     }
 
     private static ValueTask JumpToParentDirectoryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var parentDir = new DirectoryInfo(shortcutKeyReceiver.DirectoryViewViewModel.Model.Path).Parent?.FullName;
+        var parentDir = new DirectoryInfo(shortcutKeyReceiver.DirectoryPanelViewModel.Model.Path).Parent?.FullName;
 
         if (parentDir is not null)
-            shortcutKeyReceiver.DirectoryViewViewModel.JumpToDirectory(parentDir);
+            shortcutKeyReceiver.DirectoryPanelViewModel.JumpToDirectory(parentDir);
         
         return ValueTask.CompletedTask;
     }
     
     private static ValueTask JumpToRootDirectoryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var rootDir = System.IO.Path.GetPathRoot(shortcutKeyReceiver.DirectoryViewViewModel.Model.Path);
+        var rootDir = System.IO.Path.GetPathRoot(shortcutKeyReceiver.DirectoryPanelViewModel.Model.Path);
 
         if (rootDir is not null)
-            shortcutKeyReceiver.DirectoryViewViewModel.JumpToDirectory(rootDir);
+            shortcutKeyReceiver.DirectoryPanelViewModel.JumpToDirectory(rootDir);
 
         return ValueTask.CompletedTask;
     }

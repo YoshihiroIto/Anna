@@ -16,7 +16,7 @@ using System.Reactive.Linq;
 
 namespace Anna.Gui.Views;
 
-public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
+public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
 {
     public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; private set; } = null!;
     public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; private set; } = null!;
@@ -31,7 +31,7 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
 
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
 
-    public DirectoryViewViewModel(
+    public DirectoryPanelViewModel(
         Container dic,
         ResourcesHolder resourcesHolder,
         ShortcutKeyManager shortcutKeyManager,
@@ -50,7 +50,7 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
 
     private readonly bool _isBufferingUpdate = false;
 
-    public DirectoryViewViewModel Setup(Directory model)
+    public DirectoryPanelViewModel Setup(Directory model)
     {
         Model = model;
         _oldPath = Model.Path;

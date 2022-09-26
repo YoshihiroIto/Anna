@@ -8,7 +8,7 @@ using FormattedText=Avalonia.Media.FormattedText;
 
 namespace Anna.Gui.Views;
 
-public class DirectoryViewLayout : NotificationObject
+public class DirectoryPanelLayout : NotificationObject
 {
     #region FontFamily
 
@@ -158,7 +158,7 @@ public class DirectoryViewLayout : NotificationObject
     public static Thickness ItemMargin { get; } = new(0, 0, 32, 0);
     public static Thickness SelectedMarkMargin { get; } = new(0, 0, 2, 0);
 
-    public DirectoryViewLayout()
+    public DirectoryPanelLayout()
     {
         UpdateItemSize();
     }

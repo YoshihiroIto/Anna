@@ -56,7 +56,7 @@
                    DockPanel.Dock="Top"
                    Fill="#444444" />
 
-        <views1:DirectoryView x:Name="DirectoryView"
+        <views1:DirectoryPanel x:Name="DirectoryPanel"
                               Margin="4,8"
                               DataContext="{Binding ViewViewModel,
                                                     Mode=OneWay}"

@@ -9,7 +9,7 @@ public interface IShortcutKeyReceiver
 {
     Window Owner { get; }
     Directory Directory { get; }
-    DirectoryViewViewModel DirectoryViewViewModel { get; }
+    DirectoryPanelViewModel DirectoryPanelViewModel { get; }
 
     Entry[] CollectTargetEntries();
 }

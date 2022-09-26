@@ -4,14 +4,13 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Threading;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Behaviors;
 
-public class DirectoryViewInputBehavior : Behavior<DirectoryView>
+public class DirectoryPanelInputBehavior : Behavior<DirectoryPanel>
 {
     protected override void OnAttached()
     {
@@ -56,7 +55,7 @@ public class DirectoryViewInputBehavior : Behavior<DirectoryView>
         if (FocusManager.Instance?.Current is MenuItem)
             return;
 
-        var viewModel = AssociatedObject?.DataContext as DirectoryViewViewModel;
+        var viewModel = AssociatedObject?.DataContext as DirectoryPanelViewModel;
 
         if (viewModel is not null)
         {

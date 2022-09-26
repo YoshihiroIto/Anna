@@ -16,11 +16,11 @@ public partial class DirectoryWindow : Window
         this.AttachDevTools();
 #endif
 
-        var directoryView = this.FindControl<DirectoryView>("DirectoryView");
-        if (directoryView is not null)
+        var directoryPanel = this.FindControl<DirectoryPanel>("DirectoryPanel");
+        if (directoryPanel is not null)
         {
-            directoryView.AttachedToVisualTree += (_, _) =>
-                FocusManager.Instance?.Focus(directoryView, NavigationMethod.Directional);
+            directoryPanel.AttachedToVisualTree += (_, _) =>
+                FocusManager.Instance?.Focus(directoryPanel, NavigationMethod.Directional);
         }
 
         PropertyChanged += (s, e) =>

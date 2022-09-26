@@ -21,4 +21,18 @@
       <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
       <ProjectReference Include="..\Anna.Strings\Anna.Strings.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\Panels\InfoPanel.axaml.cs">
+        <DependentUpon>InfoPanel.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Windows\DirectoryWindow.axaml.cs">
+        <DependentUpon>DirectoryWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\Panels\DirectoryPanel.axaml.cs">
+        <DependentUpon>DirectoryPanel.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>

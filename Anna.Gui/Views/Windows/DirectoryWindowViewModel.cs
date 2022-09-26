@@ -3,6 +3,7 @@ using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
+using Anna.Gui.Views.Panels;
 using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings.Extensions;
@@ -11,7 +12,7 @@ using System;
 using System.Reactive.Linq;
 using System.Windows.Input;
 
-namespace Anna.Gui.Views;
+namespace Anna.Gui.Views.Windows;
 
 public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
 {

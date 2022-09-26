@@ -1,10 +1,11 @@
-﻿using Avalonia;
+﻿using Anna.Gui.Views.Panels;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System;
 
-namespace Anna.Gui.Views;
+namespace Anna.Gui.Views.Windows;
 
 public partial class DirectoryWindow : Window
 {

@@ -1,5 +1,6 @@
 ﻿using Anna.DomainModel;
 using Anna.Gui.Views;
+using Anna.Gui.Views.Panels;
 using Avalonia.Controls;
 using Directory=Anna.DomainModel.Directory;
 

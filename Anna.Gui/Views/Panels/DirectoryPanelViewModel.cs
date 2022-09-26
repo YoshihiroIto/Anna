@@ -14,7 +14,7 @@ using System;
 using System.Linq;
 using System.Reactive.Linq;
 
-namespace Anna.Gui.Views;
+namespace Anna.Gui.Views.Panels;
 
 public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
 {

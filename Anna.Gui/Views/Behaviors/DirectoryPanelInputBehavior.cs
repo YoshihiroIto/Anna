@@ -1,5 +1,6 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.ViewModels.ShortcutKey;
+using Anna.Gui.Views.Panels;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using FormattedText=Avalonia.Media.FormattedText;
 
-namespace Anna.Gui.Views;
+namespace Anna.Gui.Views.Panels;
 
 public class DirectoryPanelLayout : NotificationObject
 {

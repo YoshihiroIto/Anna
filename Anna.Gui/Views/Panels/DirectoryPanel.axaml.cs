@@ -6,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System;
 
-namespace Anna.Gui.Views;
+namespace Anna.Gui.Views.Panels;
 
 public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
 {

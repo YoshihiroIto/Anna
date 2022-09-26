@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Anna.Gui.Views.DirectoryPanel"
+﻿<UserControl x:Class="Anna.Gui.Views.Panels.DirectoryPanel"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
@@ -7,11 +7,11 @@
              xmlns:dataTemplateSelector="clr-namespace:Anna.Gui.Views.DataTemplateSelector"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
-             xmlns:views="clr-namespace:Anna.Gui.Views"
+             xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
-             x:DataType="views:DirectoryPanelViewModel"
+             x:DataType="panels:DirectoryPanelViewModel"
              SelectedIndex="{Binding $self.SelectedIndex}"
              FontFamily="{Binding $self.Layout.FontFamily}"
              FontSize="{Binding $self.Layout.FontSize}"
@@ -73,15 +73,15 @@
         </Style>
 
         <Style Selector="StackPanel.entry" x:DataType="viewModels1:EntryViewModel">
-            <Setter Property="Height" Value="{Binding $parent[views:DirectoryPanel].Layout.ItemHeight}" />
-            <Setter Property="Margin" Value="{x:Static views:DirectoryPanelLayout.ItemMargin}" />
+            <Setter Property="Height" Value="{Binding $parent[panels:DirectoryPanel].Layout.ItemHeight}" />
+            <Setter Property="Margin" Value="{x:Static panels:DirectoryPanelLayout.ItemMargin}" />
             <Setter Property="Orientation" Value="Horizontal" />
         </Style>
 
         <Style Selector="Viewbox.entry" x:DataType="viewModels1:EntryViewModel">
-            <Setter Property="Width" Value="{Binding $parent[views:DirectoryPanel].Layout.ItemHeight}" />
-            <Setter Property="Height" Value="{Binding $parent[views:DirectoryPanel].Layout.ItemHeight}" />
-            <Setter Property="Margin" Value="{x:Static views:DirectoryPanelLayout.SelectedMarkMargin}" />
+            <Setter Property="Width" Value="{Binding $parent[panels:DirectoryPanel].Layout.ItemHeight}" />
+            <Setter Property="Height" Value="{Binding $parent[panels:DirectoryPanel].Layout.ItemHeight}" />
+            <Setter Property="Margin" Value="{x:Static panels:DirectoryPanelLayout.SelectedMarkMargin}" />
         </Style>
     </UserControl.Styles>
 
@@ -89,8 +89,8 @@
         <ItemsControl Items="{Binding Entries}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel ItemWidth="{Binding $parent[views:DirectoryPanel].Layout.ItemWidth}"
-                               ItemHeight="{Binding $parent[views:DirectoryPanel].Layout.ItemHeight}"
+                    <WrapPanel ItemWidth="{Binding $parent[panels:DirectoryPanel].Layout.ItemWidth}"
+                               ItemHeight="{Binding $parent[panels:DirectoryPanel].Layout.ItemHeight}"
                                Orientation="Vertical" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
@@ -105,11 +105,11 @@
                                 </Viewbox>
 
                                 <TextBlock Classes="entry"
-                                           Width="{Binding $parent[views:DirectoryPanel].Layout.NameWidth}"
+                                           Width="{Binding $parent[panels:DirectoryPanel].Layout.NameWidth}"
                                            Text="{Binding Name.Value}" />
 
                                 <TextBlock Classes="entry"
-                                           Width="{Binding $parent[views:DirectoryPanel].Layout.ExtensionWidth}"
+                                           Width="{Binding $parent[panels:DirectoryPanel].Layout.ExtensionWidth}"
                                            Text="{Binding Extension.Value}" />
                             </StackPanel>
                         </DataTemplate>
@@ -123,7 +123,7 @@
                                 </Viewbox>
 
                                 <TextBlock Classes="entry"
-                                           Width="{Binding $parent[views:DirectoryPanel].Layout.NameWithExtensionWidth}"
+                                           Width="{Binding $parent[panels:DirectoryPanel].Layout.NameWithExtensionWidth}"
                                            Text="{Binding NameWithExtension.Value}" />
                             </StackPanel>
                         </DataTemplate>

@@ -1,7 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Anna.Gui.Views;
+namespace Anna.Gui.Views.Panels;
 
 public partial class InfoPanel : UserControl
 {

@@ -1,4 +1,5 @@
 using Anna.Gui.Views;
+using Anna.Gui.Views.Windows;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Headless;

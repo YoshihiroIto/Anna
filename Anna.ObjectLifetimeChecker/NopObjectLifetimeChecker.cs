@@ -1,6 +1,6 @@
 ﻿using Anna.UseCase;
 
-namespace Anna.DomainModel.ObjectLifetimeChecker;
+namespace Anna.ObjectLifetimeChecker;
 
 public sealed class NopObjectLifetimeChecker : IObjectLifetimeCheckerUseCase
 {

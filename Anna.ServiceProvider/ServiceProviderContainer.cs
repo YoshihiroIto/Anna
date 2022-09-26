@@ -1,9 +1,9 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Config;
-using Anna.DomainModel.ObjectLifetimeChecker;
 using Anna.Gui;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
+using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
 using Anna.UseCase;
 using SimpleInjector;
@@ -16,9 +16,9 @@ public class ServiceProviderContainer : Container
     {
         RegisterSingleton<IObjectLifetimeCheckerUseCase,
 #if DEBUG
-            DefaultObjectLifetimeChecker
+           DefaultObjectLifetimeChecker
 #else
-            NopObjectLifetimeChecker
+           NopObjectLifetimeChecker
 #endif
         >();
 

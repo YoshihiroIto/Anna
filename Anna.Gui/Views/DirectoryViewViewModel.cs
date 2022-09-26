@@ -51,6 +51,7 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
     public DirectoryViewViewModel Setup(Directory model)
     {
         Model = model;
+        _oldPath = Model.Path;
 
         Observable
             .FromEventPattern(
@@ -76,11 +77,24 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
 
             Entries
                 .CollectionChangedAsObservable()
-                .Subscribe(x => UpdateCursorIndex(CursorEntry.Value))
+                .Subscribe(_ =>
+                    {
+                        UpdateCursorIndex(CursorEntry.Value);
+
+                        // If it is not a directory move, do nothing.
+                        if (string.CompareOrdinal(_oldPath, Model.Path) != 0)
+                        {
+                            SetCurrentIndex(_oldPath);
+                            _oldPath = Model.Path;
+                        }
+                    }
+                )
                 .AddTo(Trash);
         }
 
-        CursorEntry = CursorIndex.Select(UpdateCursorEntry)
+        CursorEntry = CursorIndex
+            .ObserveOnUIDispatcher()
+            .Select(UpdateCursorEntry)
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
@@ -125,7 +139,7 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
 
         if (CursorEntry.Value.IsSelectable)
             CursorEntry.Value.IsSelected.Value = !CursorEntry.Value.IsSelected.Value;
-        
+
         if (isMoveDown)
             MoveCursor(Directions.Down);
     }
@@ -141,8 +155,11 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
             return;
         }
 
+        _oldPath = Model.Path;
         Model.Path = CursorEntry.Value.Model.Path;
     }
+
+    private string _oldPath = "";
 
     private EntryViewModel? UpdateCursorEntry(int index)
     {
@@ -174,12 +191,29 @@ public class DirectoryViewViewModel : ViewModelBase, ILocalizableViewModel
             // the entry at the current cursor position is assumed to be under the cursor.
 
             index = Math.Clamp(CursorIndex.Value, 0, Entries.Count - 1);
-            UpdateCursorEntry(index);
+
+            CursorIndex.Value = index;
+            CursorIndex.ForceNotify();
+
             return;
         }
 
         index = Math.Clamp(index, 0, Entries.Count - 1);
         CursorIndex.Value = index;
+    }
+
+    private void SetCurrentIndex(string targetPath)
+    {
+        for (var i = 0; i != Entries.Count; ++i)
+        {
+            if (string.CompareOrdinal(Entries[i].Model.Path, targetPath) != 0)
+                continue;
+
+            CursorIndex.Value = i;
+            return;
+        }
+
+        CursorIndex.Value = 0;
     }
 
     private readonly Container _dic;

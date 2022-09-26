@@ -23,7 +23,7 @@ public abstract class Directory : NotificationObject
             {
                 lock (UpdateLockObj)
                 {
-                    UpdateInternal();
+                    UpdateEntries();
                 }
             });
         }
@@ -178,7 +178,7 @@ public abstract class Directory : NotificationObject
         }
     }
 
-    private void UpdateInternal()
+    private void UpdateEntries()
     {
         try
         {

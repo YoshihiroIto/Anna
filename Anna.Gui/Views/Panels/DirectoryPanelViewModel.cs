@@ -142,7 +142,7 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
 
     public void ToggleSelectionCursorEntry(bool isMoveDown)
     {
-        if (CursorEntry.Value == null)
+        if (CursorEntry.Value is null)
             return;
 
         if (CursorEntry.Value.IsSelectable)
@@ -154,7 +154,7 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
 
     public void OpenCursorEntry()
     {
-        if (CursorEntry.Value == null)
+        if (CursorEntry.Value is null)
             return;
 
         if (CursorEntry.Value.IsDirectory)
@@ -173,7 +173,7 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
 
     private EntryViewModel? UpdateCursorEntry(int index)
     {
-        if (_oldEntry != null)
+        if (_oldEntry is not null)
             _oldEntry.IsOnCursor.Value = false;
 
         EntryViewModel? newEntity = null;
@@ -181,7 +181,7 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
         if (index >= 0 && index < Entries.Count)
             newEntity = Entries[index];
 
-        if (newEntity != null)
+        if (newEntity is not null)
             newEntity.IsOnCursor.Value = true;
 
         _oldEntry = newEntity;
@@ -191,7 +191,7 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
 
     private void UpdateCursorIndex(EntryViewModel? entry)
     {
-        if (entry == null)
+        if (entry is null)
             return;
 
         var index = Entries.IndexOf(entry);

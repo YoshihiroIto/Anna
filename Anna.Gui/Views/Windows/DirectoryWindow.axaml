@@ -52,20 +52,15 @@
             </MenuItem>
         </Menu>
 
-        <Rectangle Height="1"
-                   HorizontalAlignment="Stretch"
-                   DockPanel.Dock="Top"
-                   Fill="#444444" />
+        <Rectangle Classes="horizontal-splitter" DockPanel.Dock="Top" />
 
         <panels:InfoPanel Margin="0,8,0,0"
                           DataContext="{Binding InfoPanelViewModel}"
                           DockPanel.Dock="Top" />
 
-        <Rectangle Height="1"
+        <Rectangle Classes="horizontal-splitter"
                    Margin="0,8,0,0"
-                   HorizontalAlignment="Stretch"
-                   DockPanel.Dock="Top"
-                   Fill="#444444" />
+                   DockPanel.Dock="Top" />
 
         <panels:DirectoryPanel x:Name="DirectoryPanel"
                                Margin="0,8,0,0"

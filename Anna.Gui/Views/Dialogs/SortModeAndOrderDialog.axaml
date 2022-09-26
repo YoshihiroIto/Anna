@@ -60,9 +60,7 @@
                     Tag="{x:Static constants:SortModes.Attributes}" />
         </StackPanel>
 
-        <Rectangle Height="1"
-                   HorizontalAlignment="Stretch"
-                   Fill="#444444" />
+        <Rectangle Classes="horizontal-splitter" />
 
         <Grid ColumnDefinitions="Auto,*">
             <Grid x:Name="OrderPanel"

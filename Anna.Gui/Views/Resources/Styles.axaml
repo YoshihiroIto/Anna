@@ -6,6 +6,13 @@
     <Style Selector="MenuItem">
         <Setter Property="FontSize" Value="12" />
     </Style>
+    
+    <Style Selector="Rectangle.horizontal-splitter">
+        <Setter Property="Height" Value="1" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Fill" Value="#444444" />
+    </Style>
+    
 
     <Style Selector="Window.dialog">
         <Setter Property="FontSize" Value="12" />

@@ -22,7 +22,6 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
     public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; private set; } = null!;
 
     public Directory Model { get; private set; } = null!;
-
     public Resources R => _resourcesHolder.Instance;
 
     public readonly ShortcutKeyManager ShortcutKeyManager;
@@ -47,8 +46,6 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
     }
-
-    private readonly bool _isBufferingUpdate = false;
 
     public DirectoryPanelViewModel Setup(Directory model)
     {
@@ -233,4 +230,6 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
     private readonly ILoggerUseCase _logger;
     private readonly ResourcesHolder _resourcesHolder;
     private EntryViewModel? _oldEntry;
+    
+    private readonly bool _isBufferingUpdate = false;
 }

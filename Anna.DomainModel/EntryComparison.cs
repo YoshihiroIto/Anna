@@ -154,8 +154,6 @@ public static class EntryComparison
 
     private static int CompareByName(Entry x, Entry y)
     {
-        Debug.Assert(x.IsDirectory == y.IsDirectory);
-
         if (x.IsDirectory)
         {
             var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
@@ -178,8 +176,6 @@ public static class EntryComparison
 
     private static int CompareByExtension(Entry x, Entry y)
     {
-        Debug.Assert(x.IsDirectory == y.IsDirectory);
-
         if (x.IsDirectory)
         {
             var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);

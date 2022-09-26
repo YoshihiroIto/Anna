@@ -119,7 +119,7 @@ public class Entry : NotificationObject
     }
 
     #endregion
-    
+
     public string Path { get; private set; } = "";
 
     public bool IsDirectory => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
@@ -192,20 +192,27 @@ public class Entry : NotificationObject
 
     public static Entry Create(string path, string nameWithExtension)
     {
-        var fi = new FileInfo(path);
+        var fileInfo = new FileInfo(path);
+        
+        //
+        // note:
+        //
+        // If the file does not exist at this timing, fileInfo will be in an invalid state.
+        // Therefore, the entity created from the fileInfo will also be invalid.
+        //
+        
+        var isDirectory = (fileInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
 
-        var isDirectory = (fi.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
-
-        var e = new Entry
+        var entry = new Entry
         {
-            Timestamp = fi.LastWriteTime, Size = isDirectory ? 0 : fi.Length, Attributes = fi.Attributes
+            Timestamp = fileInfo.LastWriteTime, Size = isDirectory ? 0 : fileInfo.Length, Attributes = fileInfo.Attributes
         };
 
-        e.SetName(nameWithExtension);
-        e.IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0;
-        e.Path = path;
+        entry.SetName(nameWithExtension);
+        entry.IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0;
+        entry.Path = path;
 
-        return e;
+        return entry;
     }
 
     public static Entry Create(Entry from)

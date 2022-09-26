@@ -180,7 +180,6 @@ public abstract class Directory : NotificationObject
 
     private void UpdateEntries()
     {
-
         try
         {
             IsInEntriesUpdating = true;

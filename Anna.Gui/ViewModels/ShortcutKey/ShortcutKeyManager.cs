@@ -86,6 +86,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
             { Operations.ToggleSelectionCursorEntry, s => ToggleSelectionCursorEntryAsync(s, true) },
             { Operations.OpenEntry, OpenEntryAsync },
             { Operations.JumpToParentDirectory, JumpToParentDirectoryAsync },
+            { Operations.JumpToRootDirectory, JumpToRootDirectoryAsync },
         };
     }
 

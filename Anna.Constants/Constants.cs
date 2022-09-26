@@ -45,5 +45,6 @@ public enum Operations
     MoveCursorRight,
     ToggleSelectionCursorEntry,
     OpenEntry,
-    JumpToParentDirectory
+    JumpToParentDirectory,
+    JumpToRootDirectory
 }

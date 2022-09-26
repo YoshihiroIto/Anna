@@ -38,6 +38,7 @@ public class KeyConfigData : ConfigData
             new(Key.Space, KeyModifiers.None, Operations.ToggleSelectionCursorEntry),
             new(Key.Enter, KeyModifiers.None, Operations.OpenEntry),
             new(Key.Back, KeyModifiers.None, Operations.JumpToParentDirectory),
+            new(Key.OemPipe, KeyModifiers.None, Operations.JumpToRootDirectory),
         };
     }
 }

@@ -1,7 +1,6 @@
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
-using Anna.Gui.Views;
 using Anna.Gui.Views.Windows;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;

@@ -3,10 +3,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Padding="0,32"
-             HorizontalContentAlignment="Center"
+             xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
              d:DesignHeight="450"
              d:DesignWidth="800"
+             x:CompileBindings="True"
+             x:DataType="panels:InfoPanelViewModel"
+             FontFamily="avares://Anna.Gui/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
+             FontSize="14"
              mc:Ignorable="d">
-    InfoPanel
+    <Design.DataContext>
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
+        <panels:InfoPanelViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <StyleInclude Source="/Views/Resources/Styles.axaml" />
+    </UserControl.Styles>
+
+    <Grid ColumnDefinitions="Auto, Auto"
+          ColumnSpan=""
+          RowDefinitions="Auto,Auto,Auto,Auto">
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   Text="SelectedEntriesCount" />
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Margin="8,0,0,0"
+                   HorizontalAlignment="Right"
+                   Text="{Binding SelectedEntriesCount.Value}" />
+
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   Text="SelectedTotalSize" />
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1"
+                   Margin="8,0,0,0"
+                   HorizontalAlignment="Right"
+                   Text="{Binding SelectedTotalSize.Value,
+                                  StringFormat='{}{0:#,0}'}" />
+
+        <TextBlock Grid.Row="2"
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   Text="EntriesCount" />
+        <TextBlock Grid.Row="2"
+                   Grid.Column="1"
+                   Margin="8,0,0,0"
+                   HorizontalAlignment="Right"
+                   Text="{Binding EntriesCount.Value}" />
+
+        <TextBlock Grid.Row="3"
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   Text="TotalSize" />
+        <TextBlock Grid.Row="3"
+                   Grid.Column="1"
+                   Margin="8,0,0,0"
+                   HorizontalAlignment="Right"
+                   Text="{Binding TotalSize.Value,
+                                  StringFormat='{}{0:#,0}'}" />
+    </Grid>
 </UserControl>

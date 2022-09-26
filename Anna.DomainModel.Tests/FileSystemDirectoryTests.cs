@@ -1,14 +1,20 @@
-﻿using Xunit;
+﻿using Anna.TestFoundation;
+using Xunit;
 
-namespace Anna.DomainModel.Tests
+namespace Anna.DomainModel.Tests;
+
+public class FileSystemDirectoryTests : IDisposable
 {
-    public class FileSystemDirectoryTests
+    private readonly TestServiceProviderContainer _dic = new();
+    
+    [Fact]
+    public void Start_and_finish_successfully()
     {
-        [Fact]
-        public void Start_and_finish_successfully()
-        {
-            Assert.True(false);
-            
-        }
+         using var directory = _dic.GetInstance<DomainModelOperator>().CreateDirectory(".");
+    }
+    
+    public void Dispose()
+    {
+        _dic.Dispose();
     }
 }

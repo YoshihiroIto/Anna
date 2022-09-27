@@ -7,6 +7,8 @@ namespace Anna.DomainModel;
 
 public abstract class Directory : NotificationObject, IDisposable
 {
+    public ObservableCollectionEx<Entry> Entries { get; } = new();
+    
     #region Path
 
     private string _Path = "";
@@ -30,19 +32,6 @@ public abstract class Directory : NotificationObject, IDisposable
     }
 
     #endregion
-
-    #region Entries
-
-    private ObservableCollectionEx<Entry> _entries = new();
-
-    public ObservableCollectionEx<Entry> Entries
-    {
-        get => _entries;
-        private set => SetProperty(ref _entries, value);
-    }
-
-    #endregion
-
 
     #region SortOrder
 

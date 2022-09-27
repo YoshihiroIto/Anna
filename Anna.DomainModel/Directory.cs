@@ -24,10 +24,7 @@ public abstract class Directory : NotificationObject, IDisposable
             if (SetProperty(ref _Path, value) == false)
                 return;
 
-            lock (EntitiesUpdatingLockObj)
-            {
-                UpdateEntries();
-            }
+            UpdateEntries();
         }
     }
 
@@ -46,11 +43,7 @@ public abstract class Directory : NotificationObject, IDisposable
                 return;
 
             UpdateEntryCompare();
-
-            lock (EntitiesUpdatingLockObj)
-            {
-                SortEntries();
-            }
+            SortEntries();
         }
     }
 
@@ -70,10 +63,7 @@ public abstract class Directory : NotificationObject, IDisposable
                 return;
 
             UpdateEntryCompare();
-            lock (EntitiesUpdatingLockObj)
-            {
-                SortEntries();
-            }
+            SortEntries();
         }
     }
 
@@ -88,11 +78,7 @@ public abstract class Directory : NotificationObject, IDisposable
         _SortOrder = order;
 
         UpdateEntryCompare();
-
-        lock (EntitiesUpdatingLockObj)
-        {
-            SortEntries();
-        }
+        SortEntries();
     }
 
     protected Directory(string path, ILoggerUseCase logger)
@@ -105,12 +91,7 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         _Logger.Information($"OnCreated: {Path}, {newEntry.NameWithExtension}");
 
-        lock (EntitiesUpdatingLockObj)
-        {
-            AddEntryInternal(newEntry);
-        }
-
-        TrimRemovedSelectedEntries();
+        AddEntryInternal(newEntry);
     }
 
     protected void OnChanged(Entry entry)
@@ -168,82 +149,91 @@ public abstract class Directory : NotificationObject, IDisposable
 
     private void UpdateEntries()
     {
-        try
+        lock (EntitiesUpdatingLockObj)
         {
-            IsInEntriesUpdating = true;
-            Entries.BeginChange();
+            try
+            {
+                IsInEntriesUpdating = true;
+                Entries.BeginChange();
 
-            Entries.Clear();
+                Entries.Clear();
 
-            Entries.AddRange(EnumerateDirectories());
-            _directoriesCount = Entries.Count;
+                Entries.AddRange(EnumerateDirectories());
+                _directoriesCount = Entries.Count;
 
-            Entries.AddRange(EnumerateFiles());
-            _filesCount = Entries.Count - _directoriesCount;
+                Entries.AddRange(EnumerateFiles());
+                _filesCount = Entries.Count - _directoriesCount;
 
-            SortEntries();
+                SortEntries();
 
-            //
-            _entriesDict.Clear();
-            foreach (var e in Entries)
-                _entriesDict.Add(e.NameWithExtension, e);
-        }
-        finally
-        {
-            Entries.EndChange();
-            IsInEntriesUpdating = false;
+                //
+                _entriesDict.Clear();
+                foreach (var e in Entries)
+                    _entriesDict.Add(e.NameWithExtension, e);
+            }
+            finally
+            {
+                Entries.EndChange();
+                IsInEntriesUpdating = false;
+            }
         }
     }
 
     private void AddEntryInternal(Entry entry)
     {
-        if (entry.IsDirectory)
+        lock (EntitiesUpdatingLockObj)
         {
-            Span<Entry> span = Entries.AsSpan().Slice(0, _directoriesCount);
-            var pos = SpanHelper.UpperBound(span, entry, _entryCompare);
+            if (entry.IsDirectory)
+            {
+                Span<Entry> span = Entries.AsSpan().Slice(0, _directoriesCount);
+                var pos = SpanHelper.UpperBound(span, entry, _entryCompare);
 
-            Entries.Insert(pos, entry);
+                Entries.Insert(pos, entry);
 
-            ++_directoriesCount;
+                ++_directoriesCount;
+            }
+            else
+            {
+                Span<Entry> span = Entries.AsSpan().Slice(_directoriesCount, _filesCount);
+                var pos = SpanHelper.UpperBound(span, entry, _entryCompare);
+
+                Entries.Insert(_directoriesCount + pos, entry);
+
+                ++_filesCount;
+            }
+
+            _entriesDict.Add(entry.NameWithExtension, entry);
+
+            if (_removedSelectedEntries.ContainsKey(entry.NameWithExtension))
+            {
+                entry.IsSelected = true;
+
+                _removedSelectedEntries.Remove(entry.NameWithExtension, out _);
+            }
+
+            TrimRemovedSelectedEntries();
         }
-        else
-        {
-            Span<Entry> span = Entries.AsSpan().Slice(_directoriesCount, _filesCount);
-            var pos = SpanHelper.UpperBound(span, entry, _entryCompare);
-
-            Entries.Insert(_directoriesCount + pos, entry);
-
-            ++_filesCount;
-        }
-
-        _entriesDict.Add(entry.NameWithExtension, entry);
-
-        if (_removedSelectedEntries.ContainsKey(entry.NameWithExtension))
-        {
-            entry.IsSelected = true;
-
-            _removedSelectedEntries.Remove(entry.NameWithExtension, out _);
-        }
-
-        TrimRemovedSelectedEntries();
     }
 
     private void RemoveEntryInternal(Entry entry)
     {
-        Entries.Remove(entry);
+        lock (EntitiesUpdatingLockObj)
+        {
+            Entries.Remove(entry);
 
-        if (entry.IsSelected)
-            _removedSelectedEntries.AddOrUpdate(entry.NameWithExtension, DateTime.Now, (_, _) => DateTime.Now);
+            if (entry.IsSelected)
+                _removedSelectedEntries[entry.NameWithExtension] = DateTime.Now;
 
-        TrimRemovedSelectedEntries();
+            TrimRemovedSelectedEntries();
 
-        if (entry.IsDirectory)
-            --_directoriesCount;
-        else
-            --_filesCount;
+            if (entry.IsDirectory)
+                --_directoriesCount;
+            else
+                --_filesCount;
 
-        if (_entriesDict.Remove(entry.NameWithExtension) == false)
-            _Logger.Error($"RemoveEntryInternal: {Path}, {entry.NameWithExtension}");
+            if (_entriesDict.Remove(entry.NameWithExtension) == false)
+                _Logger.Error($"RemoveEntryInternal: {Path}, {entry.NameWithExtension}");
+        }
     }
 
     private void UpdateEntryCompare()
@@ -253,36 +243,42 @@ public abstract class Directory : NotificationObject, IDisposable
 
     private void SortEntries()
     {
-        var source = Entries.AsSpan();
-        var length = source.Length;
-
-        var temp = ArrayPool<Entry>.Shared.Rent(length);
-        try
+        lock (EntitiesUpdatingLockObj)
         {
-            for (var i = 0; i != length; ++i)
-                temp[i] = Entry.Create(source[i]);
+            var source = Entries.AsSpan();
+            var length = source.Length;
 
-            temp.AsSpan().Slice(0, _directoriesCount).Sort(_entryCompare);
-            temp.AsSpan().Slice(_directoriesCount, _filesCount).Sort(_entryCompare);
+            var temp = ArrayPool<Entry>.Shared.Rent(length);
+            try
+            {
+                for (var i = 0; i != length; ++i)
+                    temp[i] = Entry.Create(source[i]);
 
-            for (var i = 0; i != length; ++i)
-                temp[i].CopyTo(source[i]);
-        }
-        finally
-        {
-            ArrayPool<Entry>.Shared.Return(temp);
+                temp.AsSpan().Slice(0, _directoriesCount).Sort(_entryCompare);
+                temp.AsSpan().Slice(_directoriesCount, _filesCount).Sort(_entryCompare);
+
+                for (var i = 0; i != length; ++i)
+                    temp[i].CopyTo(source[i]);
+            }
+            finally
+            {
+                ArrayPool<Entry>.Shared.Return(temp);
+            }
         }
     }
 
     private void TrimRemovedSelectedEntries()
     {
-        var now = DateTime.Now;
-        foreach (var name in _removedSelectedEntries.Keys.ToArray())
+        lock (EntitiesUpdatingLockObj)
         {
-            var dateTime = _removedSelectedEntries.GetValueOrDefault(name);
+            var now = DateTime.Now;
+            foreach (var name in _removedSelectedEntries.Keys)
+            {
+                var dateTime = _removedSelectedEntries[name];
 
-            if (now - dateTime >= TimeSpan.FromMilliseconds(50))
-                _removedSelectedEntries.Remove(name, out _);
+                if (now - dateTime >= TimeSpan.FromMilliseconds(50))
+                    _removedSelectedEntries.Remove(name);
+            }
         }
     }
 
@@ -293,7 +289,7 @@ public abstract class Directory : NotificationObject, IDisposable
     private int _directoriesCount;
     private int _filesCount;
     private readonly Dictionary<string, Entry> _entriesDict = new();
-    private readonly ConcurrentDictionary<string, DateTime> _removedSelectedEntries = new();
+    private readonly Dictionary<string, DateTime> _removedSelectedEntries = new();
 
     protected readonly ILoggerUseCase _Logger;
 

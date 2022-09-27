@@ -58,7 +58,7 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
-        lock (Model.UpdateLockObj)
+        lock (Model.EntitiesUpdatingLockObj)
         {
             if (_isBufferingUpdate)
             {

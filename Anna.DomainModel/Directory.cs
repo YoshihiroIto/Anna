@@ -8,6 +8,7 @@ namespace Anna.DomainModel;
 public abstract class Directory : NotificationObject, IDisposable
 {
     public ObservableCollectionEx<Entry> Entries { get; } = new();
+    public readonly object EntitiesUpdatingLockObj = new();
     
     #region Path
 
@@ -23,7 +24,7 @@ public abstract class Directory : NotificationObject, IDisposable
 
             Task.Run(() =>
             {
-                lock (UpdateLockObj)
+                lock (EntitiesUpdatingLockObj)
                 {
                     UpdateEntries();
                 }
@@ -47,7 +48,7 @@ public abstract class Directory : NotificationObject, IDisposable
 
             UpdateEntryCompare();
 
-            lock (UpdateLockObj)
+            lock (EntitiesUpdatingLockObj)
             {
                 SortEntries();
             }
@@ -71,7 +72,7 @@ public abstract class Directory : NotificationObject, IDisposable
 
             UpdateEntryCompare();
 
-            lock (UpdateLockObj)
+            lock (EntitiesUpdatingLockObj)
             {
                 SortEntries();
             }
@@ -79,8 +80,6 @@ public abstract class Directory : NotificationObject, IDisposable
     }
 
     #endregion
-
-    public readonly object UpdateLockObj = new();
 
     public void SetSortModeAndOrder(SortModes mode, SortOrders order)
     {
@@ -92,7 +91,7 @@ public abstract class Directory : NotificationObject, IDisposable
 
         UpdateEntryCompare();
 
-        lock (UpdateLockObj)
+        lock (EntitiesUpdatingLockObj)
         {
             SortEntries();
         }
@@ -108,7 +107,7 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         _Logger.Information($"OnCreated: {Path}, {newEntry.NameWithExtension}");
 
-        lock (UpdateLockObj)
+        lock (EntitiesUpdatingLockObj)
         {
             AddEntryInternal(newEntry);
         }
@@ -118,7 +117,7 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         _Logger.Information($"OnChanged: {Path}, {entry.NameWithExtension}");
 
-        lock (UpdateLockObj)
+        lock (EntitiesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var target) == false)
             {
@@ -134,7 +133,7 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         _Logger.Information($"OnDeleted: {Path}, {name}");
 
-        lock (UpdateLockObj)
+        lock (EntitiesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(name, out var target) == false)
             {
@@ -150,7 +149,7 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         _Logger.Information($"OnRenamed: {Path}, {oldName}, {newName}");
 
-        lock (UpdateLockObj)
+        lock (EntitiesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(oldName, out var target) == false)
             {

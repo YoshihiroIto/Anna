@@ -70,7 +70,6 @@ public abstract class Directory : NotificationObject, IDisposable
                 return;
 
             UpdateEntryCompare();
-
             lock (EntitiesUpdatingLockObj)
             {
                 SortEntries();
@@ -94,14 +93,6 @@ public abstract class Directory : NotificationObject, IDisposable
         {
             SortEntries();
         }
-    }
-
-    public void SetEntryIsSelected(Entry target, bool isSelected)
-    {
-        if (target.IsSelectable == false)
-            throw new Exception($"{target.Path} is not selectable");
-
-        target.IsSelected = isSelected;
     }
 
     protected Directory(string path, ILoggerUseCase logger)
@@ -229,7 +220,8 @@ public abstract class Directory : NotificationObject, IDisposable
 
         if (_removedSelectedEntries.ContainsKey(entry.NameWithExtension))
         {
-            SetEntryIsSelected(entry, true);
+            entry.IsSelected = true;
+
             _removedSelectedEntries.Remove(entry.NameWithExtension, out _);
         }
 

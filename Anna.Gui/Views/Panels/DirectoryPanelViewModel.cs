@@ -142,7 +142,7 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
 
         var entry = CursorEntry.Value.Model;
         if (entry.IsSelectable)
-            Model.SetEntryIsSelected(entry, !entry.IsSelected);
+            entry.IsSelected = !entry.IsSelected;
 
         if (isMoveDown)
             MoveCursor(Directions.Down);

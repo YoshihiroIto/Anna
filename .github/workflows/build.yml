@@ -12,7 +12,8 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        # configuration: [Debug, Release]
+        configuration: [Release]
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:

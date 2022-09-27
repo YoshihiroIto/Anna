@@ -10,6 +10,7 @@ public abstract class Directory : NotificationObject, IDisposable
 {
     public ObservableCollectionEx<Entry> Entries { get; } = new();
     public readonly object EntitiesUpdatingLockObj = new();
+    public bool IsInEntriesUpdating { get; private set; }
 
     #region Path
 
@@ -120,6 +121,8 @@ public abstract class Directory : NotificationObject, IDisposable
         {
             AddEntryInternal(newEntry);
         }
+
+        TrimRemovedSelectedEntries();
     }
 
     protected void OnChanged(Entry entry)
@@ -226,11 +229,24 @@ public abstract class Directory : NotificationObject, IDisposable
         }
 
         _entriesDict.Add(entry.NameWithExtension, entry);
+
+        if (_removedSelectedEntries.ContainsKey(entry.NameWithExtension))
+        {
+            SetEntryIsSelected(entry, true);
+            _removedSelectedEntries.Remove(entry.NameWithExtension, out _);
+        }
+
+        TrimRemovedSelectedEntries();
     }
 
     private void RemoveEntryInternal(Entry entry)
     {
         Entries.Remove(entry);
+
+        if (entry.IsSelected)
+            _removedSelectedEntries.AddOrUpdate(entry.NameWithExtension, DateTime.Now, (_, _) => DateTime.Now);
+
+        TrimRemovedSelectedEntries();
 
         if (entry.IsDirectory)
             --_directoriesCount;
@@ -269,16 +285,26 @@ public abstract class Directory : NotificationObject, IDisposable
         }
     }
 
-    public bool IsInEntriesUpdating { get; private set; }
+    private void TrimRemovedSelectedEntries()
+    {
+        var now = DateTime.Now;
+        foreach (var name in _removedSelectedEntries.Keys.ToArray())
+        {
+            var dateTime = _removedSelectedEntries.GetValueOrDefault(name);
 
-    private Comparison<Entry> _entryCompare = EntryComparison.FindEntryCompare(SortModes.Name, SortOrders.Ascending);
+            if (now - dateTime >= TimeSpan.FromMilliseconds(50))
+                _removedSelectedEntries.Remove(name, out _);
+        }
+    }
 
     protected abstract IEnumerable<Entry> EnumerateDirectories();
     protected abstract IEnumerable<Entry> EnumerateFiles();
 
+    private Comparison<Entry> _entryCompare = EntryComparison.FindEntryCompare(SortModes.Name, SortOrders.Ascending);
     private int _directoriesCount;
     private int _filesCount;
     private readonly Dictionary<string, Entry> _entriesDict = new();
+    private readonly ConcurrentDictionary<string, DateTime> _removedSelectedEntries = new();
 
     protected readonly ILoggerUseCase _Logger;
 

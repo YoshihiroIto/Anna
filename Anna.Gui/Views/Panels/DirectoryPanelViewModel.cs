@@ -86,8 +86,6 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
                 .CollectionChangedAsObservable()
                 .Subscribe(_ =>
                     {
-                        UpdateCursorIndex(CursorEntry.Value);
-
                         // If it is not a directory move, do nothing.
                         if (string.CompareOrdinal(_oldPath, Model.Path) != 0)
                         {
@@ -96,6 +94,12 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
                         }
                     }
                 )
+                .AddTo(Trash);
+
+            Entries
+                .CollectionChangedAsObservable()
+                .Throttle(TimeSpan.FromMilliseconds(50))
+                .Subscribe(_ => UpdateCursorIndex(CursorEntry.Value))
                 .AddTo(Trash);
         }
     }

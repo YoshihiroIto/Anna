@@ -2,7 +2,7 @@
 using Anna.Gui.Interfaces;
 using Anna.Gui.Views.Dialogs;
 using Anna.Gui.Views.Dialogs.Base;
-using SimpleInjector;
+using Anna.UseCase;
 using System.Threading.Tasks;
 
 namespace Anna.Gui;
@@ -11,7 +11,7 @@ internal static class DialogOperator
 {
     public static async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)>
         SelectSortModeAndOrderAsync(
-            Container dic,
+            IServiceProviderContainer dic,
             IShortcutKeyReceiver shortcutKeyReceiver)
     {
         using var viewModel = dic.GetInstance<SortModeAndOrderDialogViewModel>();

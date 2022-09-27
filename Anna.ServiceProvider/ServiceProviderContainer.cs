@@ -10,10 +10,12 @@ using SimpleInjector;
 
 namespace Anna.ServiceProvider;
 
-public class ServiceProviderContainer : Container
+public class ServiceProviderContainer : Container, IServiceProviderContainer
 {
     public ServiceProviderContainer(string logOutputDir, string appConfigFilePath)
     {
+        RegisterSingleton<IServiceProviderContainer>(() => this);
+        
         RegisterSingleton<IObjectLifetimeCheckerUseCase,
 #if DEBUG
            DefaultObjectLifetimeChecker

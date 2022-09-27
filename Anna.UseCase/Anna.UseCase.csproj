@@ -8,11 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="11.0.0-preview1" />
-      <PackageReference Include="SimpleInjector" Version="5.4.0" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Anna.Constants\Anna.Constants.csproj" />
     </ItemGroup>
 

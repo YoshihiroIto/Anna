@@ -9,7 +9,6 @@ using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using SimpleInjector;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
@@ -31,7 +30,7 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
 
     public DirectoryPanelViewModel(
-        Container dic,
+        IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
         ShortcutKeyManager shortcutKeyManager,
         ILoggerUseCase logger,
@@ -226,7 +225,7 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
         CursorIndex.Value = 0;
     }
 
-    private readonly Container _dic;
+    private readonly IServiceProviderContainer _dic;
     private readonly ILoggerUseCase _logger;
     private readonly ResourcesHolder _resourcesHolder;
     private EntryViewModel? _oldEntry;

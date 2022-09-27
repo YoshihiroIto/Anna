@@ -1,9 +1,9 @@
 ﻿using Anna.Gui;
 using Anna.ServiceProvider;
+using Anna.UseCase;
 using Avalonia;
 using Avalonia.Xaml.Interactions.Core;
 using Avalonia.Xaml.Interactivity;
-using SimpleInjector;
 using System;
 using System.IO;
 using System.Reflection;
@@ -44,7 +44,7 @@ public static class Program
             .LogToTrace();
     }
 
-    private static AppBuilder BuildAvaloniaApp(Container dic, Action? onExit)
+    private static AppBuilder BuildAvaloniaApp(IServiceProviderContainer dic, Action? onExit)
         => AppBuilder.Configure(() => new GuiApp().Setup(dic, onExit))
             .UsePlatformDetect()
             .LogToTrace();

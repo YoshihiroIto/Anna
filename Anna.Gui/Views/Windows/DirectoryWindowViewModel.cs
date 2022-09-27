@@ -7,7 +7,6 @@ using Anna.Gui.Views.Panels;
 using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings.Extensions;
-using SimpleInjector;
 using System;
 using System.Diagnostics;
 using System.Reactive.Linq;
@@ -60,7 +59,7 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
     public event EventHandler? CloseRequested;
 
     public DirectoryWindowViewModel(
-        Container dic,
+        IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
         AppConfig appConfig,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
@@ -115,7 +114,7 @@ public class DirectoryWindowViewModel : ViewModelBase, ILocalizableViewModel
     }
 
     private bool _isDispose;
-    private readonly Container _dic;
+    private readonly IServiceProviderContainer _dic;
     private readonly ResourcesHolder _resourcesHolder;
     private Directory? _model;
 }

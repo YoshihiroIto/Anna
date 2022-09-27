@@ -2,13 +2,13 @@ using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Views.Windows;
+using Anna.UseCase;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using SimpleInjector;
 using System;
 using System.Reactive.Disposables;
 using DirectoryWindow=Anna.Gui.Views.Windows.DirectoryWindow;
@@ -17,7 +17,7 @@ namespace Anna.Gui;
 
 public class GuiApp : Application
 {
-    public GuiApp Setup(Container dic, Action? onExit)
+    public GuiApp Setup(IServiceProviderContainer dic, Action? onExit)
     {
         _dic = dic;
         _onExit = onExit;
@@ -67,7 +67,7 @@ public class GuiApp : Application
         _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
     }
 
-    private Container? _dic;
+    private IServiceProviderContainer? _dic;
     private Action? _onExit;
     private readonly CompositeDisposable _trash = new();
 }

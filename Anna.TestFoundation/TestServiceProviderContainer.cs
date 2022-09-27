@@ -5,10 +5,11 @@ using SimpleInjector;
 
 namespace Anna.TestFoundation;
 
-public class TestServiceProviderContainer : Container
+public class TestServiceProviderContainer : Container, IServiceProviderContainer
 {
     public TestServiceProviderContainer()
     {
+        RegisterSingleton<IServiceProviderContainer>(() => this);
         RegisterSingleton<IObjectLifetimeCheckerUseCase, NopObjectLifetimeChecker>();
         RegisterSingleton<ILoggerUseCase, NopLogger>();
 

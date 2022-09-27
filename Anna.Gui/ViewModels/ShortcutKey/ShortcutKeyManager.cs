@@ -5,7 +5,6 @@ using Anna.Gui.Interfaces;
 using Anna.UseCase;
 using Avalonia.Input;
 using Reactive.Bindings.Extensions;
-using SimpleInjector;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ namespace Anna.Gui.ViewModels.ShortcutKey;
 
 public partial class ShortcutKeyManager : DisposableNotificationObject
 {
-    public ShortcutKeyManager(Container dic, KeyConfig keyConfig, ILoggerUseCase logger)
+    public ShortcutKeyManager(IServiceProviderContainer dic, KeyConfig keyConfig, ILoggerUseCase logger)
     {
         _dic = dic;
         _logger = logger;
@@ -90,7 +89,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
         };
     }
 
-    private readonly Container _dic;
+    private readonly IServiceProviderContainer _dic;
     private readonly ILoggerUseCase _logger;
     private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
 

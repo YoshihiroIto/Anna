@@ -1,14 +1,13 @@
 ﻿using Anna.DomainModel.FileSystem;
 using Anna.UseCase;
-using SimpleInjector;
 
 namespace Anna.DomainModel;
 
 public class DomainModelOperator
 {
-    private readonly Container _dic;
+    private readonly IServiceProviderContainer _dic;
 
-    public DomainModelOperator(Container dic)
+    public DomainModelOperator(IServiceProviderContainer dic)
     {
         _dic = dic;
     }

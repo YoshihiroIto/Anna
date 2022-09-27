@@ -49,7 +49,7 @@ public static class Program
             .UsePlatformDetect()
             .LogToTrace();
 
-    private static ServiceProviderContainer CreateServiceProviderContainer(string[] args)
+    private static DefaultServiceProviderContainer CreateServiceProviderContainer(string[] args)
     {
         var commandLine = CommandLine.Parse(args);
 
@@ -66,6 +66,6 @@ public static class Program
             ProfileOptimization.StartProfile("Startup.Profile");
         }
 
-        return new ServiceProviderContainer(configDir, appConfigFilePath);
+        return new DefaultServiceProviderContainer(configDir, appConfigFilePath);
     }
 }

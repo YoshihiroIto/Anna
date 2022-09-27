@@ -10,11 +10,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Anna.Log\Anna.Log.csproj" />
       <ProjectReference Include="..\Anna.ObjectLifetimeChecker\Anna.ObjectLifetimeChecker.csproj" />
+      <ProjectReference Include="..\Anna.ServiceProvider\Anna.ServiceProvider.csproj" />
       <ProjectReference Include="..\Anna.UseCase\Anna.UseCase.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="SimpleInjector" Version="5.4.0" />
     </ItemGroup>
 
 </Project>

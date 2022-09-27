@@ -6,16 +6,13 @@ using Anna.Gui.Views.Dialogs.Base;
 using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
 using Anna.UseCase;
-using SimpleInjector;
 
 namespace Anna.ServiceProvider;
 
-public class ServiceProviderContainer : Container, IServiceProviderContainer
+public class DefaultServiceProviderContainer : ServiceProviderContainerBase
 {
-    public ServiceProviderContainer(string logOutputDir, string appConfigFilePath)
+    public DefaultServiceProviderContainer(string logOutputDir, string appConfigFilePath)
     {
-        RegisterSingleton<IServiceProviderContainer>(() => this);
-
         RegisterSingleton<IObjectLifetimeCheckerUseCase,
 #if DEBUG
             DefaultObjectLifetimeChecker
@@ -44,8 +41,6 @@ public class ServiceProviderContainer : Container, IServiceProviderContainer
 
 #if DEBUG
         Verify();
-#else
-        Options.EnableAutoVerification = false;
 #endif
 
         _logger = GetInstance<ILoggerUseCase>();

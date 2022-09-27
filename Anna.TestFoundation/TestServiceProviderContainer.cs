@@ -1,15 +1,14 @@
 ﻿using Anna.Log;
 using Anna.ObjectLifetimeChecker;
+using Anna.ServiceProvider;
 using Anna.UseCase;
-using SimpleInjector;
 
 namespace Anna.TestFoundation;
 
-public class TestServiceProviderContainer : Container, IServiceProviderContainer
+public class TestServiceProviderContainer : ServiceProviderContainerBase
 {
     public TestServiceProviderContainer()
     {
-        RegisterSingleton<IServiceProviderContainer>(() => this);
         RegisterSingleton<IObjectLifetimeCheckerUseCase, NopObjectLifetimeChecker>();
         RegisterSingleton<ILoggerUseCase, NopLogger>();
 
@@ -17,8 +16,6 @@ public class TestServiceProviderContainer : Container, IServiceProviderContainer
 
 #if DEBUG
         Verify();
-#else
-        Options.EnableAutoVerification = false;
 #endif
     }
 }

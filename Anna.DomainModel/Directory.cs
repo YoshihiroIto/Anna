@@ -24,13 +24,10 @@ public abstract class Directory : NotificationObject, IDisposable
             if (SetProperty(ref _Path, value) == false)
                 return;
 
-            Task.Run(() =>
+            lock (EntitiesUpdatingLockObj)
             {
-                lock (EntitiesUpdatingLockObj)
-                {
-                    UpdateEntries();
-                }
-            });
+                UpdateEntries();
+            }
         }
     }
 

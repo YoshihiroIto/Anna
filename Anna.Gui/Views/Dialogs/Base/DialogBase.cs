@@ -10,13 +10,9 @@ public class DialogBase : Window
 {
     protected internal ILoggerUseCase Logger { get; set; } = null!;
 
-    public DialogBase Setup(object viewModel)
+    public DialogBase()
     {
         Loaded += (_, _) => Logger.Start(GetType().Name);
         Closed += (_, _) => Logger.End(GetType().Name);
-
-        DataContext = viewModel;
-
-        return this;
     }
 }

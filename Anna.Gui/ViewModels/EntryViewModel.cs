@@ -8,30 +8,25 @@ using System.Reactive.Linq;
 
 namespace Anna.Gui.ViewModels;
 
-public class EntryViewModel : ViewModelBase
+public class EntryViewModel : HasModelRefViewModelBase<Entry>
 {
     public bool IsDirectory => Model.IsDirectory;
     public bool IsSelectable => Model.IsParentDirectory == false;
 
-    public ReadOnlyReactivePropertySlim<string> NameWithExtension { get; private set; } = null!;
-    public ReadOnlyReactivePropertySlim<string> Name { get; private set; } = null!;
-    public ReadOnlyReactivePropertySlim<string> Extension { get; private set; } = null!;
-    public ReadOnlyReactivePropertySlim<FileAttributes> Attributes { get; private set; } = null!;
+    public ReadOnlyReactivePropertySlim<string> NameWithExtension { get; }
+    public ReadOnlyReactivePropertySlim<string> Name { get; }
+    public ReadOnlyReactivePropertySlim<string> Extension { get; }
+    public ReadOnlyReactivePropertySlim<FileAttributes> Attributes { get; }
 
-    public ReactivePropertySlim<bool> IsSelected { get; private set; } = null!;
+    public ReactivePropertySlim<bool> IsSelected { get; }
     public ReactivePropertySlim<bool> IsOnCursor { get; }
 
-    public Entry Model { get; private set; } = null!;
-
-    public EntryViewModel(IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(objectLifetimeChecker)
+    public EntryViewModel(
+        IServiceProviderContainer dic,
+        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+        : base(dic, objectLifetimeChecker)
     {
         IsOnCursor = new ReactivePropertySlim<bool>().AddTo(Trash);
-    }
-
-    public EntryViewModel Setup(Entry model)
-    {
-        Model = model;
 
         NameWithExtension = Model.ObserveProperty(x => x.NameWithExtension)
             .ObserveOnUIDispatcher()
@@ -57,10 +52,8 @@ public class EntryViewModel : ViewModelBase
             .ToReadOnlyReactivePropertySlim(Model.Attributes)
             .AddTo(Trash);
 
-        IsSelected = model
+        IsSelected = Model
             .ToReactivePropertySlimAsSynchronized(x => x.IsSelected)
             .AddTo(Trash);
-
-        return this;
     }
 }

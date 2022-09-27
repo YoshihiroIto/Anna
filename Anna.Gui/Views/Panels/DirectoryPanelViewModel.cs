@@ -15,12 +15,11 @@ using System.Reactive.Linq;
 
 namespace Anna.Gui.Views.Panels;
 
-public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
+public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILocalizableViewModel
 {
-    public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; private set; } = null!;
-    public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; private set; } = null!;
+    public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; }
+    public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; }
 
-    public Directory Model { get; private set; } = null!;
     public Resources R => _resourcesHolder.Instance;
 
     public readonly ShortcutKeyManager ShortcutKeyManager;
@@ -35,20 +34,15 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
         ShortcutKeyManager shortcutKeyManager,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(objectLifetimeChecker)
+        : base(dic, objectLifetimeChecker)
     {
-        _dic = dic;
         _resourcesHolder = resourcesHolder;
         ShortcutKeyManager = shortcutKeyManager;
         _logger = logger;
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
-    }
 
-    public DirectoryPanelViewModel Setup(Directory model)
-    {
-        Model = model;
         _oldPath = Model.Path;
 
         Observable
@@ -58,27 +52,33 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
-        lock (model.UpdateLockObj)
+        CursorEntry = CursorIndex
+            .ObserveOnUIDispatcher()
+            .Select(UpdateCursorEntry)
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash);
+
+        lock (Model.UpdateLockObj)
         {
             if (_isBufferingUpdate)
             {
                 var bufferedCollectionChanged =
-                    model.Entries
+                    Model.Entries
                         .ToCollectionChanged()
                         .Buffer(TimeSpan.FromMilliseconds(50))
                         .Where(x => x.Any())
                         .SelectMany(x => x);
 
-                Entries = model.Entries
+                Entries = Model.Entries
                     .ToReadOnlyReactiveCollection(
                         bufferedCollectionChanged,
-                        x => _dic.GetInstance<EntryViewModel>().Setup(x))
+                        x => dic.GetInstance<EntryViewModel, Entry>(x))
                     .AddTo(Trash);
             }
             else
             {
-                Entries = model.Entries
-                    .ToReadOnlyReactiveCollection(x => _dic.GetInstance<EntryViewModel>().Setup(x))
+                Entries = Model.Entries
+                    .ToReadOnlyReactiveCollection(x => dic.GetInstance<EntryViewModel, Entry>(x))
                     .AddTo(Trash);
             }
 
@@ -98,14 +98,6 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
                 )
                 .AddTo(Trash);
         }
-
-        CursorEntry = CursorIndex
-            .ObserveOnUIDispatcher()
-            .Select(UpdateCursorEntry)
-            .ToReadOnlyReactivePropertySlim()
-            .AddTo(Trash);
-
-        return this;
     }
 
     public Entry[] CollectTargetEntries()
@@ -168,7 +160,7 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
         Model.Path = PathStringHelper.Normalize(path);
     }
 
-    private string _oldPath = "";
+    private string _oldPath;
 
     private EntryViewModel? UpdateCursorEntry(int index)
     {
@@ -225,10 +217,9 @@ public class DirectoryPanelViewModel : ViewModelBase, ILocalizableViewModel
         CursorIndex.Value = 0;
     }
 
-    private readonly IServiceProviderContainer _dic;
     private readonly ILoggerUseCase _logger;
     private readonly ResourcesHolder _resourcesHolder;
     private EntryViewModel? _oldEntry;
-    
+
     private readonly bool _isBufferingUpdate = false;
 }

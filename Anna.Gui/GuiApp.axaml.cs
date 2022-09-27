@@ -17,12 +17,14 @@ namespace Anna.Gui;
 
 public class GuiApp : Application
 {
-    public GuiApp Setup(IServiceProviderContainer dic, Action? onExit)
+    public GuiApp()
+    {
+    }
+    
+    public GuiApp(IServiceProviderContainer dic, Action? onExit)
     {
         _dic = dic;
         _onExit = onExit;
-
-        return this;
     }
 
     public override void Initialize()
@@ -59,7 +61,7 @@ public class GuiApp : Application
         _dic.GetInstance<App>().Directories.ObserveAddChanged()
             .Subscribe(x =>
             {
-                var d = new DirectoryWindow { DataContext = _dic.GetInstance<DirectoryWindowViewModel>().Setup(x) };
+                var d = new DirectoryWindow { DataContext = _dic.GetInstance<DirectoryWindowViewModel, Directory>(x) };
                 d.Show();
             }).AddTo(_trash);
 

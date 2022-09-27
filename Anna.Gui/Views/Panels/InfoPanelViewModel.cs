@@ -11,27 +11,23 @@ using System.Reactive.Linq;
 
 namespace Anna.Gui.Views.Panels;
 
-public class InfoPanelViewModel : ViewModelBase, ILocalizableViewModel
+public class InfoPanelViewModel : HasModelRefViewModelBase<Directory>, ILocalizableViewModel
 {
-    public Directory Model { get; private set; } = null!;
     public Resources R => _resourcesHolder.Instance;
 
-    public ReadOnlyReactivePropertySlim<int> SelectedEntriesCount { get; private set; } = null!;
-    public ReadOnlyReactivePropertySlim<int> EntriesCount { get; private set; } = null!;
+    public ReadOnlyReactivePropertySlim<int> SelectedEntriesCount { get; }
+    public ReadOnlyReactivePropertySlim<int> EntriesCount { get; }
 
-    public ReadOnlyReactivePropertySlim<long> SelectedTotalSize { get; private set; } = null!;
-    public ReadOnlyReactivePropertySlim<long> TotalSize { get; private set; } = null!;
+    public ReadOnlyReactivePropertySlim<long> SelectedTotalSize { get; }
+    public ReadOnlyReactivePropertySlim<long> TotalSize { get; }
 
     public InfoPanelViewModel(
+        IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker) : base(objectLifetimeChecker)
+        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+        : base(dic, objectLifetimeChecker)
     {
         _resourcesHolder = resourcesHolder;
-    }
-
-    public InfoPanelViewModel Setup(Directory model)
-    {
-        Model = model;
 
         var selectedEntries = Model.Entries
             .ToFilteredReadOnlyObservableCollection(x => x.IsSelected)
@@ -66,8 +62,6 @@ public class InfoPanelViewModel : ViewModelBase, ILocalizableViewModel
                 .Aggregate(0L, (sum, size) => sum + size)
             ).ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
-
-        return this;
     }
 
     private readonly ResourcesHolder _resourcesHolder;

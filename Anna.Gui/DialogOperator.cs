@@ -16,7 +16,8 @@ internal static class DialogOperator
     {
         using var viewModel = dic.GetInstance<SortModeAndOrderDialogViewModel>();
 
-        var view = dic.GetInstance<SortModeAndOrderDialog>().Setup(viewModel);
+        var view = dic.GetInstance<SortModeAndOrderDialog>();
+        view.DataContext = viewModel;
 
         await view.ShowDialog(shortcutKeyReceiver.Owner);
 

@@ -45,7 +45,7 @@ public static class Program
     }
 
     private static AppBuilder BuildAvaloniaApp(IServiceProviderContainer dic, Action? onExit)
-        => AppBuilder.Configure(() => new GuiApp().Setup(dic, onExit))
+        => AppBuilder.Configure(() => new GuiApp(dic, onExit))
             .UsePlatformDetect()
             .LogToTrace();
 

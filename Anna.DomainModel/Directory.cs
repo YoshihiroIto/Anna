@@ -2,6 +2,7 @@
 using Anna.Foundation;
 using Anna.UseCase;
 using System.Buffers;
+using System.Collections.Concurrent;
 
 namespace Anna.DomainModel;
 
@@ -9,7 +10,7 @@ public abstract class Directory : NotificationObject, IDisposable
 {
     public ObservableCollectionEx<Entry> Entries { get; } = new();
     public readonly object EntitiesUpdatingLockObj = new();
-    
+
     #region Path
 
     private string _Path = "";
@@ -95,6 +96,14 @@ public abstract class Directory : NotificationObject, IDisposable
         {
             SortEntries();
         }
+    }
+
+    public void SetEntryIsSelected(Entry target, bool isSelected)
+    {
+        if (target.IsSelectable == false)
+            throw new Exception($"{target.Path} is not selectable");
+
+        target.IsSelected = isSelected;
     }
 
     protected Directory(string path, ILoggerUseCase logger)
@@ -272,7 +281,7 @@ public abstract class Directory : NotificationObject, IDisposable
     private readonly Dictionary<string, Entry> _entriesDict = new();
 
     protected readonly ILoggerUseCase _Logger;
-    
+
     public virtual void Dispose()
     {
     }

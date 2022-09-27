@@ -11,14 +11,13 @@ namespace Anna.Gui.ViewModels;
 public class EntryViewModel : HasModelRefViewModelBase<Entry>
 {
     public bool IsDirectory => Model.IsDirectory;
-    public bool IsSelectable => Model.IsParentDirectory == false;
 
     public ReadOnlyReactivePropertySlim<string> NameWithExtension { get; }
     public ReadOnlyReactivePropertySlim<string> Name { get; }
     public ReadOnlyReactivePropertySlim<string> Extension { get; }
     public ReadOnlyReactivePropertySlim<FileAttributes> Attributes { get; }
 
-    public ReactivePropertySlim<bool> IsSelected { get; }
+    public ReadOnlyReactivePropertySlim<bool> IsSelected { get; }
     public ReactivePropertySlim<bool> IsOnCursor { get; }
 
     public EntryViewModel(
@@ -53,7 +52,8 @@ public class EntryViewModel : HasModelRefViewModelBase<Entry>
             .AddTo(Trash);
 
         IsSelected = Model
-            .ToReactivePropertySlimAsSynchronized(x => x.IsSelected)
+            .ObserveProperty(x => x.IsSelected)
+            .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
     }
 }

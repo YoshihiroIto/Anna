@@ -123,7 +123,7 @@ public class Entry : NotificationObject
     public string Path { get; private set; } = "";
 
     public bool IsDirectory => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
-
+    public bool IsSelectable => IsParentDirectory == false;
 
     public bool IsReadOnly
     {
@@ -168,10 +168,11 @@ public class Entry : NotificationObject
         target.Extension = Extension;
         target.Timestamp = Timestamp;
         target.Size = Size;
-        target.IsSelected = IsSelected;
         target.IsParentDirectory = IsParentDirectory;
         target.Attributes = Attributes;
         target.Path = Path;
+        //
+        target.IsSelected = IsSelected;
     }
 
     public void SetName(string nameWithExtension)

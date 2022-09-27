@@ -134,7 +134,7 @@ public abstract class Directory : NotificationObject, IDisposable
                 return;
             }
 
-            entry.CopyTo(target);
+            entry.CopyToWithoutIsSelected(target);
         }
     }
 

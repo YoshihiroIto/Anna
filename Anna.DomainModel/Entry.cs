@@ -163,6 +163,13 @@ public class Entry : NotificationObject
 
     public void CopyTo(Entry target)
     {
+        CopyToWithoutIsSelected(target);
+        
+        target.IsSelected = IsSelected;
+    }
+    
+    public void CopyToWithoutIsSelected(Entry target)
+    {
         target.NameWithExtension = NameWithExtension;
         target.Name = Name;
         target.Extension = Extension;
@@ -171,8 +178,6 @@ public class Entry : NotificationObject
         target.IsParentDirectory = IsParentDirectory;
         target.Attributes = Attributes;
         target.Path = Path;
-        //
-        target.IsSelected = IsSelected;
     }
 
     public void SetName(string nameWithExtension)

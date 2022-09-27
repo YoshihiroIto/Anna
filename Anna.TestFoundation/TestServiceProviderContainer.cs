@@ -14,9 +14,11 @@ public class TestServiceProviderContainer : Container, IServiceProviderContainer
         RegisterSingleton<ILoggerUseCase, NopLogger>();
 
         Options.ResolveUnregisteredConcreteTypes = true;
-        
+
 #if DEBUG
         Verify();
+#else
+        Options.EnableAutoVerification = false;
 #endif
     }
 }

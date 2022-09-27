@@ -15,10 +15,10 @@ public class ServiceProviderContainer : Container, IServiceProviderContainer
     public ServiceProviderContainer(string logOutputDir, string appConfigFilePath)
     {
         RegisterSingleton<IServiceProviderContainer>(() => this);
-        
+
         RegisterSingleton<IObjectLifetimeCheckerUseCase,
 #if DEBUG
-           DefaultObjectLifetimeChecker
+            DefaultObjectLifetimeChecker
 #else
            NopObjectLifetimeChecker
 #endif
@@ -44,6 +44,8 @@ public class ServiceProviderContainer : Container, IServiceProviderContainer
 
 #if DEBUG
         Verify();
+#else
+        Options.EnableAutoVerification = false;
 #endif
 
         _logger = GetInstance<ILoggerUseCase>();

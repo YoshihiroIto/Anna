@@ -81,7 +81,7 @@ public class Entry : NotificationObject
     }
 
     #endregion
-    
+
 
     #region IsParentDirectory
 
@@ -164,10 +164,10 @@ public class Entry : NotificationObject
     public void CopyTo(Entry target)
     {
         CopyToWithoutIsSelected(target);
-        
+
         target.IsSelected = IsSelected;
     }
-    
+
     public void CopyToWithoutIsSelected(Entry target)
     {
         target.NameWithExtension = NameWithExtension;
@@ -194,6 +194,11 @@ public class Entry : NotificationObject
             Name = System.IO.Path.GetFileNameWithoutExtension(nameWithExtension);
             Extension = string.Intern(System.IO.Path.GetExtension(nameWithExtension));
         }
+
+        Path = System.IO.Path.Combine(
+            System.IO.Path.GetDirectoryName(Path) ?? throw new NullReferenceException(),
+            NameWithExtension
+        );
     }
 
     public static Entry? Create(string path, string nameWithExtension)
@@ -202,17 +207,19 @@ public class Entry : NotificationObject
 
         if ((int)fileInfo.Attributes == -1)
             return null;
-        
+
         var isDirectory = (fileInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
 
         var entry = new Entry
         {
-            Timestamp = fileInfo.LastWriteTime, Size = isDirectory ? 0 : fileInfo.Length, Attributes = fileInfo.Attributes
+            Timestamp = fileInfo.LastWriteTime,
+            Size = isDirectory ? 0 : fileInfo.Length,
+            Attributes = fileInfo.Attributes
         };
 
-        entry.SetName(nameWithExtension);
         entry.IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0;
         entry.Path = path;
+        entry.SetName(nameWithExtension);
 
         return entry;
     }

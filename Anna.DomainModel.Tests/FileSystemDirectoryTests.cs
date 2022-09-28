@@ -182,4 +182,23 @@ public class FileSystemDirectoryTests : IDisposable
 
         Assert.True(directory.Entries[3].IsSelected);
     }
+
+    [Fact]
+    public async Task Path_is_maintained_even_after_file_renaming()
+    {
+        var files0 = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
+
+        foreach (var file in files0)
+            _tempDir.CreateFile(file);
+
+        await Task.Delay(TimeSpan.FromMilliseconds(30));
+
+        using var directory = _dic.GetInstance<DomainModelOperator>().CreateDirectory(_tempDir.RootPath);
+
+        File.Move(Path.Combine(_tempDir.RootPath, "fileC.dat"), Path.Combine(_tempDir.RootPath, "fileZ.dat"));
+
+        await Task.Delay(TimeSpan.FromMilliseconds(30));
+
+        Assert.Equal(Path.Combine(_tempDir.RootPath, "fileZ.dat"), directory.Entries[3].Path);
+    }
 }

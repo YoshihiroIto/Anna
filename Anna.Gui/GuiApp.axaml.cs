@@ -65,11 +65,11 @@ public class GuiApp : Application
                 d.Show();
             }).AddTo(_trash);
 
-        // _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-        _dic.GetInstance<App>().ShowDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+        // _dic.GetInstance<App>().ShowDirectoryAsync(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+        _dic.GetInstance<App>().ShowDirectoryAsync(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
     }
 
-    private IServiceProviderContainer? _dic;
-    private Action? _onExit;
+    private readonly IServiceProviderContainer? _dic;
+    private readonly Action? _onExit;
     private readonly CompositeDisposable _trash = new();
 }

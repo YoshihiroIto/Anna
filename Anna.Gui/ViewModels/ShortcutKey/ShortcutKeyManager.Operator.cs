@@ -31,26 +31,24 @@ public partial class ShortcutKeyManager
 
     private static ValueTask OpenEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        shortcutKeyReceiver.DirectoryPanelViewModel.OpenCursorEntry();
-        return ValueTask.CompletedTask;
+        return shortcutKeyReceiver.DirectoryPanelViewModel.OpenCursorEntryAsync();
     }
 
     private static ValueTask JumpToParentDirectoryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var parentDir = new DirectoryInfo(shortcutKeyReceiver.DirectoryPanelViewModel.Model.Path).Parent?.FullName;
 
-        if (parentDir is not null)
-            shortcutKeyReceiver.DirectoryPanelViewModel.JumpToDirectory(parentDir);
-        
-        return ValueTask.CompletedTask;
+        return parentDir is not null
+            ? shortcutKeyReceiver.DirectoryPanelViewModel.JumpToDirectoryAsync(parentDir)
+            : ValueTask.CompletedTask;
     }
-    
+
     private static ValueTask JumpToRootDirectoryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var rootDir = System.IO.Path.GetPathRoot(shortcutKeyReceiver.DirectoryPanelViewModel.Model.Path);
 
         if (rootDir is not null)
-            shortcutKeyReceiver.DirectoryPanelViewModel.JumpToDirectory(rootDir);
+            shortcutKeyReceiver.DirectoryPanelViewModel.JumpToDirectoryAsync(rootDir);
 
         return ValueTask.CompletedTask;
     }

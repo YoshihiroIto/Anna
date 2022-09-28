@@ -1,5 +1,6 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Config;
+using Anna.DomainModel.FileSystem;
 using Anna.Gui;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
@@ -29,6 +30,7 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
             new KeyConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = keyConfigFilePath });
         RegisterSingleton<ILoggerUseCase>(() => new Log.DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerUseCase, FileSystemObjectSerializer>();
+        RegisterSingleton<IDirectoryServiceUseCase, DirectoryService>();
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();

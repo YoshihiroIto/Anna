@@ -12,6 +12,7 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -30,12 +31,14 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
 
     public DirectoryPanelViewModel(
         IServiceProviderContainer dic,
+        IDirectoryServiceUseCase directoryService,
         ResourcesHolder resourcesHolder,
         ShortcutKeyManager shortcutKeyManager,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
+        _directoryService = directoryService;
         _resourcesHolder = resourcesHolder;
         ShortcutKeyManager = shortcutKeyManager;
         _logger = logger;
@@ -148,21 +151,31 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
             MoveCursor(Directions.Down);
     }
 
-    public void OpenCursorEntry()
+    public ValueTask OpenCursorEntryAsync()
     {
         if (CursorEntry.Value is null)
-            return;
+            return ValueTask.CompletedTask;
 
         if (CursorEntry.Value.IsDirectory)
-            JumpToDirectory(CursorEntry.Value.Model.Path);
+            return JumpToDirectoryAsync(CursorEntry.Value.Model.Path);
         else
             _logger.Information("Not implemented: OpenCursorEntry");
+
+        return ValueTask.CompletedTask;
     }
 
-    public void JumpToDirectory(string path)
+    public ValueTask JumpToDirectoryAsync(string path)
     {
+        if (_directoryService.IsAccessible(path) == false)
+        {
+            // todo: Show warning dialog
+            return ValueTask.CompletedTask;
+        }
+
         _oldPath = Model.Path;
         Model.Path = PathStringHelper.Normalize(path);
+
+        return ValueTask.CompletedTask;
     }
 
     private string _oldPath;
@@ -223,6 +236,7 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
     }
 
     private readonly ILoggerUseCase _logger;
+    private readonly IDirectoryServiceUseCase _directoryService;
     private readonly ResourcesHolder _resourcesHolder;
     private EntryViewModel? _oldEntry;
 

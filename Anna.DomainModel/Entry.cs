@@ -195,10 +195,15 @@ public class Entry : NotificationObject
             Extension = string.Intern(System.IO.Path.GetExtension(nameWithExtension));
         }
 
-        Path = System.IO.Path.Combine(
-            System.IO.Path.GetDirectoryName(Path) ?? throw new NullReferenceException(),
-            NameWithExtension
-        );
+        var dir = System.IO.Path.GetDirectoryName(Path);
+
+        if (dir is not null)
+        {
+            Path = System.IO.Path.Combine(
+                System.IO.Path.GetDirectoryName(Path) ?? throw new NullReferenceException(),
+                NameWithExtension
+            );
+        }
     }
 
     public static Entry? Create(string path, string nameWithExtension)
@@ -214,11 +219,11 @@ public class Entry : NotificationObject
         {
             Timestamp = fileInfo.LastWriteTime,
             Size = isDirectory ? 0 : fileInfo.Length,
-            Attributes = fileInfo.Attributes
+            Attributes = fileInfo.Attributes,
+            IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0,
+            Path = path
         };
 
-        entry.IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0;
-        entry.Path = path;
         entry.SetName(nameWithExtension);
 
         return entry;

@@ -84,6 +84,8 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         _Logger = logger;
         Path = PathStringHelper.Normalize(path);
+
+        UpdateEntries();
     }
 
     protected void OnCreated(Entry newEntry)
@@ -101,7 +103,7 @@ public abstract class Directory : NotificationObject, IDisposable
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var target) == false)
             {
-                _Logger.Error($"OnChanged: {Path}, {entry.NameWithExtension}");
+                // _Logger.Error($"OnChanged: {Path}, {entry.NameWithExtension}");
                 return;
             }
 
@@ -117,7 +119,7 @@ public abstract class Directory : NotificationObject, IDisposable
         {
             if (_entriesDict.TryGetValue(name, out var target) == false)
             {
-                _Logger.Error($"OnDeleted: {Path}, {name}");
+                // _Logger.Error($"OnDeleted: {Path}, {name}");
                 return;
             }
 
@@ -133,7 +135,7 @@ public abstract class Directory : NotificationObject, IDisposable
         {
             if (_entriesDict.TryGetValue(oldName, out var target) == false)
             {
-                _Logger.Error($"OnRenamed: {Path}, {oldName}, {newName}");
+                //_Logger.Error($"OnRenamed: {Path}, {oldName}, {newName}");
                 return;
             }
 
@@ -182,6 +184,9 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         lock (EntitiesUpdatingLockObj)
         {
+            if (_entriesDict.TryGetValue(entry.NameWithExtension, out var alreadyExistsEntry))
+                RemoveEntryInternal(alreadyExistsEntry);
+            
             if (entry.IsDirectory)
             {
                 var span = Entries.AsSpan().Slice(0, _directoriesCount);
@@ -223,7 +228,7 @@ public abstract class Directory : NotificationObject, IDisposable
 
             if (index == -1)
                 throw new IndexOutOfRangeException();
-            
+
             Entries.RemoveAt(index);
 
             if (entry.IsSelected)
@@ -236,8 +241,9 @@ public abstract class Directory : NotificationObject, IDisposable
             else
                 --_filesCount;
 
-            if (_entriesDict.Remove(entry.NameWithExtension) == false)
-                _Logger.Error($"RemoveEntryInternal: {Path}, {entry.NameWithExtension}");
+            // if (_entriesDict.Remove(entry.NameWithExtension) == false)
+            //     _Logger.Error($"RemoveEntryInternal: {Path}, {entry.NameWithExtension}");
+            _entriesDict.Remove(entry.NameWithExtension);
         }
     }
 

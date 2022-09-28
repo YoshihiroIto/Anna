@@ -196,16 +196,12 @@ public class Entry : NotificationObject
         }
     }
 
-    public static Entry Create(string path, string nameWithExtension)
+    public static Entry? Create(string path, string nameWithExtension)
     {
         var fileInfo = new FileInfo(path);
-        
-        //
-        // note:
-        //
-        // If the file does not exist at this timing, fileInfo will be in an invalid state.
-        // Therefore, the entity created from the fileInfo will also be invalid.
-        //
+
+        if ((int)fileInfo.Attributes == -1)
+            return null;
         
         var isDirectory = (fileInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
 

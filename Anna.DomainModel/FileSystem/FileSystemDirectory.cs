@@ -28,18 +28,31 @@ public sealed class FileSystemDirectory : Directory
         if (string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) != 0)
         {
             var d = new DirectoryInfo(Path);
-            yield return Entry.Create(d.Parent?.FullName ?? throw new NullReferenceException(), "..");
+
+            var entry = Entry.Create(d.Parent?.FullName ?? throw new NullReferenceException(), "..");
+            
+            if (entry is not null)
+                yield return entry;
         }
 
-        foreach (var entry in System.IO.Directory.EnumerateDirectories(Path)
-                     .Select(p => Entry.Create(p, System.IO.Path.GetRelativePath(Path, p))))
-            yield return entry;
+        foreach (var dir in System.IO.Directory.EnumerateDirectories(Path))
+        {
+            var entry = Entry.Create(dir, System.IO.Path.GetRelativePath(Path, dir));
+
+            if (entry is not null)
+                yield return entry;
+        }
     }
 
     protected override IEnumerable<Entry> EnumerateFiles()
     {
-        return System.IO.Directory.EnumerateFiles(Path)
-            .Select(p => Entry.Create(p, System.IO.Path.GetRelativePath(Path, p)));
+        foreach (var file in System.IO.Directory.EnumerateFiles(Path))
+        {
+            var entry = Entry.Create(file, System.IO.Path.GetRelativePath(Path, file));
+            
+            if (entry is not null)
+                yield return entry;
+        }
     }
 
     public override void Dispose()
@@ -61,11 +74,25 @@ public sealed class FileSystemDirectory : Directory
         var watcher = new ObservableFileSystemWatcher(path).AddTo(_watchTrash);
 
         watcher.Created
-            .Subscribe(e => OnCreated(Entry.Create(e.FullPath, e.Name ?? "????")))
+            .Subscribe(e =>
+            {
+                var entry = Entry.Create(e.FullPath, e.Name ?? "????");
+                if (entry is null)
+                    return;
+
+                OnCreated(entry);
+            })
             .AddTo(_watchTrash);
 
         watcher.Changed
-            .Subscribe(e => OnChanged(Entry.Create(e.FullPath, e.Name ?? "????")))
+            .Subscribe(e =>
+            {
+                var entry = Entry.Create(e.FullPath, e.Name ?? "????");
+                if (entry is null)
+                    return;
+
+                OnChanged(entry);
+            })
             .AddTo(_watchTrash);
 
         watcher.Deleted

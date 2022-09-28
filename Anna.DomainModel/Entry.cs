@@ -1,8 +1,10 @@
 ﻿using Anna.Foundation;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Anna.DomainModel;
 
+[DebuggerDisplay("Name={Name}, Path={Path}")]
 public class Entry : NotificationObject
 {
     #region NameWithExtension

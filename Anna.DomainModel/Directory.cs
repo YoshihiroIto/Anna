@@ -2,9 +2,11 @@
 using Anna.Foundation;
 using Anna.UseCase;
 using System.Buffers;
+using System.Diagnostics;
 
 namespace Anna.DomainModel;
 
+[DebuggerDisplay("Path={Path}")]
 public abstract class Directory : NotificationObject, IDisposable
 {
     public ObservableCollectionEx<Entry> Entries { get; } = new();

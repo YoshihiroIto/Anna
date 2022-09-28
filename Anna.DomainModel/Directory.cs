@@ -2,7 +2,6 @@
 using Anna.Foundation;
 using Anna.UseCase;
 using System.Buffers;
-using System.Collections.Concurrent;
 
 namespace Anna.DomainModel;
 
@@ -185,19 +184,19 @@ public abstract class Directory : NotificationObject, IDisposable
         {
             if (entry.IsDirectory)
             {
-                Span<Entry> span = Entries.AsSpan().Slice(0, _directoriesCount);
-                var pos = SpanHelper.UpperBound(span, entry, _entryCompare);
+                var span = Entries.AsSpan().Slice(0, _directoriesCount);
+                var index = SpanHelper.UpperBound(span, entry, _entryCompare);
 
-                Entries.Insert(pos, entry);
+                Entries.Insert(index, entry);
 
                 ++_directoriesCount;
             }
             else
             {
-                Span<Entry> span = Entries.AsSpan().Slice(_directoriesCount, _filesCount);
-                var pos = SpanHelper.UpperBound(span, entry, _entryCompare);
+                var span = Entries.AsSpan().Slice(_directoriesCount, _filesCount);
+                var index = SpanHelper.UpperBound(span, entry, _entryCompare);
 
-                Entries.Insert(_directoriesCount + pos, entry);
+                Entries.Insert(_directoriesCount + index, entry);
 
                 ++_filesCount;
             }
@@ -219,7 +218,13 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         lock (EntitiesUpdatingLockObj)
         {
-            Entries.Remove(entry);
+            // todo: Binary search
+            var index = Entries.IndexOf(entry);
+
+            if (index == -1)
+                throw new IndexOutOfRangeException();
+            
+            Entries.RemoveAt(index);
 
             if (entry.IsSelected)
                 _removedSelectedEntries[entry.NameWithExtension] = DateTime.Now;

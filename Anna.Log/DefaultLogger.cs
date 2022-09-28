@@ -13,7 +13,7 @@ public class DefaultLogger : ILoggerUseCase
         // https://qiita.com/soi/items/e74918a924c02e3a3097
 
         const string template =
-            "| {Timestamp:HH:mm:ss.fff} | {Level:u4} | {ThreadId:00}:{ThreadName} | {ProcessId:00}:{ProcessName} | {Message:j} | {AssemblyName} | {MemoryUsage} B|{NewLine}{Exception}";
+            "| {Timestamp:HH:mm:ss.fff} | {Level:u4} | {ThreadId:00}:{ThreadName} | {ProcessId:00}:{ProcessName} | {Message:j} | {AssemblyName} | {MemoryUsage} B | {NewLine}{Exception}";
 
         var logFilePath = Path.Combine(logOutputDir, "logs/log.txt");
 

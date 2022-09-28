@@ -180,11 +180,16 @@ public class Entry : NotificationObject
         target.Path = Path;
     }
 
-    public void SetName(string nameWithExtension)
+    public void SetName(string nameWithExtension, bool updatePath)
     {
         NameWithExtension = nameWithExtension;
 
-        if (PathStringHelper.IsDotfile(nameWithExtension))
+        if (nameWithExtension == "..")
+        {
+            Name = nameWithExtension;
+            Extension = "";
+        }
+        else if (PathStringHelper.IsDotfile(nameWithExtension))
         {
             Name = System.IO.Path.GetExtension(nameWithExtension);
             Extension = "";
@@ -195,14 +200,17 @@ public class Entry : NotificationObject
             Extension = string.Intern(System.IO.Path.GetExtension(nameWithExtension));
         }
 
-        var dir = System.IO.Path.GetDirectoryName(Path);
-
-        if (dir is not null)
+        if (updatePath)
         {
-            Path = System.IO.Path.Combine(
-                System.IO.Path.GetDirectoryName(Path) ?? throw new NullReferenceException(),
-                NameWithExtension
-            );
+            var dir = System.IO.Path.GetDirectoryName(Path);
+
+            if (dir is not null)
+            {
+                Path = System.IO.Path.Combine(
+                    System.IO.Path.GetDirectoryName(Path) ?? throw new NullReferenceException(),
+                    NameWithExtension
+                );
+            }
         }
     }
 
@@ -224,7 +232,7 @@ public class Entry : NotificationObject
             Path = path
         };
 
-        entry.SetName(nameWithExtension);
+        entry.SetName(nameWithExtension, false);
 
         return entry;
     }

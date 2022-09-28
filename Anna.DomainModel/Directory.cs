@@ -133,7 +133,7 @@ public abstract class Directory : NotificationObject, IDisposable
             RemoveEntryInternal(target);
 
             var newEntry = Entry.Create(target);
-            newEntry.SetName(newName);
+            newEntry.SetName(newName, true);
 
             AddEntryInternal(newEntry);
         }

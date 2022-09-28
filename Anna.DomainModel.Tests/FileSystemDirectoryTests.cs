@@ -201,4 +201,15 @@ public class FileSystemDirectoryTests : IDisposable
 
         Assert.Equal(Path.Combine(_tempDir.RootPath, "fileZ.dat"), directory.Entries[3].Path);
     }
+    
+    [Fact]
+    public void ParentPath()
+    {
+        using var directory = _dic.GetInstance<DomainModelOperator>().CreateDirectory(_tempDir.RootPath);
+        
+        Assert.Equal("..", directory.Entries[0].Name);
+        Assert.Equal("..", directory.Entries[0].NameWithExtension);
+        Assert.Equal("", directory.Entries[0].Extension);
+        Assert.Equal(new DirectoryInfo(_tempDir.RootPath).Parent!.FullName, directory.Entries[0].Path);
+    }
 }

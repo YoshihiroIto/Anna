@@ -102,10 +102,7 @@ public abstract class Directory : NotificationObject, IDisposable
         lock (EntitiesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var target) == false)
-            {
-                // _Logger.Error($"OnChanged: {Path}, {entry.NameWithExtension}");
                 return;
-            }
 
             entry.CopyToWithoutIsSelected(target);
         }
@@ -118,10 +115,7 @@ public abstract class Directory : NotificationObject, IDisposable
         lock (EntitiesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(name, out var target) == false)
-            {
-                // _Logger.Error($"OnDeleted: {Path}, {name}");
                 return;
-            }
 
             RemoveEntryInternal(target);
         }
@@ -134,10 +128,7 @@ public abstract class Directory : NotificationObject, IDisposable
         lock (EntitiesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(oldName, out var target) == false)
-            {
-                //_Logger.Error($"OnRenamed: {Path}, {oldName}, {newName}");
                 return;
-            }
 
             RemoveEntryInternal(target);
 
@@ -241,8 +232,6 @@ public abstract class Directory : NotificationObject, IDisposable
             else
                 --_filesCount;
 
-            // if (_entriesDict.Remove(entry.NameWithExtension) == false)
-            //     _Logger.Error($"RemoveEntryInternal: {Path}, {entry.NameWithExtension}");
             _entriesDict.Remove(entry.NameWithExtension);
         }
     }

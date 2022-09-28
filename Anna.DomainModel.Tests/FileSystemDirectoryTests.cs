@@ -47,15 +47,15 @@ public class FileSystemDirectoryTests : IDisposable
     [Fact]
     public async Task Non_root_directory_contain_parent_directory_in_entries()
     {
-        var files = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
+        var files0 = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
 
-        foreach (var file in files)
+        foreach (var file in files0)
             _tempDir.CreateFile(file);
 
         using var directory = _dic.GetInstance<DomainModelOperator>().CreateDirectory(_tempDir.RootPath);
 
         var filesWithParentDir = new List<string> { ".." };
-        filesWithParentDir.AddRange(files);
+        filesWithParentDir.AddRange(files0);
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
@@ -66,23 +66,23 @@ public class FileSystemDirectoryTests : IDisposable
     }
 
     [Fact]
-    public async Task Follow_file_additions()
+    public async Task Follow_file_addition()
     {
-        var filesA = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
+        var files0 = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
 
-        foreach (var file in filesA)
+        foreach (var file in files0)
             _tempDir.CreateFile(file);
 
         using var directory = _dic.GetInstance<DomainModelOperator>().CreateDirectory(_tempDir.RootPath);
 
-        var filesB = new[] { "fileD.dat", "fileE.dat", "fileF.dat" };
+        var files1 = new[] { "fileD.dat", "fileE.dat", "fileF.dat" };
 
-        foreach (var file in filesB)
+        foreach (var file in files1)
             _tempDir.CreateFile(file);
 
         var filesWithParentDir = new List<string> { ".." };
-        filesWithParentDir.AddRange(filesA);
-        filesWithParentDir.AddRange(filesB);
+        filesWithParentDir.AddRange(files0);
+        filesWithParentDir.AddRange(files1);
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
@@ -95,9 +95,9 @@ public class FileSystemDirectoryTests : IDisposable
     [Fact]
     public async Task Follow_file_deletion()
     {
-        var filesA = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
+        var files0 = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
 
-        foreach (var file in filesA)
+        foreach (var file in files0)
             _tempDir.CreateFile(file);
 
         using var directory = _dic.GetInstance<DomainModelOperator>().CreateDirectory(_tempDir.RootPath);
@@ -105,7 +105,7 @@ public class FileSystemDirectoryTests : IDisposable
         File.Delete(Path.Combine(_tempDir.RootPath, "fileB.dat"));
 
         var filesWithParentDir = new List<string> { ".." };
-        filesWithParentDir.AddRange(filesA);
+        filesWithParentDir.AddRange(files0);
         filesWithParentDir.Remove("fileB.dat");
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
@@ -119,9 +119,9 @@ public class FileSystemDirectoryTests : IDisposable
     [Fact]
     public async Task Follow_file_renaming()
     {
-        var filesA = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
+        var files0 = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
 
-        foreach (var file in filesA)
+        foreach (var file in files0)
             _tempDir.CreateFile(file);
 
         using var directory = _dic.GetInstance<DomainModelOperator>().CreateDirectory(_tempDir.RootPath);
@@ -129,7 +129,7 @@ public class FileSystemDirectoryTests : IDisposable
         File.Move(Path.Combine(_tempDir.RootPath, "fileC.dat"), Path.Combine(_tempDir.RootPath, "fileZ.dat"));
 
         var filesWithParentDir = new List<string> { ".." };
-        filesWithParentDir.AddRange(filesA);
+        filesWithParentDir.AddRange(files0);
         filesWithParentDir.Remove("fileC.dat");
         filesWithParentDir.Add("fileZ.dat");
 
@@ -144,9 +144,9 @@ public class FileSystemDirectoryTests : IDisposable
     [Fact]
     public async Task IsSelected_is_maintained_even_after_file_renaming()
     {
-        var filesA = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
+        var files0 = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
 
-        foreach (var file in filesA)
+        foreach (var file in files0)
             _tempDir.CreateFile(file);
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
@@ -165,9 +165,9 @@ public class FileSystemDirectoryTests : IDisposable
     [Fact]
     public async Task IsSelected_is_maintained_even_after_file_overwrite()
     {
-        var filesA = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
+        var files0 = new[] { "fileA.dat", "fileB.dat", "fileC.dat" };
 
-        foreach (var file in filesA)
+        foreach (var file in files0)
             _tempDir.CreateFile(file);
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));

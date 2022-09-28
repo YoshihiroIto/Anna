@@ -17,7 +17,6 @@ public class ServiceProviderContainerBase : Container, IServiceProviderContainer
 
     public THasArgService GetInstance<THasArgService, TArg>(TArg arg)
         where THasArgService : class, IHasArg<TArg>
-        where TArg : class
     {
         if (arg is null)
             throw new ArgumentNullException(nameof(arg));

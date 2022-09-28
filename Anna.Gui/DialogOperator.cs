@@ -23,4 +23,18 @@ internal static class DialogOperator
 
         return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.SortMode, viewModel.SortOrder);
     }
+
+    public static async ValueTask DisplayInformationAsync(
+        string title,
+        string message,
+        IServiceProviderContainer dic,
+        IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        using var viewModel = dic.GetInstance<MessageDialogViewModel, (string, string)>((title, message));
+
+        var view = dic.GetInstance<MessageDialog>();
+        view.DataContext = viewModel;
+
+        await view.ShowDialog(shortcutKeyReceiver.Owner);
+    }
 }

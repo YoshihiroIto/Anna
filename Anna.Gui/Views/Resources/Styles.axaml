@@ -13,12 +13,12 @@
         <Setter Property="Fill" Value="#444444" />
     </Style>
     
-
     <Style Selector="Window.dialog">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="12" />
         <Setter Property="CanResize" Value="False" />
         <Setter Property="ShowInTaskbar" Value="False" />
         <Setter Property="SizeToContent" Value="WidthAndHeight" />
+        <Setter Property="WindowStartupLocation" Value="CenterOwner" />
     </Style>
 </Styles>

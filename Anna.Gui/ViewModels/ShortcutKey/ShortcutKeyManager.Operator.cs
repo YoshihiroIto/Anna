@@ -45,7 +45,7 @@ public partial class ShortcutKeyManager
 
     private static ValueTask JumpToRootDirectoryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var rootDir = System.IO.Path.GetPathRoot(shortcutKeyReceiver.DirectoryPanelViewModel.Model.Path);
+        var rootDir = Path.GetPathRoot(shortcutKeyReceiver.DirectoryPanelViewModel.Model.Path);
 
         if (rootDir is not null)
             shortcutKeyReceiver.DirectoryPanelViewModel.JumpToDirectoryAsync(rootDir);

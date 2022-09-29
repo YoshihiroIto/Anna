@@ -1,40 +1,38 @@
 ﻿using Anna.Constants;
-using Anna.Gui.Interfaces;
 using Anna.Gui.Views.Dialogs;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.UseCase;
+using Avalonia.Controls;
 using System.Threading.Tasks;
 
 namespace Anna.Gui;
 
-internal static class DialogOperator
+public static class DialogOperator
 {
     public static async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)>
-        SelectSortModeAndOrderAsync(
-            IServiceProviderContainer dic,
-            IShortcutKeyReceiver shortcutKeyReceiver)
+        SelectSortModeAndOrderAsync(IServiceProviderContainer dic, Window owner)
     {
         using var viewModel = dic.GetInstance<SortModeAndOrderDialogViewModel>();
 
         var view = dic.GetInstance<SortModeAndOrderDialog>();
         view.DataContext = viewModel;
 
-        await view.ShowDialog(shortcutKeyReceiver.Owner);
+        await view.ShowDialog(owner);
 
         return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.SortMode, viewModel.SortOrder);
     }
 
     public static async ValueTask DisplayInformationAsync(
-        string title,
-        string message,
         IServiceProviderContainer dic,
-        IShortcutKeyReceiver shortcutKeyReceiver)
+        Window owner,
+        string title,
+        string message)
     {
         using var viewModel = dic.GetInstance<MessageDialogViewModel, (string, string)>((title, message));
 
         var view = dic.GetInstance<MessageDialog>();
         view.DataContext = viewModel;
 
-        await view.ShowDialog(shortcutKeyReceiver.Owner);
+        await view.ShowDialog(owner);
     }
 }

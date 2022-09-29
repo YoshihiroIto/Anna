@@ -11,10 +11,16 @@ namespace Anna.Gui.Views.Dialogs.Base;
 public class DialogViewModel : ViewModelBase, ILocalizableViewModel
 {
     public Resources R => _resourcesHolder.Instance;
+    
+    public DelegateCommand OkCommand { get; }
+    
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
     private readonly ResourcesHolder _resourcesHolder;
     private readonly ILoggerUseCase _logger;
+    
+    // todo:impl Messenger
+    public event EventHandler? CloseRequested;
 
     protected DialogViewModel(
         ResourcesHolder resourcesHolder,
@@ -31,6 +37,12 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
                 h => _resourcesHolder.CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
+
+        OkCommand = new DelegateCommand(() =>
+        {
+            DialogResult = DialogResultTypes.Ok;
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        });
 
         _logger.Start(GetType().Name);
     }

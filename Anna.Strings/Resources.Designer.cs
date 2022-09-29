@@ -168,6 +168,17 @@ namespace Anna.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}
+        ///
+        ///Access denied..
+        /// </summary>
+        public static string Message_AccessDenied {
+            get {
+                return ResourceManager.GetString("Message_AccessDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Att_ribute.
         /// </summary>
         public static string SortEntry_Mode_Attribute {

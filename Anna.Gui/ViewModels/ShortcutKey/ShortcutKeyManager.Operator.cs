@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.Gui.Interfaces;
+using Anna.Gui.Views.Dialogs;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ public partial class ShortcutKeyManager
 {
     private async ValueTask SelectSortModeAndOrderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var result = await DialogOperator.SelectSortModeAndOrderAsync(_dic, shortcutKeyReceiver);
+        var result = await DialogOperator.SelectSortModeAndOrderAsync(_dic, shortcutKeyReceiver.Owner);
 
         if (result.IsCancel)
             return;

@@ -174,4 +174,9 @@
   <data name="Menu_View_SortEntry" xml:space="preserve">
     <value>_Sort entry...</value>
   </data>
+  <data name="Message_AccessDenied" xml:space="preserve">
+    <value>{0}
+
+Access denied.</value>
+  </data>
 </root>

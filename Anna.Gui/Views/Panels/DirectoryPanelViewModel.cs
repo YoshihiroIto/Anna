@@ -28,6 +28,8 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
     public ReactivePropertySlim<int> CursorIndex { get; }
 
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
+    
+    public IServiceProviderContainer ServiceProviderContainer { get; }
 
     public DirectoryPanelViewModel(
         IServiceProviderContainer dic,
@@ -38,6 +40,7 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
+        ServiceProviderContainer = dic;
         _directoryService = directoryService;
         _resourcesHolder = resourcesHolder;
         ShortcutKeyManager = shortcutKeyManager;
@@ -164,11 +167,15 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
         return ValueTask.CompletedTask;
     }
 
+
+    // todo:impl Messenger
+    public event EventHandler<(string Title, string Message)>? MessageDialogRequested;
+
     public ValueTask JumpToDirectoryAsync(string path)
     {
         if (_directoryService.IsAccessible(path) == false)
         {
-            // todo: Show warning dialog
+            MessageDialogRequested?.Invoke(this, (Resources.AppName, string.Format(Resources.Message_AccessDenied, path)));
             return ValueTask.CompletedTask;
         }
 

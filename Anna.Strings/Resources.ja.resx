@@ -68,4 +68,9 @@
     <data name="Menu_View_SortEntry" xml:space="preserve">
         <value>エントリーのソート(_S)...</value>
     </data>
+    <data name="Message_AccessDenied" xml:space="preserve">
+        <value>{0}
+
+アクセスが拒否されました。</value>
+    </data>
 </root>

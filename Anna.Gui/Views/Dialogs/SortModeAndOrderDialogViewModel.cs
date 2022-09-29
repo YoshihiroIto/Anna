@@ -1,6 +1,5 @@
 ﻿using Anna.Constants;
 using Anna.Gui.Views.Dialogs.Base;
-using Anna.Strings;
 using Anna.UseCase;
 
 namespace Anna.Gui.Views.Dialogs;

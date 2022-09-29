@@ -12,15 +12,16 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
 {
     public static readonly StyledProperty<int> SelectedIndexProperty =
         AvaloniaProperty.Register<DirectoryPanel, int>(nameof(SelectedIndex));
-    
+
     public int SelectedIndex
     {
         get => GetValue(SelectedIndexProperty);
         set => SetValue(SelectedIndexProperty, value);
     }
-    
+
     internal static readonly DirectProperty<DirectoryPanel, DirectoryPanelLayout> LayoutProperty =
-        AvaloniaProperty.RegisterDirect<DirectoryPanel, DirectoryPanelLayout>(nameof(DirectoryPanelLayout), o => o.Layout);
+        AvaloniaProperty.RegisterDirect<DirectoryPanel, DirectoryPanelLayout>(nameof(DirectoryPanelLayout),
+            o => o.Layout);
 
     internal static readonly DirectProperty<DirectoryPanel, IntSize> ItemCellSizeProperty =
         AvaloniaProperty.RegisterDirect<DirectoryPanel, IntSize>(nameof(ItemCellSize), o => o.ItemCellSize);
@@ -43,6 +44,18 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
     public DirectoryPanel()
     {
         InitializeComponent();
+
+        PropertyChanged += (_, e) =>
+        {
+            if (e.Property == Control.DataContextProperty)
+            {
+                if (e.OldValue is DirectoryPanelViewModel oldViewModel)
+                    oldViewModel.MessageDialogRequested -= OnViewModelOnMessageDialogRequested;
+
+                if (e.NewValue is DirectoryPanelViewModel newViewModel)
+                    newViewModel.MessageDialogRequested += OnViewModelOnMessageDialogRequested;
+            }
+        };
     }
 
     private void InitializeComponent()
@@ -89,5 +102,14 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
             (int)(Bounds.Width / Layout.ItemWidth),
             (int)(Bounds.Height / Layout.ItemHeight)
         );
+    }
+
+    private async void OnViewModelOnMessageDialogRequested(object? sender, (string Title, string Message) e)
+    {
+        await DialogOperator.DisplayInformationAsync(
+            DirectoryPanelViewModel.ServiceProviderContainer,
+            Owner,
+            e.Title,
+            e.Message);
     }
 }

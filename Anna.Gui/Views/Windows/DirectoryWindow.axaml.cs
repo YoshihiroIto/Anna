@@ -26,7 +26,7 @@ public partial class DirectoryWindow : Window
 
         PropertyChanged += (s, e) =>
         {
-            if (e.Property == Control.DataContextProperty)
+            if (e.Property == DataContextProperty)
             {
                 if (e.OldValue is DirectoryWindowViewModel oldViewModel)
                     oldViewModel.CloseRequested -= OnCloseRequested;
@@ -36,6 +36,7 @@ public partial class DirectoryWindow : Window
             }
         };
     }
+    
     private void OnCloseRequested(object? sender, EventArgs e)
     {
         Close();

@@ -36,11 +36,14 @@
         </StackPanel.Styles>
 
         <StackPanel x:Name="ModePanel" Spacing="12">
-            <Button x:Name="ModeNameButton"
-                    Click="ModeButton_OnClick"
+            <Button Click="ModeButton_OnClick"
                     Content="{ReflectionBinding R.SortEntry_Mode_Name}"
                     TabIndex="0"
-                    Tag="{x:Static constants:SortModes.Name}" />
+                    Tag="{x:Static constants:SortModes.Name}">
+                <Interaction.Behaviors>
+                    <behaviors:InputElementFocusBehavior />
+                </Interaction.Behaviors>
+            </Button>
             <Button Click="ModeButton_OnClick"
                     Content="{ReflectionBinding R.SortEntry_Mode_Extension}"
                     TabIndex="1"

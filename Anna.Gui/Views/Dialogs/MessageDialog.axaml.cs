@@ -1,7 +1,6 @@
 ﻿using Anna.Gui.Views.Dialogs.Base;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System;
 
@@ -16,14 +15,7 @@ public partial class MessageDialog : Window
         this.AttachDevTools();
 #endif
         
-        var okButton = this.FindControl<Button>("OkButton");
-        if (okButton is not null)
-        {
-            okButton.AttachedToVisualTree += (_, _) =>
-                FocusManager.Instance?.Focus(okButton, NavigationMethod.Directional);
-        }
-        
-        PropertyChanged += (s, e) =>
+        PropertyChanged += (_, e) =>
         {
             if (e.Property == DataContextProperty)
             {

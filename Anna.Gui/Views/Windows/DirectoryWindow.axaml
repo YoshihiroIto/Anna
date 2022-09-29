@@ -62,9 +62,12 @@
                    Margin="0,8,0,0"
                    DockPanel.Dock="Top" />
 
-        <panels:DirectoryPanel x:Name="DirectoryPanel"
-                               Margin="0,8,0,0"
+        <panels:DirectoryPanel Margin="0,8,0,0"
                                DataContext="{Binding DirectoryPanelViewModel}"
-                               SelectedIndex="{Binding CursorIndex.Value}" />
+                               SelectedIndex="{Binding CursorIndex.Value}">
+            <Interaction.Behaviors>
+                <behaviors:InputElementFocusBehavior />
+            </Interaction.Behaviors>
+        </panels:DirectoryPanel>
     </DockPanel>
 </Window>

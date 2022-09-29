@@ -20,13 +20,6 @@ public partial class SortModeAndOrderDialog : DialogBase
         this.AttachDevTools();
 #endif
 
-        var modeNameButton = this.FindControl<Button>("ModeNameButton");
-        if (modeNameButton is not null)
-        {
-            modeNameButton.AttachedToVisualTree += (_, _) =>
-                FocusManager.Instance?.Focus(modeNameButton, NavigationMethod.Directional);
-        }
-
         UpdateView();
     }
 

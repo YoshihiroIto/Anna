@@ -1,7 +1,5 @@
-﻿using Anna.Gui.Views.Panels;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System;
 
@@ -17,14 +15,7 @@ public partial class DirectoryWindow : Window
         this.AttachDevTools();
 #endif
 
-        var directoryPanel = this.FindControl<DirectoryPanel>("DirectoryPanel");
-        if (directoryPanel is not null)
-        {
-            directoryPanel.AttachedToVisualTree += (_, _) =>
-                FocusManager.Instance?.Focus(directoryPanel, NavigationMethod.Directional);
-        }
-
-        PropertyChanged += (s, e) =>
+        PropertyChanged += (_, e) =>
         {
             if (e.Property == DataContextProperty)
             {

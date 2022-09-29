@@ -32,14 +32,17 @@
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <StackPanel DockPanel.Dock="Bottom">
             <Button MinWidth="80"
-                    x:Name="OkButton"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
                     Command="{Binding OkCommand,
                                       Mode=OneTime}"
-                    Content="{ReflectionBinding R.Dialog_Ok}" />
+                    Content="{ReflectionBinding R.Dialog_Ok}">
+                <Interaction.Behaviors>
+                    <behaviors:InputElementFocusBehavior />
+                </Interaction.Behaviors>
+            </Button>
         </StackPanel>
 
         <TextBlock Text="{Binding Message, Mode=OneTime}" />

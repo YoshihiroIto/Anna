@@ -75,13 +75,13 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
                 Entries = Model.Entries
                     .ToReadOnlyReactiveCollection(
                         bufferedCollectionChanged,
-                        x => dic.GetInstance<EntryViewModel, Entry>(x))
+                        dic.GetInstance<EntryViewModel, Entry>)
                     .AddTo(Trash);
             }
             else
             {
                 Entries = Model.Entries
-                    .ToReadOnlyReactiveCollection(x => dic.GetInstance<EntryViewModel, Entry>(x))
+                    .ToReadOnlyReactiveCollection(dic.GetInstance<EntryViewModel, Entry>)
                     .AddTo(Trash);
             }
 

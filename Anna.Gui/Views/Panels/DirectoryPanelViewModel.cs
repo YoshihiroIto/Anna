@@ -4,6 +4,7 @@ using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels;
+using Anna.Gui.ViewModels.Messaging;
 using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Strings;
 using Anna.UseCase;
@@ -18,6 +19,8 @@ namespace Anna.Gui.Views.Panels;
 
 public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILocalizableViewModel
 {
+    public const string MessageKeyInformation = nameof(MessageKeyInformation);
+    
     public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; }
     public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; }
 
@@ -29,8 +32,6 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
 
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
     
-    public IServiceProviderContainer ServiceProviderContainer { get; }
-
     public DirectoryPanelViewModel(
         IServiceProviderContainer dic,
         IDirectoryServiceUseCase directoryService,
@@ -40,7 +41,6 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
-        ServiceProviderContainer = dic;
         _directoryService = directoryService;
         _resourcesHolder = resourcesHolder;
         ShortcutKeyManager = shortcutKeyManager;
@@ -167,14 +167,11 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
         return ValueTask.CompletedTask;
     }
 
-    // todo:impl Messenger
-    public event EventHandler<(string Title, string Message)>? MessageDialogRequested;
-
     public ValueTask JumpToDirectoryAsync(string path)
     {
         if (_directoryService.IsAccessible(path) == false)
         {
-            MessageDialogRequested?.Invoke(this, (Resources.AppName, string.Format(Resources.Message_AccessDenied, path)));
+            Messenger.Raise(new InformationMessage(Resources.AppName, string.Format(Resources.Message_AccessDenied, path), MessageKeyInformation));
             return ValueTask.CompletedTask;
         }
 

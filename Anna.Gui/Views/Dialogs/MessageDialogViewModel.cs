@@ -3,10 +3,10 @@ using Anna.UseCase;
 
 namespace Anna.Gui.Views.Dialogs;
 
-public class MessageDialogViewModel : HasModelDialogViewModel<(string Title, string Message)>
+public class MessageDialogViewModel : HasModelDialogViewModel<(string Title, string Text)>
 {
-    public string Message => Model.Message;
     public string Title => Model.Title;
+    public string Text => Model.Text;
 
     public MessageDialogViewModel(
         IServiceProviderContainer dic,

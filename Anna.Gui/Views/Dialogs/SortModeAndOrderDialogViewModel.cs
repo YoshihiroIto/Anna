@@ -10,10 +10,11 @@ public class SortModeAndOrderDialogViewModel : DialogViewModel
     public SortOrders SortOrder { get; set; }
 
     public SortModeAndOrderDialogViewModel(
+        IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(resourcesHolder, logger, objectLifetimeChecker)
+        : base(dic, resourcesHolder, logger, objectLifetimeChecker)
     {
     }
 }

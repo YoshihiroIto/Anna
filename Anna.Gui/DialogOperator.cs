@@ -26,9 +26,9 @@ public static class DialogOperator
         IServiceProviderContainer dic,
         Window owner,
         string title,
-        string message)
+        string text)
     {
-        using var viewModel = dic.GetInstance<MessageDialogViewModel, (string, string)>((title, message));
+        using var viewModel = dic.GetInstance<MessageDialogViewModel, (string, string)>((title, text));
 
         var view = dic.GetInstance<MessageDialog>();
         view.DataContext = viewModel;

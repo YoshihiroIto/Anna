@@ -23,10 +23,11 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
     private readonly ILoggerUseCase _logger;
 
     protected DialogViewModel(
+        IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(objectLifetimeChecker)
+        : base(dic, objectLifetimeChecker)
     {
         _resourcesHolder = resourcesHolder;
         _logger = logger;

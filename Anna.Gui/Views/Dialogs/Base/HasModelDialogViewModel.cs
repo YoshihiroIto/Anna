@@ -11,7 +11,7 @@ public class HasModelDialogViewModel<TModel> : DialogViewModel, IHasArg<TModel>
         ResourcesHolder resourcesHolder,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(resourcesHolder, logger, objectLifetimeChecker)
+        : base(dic, resourcesHolder, logger, objectLifetimeChecker)
     {
         dic.PopArg(out Model);
     }

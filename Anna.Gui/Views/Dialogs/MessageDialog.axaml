@@ -50,6 +50,6 @@
             </Button>
         </StackPanel>
 
-        <TextBlock Text="{Binding Message, Mode=OneTime}" />
+        <TextBlock Text="{Binding Text, Mode=OneTime}" />
     </DockPanel>
 </Window>

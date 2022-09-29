@@ -1,5 +1,6 @@
 ﻿using Anna.DomainModel;
 using Anna.Foundation;
+using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Avalonia;
 using Avalonia.Controls;
@@ -44,18 +45,6 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
     public DirectoryPanel()
     {
         InitializeComponent();
-
-        PropertyChanged += (_, e) =>
-        {
-            if (e.Property == Control.DataContextProperty)
-            {
-                if (e.OldValue is DirectoryPanelViewModel oldViewModel)
-                    oldViewModel.MessageDialogRequested -= OnViewModelOnMessageDialogRequested;
-
-                if (e.NewValue is DirectoryPanelViewModel newViewModel)
-                    newViewModel.MessageDialogRequested += OnViewModelOnMessageDialogRequested;
-            }
-        };
     }
 
     private void InitializeComponent()
@@ -65,30 +54,9 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
         LayoutUpdated += (_, _) => UpdateItemCellSize();
     }
 
-    public Window Owner
-    {
-        get
-        {
-            var parent = Parent;
+    public Window Owner => ControlHelper.FindOwnerWindow(this);
 
-            while (true)
-            {
-                switch (parent)
-                {
-                    case Window window:
-                        return window;
-
-                    case null:
-                        throw new InvalidOperationException();
-                }
-
-                parent = parent.Parent;
-            }
-        }
-    }
-
-    public Directory Directory =>
-        DirectoryPanelViewModel.Model;
+    public Directory Directory => DirectoryPanelViewModel.Model;
 
     public DirectoryPanelViewModel DirectoryPanelViewModel =>
         DataContext as DirectoryPanelViewModel ?? throw new NotSupportedException();
@@ -102,14 +70,5 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
             (int)(Bounds.Width / Layout.ItemWidth),
             (int)(Bounds.Height / Layout.ItemHeight)
         );
-    }
-
-    private async void OnViewModelOnMessageDialogRequested(object? sender, (string Title, string Message) e)
-    {
-        await DialogOperator.DisplayInformationAsync(
-            DirectoryPanelViewModel.ServiceProviderContainer,
-            Owner,
-            e.Title,
-            e.Message);
     }
 }

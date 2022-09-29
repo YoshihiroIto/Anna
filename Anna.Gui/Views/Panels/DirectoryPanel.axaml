@@ -6,16 +6,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dataTemplateSelector="clr-namespace:Anna.Gui.Views.DataTemplateSelector"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
+             xmlns:messaging="clr-namespace:Anna.Gui.Views.Behaviors.Messaging"
              xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
+             xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
              x:DataType="panels:DirectoryPanelViewModel"
-             SelectedIndex="{Binding $self.SelectedIndex}"
              FontFamily="{Binding $self.Layout.FontFamily}"
              FontSize="{Binding $self.Layout.FontSize}"
-             ItemCellSize="{Binding ItemCellSize.Value, Mode=OneWayToSource}"
+             ItemCellSize="{Binding ItemCellSize.Value,
+                                    Mode=OneWayToSource}"
+             SelectedIndex="{Binding $self.SelectedIndex}"
              mc:Ignorable="d">
     <UserControl.Styles>
         <StyleInclude Source="/Views/Resources/Styles.axaml" />
@@ -35,6 +37,9 @@
 
     <Interaction.Behaviors>
         <behaviors:DirectoryPanelInputBehavior />
+        <messaging:InteractionMessageTrigger MessageKey="{x:Static panels:DirectoryPanelViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
+            <messaging:InformationDialogInteractionMessageAction />
+        </messaging:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <UserControl.Styles>

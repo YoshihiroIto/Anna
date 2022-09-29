@@ -9,7 +9,7 @@ public class HasModelRefViewModelBase<TModel> : ViewModelBase, IHasArg<TModel>
     protected HasModelRefViewModelBase(
         IServiceProviderContainer dic,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(objectLifetimeChecker)
+        : base(dic, objectLifetimeChecker)
     {
         dic.PopArg(out Model);
     }

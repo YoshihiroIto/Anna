@@ -1,10 +1,16 @@
-﻿using System;
+﻿using Anna.UseCase;
+using System;
 using System.Threading.Tasks;
 
 namespace Anna.Gui.ViewModels.Messaging;
 
 public class InteractionMessenger
 {
+    public InteractionMessenger(IServiceProviderContainer dic)
+    {
+        ServiceProviderContainer = dic;
+    }
+    
     public event EventHandler<InteractionMessageRaisedEventArgs>? Raised;
 
     public void Raise(InteractionMessage message)
@@ -16,6 +22,8 @@ public class InteractionMessenger
     {
         await Task.Run(() => Raise(message));
     }
+
+    internal readonly IServiceProviderContainer ServiceProviderContainer;
 }
 
 public class InteractionMessageRaisedEventArgs : EventArgs

@@ -16,15 +16,17 @@ public class WindowActionMessage : InteractionMessage
     public static readonly StyledProperty<WindowAction> ActionProperty =
         AvaloniaProperty.Register<WindowActionMessage, WindowAction>(nameof(Action));
 
-    public WindowActionMessage(WindowAction action, string messageKey)
-        : base(messageKey)
-    {
-        Action = action;
-    }
-
     public WindowAction Action
     {
         get => GetValue(ActionProperty);
-        set => SetValue(ActionProperty, value);
+        init => SetValue(ActionProperty, value);
+    }
+
+    public WindowActionMessage(
+        WindowAction action,
+        string messageKey)
+        : base(messageKey)
+    {
+        Action = action;
     }
 }

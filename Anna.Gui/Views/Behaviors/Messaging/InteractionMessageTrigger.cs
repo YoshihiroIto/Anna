@@ -9,12 +9,12 @@ namespace Anna.Gui.Views.Behaviors.Messaging;
 
 public class InteractionMessageTrigger : Trigger<Control>
 {
-    public static readonly StyledProperty<InteractionMessenger?> MessengerProperty =
-        AvaloniaProperty.Register<InteractionMessageTrigger, InteractionMessenger?>(
+    public static readonly StyledProperty<InteractionMessenger> MessengerProperty =
+        AvaloniaProperty.Register<InteractionMessageTrigger, InteractionMessenger>(
             nameof(Messenger),
             defaultBindingMode: BindingMode.OneTime);
 
-    public InteractionMessenger? Messenger
+    public InteractionMessenger Messenger
     {
         get => GetValue(MessengerProperty);
         set => SetValue(MessengerProperty, value);
@@ -27,7 +27,7 @@ public class InteractionMessageTrigger : Trigger<Control>
         MessengerProperty.Changed.Subscribe(MessengerChanged);
     }
 
-    private static void MessengerChanged(AvaloniaPropertyChangedEventArgs<InteractionMessenger?> e)
+    private static void MessengerChanged(AvaloniaPropertyChangedEventArgs<InteractionMessenger> e)
     {
         if (e.Sender is not InteractionMessageTrigger self)
             return;
@@ -36,18 +36,24 @@ public class InteractionMessageTrigger : Trigger<Control>
         var newValue = e.NewValue.GetValueOrDefault();
 
         if (oldValue is not null)
-            if (self.Messenger is not null)
-                self.Messenger.Raised -= self.MessengerOnRaised;
+            self.Messenger.Raised -= self.MessengerOnRaised;
 
         if (newValue is not null)
-            if (self.Messenger is not null)
-                self.Messenger.Raised += self.MessengerOnRaised;
+            self.Messenger.Raised += self.MessengerOnRaised;
     }
-    private void MessengerOnRaised(object? sender, InteractionMessageRaisedEventArgs e)
+    private async void MessengerOnRaised(object? sender, InteractionMessageRaisedEventArgs e)
     {
         if (string.CompareOrdinal(e.Message.MessageKey, MessageKey) != 0)
             return;
-        
-        Interaction.ExecuteActions(this, Actions, e.Message);
+
+        e.Message.ServiceProviderContainer = Messenger.ServiceProviderContainer;
+
+        foreach (var avaloniaObject in Actions)
+        {
+            if (avaloniaObject is not IAsyncAction action)
+                throw new NotSupportedException();
+
+            await action.ExecuteAsync(this, e.Message);
+        }
     }
 }

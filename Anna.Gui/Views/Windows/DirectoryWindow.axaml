@@ -1,9 +1,11 @@
 ﻿<Window x:Class="Anna.Gui.Views.Windows.DirectoryWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
         xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:messaging="clr-namespace:Anna.Gui.Views.Behaviors.Messaging"
         xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
         xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
         Title="{ReflectionBinding R.AppName}"
@@ -28,6 +30,9 @@
 
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
+        <messaging:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+            <messaging:WindowInteractionMessageAction />
+        </messaging:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <DockPanel>

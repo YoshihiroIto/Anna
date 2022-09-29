@@ -1,5 +1,6 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
+using Anna.Gui.ViewModels.Messaging;
 using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings.Extensions;
@@ -10,17 +11,16 @@ namespace Anna.Gui.Views.Dialogs.Base;
 
 public class DialogViewModel : ViewModelBase, ILocalizableViewModel
 {
+    public const string MessageKeyClose = nameof(MessageKeyClose);
+
     public Resources R => _resourcesHolder.Instance;
-    
+
     public DelegateCommand OkCommand { get; }
-    
+
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
     private readonly ResourcesHolder _resourcesHolder;
     private readonly ILoggerUseCase _logger;
-    
-    // todo:impl Messenger
-    public event EventHandler? CloseRequested;
 
     protected DialogViewModel(
         ResourcesHolder resourcesHolder,
@@ -41,7 +41,7 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
         OkCommand = new DelegateCommand(() =>
         {
             DialogResult = DialogResultTypes.Ok;
-            CloseRequested?.Invoke(this, EventArgs.Empty);
+            Messenger.Raise(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
         });
 
         _logger.Start(GetType().Name);

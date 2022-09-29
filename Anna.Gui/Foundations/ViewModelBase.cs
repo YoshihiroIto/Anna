@@ -1,10 +1,14 @@
 ﻿using Anna.Foundation;
+using Anna.Gui.ViewModels.Messaging;
 using Anna.UseCase;
 
 namespace Anna.Gui.Foundations;
 
 public class ViewModelBase : DisposableNotificationObject
 {
+    public InteractionMessenger Messenger => _messenger ??= new InteractionMessenger();
+
+    private InteractionMessenger? _messenger;
     private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
 
     protected ViewModelBase(IObjectLifetimeCheckerUseCase objectLifetimeChecker)

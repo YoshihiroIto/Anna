@@ -167,7 +167,6 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
         return ValueTask.CompletedTask;
     }
 
-
     // todo:impl Messenger
     public event EventHandler<(string Title, string Message)>? MessageDialogRequested;
 

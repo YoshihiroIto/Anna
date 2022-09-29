@@ -3,6 +3,7 @@ using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
+using Anna.Gui.ViewModels.Messaging;
 using Anna.Gui.Views.Panels;
 using Anna.Strings;
 using Anna.UseCase;
@@ -15,6 +16,8 @@ namespace Anna.Gui.Views.Windows;
 
 public class DirectoryWindowViewModel : HasModelRefViewModelBase<Directory>, ILocalizableViewModel
 {
+    public const string MessageKeyClose = nameof(MessageKeyClose);
+    
     #region DirectoryPanelViewModel
 
     private readonly DirectoryPanelViewModel? _directoryPanelViewModel;
@@ -44,9 +47,6 @@ public class DirectoryWindowViewModel : HasModelRefViewModelBase<Directory>, ILo
     public ICommand ToEnglishCommand { get; }
     public ICommand ToJapaneseCommand { get; }
 
-    // todo:impl Messenger
-    public event EventHandler? CloseRequested;
-
     public DirectoryWindowViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
@@ -66,7 +66,7 @@ public class DirectoryWindowViewModel : HasModelRefViewModelBase<Directory>, ILo
 
         ToEnglishCommand = new DelegateCommand(() => appConfig.Data.Culture = Cultures.En);
         ToJapaneseCommand = new DelegateCommand(() => appConfig.Data.Culture = Cultures.Ja);
-        
+
         InfoPanelViewModel = _dic.GetInstance<InfoPanelViewModel, Directory>(Model)
             .AddTo(Trash);
 
@@ -77,7 +77,7 @@ public class DirectoryWindowViewModel : HasModelRefViewModelBase<Directory>, ILo
             .Subscribe(_ =>
             {
                 if (_dic.GetInstance<App>().Directories.IndexOf(Model) == -1)
-                    CloseRequested?.Invoke(this, EventArgs.Empty);
+                    Messenger.Raise(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
             }).AddTo(Trash);
     }
 

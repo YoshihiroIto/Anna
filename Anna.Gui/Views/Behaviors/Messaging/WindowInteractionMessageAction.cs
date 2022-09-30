@@ -1,4 +1,5 @@
 ﻿using Anna.Gui.ViewModels.Messaging;
+using Anna.UseCase;
 using Avalonia;
 using Avalonia.Xaml.Interactivity;
 using System;
@@ -13,7 +14,10 @@ public class WindowInteractionMessageAction : AvaloniaObject, IAction, IAsyncAct
         throw new NotSupportedException();
     }
 
-    public ValueTask ExecuteAsync(Trigger sender, InteractionMessage message)
+    public ValueTask ExecuteAsync(
+        Trigger sender,
+        InteractionMessage message,
+        IHasServiceProviderContainer hasServiceProviderContainer)
     {
         if (message is not WindowActionMessage windowActionMessage)
             return ValueTask.CompletedTask;

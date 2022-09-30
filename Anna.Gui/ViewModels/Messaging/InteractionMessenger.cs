@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.ViewModels.Messaging;
 
-public class InteractionMessenger
+public class InteractionMessenger : IHasServiceProviderContainer
 {
+    public IServiceProviderContainer ServiceProviderContainer { get; }
+    
     public InteractionMessenger(IServiceProviderContainer dic)
     {
         ServiceProviderContainer = dic;
@@ -22,8 +24,6 @@ public class InteractionMessenger
     {
         await Task.Run(() => Raise(message));
     }
-
-    internal readonly IServiceProviderContainer ServiceProviderContainer;
 }
 
 public class InteractionMessageRaisedEventArgs : EventArgs

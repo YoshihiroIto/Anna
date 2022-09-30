@@ -1,5 +1,6 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.ViewModels.Messaging;
+using Anna.UseCase;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Xaml.Interactivity;
@@ -15,7 +16,10 @@ public class InformationDialogInteractionMessageAction : AvaloniaObject, IAction
         throw new NotSupportedException();
     }
 
-    public async ValueTask ExecuteAsync(Trigger sender, InteractionMessage message)
+    public async ValueTask ExecuteAsync(
+        Trigger sender,
+        InteractionMessage message,
+        IHasServiceProviderContainer hasServiceProviderContainer)
     {
         if (message is not InformationMessage informationMessage)
             return;
@@ -26,7 +30,7 @@ public class InformationDialogInteractionMessageAction : AvaloniaObject, IAction
         var owner = ControlHelper.FindOwnerWindow(control);
 
         await DialogOperator.DisplayInformationAsync(
-            message.ServiceProviderContainer ?? throw new NullReferenceException(),
+            hasServiceProviderContainer.ServiceProviderContainer,
             owner,
             informationMessage.Title,
             informationMessage.Text);

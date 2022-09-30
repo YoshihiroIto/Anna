@@ -7,8 +7,6 @@ public class InteractionMessage : AvaloniaObject
 {
     public static readonly StyledProperty<string> MessageKeyProperty =
         AvaloniaProperty.Register<InteractionMessage, string>(nameof(MessageKey));
-    
-    internal IServiceProviderContainer? ServiceProviderContainer { get; set; }
 
     public InteractionMessage(string messageKey)
     {

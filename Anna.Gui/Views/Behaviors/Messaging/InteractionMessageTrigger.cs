@@ -46,14 +46,12 @@ public class InteractionMessageTrigger : Trigger<Control>
         if (string.CompareOrdinal(e.Message.MessageKey, MessageKey) != 0)
             return;
 
-        e.Message.ServiceProviderContainer = Messenger.ServiceProviderContainer;
-
         foreach (var avaloniaObject in Actions)
         {
             if (avaloniaObject is not IAsyncAction action)
                 throw new NotSupportedException();
 
-            await action.ExecuteAsync(this, e.Message);
+            await action.ExecuteAsync(this, e.Message, Messenger);
         }
     }
 }

@@ -20,17 +20,21 @@ public sealed class FileSystemDirectory : Directory
         UpdateWatcher(path);
 
         _pathObserver = this.ObserveProperty(x => x.Path)
-            .Subscribe(UpdateWatcher);
+            .Subscribe(s =>
+            {
+                IsRoot = string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
+                UpdateWatcher(s);
+            });
     }
 
     protected override IEnumerable<Entry> EnumerateDirectories()
     {
-        if (string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) != 0)
+        if (IsRoot == false)
         {
             var d = new DirectoryInfo(Path);
 
             var entry = Entry.Create(d.Parent?.FullName ?? throw new NullReferenceException(), "..");
-            
+
             if (entry is not null)
                 yield return entry;
         }
@@ -49,7 +53,7 @@ public sealed class FileSystemDirectory : Directory
         foreach (var file in System.IO.Directory.EnumerateFiles(Path))
         {
             var entry = Entry.Create(file, System.IO.Path.GetRelativePath(Path, file));
-            
+
             if (entry is not null)
                 yield return entry;
         }

@@ -41,7 +41,7 @@ public class InfoPanelViewModel : HasModelRefViewModelBase<Directory>, ILocaliza
         EntriesCount = Observable
             .Merge(Observable.Return(0).ToUnit())
             .Merge(Model.Entries.CollectionChangedAsObservable().ToUnit())
-            .Select(_ => Model.Entries.Count)
+            .Select(_ => Model.Entries.Count - (Model.IsRoot ? 0 : 1))
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 

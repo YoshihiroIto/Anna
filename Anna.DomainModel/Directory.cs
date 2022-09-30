@@ -12,7 +12,7 @@ public abstract class Directory : NotificationObject, IDisposable
     public ObservableCollectionEx<Entry> Entries { get; } = new();
     public readonly object EntitiesUpdatingLockObj = new();
     
-    public bool IsRoot { get; protected set; }
+    public abstract bool IsRoot { get; }
     public bool IsInEntriesUpdating { get; private set; }
 
     #region Path

@@ -10,6 +10,8 @@ namespace Anna.DomainModel.FileSystem;
 
 public sealed class FileSystemDirectory : Directory
 {
+    public override bool IsRoot => string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
+    
     internal FileSystemDirectory(string path, ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(path, logger)
@@ -20,11 +22,7 @@ public sealed class FileSystemDirectory : Directory
         UpdateWatcher(path);
 
         _pathObserver = this.ObserveProperty(x => x.Path)
-            .Subscribe(s =>
-            {
-                IsRoot = string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
-                UpdateWatcher(s);
-            });
+            .Subscribe(UpdateWatcher);
     }
 
     protected override IEnumerable<Entry> EnumerateDirectories()
@@ -33,7 +31,7 @@ public sealed class FileSystemDirectory : Directory
         {
             var d = new DirectoryInfo(Path);
 
-            var entry = Entry.Create(d.Parent?.FullName ?? throw new NullReferenceException(), "..");
+            var entry = Entry.Create(d.Parent?.FullName ?? throw new NullReferenceException($"{Path}"), "..");
 
             if (entry is not null)
                 yield return entry;

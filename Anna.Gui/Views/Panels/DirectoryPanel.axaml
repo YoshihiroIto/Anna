@@ -90,51 +90,41 @@
         </Style>
     </UserControl.Styles>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-        <ItemsControl Items="{Binding Entries}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel ItemWidth="{Binding $parent[panels:DirectoryPanel].Layout.ItemWidth}"
-                               ItemHeight="{Binding $parent[panels:DirectoryPanel].Layout.ItemHeight}"
-                               Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+    <panels:DirectoryPanel.ItemTemplate>
+        <dataTemplateSelector:EntryDataTemplateSelector>
+            <dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
+                <DataTemplate DataType="viewModels1:EntryViewModel">
+                    <StackPanel Classes="entry">
+                        <Viewbox Classes="entry">
+                            <Path Classes="entry" IsVisible="{Binding IsSelected.Value}" />
+                        </Viewbox>
 
-            <ItemsControl.ItemTemplate>
-                <dataTemplateSelector:EntryDataTemplateSelector>
-                    <dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
-                        <DataTemplate DataType="viewModels1:EntryViewModel">
-                            <StackPanel Classes="entry">
-                                <Viewbox Classes="entry">
-                                    <Path Classes="entry" IsVisible="{Binding IsSelected.Value}" />
-                                </Viewbox>
+                        <TextBlock Classes="entry"
+                                   Width="{Binding $parent[panels:DirectoryPanel].Layout.NameWidth}"
+                                   Text="{Binding Name.Value}" />
 
-                                <TextBlock Classes="entry"
-                                           Width="{Binding $parent[panels:DirectoryPanel].Layout.NameWidth}"
-                                           Text="{Binding Name.Value}" />
+                        <TextBlock Classes="entry"
+                                   Width="{Binding $parent[panels:DirectoryPanel].Layout.ExtensionWidth}"
+                                   Text="{Binding Extension.Value}" />
+                    </StackPanel>
+                </DataTemplate>
+            </dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
 
-                                <TextBlock Classes="entry"
-                                           Width="{Binding $parent[panels:DirectoryPanel].Layout.ExtensionWidth}"
-                                           Text="{Binding Extension.Value}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
+            <dataTemplateSelector:EntryDataTemplateSelector.DirectoryDataTemplate>
+                <DataTemplate DataType="viewModels1:EntryViewModel">
+                    <StackPanel Classes="entry">
+                        <Viewbox Classes="entry">
+                            <Path Classes="entry" IsVisible="{Binding IsSelected.Value}" />
+                        </Viewbox>
 
-                    <dataTemplateSelector:EntryDataTemplateSelector.DirectoryDataTemplate>
-                        <DataTemplate DataType="viewModels1:EntryViewModel">
-                            <StackPanel Classes="entry">
-                                <Viewbox Classes="entry">
-                                    <Path Classes="entry" IsVisible="{Binding IsSelected.Value}" />
-                                </Viewbox>
+                        <TextBlock Classes="entry"
+                                   Width="{Binding $parent[panels:DirectoryPanel].Layout.NameWithExtensionWidth}"
+                                   Text="{Binding NameWithExtension.Value}" />
+                    </StackPanel>
+                </DataTemplate>
+            </dataTemplateSelector:EntryDataTemplateSelector.DirectoryDataTemplate>
+        </dataTemplateSelector:EntryDataTemplateSelector>
+    </panels:DirectoryPanel.ItemTemplate>
 
-                                <TextBlock Classes="entry"
-                                           Width="{Binding $parent[panels:DirectoryPanel].Layout.NameWithExtensionWidth}"
-                                           Text="{Binding NameWithExtension.Value}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </dataTemplateSelector:EntryDataTemplateSelector.DirectoryDataTemplate>
-                </dataTemplateSelector:EntryDataTemplateSelector>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </ScrollViewer>
+    <panels:EntriesControl />
 </UserControl>

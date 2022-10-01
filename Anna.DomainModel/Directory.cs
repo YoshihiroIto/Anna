@@ -11,7 +11,7 @@ public abstract class Directory : NotificationObject, IDisposable
 {
     public ObservableCollectionEx<Entry> Entries { get; } = new();
     public readonly object EntitiesUpdatingLockObj = new();
-    
+
     public abstract bool IsRoot { get; }
     public bool IsInEntriesUpdating { get; private set; }
 
@@ -179,7 +179,7 @@ public abstract class Directory : NotificationObject, IDisposable
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var alreadyExistsEntry))
                 RemoveEntryInternal(alreadyExistsEntry);
-            
+
             if (entry.IsDirectory)
             {
                 var span = Entries.AsSpan().Slice(0, _directoriesCount);
@@ -247,24 +247,16 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         lock (EntitiesUpdatingLockObj)
         {
-            var source = Entries.AsSpan();
-            var length = source.Length;
-
-            var temp = ArrayPool<Entry>.Shared.Rent(length);
             try
             {
-                for (var i = 0; i != length; ++i)
-                    temp[i] = Entry.Create(source[i]);
+                Entries.BeginChange();
 
-                temp.AsSpan().Slice(0, _directoriesCount).Sort(_entryCompare);
-                temp.AsSpan().Slice(_directoriesCount, _filesCount).Sort(_entryCompare);
-
-                for (var i = 0; i != length; ++i)
-                    temp[i].CopyTo(source[i]);
+                Entries.AsSpan().Slice(0, _directoriesCount).Sort(_entryCompare);
+                Entries.AsSpan().Slice(_directoriesCount, _filesCount).Sort(_entryCompare);
             }
             finally
             {
-                ArrayPool<Entry>.Shared.Return(temp);
+                Entries.EndChange();
             }
         }
     }

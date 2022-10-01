@@ -88,8 +88,6 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         _Logger = logger;
         Path = PathStringHelper.Normalize(path);
-
-        UpdateEntries();
     }
 
     protected void OnCreated(Entry newEntry)

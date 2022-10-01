@@ -92,7 +92,7 @@ public class Entry : NotificationObject
     public bool IsParentDirectory
     {
         get => _IsParentDirectory;
-        private set => SetProperty(ref _IsParentDirectory, value);
+        set => SetProperty(ref _IsParentDirectory, value);
     }
 
     #endregion
@@ -105,7 +105,7 @@ public class Entry : NotificationObject
     public FileAttributes Attributes
     {
         get => _Attributes;
-        private set
+        set
         {
             if (SetProperty(ref _Attributes, value) == false)
                 return;
@@ -122,7 +122,7 @@ public class Entry : NotificationObject
 
     #endregion
 
-    public string Path { get; private set; } = "";
+    public string Path { get;  set; } = "";
 
     public bool IsDirectory => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
     public bool IsSelectable => IsParentDirectory == false;
@@ -216,39 +216,12 @@ public class Entry : NotificationObject
         }
     }
 
-    public static Entry? Create(string path, string nameWithExtension)
-    {
-        var fileInfo = new FileInfo(path);
-
-        if ((int)fileInfo.Attributes == -1)
-            return null;
-
-        var isDirectory = (fileInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
-
-        var entry = new Entry
-        {
-            Timestamp = fileInfo.LastWriteTime,
-            Size = isDirectory ? 0 : fileInfo.Length,
-            Attributes = fileInfo.Attributes,
-            IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0,
-            Path = path
-        };
-
-        entry.SetName(nameWithExtension, false);
-
-        return entry;
-    }
-
-    public static Entry Create(Entry from)
+    public static Entry CreateFrom(Entry from)
     {
         var entry = new Entry();
         from.CopyTo(entry);
 
         return entry;
-    }
-
-    private Entry()
-    {
     }
 
     private void SetAttribute(FileAttributes a, bool i, [CallerMemberName] string propertyName = "")

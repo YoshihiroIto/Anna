@@ -11,7 +11,7 @@ namespace Anna.DomainModel.FileSystem;
 public sealed class FileSystemDirectory : Directory
 {
     public override bool IsRoot => string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
-    
+
     internal FileSystemDirectory(string path, ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(path, logger)
@@ -31,15 +31,19 @@ public sealed class FileSystemDirectory : Directory
         {
             var d = new DirectoryInfo(Path);
 
-            var entry = Entry.Create(d.Parent?.FullName ?? throw new NullReferenceException($"{Path}"), "..");
+            var entry = Create(d.Parent?.FullName ?? throw new NullReferenceException($"{Path}"), "..");
 
             if (entry is not null)
                 yield return entry;
         }
 
-        foreach (var dir in System.IO.Directory.EnumerateDirectories(Path))
+        var dirInfo = new DirectoryInfo(Path);
+
+        foreach (var fileInfo in dirInfo.EnumerateDirectories())
         {
-            var entry = Entry.Create(dir, System.IO.Path.GetRelativePath(Path, dir));
+            var file = fileInfo.FullName;
+
+            var entry = Create(fileInfo, file, fileInfo.Name);
 
             if (entry is not null)
                 yield return entry;
@@ -48,9 +52,13 @@ public sealed class FileSystemDirectory : Directory
 
     protected override IEnumerable<Entry> EnumerateFiles()
     {
-        foreach (var file in System.IO.Directory.EnumerateFiles(Path))
+        var dirInfo = new DirectoryInfo(Path);
+
+        foreach (var fileInfo in dirInfo.EnumerateFiles())
         {
-            var entry = Entry.Create(file, System.IO.Path.GetRelativePath(Path, file));
+            var file = fileInfo.FullName;
+
+            var entry = Create(fileInfo, file, fileInfo.Name);
 
             if (entry is not null)
                 yield return entry;
@@ -78,7 +86,7 @@ public sealed class FileSystemDirectory : Directory
         watcher.Created
             .Subscribe(e =>
             {
-                var entry = Entry.Create(e.FullPath, e.Name ?? "????");
+                var entry = Create(e.FullPath, e.Name ?? "????");
                 if (entry is null)
                     return;
 
@@ -89,7 +97,7 @@ public sealed class FileSystemDirectory : Directory
         watcher.Changed
             .Subscribe(e =>
             {
-                var entry = Entry.Create(e.FullPath, e.Name ?? "????");
+                var entry = Create(e.FullPath, e.Name ?? "????");
                 if (entry is null)
                     return;
 
@@ -108,6 +116,34 @@ public sealed class FileSystemDirectory : Directory
         watcher.Errors
             .Subscribe(x => _Logger.Error(x.GetException().ToString()))
             .AddTo(_watchTrash);
+    }
+
+    private static Entry? Create(string path, string nameWithExtension)
+    {
+        var fileInfo = new FileInfo(path);
+
+        return Create(fileInfo, path, nameWithExtension);
+    }
+
+    private static Entry? Create(FileSystemInfo fsInfo, string path, string nameWithExtension)
+    {
+        if ((int)fsInfo.Attributes == -1)
+            return null;
+
+        var isDirectory = (fsInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+
+        var entry = new Entry
+        {
+            Timestamp = fsInfo.LastWriteTime,
+            Size = isDirectory ? 0 : (fsInfo as FileInfo)!.Length,
+            Attributes = fsInfo.Attributes,
+            IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0,
+            Path = path
+        };
+
+        entry.SetName(nameWithExtension, false);
+
+        return entry;
     }
 
     private bool _isDispose;

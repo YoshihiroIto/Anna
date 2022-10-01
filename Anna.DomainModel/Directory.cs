@@ -1,7 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.Foundation;
 using Anna.UseCase;
-using System.Buffers;
 using System.Diagnostics;
 
 namespace Anna.DomainModel;
@@ -134,7 +133,7 @@ public abstract class Directory : NotificationObject, IDisposable
 
             RemoveEntryInternal(target);
 
-            var newEntry = Entry.Create(target);
+            var newEntry = Entry.CreateFrom(target);
             newEntry.SetName(newName, true);
 
             AddEntryInternal(newEntry);

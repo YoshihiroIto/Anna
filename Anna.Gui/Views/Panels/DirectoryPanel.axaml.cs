@@ -197,7 +197,7 @@ internal class EntriesControl : Control
         var entryCountPerPage = _parent.ItemCellSize.Width * _parent.ItemCellSize.Height;
 
         var start = entryCountPerPage * _parent.PageIndex;
-        var end = Math.Min(entries.Count, entryCountPerPage * (_parent.PageIndex + 1));
+        var end = Math.Min(entries.Count, entryCountPerPage * (_parent.PageIndex + 1) + _parent.ItemCellSize.Height);
 
         return (start, end);
     }
@@ -230,7 +230,7 @@ internal class EntriesControl : Control
 
                     childrenToAdd ??= new List<Control>(range.EndIndex - range.StartIndex);
                     childrenToAdd.Add(child);
-                    
+
                     _pageChildren.Add(child);
                 }
                 else
@@ -255,7 +255,7 @@ internal class EntriesControl : Control
                 var child = _pageChildren[_pageChildren.Count - 1 - i];
                 ReturnChild(child);
             }
-            
+
             VisualChildren.RemoveRange(VisualChildren.Count - deleteCount, deleteCount);
             LogicalChildren.RemoveRange(LogicalChildren.Count - deleteCount, deleteCount);
             _pageChildren.RemoveRange(_pageChildren.Count - deleteCount, deleteCount);

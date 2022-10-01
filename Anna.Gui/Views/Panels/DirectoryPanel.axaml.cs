@@ -10,10 +10,7 @@ using Avalonia.Markup.Xaml;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reactive.Disposables;
-using System.Runtime.InteropServices;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -131,15 +128,14 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
 internal class EntriesControl : Control
 {
     private readonly CompositeDisposable _entriesObservers = new();
-    private readonly Dictionary<EntryViewModel, IControl> _childrenControls = new();
     private readonly Stack<IControl> _recyclingChildrenPool = new();
+    private readonly List<Control> _pageChildren = new();
 
     private DirectoryPanel? _parent;
     private IDataTemplate? _itemTemplate;
     private DirectoryPanelLayout? _layout;
 
-    private readonly List<EntryViewModel> _pageEntries = new();
-    
+
     public EntriesControl()
     {
         PropertyChanged += (_, e) =>
@@ -216,37 +212,53 @@ internal class EntriesControl : Control
 
     private void UpdateChildren(IReadOnlyList<EntryViewModel> entries)
     {
-        var deleteTargets = _childrenControls.ToDictionary(x => x.Key, y => y.Value);
-
         var range = CurrentPageRange(entries);
-        _pageEntries.Clear();
+        var count = 0;
 
-        for (var i = range.StartIndex; i < range.EndIndex; ++i)
+        // add children
         {
-            var entry = entries[i];
-            _pageEntries.Add(entry);
+            List<Control>? childrenToAdd = null;
 
-            if (_childrenControls.ContainsKey(entry))
+            for (var i = range.StartIndex; i < range.EndIndex; ++i, ++count)
             {
-                if (deleteTargets.Remove(entry) == false)
-                    Debug.Assert(false);
+                var entry = entries[i];
 
-                continue;
+                if (_pageChildren.Count == count)
+                {
+                    var child = RentChild(entry) as Control ?? throw new NullReferenceException();
+                    child.DataContext = entry;
+
+                    childrenToAdd ??= new List<Control>(range.EndIndex - range.StartIndex);
+                    childrenToAdd.Add(child);
+                    
+                    _pageChildren.Add(child);
+                }
+                else
+                {
+                    _pageChildren[count].DataContext = entry;
+                }
             }
 
-            var child = RentChild(entry);
-
-            VisualChildren.Add(child);
-            LogicalChildren.Add(child);
-            _childrenControls.Add(entry, child);
+            if (childrenToAdd is not null)
+            {
+                VisualChildren.AddRange(childrenToAdd);
+                LogicalChildren.AddRange(childrenToAdd);
+            }
         }
 
-        foreach (var (entry, child) in deleteTargets)
+        // remove children
         {
-            VisualChildren.Remove(child);
-            LogicalChildren.Remove(child);
-            _childrenControls.Remove(entry);
-            ReturnChild(child);
+            var deleteCount = VisualChildren.Count - count;
+
+            for (var i = 0; i != deleteCount; ++i)
+            {
+                var child = _pageChildren[_pageChildren.Count - 1 - i];
+                ReturnChild(child);
+            }
+            
+            VisualChildren.RemoveRange(VisualChildren.Count - deleteCount, deleteCount);
+            LogicalChildren.RemoveRange(LogicalChildren.Count - deleteCount, deleteCount);
+            _pageChildren.RemoveRange(_pageChildren.Count - deleteCount, deleteCount);
         }
 
         InvalidateArrange();
@@ -280,11 +292,8 @@ internal class EntriesControl : Control
         var x = 0.0;
         var y = 0.0;
 
-        foreach (var entry in CollectionsMarshal.AsSpan(_pageEntries))
+        foreach (var child in _pageChildren)
         {
-            if (_childrenControls.TryGetValue(entry, out var child) == false)
-                throw new InvalidOperationException();
-
             if (y + itemSize.Height >= viewHeight)
             {
                 x += itemSize.Width;

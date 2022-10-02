@@ -7,8 +7,12 @@ public class TempDir : IDisposable
 
     public string[] ReadLogLines() => File.ReadAllLines(LogFilePath);
 
-    public TempDir()
+    private readonly string _workDir;
+
+    public TempDir(string workDir = "")
     {
+        _workDir = workDir;
+
         RootPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         Directory.CreateDirectory(RootPath);
         DirectoryInfo = new DirectoryInfo(RootPath);
@@ -20,15 +24,15 @@ public class TempDir : IDisposable
 
     public TempDir CreateDirectory(string path)
     {
-        Directory.CreateDirectory(Path.Combine(RootPath, path));
+        Directory.CreateDirectory(Path.Combine(RootPath, _workDir, path));
         return this;
     }
 
-    public TempDir CreateFolders(params string[] paths)
+    public TempDir CreateDirectories(params string[] paths)
     {
         foreach (var path in paths)
         {
-            var fullPath = Path.Combine(RootPath, path);
+            var fullPath = Path.Combine(RootPath, _workDir, path);
             Directory.CreateDirectory(fullPath);
         }
 
@@ -37,7 +41,7 @@ public class TempDir : IDisposable
 
     public TempDir CreateFile(string path)
     {
-        File.WriteAllText(Path.Combine(RootPath, path), "temp");
+        File.WriteAllText(Path.Combine(RootPath, _workDir, path), "temp");
         return this;
     }
 
@@ -45,7 +49,7 @@ public class TempDir : IDisposable
     {
         foreach (var path in fileRelativePaths)
         {
-            var fullPath = Path.Combine(RootPath, path);
+            var fullPath = Path.Combine(RootPath, _workDir, path);
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? throw new NullReferenceException());
 
             File.WriteAllText(
@@ -53,6 +57,28 @@ public class TempDir : IDisposable
                 string.Format("Automatically generated for testing on {0:yyyy}/{0:MM}/{0:dd} {0:hh}:{0:mm}:{0:ss}",
                     DateTime.UtcNow));
         }
+
+        return this;
+    }
+
+    public TempDir CreateWorkDirectory()
+    {
+        Directory.CreateDirectory(Path.Combine(RootPath, _workDir));
+
+        return this;
+    }
+
+    public TempDir DeleteWorkDirectory()
+    {
+        //Directory.Delete(Path.Combine(RootPath, _workDir), true);
+
+        var di = new DirectoryInfo(Path.Combine(RootPath, _workDir));
+
+        foreach (var d in di.EnumerateDirectories())
+            Directory.Delete(d.FullName);
+        
+        foreach (var f in di.EnumerateFiles())
+            File.Delete(f.FullName);
 
         return this;
     }

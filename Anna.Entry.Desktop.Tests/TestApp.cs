@@ -1,4 +1,3 @@
-using Anna.Gui.Views;
 using Anna.Gui.Views.Windows;
 using Anna.TestFoundation;
 using Avalonia;
@@ -18,7 +17,7 @@ public class TestApp : IAsyncDisposable
     public IEnumerable<DirectoryWindow> DirectoryWindows => App.Windows.OfType<DirectoryWindow>();
  #pragma warning restore CA1822
 
-    public TestApp(TempDir? configDir = null, bool isHeadless = true)
+    public TestApp(TempDir? configDir = null, string workDir = "",  bool isHeadless = true)
     {
         if (configDir is null)
         {
@@ -30,30 +29,33 @@ public class TestApp : IAsyncDisposable
             _configDir = configDir;
         }
 
-        Task.Run(() => StartAsync(isHeadless)).Wait();
+        Task.Run(() => StartAsync(Path.Combine(_configDir.RootPath, workDir), isHeadless)).Wait();
     }
 
     public async ValueTask DisposeAsync()
     {
         await WaitForAllWindowClosedAsync();
 
-        await _sema.WaitAsync(); 
+        await _sema.WaitAsync();
         _sema.Dispose();
 
         if (_useSelfConfigDir)
             _configDir.Dispose();
 
+        Dispatcher.UIThread.Post(() => App.Shutdown());
+        (App as IDisposable)?.Dispose();
+
         GC.SuppressFinalize(this);
     }
 
-    private async Task StartAsync(bool isHeadless)
+    private async Task StartAsync(string targetDir, bool isHeadless)
     {
-        await _sema.WaitAsync(); 
-        
+        await _sema.WaitAsync();
+
  #pragma warning disable CS4014
         Task.Run(() =>
         {
-            var args = new[] { "--config", _configDir.AppConfigFilePath };
+            var args = new[] { "--config", _configDir.AppConfigFilePath, "--target", targetDir };
 
             BuildAvaloniaApp(isHeadless, args)
                 .StartWithClassicDesktopLifetime(args);
@@ -96,5 +98,4 @@ public class TestApp : IAsyncDisposable
     private readonly TempDir _configDir;
     private readonly bool _useSelfConfigDir;
     private readonly SemaphoreSlim _sema = new(1, 1);
-    
 }

@@ -1,5 +1,8 @@
-﻿namespace Anna.Constants;
+﻿using NetEscapades.EnumGenerators;
 
+namespace Anna.Constants;
+
+[EnumExtensions]
 public enum Cultures
 {
     En,

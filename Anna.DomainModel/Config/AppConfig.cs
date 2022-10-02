@@ -30,6 +30,8 @@ public class AppConfigData : ConfigData
     {
         var lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         if (string.IsNullOrEmpty(lang) == false)
-            Culture = Enum.TryParse<Cultures>(lang, true, out var result) ? result : Cultures.En;
+        {
+            Culture = CulturesExtensions.TryParse(lang, true, out var result) ? result : Cultures.En;
+        }
     }
 }

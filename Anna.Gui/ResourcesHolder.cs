@@ -19,7 +19,7 @@ public class ResourcesHolder
 
     public void SetCulture(Cultures culture)
     {
-        Resources.Culture = CultureInfo.GetCultureInfo(culture.ToString());
+        Resources.Culture = CultureInfo.GetCultureInfo(culture.ToStringFast());
 
         Thread.CurrentThread.CurrentCulture = Resources.Culture;
         Thread.CurrentThread.CurrentUICulture = Resources.Culture;

@@ -6,7 +6,7 @@ using Anna.UseCase;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
-using System.Linq;
+using System;
 using System.Reactive.Linq;
 
 namespace Anna.Gui.Views.Panels;
@@ -15,11 +15,11 @@ public class InfoPanelViewModel : HasModelRefViewModelBase<Directory>, ILocaliza
 {
     public Resources R => _resourcesHolder.Instance;
 
-    public ReadOnlyReactivePropertySlim<int> SelectedEntriesCount { get; }
     public ReadOnlyReactivePropertySlim<int> EntriesCount { get; }
+    public ReadOnlyReactivePropertySlim<int> SelectedEntriesCount { get; }
 
-    public ReadOnlyReactivePropertySlim<long> SelectedTotalSize { get; }
-    public ReadOnlyReactivePropertySlim<long> TotalSize { get; }
+    public ReactiveProperty<long> TotalSize { get; }
+    public ReactiveProperty<long> SelectedTotalSize { get; }
 
     public InfoPanelViewModel(
         IServiceProviderContainer dic,
@@ -33,10 +33,10 @@ public class InfoPanelViewModel : HasModelRefViewModelBase<Directory>, ILocaliza
             .ToFilteredReadOnlyObservableCollection(x => x.IsSelected)
             .AddTo(Trash);
 
-        SelectedEntriesCount = selectedEntries.CollectionChangedAsObservable()
-            .Select(_ => selectedEntries.Count)
-            .ToReadOnlyReactivePropertySlim()
-            .AddTo(Trash);
+        var entrySizeChanged = Observable
+            .FromEventPattern(
+                h => Model.EntrySizeChanged += h,
+                h => Model.EntrySizeChanged -= h);
 
         EntriesCount = Observable
             .Merge(Observable.Return(0).ToUnit())
@@ -45,23 +45,42 @@ public class InfoPanelViewModel : HasModelRefViewModelBase<Directory>, ILocaliza
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
-        SelectedTotalSize = Observable
-            .Merge(selectedEntries.CollectionChangedAsObservable().ToUnit())
-            .Merge(selectedEntries.ObserveElementProperty(x => x.Size).ToUnit())
-            .Select(_ => selectedEntries
-                .Select(x => x.Size)
-                .Aggregate(0L, (sum, size) => sum + size)
-            ).ToReadOnlyReactivePropertySlim()
+        SelectedEntriesCount = selectedEntries.CollectionChangedAsObservable()
+            .Select(_ => selectedEntries.Count)
+            .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
-        TotalSize = Observable
+        TotalSize = new ReactiveProperty<long>().AddTo(Trash);
+        SelectedTotalSize = new ReactiveProperty<long>().AddTo(Trash);
+
+        Observable
+            .Merge(Observable.Return(0).ToUnit())
+            .Merge(selectedEntries.CollectionChangedAsObservable().ToUnit())
             .Merge(Model.Entries.CollectionChangedAsObservable().ToUnit())
-            .Merge(Model.Entries.ObserveElementProperty(x => x.Size).ToUnit())
-            .Select(_ => Model.Entries
-                .Select(x => x.Size)
-                .Aggregate(0L, (sum, size) => sum + size)
-            ).ToReadOnlyReactivePropertySlim()
+            .Merge(entrySizeChanged.ToUnit())
+            .Throttle(TimeSpan.FromMilliseconds(10))
+            .Subscribe(_ => UpdateTotalSize())
             .AddTo(Trash);
+    }
+
+    private void UpdateTotalSize()
+    {
+        var totalSize = 0L;
+        var selectedTotalSize = 0L;
+
+        lock (Model.EntitiesUpdatingLockObj)
+        {
+            foreach (var entry in Model.Entries)
+            {
+                totalSize += entry.Size;
+
+                if (entry.IsSelected)
+                    selectedTotalSize += entry.Size;
+            }
+        }
+
+        TotalSize.Value = totalSize;
+        SelectedTotalSize.Value = selectedTotalSize;
     }
 
     private readonly ResourcesHolder _resourcesHolder;

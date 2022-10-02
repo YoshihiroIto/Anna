@@ -11,6 +11,8 @@ public abstract class Directory : NotificationObject, IDisposable
     public ObservableCollectionEx<Entry> Entries { get; } = new();
     public readonly object EntitiesUpdatingLockObj = new();
 
+    public EventHandler? EntrySizeChanged;
+
     public abstract bool IsRoot { get; }
     public bool IsInEntriesUpdating { get; private set; }
 
@@ -100,13 +102,20 @@ public abstract class Directory : NotificationObject, IDisposable
     {
         _Logger.Information($"OnChanged: {Path}, {entry.NameWithExtension}");
 
+        bool isSizeChanged;
+        
         lock (EntitiesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var target) == false)
                 return;
 
+            isSizeChanged = entry.Size != target.Size;
+
             entry.CopyToWithoutIsSelected(target);
         }
+
+        if (isSizeChanged)
+            EntrySizeChanged?.Invoke(this, EventArgs.Empty);
     }
 
     protected void OnDeleted(string name)

@@ -1,7 +1,9 @@
-﻿using Anna.Gui;
+﻿using Anna.DomainModel;
+using Anna.Gui;
 using Anna.ServiceProvider;
 using Anna.UseCase;
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Xaml.Interactions.Core;
 using Avalonia.Xaml.Interactivity;
 using System;
@@ -23,6 +25,7 @@ public static class Program
             .StartWithClassicDesktopLifetime(args);
 
         dic.Destroy();
+        (App as IDisposable)?.Dispose();
     }
 
     public static AppBuilder BuildAvaloniaAppForDesktopTests(string[] args)
@@ -68,4 +71,7 @@ public static class Program
 
         return new DefaultServiceProviderContainer(configDir, appConfigFilePath);
     }
+    
+    private static IClassicDesktopStyleApplicationLifetime? App =>
+        (IClassicDesktopStyleApplicationLifetime?) Application.Current?.ApplicationLifetime;
 }

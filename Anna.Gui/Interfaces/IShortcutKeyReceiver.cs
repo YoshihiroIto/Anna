@@ -1,7 +1,7 @@
-﻿using Anna.DomainModel;
-using Anna.Gui.Views.Panels;
+﻿using Anna.Gui.Views.Panels;
 using Avalonia.Controls;
 using Directory=Anna.DomainModel.Directory;
+using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Interfaces;
 

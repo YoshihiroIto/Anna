@@ -20,7 +20,7 @@ public class GuiApp : Application
     public GuiApp()
     {
     }
-    
+
     public GuiApp(IServiceProviderContainer dic, Action? onExit)
     {
         _dic = dic;
@@ -65,8 +65,13 @@ public class GuiApp : Application
                 d.Show();
             }).AddTo(_trash);
 
-        // _dic.GetInstance<App>().ShowDirectoryAsync(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
-        _dic.GetInstance<App>().ShowDirectoryAsync(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile));
+        var commandLine = CommandLine.Parse(desktop.Args ?? Array.Empty<string>());
+
+        var targetDir = commandLine is not null
+            ? commandLine.TargetDirectory
+            : Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        _dic.GetInstance<App>().ShowDirectoryAsync(targetDir);
     }
 
     private readonly IServiceProviderContainer? _dic;

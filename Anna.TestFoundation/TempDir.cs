@@ -18,7 +18,7 @@ public class TempDir : IDisposable
 
     public DirectoryInfo DirectoryInfo { get; }
 
-    public TempDir CreateFolder(string path)
+    public TempDir CreateDirectory(string path)
     {
         Directory.CreateDirectory(Path.Combine(RootPath, path));
         return this;

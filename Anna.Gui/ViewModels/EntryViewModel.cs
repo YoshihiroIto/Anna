@@ -1,10 +1,10 @@
-﻿using Anna.DomainModel;
-using Anna.Gui.Foundations;
+﻿using Anna.Gui.Foundations;
 using Anna.UseCase;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.IO;
 using System.Reactive.Linq;
+using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.ViewModels;
 

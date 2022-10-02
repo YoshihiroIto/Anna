@@ -142,9 +142,9 @@ public abstract class Directory : NotificationObject, IDisposable
 
     private void UpdateEntries()
     {
-        lock (EntitiesUpdatingLockObj)
+        try
         {
-            try
+            lock (EntitiesUpdatingLockObj)
             {
                 IsInEntriesUpdating = true;
                 Entries.BeginChange();
@@ -164,11 +164,11 @@ public abstract class Directory : NotificationObject, IDisposable
                 foreach (var e in Entries)
                     _entriesDict.Add(e.NameWithExtension, e);
             }
-            finally
-            {
-                Entries.EndChange();
-                IsInEntriesUpdating = false;
-            }
+        }
+        finally
+        {
+            Entries.EndChange();
+            IsInEntriesUpdating = false;
         }
     }
 
@@ -244,19 +244,19 @@ public abstract class Directory : NotificationObject, IDisposable
 
     private void SortEntries()
     {
-        lock (EntitiesUpdatingLockObj)
+        try
         {
-            try
+            lock (EntitiesUpdatingLockObj)
             {
                 Entries.BeginChange();
 
                 Entries.AsSpan().Slice(0, _directoriesCount).Sort(_entryCompare);
                 Entries.AsSpan().Slice(_directoriesCount, _filesCount).Sort(_entryCompare);
             }
-            finally
-            {
-                Entries.EndChange();
-            }
+        }
+        finally
+        {
+            Entries.EndChange();
         }
     }
 

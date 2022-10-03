@@ -11,7 +11,6 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
 using Entry=Anna.DomainModel.Entry;
@@ -215,12 +214,11 @@ internal class EntriesControl : Control
 
     private void UpdateChildren(IReadOnlyList<EntryViewModel> entries)
     {
-        var deleteTargets = _childrenControls.ToDictionary(x => x.Key, y => y.Value);
-
         var range = CurrentPageRange(entries);
-        _pageEntries.Clear();
+        var deletionTargets = new DeletionTargets(_childrenControls);
+        var entitiesToAdd = new List<EntryViewModel>(range.EndIndex - range.StartIndex);
 
-        List<Control>? childrenToAdd = null;
+        _pageEntries.Clear();
 
         for (var i = range.StartIndex; i < range.EndIndex; ++i)
         {
@@ -229,17 +227,32 @@ internal class EntriesControl : Control
 
             if (_childrenControls.ContainsKey(entry))
             {
-                if (deleteTargets.Remove(entry) == false)
+                if (deletionTargets.Remove(entry) == false)
                     Debug.Assert(false);
 
                 continue;
             }
 
-            var child = _recyclingChildrenPool.Rent(entry);
+            entitiesToAdd.Add(entry);
+        }
 
-            childrenToAdd ??= new List<Control>(range.EndIndex - range.StartIndex);
-            childrenToAdd.Add(child);
-            _childrenControls.Add(entry, child);
+        List<Control>? childrenToAdd = null;
+        {
+            foreach (var entry in entitiesToAdd)
+            {
+                var r = _recyclingChildrenPool.Rent(entry, deletionTargets);
+                if (r.OldEntry is null)
+                {
+                    childrenToAdd ??= new List<Control>();
+                    childrenToAdd.Add(r.Child);
+                }
+                else
+                {
+                    _childrenControls.Remove(r.OldEntry);
+                }
+
+                _childrenControls[entry] = r.Child;
+            }
         }
 
         if (childrenToAdd is not null)
@@ -248,7 +261,7 @@ internal class EntriesControl : Control
             LogicalChildren.AddRange(childrenToAdd);
         }
 
-        foreach (var (entry, child) in deleteTargets)
+        foreach (var (entry, child) in deletionTargets.AllTargets)
         {
             VisualChildren.Remove(child);
             LogicalChildren.Remove(child);

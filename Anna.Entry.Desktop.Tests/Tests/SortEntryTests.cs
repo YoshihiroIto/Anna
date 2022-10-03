@@ -94,7 +94,7 @@ public class SortEntryTests : IDisposable
         Assert.Equal("002.dat", model.Entries[5].NameWithExtension);
         Assert.Equal("001.dat", model.Entries[6].NameWithExtension);
     }
-    
+
     [Fact]
     public async Task Extension_Ascending()
     {
@@ -125,7 +125,7 @@ public class SortEntryTests : IDisposable
         Assert.Equal("002.b", model.Entries[2].NameWithExtension);
         Assert.Equal("001.c", model.Entries[3].NameWithExtension);
     }
-    
+
     [Fact]
     public async Task Extension_Descending()
     {
@@ -156,5 +156,206 @@ public class SortEntryTests : IDisposable
         Assert.Equal("001.c", model.Entries[1].NameWithExtension);
         Assert.Equal("002.b", model.Entries[2].NameWithExtension);
         Assert.Equal("003.a", model.Entries[3].NameWithExtension);
+    }
+
+    [Fact]
+    public async Task Size_Ascending()
+    {
+        var configDir = _fixture.ConfigDir;
+        var app = _fixture.App;
+
+        configDir.CreateFile("001.c", text: "AAA");
+        configDir.CreateFile("002.b", text: "AA");
+        configDir.CreateFile("003.a", text: "A");
+
+        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = app.DirectoryWindows.First();
+
+            await w.PressKeyAsync(Key.S);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Enter);
+            await w.PressKeyAsync(Key.Enter);
+
+            return (w.DataContext as DirectoryWindowViewModel)?.Model;
+        });
+
+        _ = model ?? throw new NullReferenceException();
+
+        Assert.Equal(4, model.Entries.Count);
+        Assert.Equal("..", model.Entries[0].NameWithExtension);
+        Assert.Equal("003.a", model.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
+        Assert.Equal("001.c", model.Entries[3].NameWithExtension);
+    }
+
+    [Fact]
+    public async Task Size_Descending()
+    {
+        var configDir = _fixture.ConfigDir;
+        var app = _fixture.App;
+
+        configDir.CreateFile("001.c", text: "AAA");
+        configDir.CreateFile("002.b", text: "AA");
+        configDir.CreateFile("003.a", text: "A");
+
+        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = app.DirectoryWindows.First();
+
+            await w.PressKeyAsync(Key.S);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Enter);
+            await w.PressKeyAsync(Key.Right);
+            await w.PressKeyAsync(Key.Enter);
+
+            return (w.DataContext as DirectoryWindowViewModel)?.Model;
+        });
+
+        _ = model ?? throw new NullReferenceException();
+
+        Assert.Equal(4, model.Entries.Count);
+        Assert.Equal("..", model.Entries[0].NameWithExtension);
+        Assert.Equal("001.c", model.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
+        Assert.Equal("003.a", model.Entries[3].NameWithExtension);
+    }
+
+    [Fact]
+    public async Task Timestamp_Ascending()
+    {
+        var configDir = _fixture.ConfigDir;
+        var app = _fixture.App;
+
+        configDir.CreateFile("003.a", text: "A");
+        await Task.Delay(100);
+        configDir.CreateFile("002.b", text: "AA");
+        await Task.Delay(100);
+        configDir.CreateFile("001.c", text: "AAA");
+
+        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = app.DirectoryWindows.First();
+
+            await w.PressKeyAsync(Key.S);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Enter);
+            await w.PressKeyAsync(Key.Enter);
+
+            return (w.DataContext as DirectoryWindowViewModel)?.Model;
+        });
+
+        _ = model ?? throw new NullReferenceException();
+
+        Assert.Equal(4, model.Entries.Count);
+        Assert.Equal("..", model.Entries[0].NameWithExtension);
+        Assert.Equal("003.a", model.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
+        Assert.Equal("001.c", model.Entries[3].NameWithExtension);
+    }
+
+    [Fact]
+    public async Task Timestamp_Descending()
+    {
+        var configDir = _fixture.ConfigDir;
+        var app = _fixture.App;
+
+        configDir.CreateFile("003.a", text: "A");
+        await Task.Delay(100);
+        configDir.CreateFile("002.b", text: "AA");
+        await Task.Delay(100);
+        configDir.CreateFile("001.c", text: "AAA");
+
+        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = app.DirectoryWindows.First();
+
+            await w.PressKeyAsync(Key.S);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Enter);
+            await w.PressKeyAsync(Key.Right);
+            await w.PressKeyAsync(Key.Enter);
+
+            return (w.DataContext as DirectoryWindowViewModel)?.Model;
+        });
+
+        _ = model ?? throw new NullReferenceException();
+
+        Assert.Equal(4, model.Entries.Count);
+        Assert.Equal("..", model.Entries[0].NameWithExtension);
+        Assert.Equal("001.c", model.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
+        Assert.Equal("003.a", model.Entries[3].NameWithExtension);
+    }
+
+    [Fact]
+    public async Task Attributes_Ascending()
+    {
+        var configDir = _fixture.ConfigDir;
+        var app = _fixture.App;
+
+        configDir.CreateFile("001.b");
+        configDir.CreateFile("002.c", attributes: FileAttributes.Temporary);
+
+        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = app.DirectoryWindows.First();
+
+            await w.PressKeyAsync(Key.S);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Enter);
+            await w.PressKeyAsync(Key.Enter);
+
+            return (w.DataContext as DirectoryWindowViewModel)?.Model;
+        });
+
+        _ = model ?? throw new NullReferenceException();
+
+        Assert.Equal(3, model.Entries.Count);
+        Assert.Equal("..", model.Entries[0].NameWithExtension);
+        Assert.Equal("001.b", model.Entries[1].NameWithExtension);
+        Assert.Equal("002.c", model.Entries[2].NameWithExtension);
+    }
+
+    [Fact]
+    public async Task Attributes_Descending()
+    {
+        var configDir = _fixture.ConfigDir;
+        var app = _fixture.App;
+
+        configDir.CreateFile("001.b");
+        configDir.CreateFile("002.c", attributes: FileAttributes.Temporary);
+
+        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = app.DirectoryWindows.First();
+
+            await w.PressKeyAsync(Key.S);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Enter);
+            await w.PressKeyAsync(Key.Right);
+            await w.PressKeyAsync(Key.Enter);
+
+            return (w.DataContext as DirectoryWindowViewModel)?.Model;
+        });
+
+        _ = model ?? throw new NullReferenceException();
+
+        Assert.Equal(3, model.Entries.Count);
+        Assert.Equal("..", model.Entries[0].NameWithExtension);
+        Assert.Equal("002.c", model.Entries[1].NameWithExtension);
+        Assert.Equal("001.b", model.Entries[2].NameWithExtension);
     }
 }

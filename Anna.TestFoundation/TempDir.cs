@@ -39,9 +39,15 @@ public class TempDir : IDisposable
         return this;
     }
 
-    public TempDir CreateFile(string path)
+    public TempDir CreateFile(string path, string text = "temp", FileAttributes attributes = 0)
     {
-        File.WriteAllText(Path.Combine(RootPath, _workDir, path), "temp");
+        var filePath = Path.Combine(RootPath, _workDir, path);
+
+        File.WriteAllText(filePath, text);
+
+        if (attributes != 0)
+            File.SetAttributes(filePath, attributes);
+
         return this;
     }
 
@@ -76,7 +82,7 @@ public class TempDir : IDisposable
 
         foreach (var d in di.EnumerateDirectories())
             Directory.Delete(d.FullName);
-        
+
         foreach (var f in di.EnumerateFiles())
             File.Delete(f.FullName);
 

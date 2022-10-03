@@ -10,7 +10,11 @@ using Avalonia.Markup.Xaml;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reactive.Disposables;
+using System.Runtime.InteropServices;
+using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -128,13 +132,14 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
 internal class EntriesControl : Control
 {
     private readonly CompositeDisposable _entriesObservers = new();
-    private readonly Stack<IControl> _recyclingChildrenPool = new();
-    private readonly List<Control> _pageChildren = new();
+    private readonly Dictionary<EntryViewModel, Control> _childrenControls = new();
+    private readonly Stack<Control> _recyclingFileChildrenPool = new();
+    private readonly Stack<Control> _recyclingDirectoryChildrenPool = new();
+    private readonly List<EntryViewModel> _pageEntries = new();
 
     private DirectoryPanel? _parent;
     private IDataTemplate? _itemTemplate;
     private DirectoryPanelLayout? _layout;
-
 
     public EntriesControl()
     {
@@ -212,74 +217,73 @@ internal class EntriesControl : Control
 
     private void UpdateChildren(IReadOnlyList<EntryViewModel> entries)
     {
+        var deleteTargets = _childrenControls.ToDictionary(x => x.Key, y => y.Value);
+
         var range = CurrentPageRange(entries);
-        var count = 0;
+        _pageEntries.Clear();
 
-        // add children
+        List<Control>? childrenToAdd = null;
+
+        for (var i = range.StartIndex; i < range.EndIndex; ++i)
         {
-            List<Control>? childrenToAdd = null;
+            var entry = entries[i];
+            _pageEntries.Add(entry);
 
-            for (var i = range.StartIndex; i < range.EndIndex; ++i, ++count)
+            if (_childrenControls.ContainsKey(entry))
             {
-                var entry = entries[i];
+                if (deleteTargets.Remove(entry) == false)
+                    Debug.Assert(false);
 
-                if (_pageChildren.Count == count)
-                {
-                    var child = RentChild(entry) as Control ?? throw new NullReferenceException();
-                    child.DataContext = entry;
-
-                    childrenToAdd ??= new List<Control>(range.EndIndex - range.StartIndex);
-                    childrenToAdd.Add(child);
-
-                    _pageChildren.Add(child);
-                }
-                else
-                {
-                    _pageChildren[count].DataContext = entry;
-                }
+                continue;
             }
 
-            if (childrenToAdd is not null)
-            {
-                VisualChildren.AddRange(childrenToAdd);
-                LogicalChildren.AddRange(childrenToAdd);
-            }
+            var child = RentChild(entry);
+
+            childrenToAdd ??= new List<Control>(range.EndIndex - range.StartIndex);
+            childrenToAdd.Add(child);
+            _childrenControls.Add(entry, child);
         }
 
-        // remove children
+        if (childrenToAdd is not null)
         {
-            var deleteCount = VisualChildren.Count - count;
+            VisualChildren.AddRange(childrenToAdd);
+            LogicalChildren.AddRange(childrenToAdd);
+        }
 
-            for (var i = 0; i != deleteCount; ++i)
-            {
-                var child = _pageChildren[_pageChildren.Count - 1 - i];
-                ReturnChild(child);
-            }
+        foreach (var (entry, child) in deleteTargets)
+        {
+            VisualChildren.Remove(child);
+            LogicalChildren.Remove(child);
+            _childrenControls.Remove(entry);
 
-            VisualChildren.RemoveRange(VisualChildren.Count - deleteCount, deleteCount);
-            LogicalChildren.RemoveRange(LogicalChildren.Count - deleteCount, deleteCount);
-            _pageChildren.RemoveRange(_pageChildren.Count - deleteCount, deleteCount);
+            ReturnChild(child);
         }
 
         InvalidateArrange();
     }
 
-    private IControl RentChild(EntryViewModel entry)
+    private Control RentChild(EntryViewModel entry)
     {
         _ = _itemTemplate ?? throw new NullReferenceException();
 
-        var child = _recyclingChildrenPool.Count != 0
-            ? _recyclingChildrenPool.Pop()
-            : _itemTemplate.Build(entry) ?? throw new NullReferenceException();
+        var pool = entry.IsDirectory ? _recyclingDirectoryChildrenPool : _recyclingFileChildrenPool;
+
+        var child = pool.Count != 0
+            ? pool.Pop()
+            : _itemTemplate.Build(entry) as Control ?? throw new NullReferenceException();
 
         child.DataContext = entry;
         return child;
     }
 
-    private void ReturnChild(IControl child)
+    private void ReturnChild(Control child)
     {
+        var entry = child.DataContext as EntryViewModel ?? throw new NullReferenceException();
+
+        var pool = entry.IsDirectory ? _recyclingDirectoryChildrenPool : _recyclingFileChildrenPool;
+
         child.DataContext = null;
-        _recyclingChildrenPool.Push(child);
+        pool.Push(child);
     }
 
     protected override Size ArrangeOverride(Size finalSize)
@@ -292,8 +296,11 @@ internal class EntriesControl : Control
         var x = 0.0;
         var y = 0.0;
 
-        foreach (var child in _pageChildren)
+        foreach (var entry in CollectionsMarshal.AsSpan(_pageEntries))
         {
+            if (_childrenControls.TryGetValue(entry, out var child) == false)
+                throw new InvalidOperationException();
+
             if (y + itemSize.Height >= viewHeight)
             {
                 x += itemSize.Width;

@@ -133,12 +133,10 @@ internal class EntriesControl : Control
 {
     private readonly CompositeDisposable _entriesObservers = new();
     private readonly Dictionary<EntryViewModel, Control> _childrenControls = new();
-    private readonly Stack<Control> _recyclingFileChildrenPool = new();
-    private readonly Stack<Control> _recyclingDirectoryChildrenPool = new();
     private readonly List<EntryViewModel> _pageEntries = new();
+    private readonly RecyclingChildrenPool _recyclingChildrenPool = new();
 
     private DirectoryPanel? _parent;
-    private IDataTemplate? _itemTemplate;
     private DirectoryPanelLayout? _layout;
 
     public EntriesControl()
@@ -167,8 +165,8 @@ internal class EntriesControl : Control
                     newParent.ItemCellSizeChanged += OnItemCellSizeChanged;
 
                     _parent = newParent;
-                    _itemTemplate = newParent.ItemTemplate ?? throw new NullReferenceException();
                     _layout = newParent.Layout ?? throw new NullReferenceException();
+                    _recyclingChildrenPool.ItemTemplate = newParent.ItemTemplate ?? throw new NullReferenceException();
                 }
             }
         };
@@ -237,7 +235,7 @@ internal class EntriesControl : Control
                 continue;
             }
 
-            var child = RentChild(entry);
+            var child = _recyclingChildrenPool.Rent(entry);
 
             childrenToAdd ??= new List<Control>(range.EndIndex - range.StartIndex);
             childrenToAdd.Add(child);
@@ -256,34 +254,10 @@ internal class EntriesControl : Control
             LogicalChildren.Remove(child);
             _childrenControls.Remove(entry);
 
-            ReturnChild(child);
+            _recyclingChildrenPool.Return(child);
         }
 
         InvalidateArrange();
-    }
-
-    private Control RentChild(EntryViewModel entry)
-    {
-        _ = _itemTemplate ?? throw new NullReferenceException();
-
-        var pool = entry.IsDirectory ? _recyclingDirectoryChildrenPool : _recyclingFileChildrenPool;
-
-        var child = pool.Count != 0
-            ? pool.Pop()
-            : _itemTemplate.Build(entry) as Control ?? throw new NullReferenceException();
-
-        child.DataContext = entry;
-        return child;
-    }
-
-    private void ReturnChild(Control child)
-    {
-        var entry = child.DataContext as EntryViewModel ?? throw new NullReferenceException();
-
-        var pool = entry.IsDirectory ? _recyclingDirectoryChildrenPool : _recyclingFileChildrenPool;
-
-        child.DataContext = null;
-        pool.Push(child);
     }
 
     protected override Size ArrangeOverride(Size finalSize)

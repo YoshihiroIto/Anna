@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reactive.Disposables;
-using System.Runtime.InteropServices;
 using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Views.Panels;
@@ -132,11 +131,11 @@ internal class EntriesControl : Control
 {
     private readonly CompositeDisposable _entriesObservers = new();
     private readonly Dictionary<EntryViewModel, Control> _childrenControls = new();
-    private readonly List<EntryViewModel> _pageEntries = new();
     private readonly RecyclingChildrenPool _recyclingChildrenPool = new();
 
     private DirectoryPanel? _parent;
     private DirectoryPanelLayout? _layout;
+    private IReadOnlyList<EntryViewModel>? _currentEntries;
 
     public EntriesControl()
     {
@@ -214,16 +213,15 @@ internal class EntriesControl : Control
 
     private void UpdateChildren(IReadOnlyList<EntryViewModel> entries)
     {
-        var range = CurrentPageRange(entries);
+        _currentEntries = entries;
+        
+        var pageRange = CurrentPageRange(entries);
         var deletionTargets = new DeletionTargets(_childrenControls);
-        var entitiesToAdd = new List<EntryViewModel>(range.EndIndex - range.StartIndex);
+        var entitiesToAdd = new List<EntryViewModel>(pageRange.EndIndex - pageRange.StartIndex);
 
-        _pageEntries.Clear();
-
-        for (var i = range.StartIndex; i < range.EndIndex; ++i)
+        for (var i = pageRange.StartIndex; i < pageRange.EndIndex; ++i)
         {
             var entry = entries[i];
-            _pageEntries.Add(entry);
 
             if (_childrenControls.ContainsKey(entry))
             {
@@ -276,6 +274,7 @@ internal class EntriesControl : Control
     protected override Size ArrangeOverride(Size finalSize)
     {
         _ = _layout ?? throw new NullReferenceException();
+        _ = _currentEntries ?? throw new NullReferenceException();
 
         var itemSize = new Size(_layout.ItemWidth, _layout.ItemHeight);
         var viewHeight = finalSize.Height;
@@ -283,8 +282,12 @@ internal class EntriesControl : Control
         var x = 0.0;
         var y = 0.0;
 
-        foreach (var entry in CollectionsMarshal.AsSpan(_pageEntries))
+        var pageRange = CurrentPageRange(_currentEntries);
+        
+        for (var i = pageRange.StartIndex; i < pageRange.EndIndex; ++i)
         {
+            var entry = _currentEntries[i];
+            
             if (_childrenControls.TryGetValue(entry, out var child) == false)
                 throw new InvalidOperationException();
 

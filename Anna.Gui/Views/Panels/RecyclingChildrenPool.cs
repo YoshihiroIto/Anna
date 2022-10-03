@@ -11,7 +11,7 @@ internal class RecyclingChildrenPool
 {
     public IDataTemplate? ItemTemplate { get; set; }
 
-    public (Control Child, EntryViewModel? OldEntry) Rent(
+    public (Control Child, EntryViewModel? OldEntry, bool IsNew) Rent(
         EntryViewModel entry,
         DeletionTargets deletionTargets)
     {
@@ -20,8 +20,7 @@ internal class RecyclingChildrenPool
         if (fromDeleteTargets != default)
         {
             fromDeleteTargets.Child.DataContext = entry;
-
-            return (fromDeleteTargets.Child, fromDeleteTargets.Entry);
+            return (fromDeleteTargets.Child, fromDeleteTargets.Entry, false);
         }
 
         // Use new child or from the recycling pool
@@ -30,19 +29,32 @@ internal class RecyclingChildrenPool
 
             var pool = FindPool(entry);
 
-            var child = pool.Count != 0
-                ? pool.Pop()
-                : ItemTemplate.Build(entry) as Control ?? throw new NullReferenceException();
+            if (pool.Count == 0)
+            {
+                var child = ItemTemplate.Build(entry) as Control ?? throw new NullReferenceException();
 
-            child.DataContext = entry;
+                child.DataContext = entry;
+                child.IsVisible = true;
 
-            return (child, null);
+                return (child, null, true);
+            }
+            else
+            {
+                var child = pool.Pop();
+
+                child.DataContext = entry;
+                child.IsVisible = true;
+
+                return (child, null, false);
+            }
         }
     }
 
     public void Return(Control child)
     {
         var entry = child.DataContext as EntryViewModel ?? throw new NullReferenceException();
+        
+        child.IsVisible = false;
         child.DataContext = null;
 
         var pool = FindPool(entry);
@@ -90,7 +102,7 @@ internal class DeletionTargets
             return default;
 
         var r = targets.First();
-        
+
         Remove(r.Key);
         return (r.Key, r.Value);
     }

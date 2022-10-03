@@ -239,14 +239,15 @@ internal class EntriesControl : Control
             foreach (var entry in entitiesToAdd)
             {
                 var r = _recyclingChildrenPool.Rent(entry, deletionTargets);
-                if (r.OldEntry is null)
+                if (r.IsNew)
                 {
                     childrenToAdd ??= new List<Control>();
                     childrenToAdd.Add(r.Child);
                 }
                 else
                 {
-                    _childrenControls.Remove(r.OldEntry);
+                    if (r.OldEntry is not null)
+                        _childrenControls.Remove(r.OldEntry);
                 }
 
                 _childrenControls[entry] = r.Child;
@@ -261,10 +262,7 @@ internal class EntriesControl : Control
 
         foreach (var (entry, child) in deletionTargets.AllTargets)
         {
-            VisualChildren.Remove(child);
-            LogicalChildren.Remove(child);
             _childrenControls.Remove(entry);
-
             _recyclingChildrenPool.Return(child);
         }
 

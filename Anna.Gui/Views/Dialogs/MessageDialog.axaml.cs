@@ -1,10 +1,10 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Anna.Gui.Views.Dialogs.Base;
+using Avalonia;
 using Avalonia.Markup.Xaml;
 
 namespace Anna.Gui.Views.Dialogs;
 
-public partial class MessageDialog : Window
+public partial class MessageDialog : DialogBase
 {
     public MessageDialog()
     {

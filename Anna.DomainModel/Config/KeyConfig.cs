@@ -41,6 +41,6 @@ public class KeyConfigData : ConfigData
             new(Key.OemPipe, KeyModifiers.None, Operations.JumpToRootFolder),
         };
     }
-}
 
-public readonly record struct KeyData(Key Key, KeyModifiers Modifier, Operations Operation);
+    public readonly record struct KeyData(Key Key, KeyModifiers Modifier, Operations Operation);
+}

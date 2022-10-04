@@ -1,5 +1,8 @@
 ﻿using Anna.Constants;
 using Anna.Gui.Interfaces;
+using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Views.Panels;
+using Anna.Strings;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -22,7 +25,10 @@ public partial class ShortcutKeyManager
         if (result.IsCancel)
             return;
 
-        await shortcutKeyReceiver.FolderPanelViewModel.JumpToFolderAsync(result.Path);
+        if (CheckIsAccessible(result.Path, shortcutKeyReceiver) == false)
+            return;
+
+        shortcutKeyReceiver.Folder.Path = result.Path;
     }
 
     private static ValueTask MoveCursorAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)
@@ -42,22 +48,45 @@ public partial class ShortcutKeyManager
         return shortcutKeyReceiver.FolderPanelViewModel.OpenCursorEntryAsync();
     }
 
-    private static ValueTask JumpToParentFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    private ValueTask JumpToParentFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var parentDir = new DirectoryInfo(shortcutKeyReceiver.FolderPanelViewModel.Model.Path).Parent?.FullName;
+        var parentDir = new DirectoryInfo(shortcutKeyReceiver.Folder.Path).Parent?.FullName;
+        if (parentDir is null)
+            return ValueTask.CompletedTask;
+        
+        if (CheckIsAccessible(shortcutKeyReceiver.Folder.Path, shortcutKeyReceiver) == false)
+            return ValueTask.CompletedTask;
 
-        return parentDir is not null
-            ? shortcutKeyReceiver.FolderPanelViewModel.JumpToFolderAsync(parentDir)
-            : ValueTask.CompletedTask;
-    }
-
-    private static ValueTask JumpToRootFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
-    {
-        var rootDir = Path.GetPathRoot(shortcutKeyReceiver.FolderPanelViewModel.Model.Path);
-
-        if (rootDir is not null)
-            shortcutKeyReceiver.FolderPanelViewModel.JumpToFolderAsync(rootDir);
+        shortcutKeyReceiver.Folder.Path = parentDir;
 
         return ValueTask.CompletedTask;
+    }
+
+    private ValueTask JumpToRootFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var rootDir = Path.GetPathRoot(shortcutKeyReceiver.Folder.Path);
+        if (rootDir is null)
+            return ValueTask.CompletedTask;
+        
+        if (CheckIsAccessible(rootDir, shortcutKeyReceiver) == false)
+            return ValueTask.CompletedTask;
+
+        shortcutKeyReceiver.Folder.Path = rootDir;
+
+        return ValueTask.CompletedTask;
+    }
+
+    private bool CheckIsAccessible(string path, IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        if (_folderService.IsAccessible(path))
+            return true;
+
+        shortcutKeyReceiver.FolderPanelViewModel.Messenger.Raise(
+            new InformationMessage(
+                Resources.AppName,
+                string.Format(Resources.Message_AccessDenied, path),
+                FolderPanelViewModel.MessageKeyInformation));
+
+        return false;
     }
 }

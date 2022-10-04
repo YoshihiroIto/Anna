@@ -13,9 +13,14 @@ namespace Anna.Gui.ViewModels.ShortcutKey;
 
 public partial class ShortcutKeyManager : DisposableNotificationObject
 {
-    public ShortcutKeyManager(IServiceProviderContainer dic, KeyConfig keyConfig, ILoggerUseCase logger)
+    public ShortcutKeyManager(
+        IServiceProviderContainer dic,
+        IFolderServiceUseCase folderService,
+        KeyConfig keyConfig,
+        ILoggerUseCase logger)
     {
         _dic = dic;
+        _folderService = folderService;
         _logger = logger;
 
         SetupOperators();
@@ -91,6 +96,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
     }
 
     private readonly IServiceProviderContainer _dic;
+    private readonly IFolderServiceUseCase _folderService;
     private readonly ILoggerUseCase _logger;
     private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
 

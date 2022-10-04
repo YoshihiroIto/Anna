@@ -1,6 +1,8 @@
 ﻿using Anna.Constants;
+using Anna.DomainModel.Config;
 using Anna.Gui.Views.Dialogs;
 using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Windows;
 using Anna.UseCase;
 using Avalonia.Controls;
 using System.Threading.Tasks;
@@ -19,7 +21,25 @@ public static class DialogOperator
 
         await view.ShowDialog(owner);
 
-        return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.SortMode, viewModel.SortOrder);
+        return (viewModel.DialogResult == DialogResultTypes.Cancel,
+            viewModel.ResultSortMode, viewModel.ResultSortOrder);
+    }
+
+    public static async ValueTask<(bool IsCancel, string Path)>
+        JumpFolderAsync(IServiceProviderContainer dic, Window owner)
+    {
+        var currentFolderPath = ((owner as FolderWindow)?.DataContext as FolderWindowViewModel)?.Model.Path ?? "";
+
+        using var viewModel =
+            dic.GetInstance<JumpFolderDialogViewModel, (string CurrentFolderPath, JumpFolderConfigData Config)>((
+                currentFolderPath, dic.GetInstance<JumpFolderConfig>().Data));
+
+        var view = dic.GetInstance<JumpFolderDialog>();
+        view.DataContext = viewModel;
+
+        await view.ShowDialog(owner);
+
+        return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
     }
 
     public static async ValueTask DisplayInformationAsync(
@@ -28,7 +48,7 @@ public static class DialogOperator
         string title,
         string text)
     {
-        using var viewModel = dic.GetInstance<MessageDialogViewModel, (string, string)>((title, text));
+        using var viewModel = dic.GetInstance<MessageDialogViewModel, (string Title, string Text)>((title, text));
 
         var view = dic.GetInstance<MessageDialog>();
         view.DataContext = viewModel;

@@ -106,14 +106,14 @@ public partial class SortModeAndOrderDialog : DialogBase
 
     private void SetSortMode(SortModes sortModes)
     {
-        ViewModel.SortMode = sortModes;
+        ViewModel.ResultSortMode = sortModes;
         _states = States.Order;
         UpdateView();
     }
 
     private void SetSortOrder(SortOrders sortOrders)
     {
-        ViewModel.SortOrder = sortOrders;
+        ViewModel.ResultSortOrder = sortOrders;
         ViewModel.DialogResult = DialogResultTypes.Ok;
         Close();
     }

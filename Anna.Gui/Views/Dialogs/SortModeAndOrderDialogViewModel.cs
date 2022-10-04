@@ -6,8 +6,8 @@ namespace Anna.Gui.Views.Dialogs;
 
 public class SortModeAndOrderDialogViewModel : DialogViewModel
 {
-    public SortModes SortMode { get; set; }
-    public SortOrders SortOrder { get; set; }
+    public SortModes ResultSortMode { get; set; }
+    public SortOrders ResultSortOrder { get; set; }
 
     public SortModeAndOrderDialogViewModel(
         IServiceProviderContainer dic,

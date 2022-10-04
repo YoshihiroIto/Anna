@@ -14,22 +14,22 @@ public class TestApp : IAsyncDisposable
 {
  #pragma warning disable CA1822
     // ReSharper disable once MemberCanBeMadeStatic.Global
-    public IEnumerable<DirectoryWindow> DirectoryWindows => App.Windows.OfType<DirectoryWindow>();
+    public IEnumerable<FolderWindow> FolderWindows => App.Windows.OfType<FolderWindow>();
  #pragma warning restore CA1822
 
-    public TestApp(TempDir? configDir = null, string workDir = "",  bool isHeadless = true)
+    public TestApp(TempFolder? configFolder = null, string workDir = "",  bool isHeadless = true)
     {
-        if (configDir is null)
+        if (configFolder is null)
         {
-            _configDir = new TempDir();
+            _configFolder = new TempFolder();
             _useSelfConfigDir = true;
         }
         else
         {
-            _configDir = configDir;
+            _configFolder = configFolder;
         }
 
-        Task.Run(() => StartAsync(Path.Combine(_configDir.RootPath, workDir), isHeadless)).Wait();
+        Task.Run(() => StartAsync(Path.Combine(_configFolder.RootPath, workDir), isHeadless)).Wait();
     }
 
     public async ValueTask DisposeAsync()
@@ -40,7 +40,7 @@ public class TestApp : IAsyncDisposable
         _sema.Dispose();
 
         if (_useSelfConfigDir)
-            _configDir.Dispose();
+            _configFolder.Dispose();
 
         Dispatcher.UIThread.Post(() => App.Shutdown());
         (App as IDisposable)?.Dispose();
@@ -55,7 +55,7 @@ public class TestApp : IAsyncDisposable
  #pragma warning disable CS4014
         Task.Run(() =>
         {
-            var args = new[] { "--config", _configDir.AppConfigFilePath, "--target", targetDir };
+            var args = new[] { "--config", _configFolder.AppConfigFilePath, "--target", targetDir };
 
             BuildAvaloniaApp(isHeadless, args)
                 .StartWithClassicDesktopLifetime(args);
@@ -72,7 +72,7 @@ public class TestApp : IAsyncDisposable
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            foreach (var dw in DirectoryWindows.ToArray())
+            foreach (var dw in FolderWindows.ToArray())
                 dw.Close();
         });
     }
@@ -95,7 +95,7 @@ public class TestApp : IAsyncDisposable
         return appBuilder;
     }
 
-    private readonly TempDir _configDir;
+    private readonly TempFolder _configFolder;
     private readonly bool _useSelfConfigDir;
     private readonly SemaphoreSlim _sema = new(1, 1);
 }

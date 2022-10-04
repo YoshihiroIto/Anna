@@ -14,18 +14,18 @@ using System.Windows.Input;
 
 namespace Anna.Gui.Views.Windows;
 
-public class DirectoryWindowViewModel : HasModelRefViewModelBase<Directory>, ILocalizableViewModel
+public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
 {
     public const string MessageKeyClose = nameof(MessageKeyClose);
     
-    #region DirectoryPanelViewModel
+    #region FolderPanelViewModel
 
-    private readonly DirectoryPanelViewModel? _directoryPanelViewModel;
+    private readonly FolderPanelViewModel? _folderPanelViewModel;
 
-    public DirectoryPanelViewModel DirectoryPanelViewModel
+    public FolderPanelViewModel FolderPanelViewModel
     {
-        get => _directoryPanelViewModel ?? throw new NullReferenceException();
-        private init => SetProperty(ref _directoryPanelViewModel, value);
+        get => _folderPanelViewModel ?? throw new NullReferenceException();
+        private init => SetProperty(ref _folderPanelViewModel, value);
     }
 
     #endregion
@@ -47,7 +47,7 @@ public class DirectoryWindowViewModel : HasModelRefViewModelBase<Directory>, ILo
     public ICommand ToEnglishCommand { get; }
     public ICommand ToJapaneseCommand { get; }
 
-    public DirectoryWindowViewModel(
+    public FolderWindowViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
         AppConfig appConfig,
@@ -67,10 +67,10 @@ public class DirectoryWindowViewModel : HasModelRefViewModelBase<Directory>, ILo
         ToEnglishCommand = new DelegateCommand(() => appConfig.Data.Culture = Cultures.En);
         ToJapaneseCommand = new DelegateCommand(() => appConfig.Data.Culture = Cultures.Ja);
 
-        InfoPanelViewModel = _dic.GetInstance<InfoPanelViewModel, Directory>(Model)
+        InfoPanelViewModel = _dic.GetInstance<InfoPanelViewModel, Folder>(Model)
             .AddTo(Trash);
 
-        DirectoryPanelViewModel = _dic.GetInstance<DirectoryPanelViewModel, Directory>(Model)
+        FolderPanelViewModel = _dic.GetInstance<FolderPanelViewModel, Folder>(Model)
             .AddTo(Trash);
 
         _dic.GetInstance<App>().Directories.CollectionChangedAsObservable()
@@ -88,7 +88,7 @@ public class DirectoryWindowViewModel : HasModelRefViewModelBase<Directory>, ILo
 
         _isDispose = true;
 
-        _dic.GetInstance<App>().CloseDirectory(Model);
+        _dic.GetInstance<App>().CloseFolder(Model);
 
         base.Dispose();
     }

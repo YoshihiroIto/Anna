@@ -63,10 +63,10 @@ internal class RecyclingChildrenPool
 
     private Stack<Control> FindPool(EntryViewModel entry)
     {
-        return entry.IsDirectory ? _directoryPool : _filePool;
+        return entry.IsFolder ? _folderPool : _filePool;
     }
 
-    private readonly Stack<Control> _directoryPool = new();
+    private readonly Stack<Control> _folderPool = new();
     private readonly Stack<Control> _filePool = new();
 }
 
@@ -76,7 +76,7 @@ internal class DeletionTargets
     {
         get
         {
-            foreach (var c in _directoryTargets)
+            foreach (var c in _folderTargets)
                 yield return (c.Key, c.Value);
 
             foreach (var c in _fileTargets)
@@ -109,9 +109,9 @@ internal class DeletionTargets
 
     private Dictionary<EntryViewModel, Control> FindTargets(EntryViewModel entry)
     {
-        return entry.IsDirectory ? _directoryTargets : _fileTargets;
+        return entry.IsFolder ? _folderTargets : _fileTargets;
     }
 
     private readonly Dictionary<EntryViewModel, Control> _fileTargets = new();
-    private readonly Dictionary<EntryViewModel, Control> _directoryTargets = new();
+    private readonly Dictionary<EntryViewModel, Control> _folderTargets = new();
 }

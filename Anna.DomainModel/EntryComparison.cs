@@ -29,9 +29,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ByNameAscending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         return CompareByName(x, y);
@@ -40,9 +40,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ByNameDescending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         return ByNameAscending(y, x);
@@ -51,9 +51,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ByExtensionAscending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         return CompareByExtension(x, y);
@@ -62,9 +62,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ByExtensionDescending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         return ByExtensionAscending(y, x);
@@ -73,9 +73,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ByTimestampAscending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         if (x.Timestamp < y.Timestamp)
@@ -89,9 +89,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ByTimestampDescending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         return ByTimestampAscending(y, x);
@@ -100,9 +100,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int BySizeAscending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         if (x.Size < y.Size)
@@ -116,9 +116,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int BySizeDescending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         return BySizeAscending(y, x);
@@ -127,9 +127,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ByAttributesAscending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         if (x.Attributes < y.Attributes)
@@ -143,9 +143,9 @@ public static class EntryComparison
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int ByAttributesDescending(Entry x, Entry y)
     {
-        if (x.IsParentDirectory)
+        if (x.IsParentFolder)
             return -1;
-        if (y.IsParentDirectory)
+        if (y.IsParentFolder)
             return +1;
 
         return ByAttributesAscending(y, x);
@@ -153,7 +153,7 @@ public static class EntryComparison
 
     private static int CompareByName(Entry x, Entry y)
     {
-        if (x.IsDirectory)
+        if (x.IsFolder)
         {
             var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
             if (nameWithExt != 0)
@@ -175,7 +175,7 @@ public static class EntryComparison
 
     private static int CompareByExtension(Entry x, Entry y)
     {
-        if (x.IsDirectory)
+        if (x.IsFolder)
         {
             var nameWithExt = NameComparer.Compare(x.NameWithExtension, y.NameWithExtension);
             if (nameWithExt != 0)

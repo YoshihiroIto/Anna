@@ -19,8 +19,8 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
     public static readonly StyledProperty<IBrush> NoneAttributeBrushProperty =
         AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(NoneAttributeBrush));
 
-    public static readonly StyledProperty<IBrush> IsDirectoryAttributeBrushProperty =
-        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsDirectoryAttributeBrush));
+    public static readonly StyledProperty<IBrush> IsFolderAttributeBrushProperty =
+        AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsFolderAttributeBrush));
 
     public static readonly StyledProperty<IBrush> IsReadOnlyAttributeBrushProperty =
         AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(IsReadOnlyAttributeBrush));
@@ -46,10 +46,10 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
         set => SetValue(NoneAttributeBrushProperty, value);
     }
 
-    public IBrush IsDirectoryAttributeBrush
+    public IBrush IsFolderAttributeBrush
     {
-        get => GetValue(IsDirectoryAttributeBrushProperty);
-        set => SetValue(IsDirectoryAttributeBrushProperty, value);
+        get => GetValue(IsFolderAttributeBrushProperty);
+        set => SetValue(IsFolderAttributeBrushProperty, value);
     }
 
     public IBrush IsReadOnlyAttributeBrush
@@ -133,7 +133,7 @@ public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
             return IsCompressedAttributeBrush;
 
         if ((attributes & FileAttributes.Directory) == FileAttributes.Directory)
-            return IsDirectoryAttributeBrush;
+            return IsFolderAttributeBrush;
 
         return NoneAttributeBrush;
     }

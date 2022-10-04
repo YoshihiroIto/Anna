@@ -11,7 +11,7 @@ using System.Reactive.Linq;
 
 namespace Anna.Gui.Views.Panels;
 
-public class InfoPanelViewModel : HasModelRefViewModelBase<Directory>, ILocalizableViewModel
+public class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
 {
     public Resources R => _resourcesHolder.Instance;
 

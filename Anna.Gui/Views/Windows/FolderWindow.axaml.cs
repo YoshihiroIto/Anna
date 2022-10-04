@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Anna.Gui.Views.Windows;
 
-public partial class DirectoryWindow : Window
+public partial class FolderWindow : Window
 {
-    public DirectoryWindow()
+    public FolderWindow()
     {
         InitializeComponent();
 

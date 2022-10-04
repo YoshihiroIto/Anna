@@ -16,10 +16,10 @@ using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Views.Panels;
 
-public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
+public partial class FolderPanel : UserControl, IShortcutKeyReceiver
 {
     public static readonly StyledProperty<IDataTemplate?> ItemTemplateProperty =
-        AvaloniaProperty.Register<DirectoryPanel, IDataTemplate?>(nameof(ItemTemplate));
+        AvaloniaProperty.Register<FolderPanel, IDataTemplate?>(nameof(ItemTemplate));
 
     public IDataTemplate? ItemTemplate
     {
@@ -28,7 +28,7 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
     }
 
     public static readonly StyledProperty<int> SelectedIndexProperty =
-        AvaloniaProperty.Register<DirectoryPanel, int>(nameof(SelectedIndex));
+        AvaloniaProperty.Register<FolderPanel, int>(nameof(SelectedIndex));
 
     public int SelectedIndex
     {
@@ -37,7 +37,7 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
     }
 
     public static readonly StyledProperty<int> PageIndexProperty =
-        AvaloniaProperty.Register<DirectoryPanel, int>(nameof(PageIndex));
+        AvaloniaProperty.Register<FolderPanel, int>(nameof(PageIndex));
 
     public int PageIndex
     {
@@ -48,14 +48,14 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
     internal event EventHandler? PageIndexChanged;
     internal event EventHandler? ItemCellSizeChanged;
 
-    internal static readonly DirectProperty<DirectoryPanel, DirectoryPanelLayout> LayoutProperty =
-        AvaloniaProperty.RegisterDirect<DirectoryPanel, DirectoryPanelLayout>(nameof(DirectoryPanelLayout),
+    internal static readonly DirectProperty<FolderPanel, FolderPanelLayout> LayoutProperty =
+        AvaloniaProperty.RegisterDirect<FolderPanel, FolderPanelLayout>(nameof(FolderPanelLayout),
             o => o.Layout);
 
-    internal static readonly DirectProperty<DirectoryPanel, IntSize> ItemCellSizeProperty =
-        AvaloniaProperty.RegisterDirect<DirectoryPanel, IntSize>(nameof(ItemCellSize), o => o.ItemCellSize);
+    internal static readonly DirectProperty<FolderPanel, IntSize> ItemCellSizeProperty =
+        AvaloniaProperty.RegisterDirect<FolderPanel, IntSize>(nameof(ItemCellSize), o => o.ItemCellSize);
 
-    internal DirectoryPanelLayout Layout { get; } = new();
+    internal FolderPanelLayout Layout { get; } = new();
 
     internal IntSize ItemCellSize
     {
@@ -65,12 +65,12 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
 
     private IntSize _ItemCellSize;
 
-    static DirectoryPanel()
+    static FolderPanel()
     {
-        SelectedIndexProperty.Changed.Subscribe(e => (e.Sender as DirectoryPanel)?.UpdatePageIndex(true));
+        SelectedIndexProperty.Changed.Subscribe(e => (e.Sender as FolderPanel)?.UpdatePageIndex(true));
     }
 
-    public DirectoryPanel()
+    public FolderPanel()
     {
         InitializeComponent();
     }
@@ -84,13 +84,13 @@ public partial class DirectoryPanel : UserControl, IShortcutKeyReceiver
 
     public Window Owner => ControlHelper.FindOwnerWindow(this);
 
-    public Directory Directory => DirectoryPanelViewModel.Model;
+    public Folder Folder => FolderPanelViewModel.Model;
 
-    public DirectoryPanelViewModel DirectoryPanelViewModel =>
-        DataContext as DirectoryPanelViewModel ?? throw new NotSupportedException();
+    public FolderPanelViewModel FolderPanelViewModel =>
+        DataContext as FolderPanelViewModel ?? throw new NotSupportedException();
 
     public Entry[] CollectTargetEntries()
-        => DirectoryPanelViewModel.CollectTargetEntries();
+        => FolderPanelViewModel.CollectTargetEntries();
 
     private void UpdateItemCellSize()
     {
@@ -133,8 +133,8 @@ internal class EntriesControl : Control
     private readonly Dictionary<EntryViewModel, Control> _childrenControls = new();
     private readonly RecyclingChildrenPool _recyclingChildrenPool = new();
 
-    private DirectoryPanel? _parent;
-    private DirectoryPanelLayout? _layout;
+    private FolderPanel? _parent;
+    private FolderPanelLayout? _layout;
     private IReadOnlyList<EntryViewModel>? _currentEntries;
 
     public EntriesControl()
@@ -143,7 +143,7 @@ internal class EntriesControl : Control
         {
             if (e.Property == DataContextProperty)
             {
-                if (e.NewValue is DirectoryPanelViewModel viewModel)
+                if (e.NewValue is FolderPanelViewModel viewModel)
                 {
                     UpdateEntriesObservers(viewModel);
                     UpdateChildren(viewModel.Entries);
@@ -151,13 +151,13 @@ internal class EntriesControl : Control
             }
             else if (e.Property == ParentProperty)
             {
-                if (e.OldValue is DirectoryPanel oldParent)
+                if (e.OldValue is FolderPanel oldParent)
                 {
                     oldParent.PageIndexChanged -= OnPageIndexChanged;
                     oldParent.ItemCellSizeChanged -= OnItemCellSizeChanged;
                 }
 
-                if (e.NewValue is DirectoryPanel newParent)
+                if (e.NewValue is FolderPanel newParent)
                 {
                     newParent.PageIndexChanged += OnPageIndexChanged;
                     newParent.ItemCellSizeChanged += OnItemCellSizeChanged;
@@ -182,7 +182,7 @@ internal class EntriesControl : Control
         UpdateChildren();
     }
 
-    private void UpdateEntriesObservers(DirectoryPanelViewModel viewModel)
+    private void UpdateEntriesObservers(FolderPanelViewModel viewModel)
     {
         _entriesObservers.Clear();
 
@@ -205,7 +205,7 @@ internal class EntriesControl : Control
 
     private void UpdateChildren()
     {
-        if (DataContext is not DirectoryPanelViewModel viewModel)
+        if (DataContext is not FolderPanelViewModel viewModel)
             throw new InvalidOperationException();
 
         UpdateChildren(viewModel.Entries);

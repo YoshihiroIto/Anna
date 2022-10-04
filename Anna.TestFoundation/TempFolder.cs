@@ -1,6 +1,6 @@
 ﻿namespace Anna.TestFoundation;
 
-public class TempDir : IDisposable
+public class TempFolder : IDisposable
 {
     public string AppConfigFilePath => $"{RootPath}/AppConfig.json";
     public string LogFilePath => Path.Combine(RootPath, "logs", "log" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
@@ -9,7 +9,7 @@ public class TempDir : IDisposable
 
     private readonly string _workDir;
 
-    public TempDir(string workDir = "")
+    public TempFolder(string workDir = "")
     {
         _workDir = workDir;
 
@@ -22,13 +22,13 @@ public class TempDir : IDisposable
 
     public DirectoryInfo DirectoryInfo { get; }
 
-    public TempDir CreateDirectory(string path)
+    public TempFolder CreateFolder(string path)
     {
         Directory.CreateDirectory(Path.Combine(RootPath, _workDir, path));
         return this;
     }
 
-    public TempDir CreateDirectories(params string[] paths)
+    public TempFolder CreateDirectories(params string[] paths)
     {
         foreach (var path in paths)
         {
@@ -39,7 +39,7 @@ public class TempDir : IDisposable
         return this;
     }
 
-    public TempDir CreateFile(string path, string text = "temp", FileAttributes attributes = 0)
+    public TempFolder CreateFile(string path, string text = "temp", FileAttributes attributes = 0)
     {
         var filePath = Path.Combine(RootPath, _workDir, path);
 
@@ -51,7 +51,7 @@ public class TempDir : IDisposable
         return this;
     }
 
-    public TempDir CreateFiles(params string[] fileRelativePaths)
+    public TempFolder CreateFiles(params string[] fileRelativePaths)
     {
         foreach (var path in fileRelativePaths)
         {
@@ -67,14 +67,14 @@ public class TempDir : IDisposable
         return this;
     }
 
-    public TempDir CreateWorkDirectory()
+    public TempFolder CreateWorkFolder()
     {
         Directory.CreateDirectory(Path.Combine(RootPath, _workDir));
 
         return this;
     }
 
-    public TempDir DeleteWorkDirectory()
+    public TempFolder DeleteWorkFolder()
     {
         //Directory.Delete(Path.Combine(RootPath, _workDir), true);
 

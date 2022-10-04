@@ -10,7 +10,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime;
-using Directory=System.IO.Directory;
 
 namespace Anna.Entry.Desktop;
 

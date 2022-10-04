@@ -2,13 +2,13 @@
 
 namespace Anna.DomainModel.FileSystem;
 
-public class DirectoryService : IDirectoryServiceUseCase
+public class FolderService : IFolderServiceUseCase
 {
     public bool IsAccessible(string path)
     {
         try
         {
-            _ = System.IO.Directory.EnumerateDirectories(path).FirstOrDefault();
+            _ = Directory.EnumerateDirectories(path).FirstOrDefault();
             return true;
         }
         catch

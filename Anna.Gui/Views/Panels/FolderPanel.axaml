@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Anna.Gui.Views.Panels.DirectoryPanel"
+﻿<UserControl x:Class="Anna.Gui.Views.Panels.FolderPanel"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
@@ -12,7 +12,7 @@
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
-             x:DataType="panels:DirectoryPanelViewModel"
+             x:DataType="panels:FolderPanelViewModel"
              FontFamily="{Binding $self.Layout.FontFamily}"
              FontSize="{Binding $self.Layout.FontSize}"
              ItemCellSize="{Binding ItemCellSize.Value,
@@ -26,7 +26,7 @@
     <UserControl.Resources>
         <converters:AttributeBrushConverter x:Key="AttributeBrushConverter"
                                             IsCompressedAttributeBrush="{DynamicResource IsCompressedAttributeBrush}"
-                                            IsDirectoryAttributeBrush="{DynamicResource IsDirectoryAttributeBrush}"
+                                            IsFolderAttributeBrush="{DynamicResource IsFolderAttributeBrush}"
                                             IsEncryptedAttributeBrush="{DynamicResource IsEncryptedAttributeBrush}"
                                             IsHiddenAttributeBrush="{DynamicResource IsHiddenAttributeBrush}"
                                             IsReadOnlyAttributeBrush="{DynamicResource IsReadOnlyAttributeBrush}"
@@ -36,8 +36,8 @@
     </UserControl.Resources>
 
     <Interaction.Behaviors>
-        <behaviors:DirectoryPanelInputBehavior />
-        <messaging:InteractionMessageTrigger MessageKey="{x:Static panels:DirectoryPanelViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
+        <behaviors:FolderPanelInputBehavior />
+        <messaging:InteractionMessageTrigger MessageKey="{x:Static panels:FolderPanelViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
             <messaging:InformationDialogInteractionMessageAction />
         </messaging:InteractionMessageTrigger>
     </Interaction.Behaviors>
@@ -78,19 +78,19 @@
         </Style>
 
         <Style Selector="StackPanel.entry" x:DataType="viewModels1:EntryViewModel">
-            <Setter Property="Height" Value="{Binding $parent[panels:DirectoryPanel].Layout.ItemHeight}" />
-            <Setter Property="Margin" Value="{x:Static panels:DirectoryPanelLayout.ItemMargin}" />
+            <Setter Property="Height" Value="{Binding $parent[panels:FolderPanel].Layout.ItemHeight}" />
+            <Setter Property="Margin" Value="{x:Static panels:FolderPanelLayout.ItemMargin}" />
             <Setter Property="Orientation" Value="Horizontal" />
         </Style>
 
         <Style Selector="Viewbox.entry" x:DataType="viewModels1:EntryViewModel">
-            <Setter Property="Width" Value="{Binding $parent[panels:DirectoryPanel].Layout.ItemHeight}" />
-            <Setter Property="Height" Value="{Binding $parent[panels:DirectoryPanel].Layout.ItemHeight}" />
-            <Setter Property="Margin" Value="{x:Static panels:DirectoryPanelLayout.SelectedMarkMargin}" />
+            <Setter Property="Width" Value="{Binding $parent[panels:FolderPanel].Layout.ItemHeight}" />
+            <Setter Property="Height" Value="{Binding $parent[panels:FolderPanel].Layout.ItemHeight}" />
+            <Setter Property="Margin" Value="{x:Static panels:FolderPanelLayout.SelectedMarkMargin}" />
         </Style>
     </UserControl.Styles>
 
-    <panels:DirectoryPanel.ItemTemplate>
+    <panels:FolderPanel.ItemTemplate>
         <dataTemplateSelector:EntryDataTemplateSelector>
             <dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
                 <DataTemplate DataType="viewModels1:EntryViewModel">
@@ -100,17 +100,17 @@
                         </Viewbox>
 
                         <TextBlock Classes="entry"
-                                   Width="{Binding $parent[panels:DirectoryPanel].Layout.NameWidth}"
+                                   Width="{Binding $parent[panels:FolderPanel].Layout.NameWidth}"
                                    Text="{Binding Name.Value}" />
 
                         <TextBlock Classes="entry"
-                                   Width="{Binding $parent[panels:DirectoryPanel].Layout.ExtensionWidth}"
+                                   Width="{Binding $parent[panels:FolderPanel].Layout.ExtensionWidth}"
                                    Text="{Binding Extension.Value}" />
                     </StackPanel>
                 </DataTemplate>
             </dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
 
-            <dataTemplateSelector:EntryDataTemplateSelector.DirectoryDataTemplate>
+            <dataTemplateSelector:EntryDataTemplateSelector.FolderDataTemplate>
                 <DataTemplate DataType="viewModels1:EntryViewModel">
                     <StackPanel Classes="entry">
                         <Viewbox Classes="entry">
@@ -118,13 +118,13 @@
                         </Viewbox>
 
                         <TextBlock Classes="entry"
-                                   Width="{Binding $parent[panels:DirectoryPanel].Layout.NameWithExtensionWidth}"
+                                   Width="{Binding $parent[panels:FolderPanel].Layout.NameWithExtensionWidth}"
                                    Text="{Binding NameWithExtension.Value}" />
                     </StackPanel>
                 </DataTemplate>
-            </dataTemplateSelector:EntryDataTemplateSelector.DirectoryDataTemplate>
+            </dataTemplateSelector:EntryDataTemplateSelector.FolderDataTemplate>
         </dataTemplateSelector:EntryDataTemplateSelector>
-    </panels:DirectoryPanel.ItemTemplate>
+    </panels:FolderPanel.ItemTemplate>
 
     <panels:EntriesControl />
 </UserControl>

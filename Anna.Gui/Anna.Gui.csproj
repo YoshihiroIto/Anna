@@ -25,12 +25,12 @@
         <DependentUpon>InfoPanel.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Windows\DirectoryWindow.axaml.cs">
-        <DependentUpon>DirectoryWindow.axaml</DependentUpon>
+      <Compile Update="Views\Windows\FolderWindow.axaml.cs">
+        <DependentUpon>FolderWindow.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
-      <Compile Update="Views\Panels\DirectoryPanel.axaml.cs">
-        <DependentUpon>DirectoryPanel.axaml</DependentUpon>
+      <Compile Update="Views\Panels\FolderPanel.axaml.cs">
+        <DependentUpon>FolderPanel.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

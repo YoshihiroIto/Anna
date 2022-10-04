@@ -10,7 +10,7 @@ namespace Anna.Gui.ViewModels;
 
 public class EntryViewModel : HasModelRefViewModelBase<Entry>
 {
-    public bool IsDirectory => Model.IsDirectory;
+    public bool IsFolder => Model.IsFolder;
 
     public ReactivePropertySlim<bool> IsOnCursor => _IsOnCursor ??= SetupIsOnCursor();
     public ReadOnlyReactivePropertySlim<string> NameWithExtension => _NameWithExtension ??= SetupNameWithExtension();
@@ -42,9 +42,9 @@ public class EntryViewModel : HasModelRefViewModelBase<Entry>
     {
         return Model.ObserveProperty(x => x.NameWithExtension)
             .ObserveOnUIDispatcher()
-            .Select(x => Model.IsDirectory ? Path.AltDirectorySeparatorChar + x : x)
+            .Select(x => Model.IsFolder ? Path.AltDirectorySeparatorChar + x : x)
             .ToReadOnlyReactivePropertySlim(
-                Model.IsDirectory
+                Model.IsFolder
                     ? Path.AltDirectorySeparatorChar + Model.NameWithExtension
                     : Model.NameWithExtension)
             .AddTo(Trash);

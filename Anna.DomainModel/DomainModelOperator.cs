@@ -12,9 +12,9 @@ public class DomainModelOperator
         _dic = dic;
     }
 
-    public Directory CreateDirectory(string path)
+    public Folder CreateFolder(string path)
     {
-        return new FileSystemDirectory(path,
+        return new FileSystemFolder(path,
             _dic.GetInstance<ILoggerUseCase>(),
             _dic.GetInstance<IObjectLifetimeCheckerUseCase>());
     }

@@ -1,6 +1,6 @@
 ﻿namespace Anna.UseCase;
 
-public interface IDirectoryServiceUseCase
+public interface IFolderServiceUseCase
 {
     bool IsAccessible(string path);
 }

@@ -11,7 +11,6 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Disposables;
-using DirectoryWindow=Anna.Gui.Views.Windows.DirectoryWindow;
 
 namespace Anna.Gui;
 
@@ -61,17 +60,17 @@ public class GuiApp : Application
         _dic.GetInstance<App>().Directories.ObserveAddChanged()
             .Subscribe(x =>
             {
-                var d = new DirectoryWindow { DataContext = _dic.GetInstance<DirectoryWindowViewModel, Directory>(x) };
+                var d = new FolderWindow { DataContext = _dic.GetInstance<FolderWindowViewModel, Folder>(x) };
                 d.Show();
             }).AddTo(_trash);
 
         var commandLine = CommandLine.Parse(desktop.Args ?? Array.Empty<string>());
 
         var targetDir = commandLine is not null
-            ? commandLine.TargetDirectory
+            ? commandLine.TargetFolder
             : Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
-        _dic.GetInstance<App>().ShowDirectoryAsync(targetDir);
+        _dic.GetInstance<App>().ShowFolderAsync(targetDir);
     }
 
     private readonly IServiceProviderContainer? _dic;

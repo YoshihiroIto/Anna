@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="EmptyAttributeBrush" Color="White" />
 
-    <SolidColorBrush x:Key="IsDirectoryAttributeBrush" Color="#FFBA6D" />
+    <SolidColorBrush x:Key="IsFolderAttributeBrush" Color="#FFBA6D" />
     <SolidColorBrush x:Key="IsReadOnlyAttributeBrush" Color="#00FF00" />
     <SolidColorBrush x:Key="IsReparsePointAttributeBrush" Color="#FF0000" />
     <SolidColorBrush x:Key="IsHiddenAttributeBrush" Color="#9799FF" />

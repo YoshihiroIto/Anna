@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace Anna.DomainModel;
 
 [DebuggerDisplay("Path={Path}")]
-public abstract class Directory : NotificationObject, IDisposable
+public abstract class Folder : NotificationObject, IDisposable
 {
     public ObservableCollectionEx<Entry> Entries { get; } = new();
     public readonly object EntitiesUpdatingLockObj = new();
@@ -85,7 +85,7 @@ public abstract class Directory : NotificationObject, IDisposable
         SortEntries();
     }
 
-    protected Directory(string path, ILoggerUseCase logger)
+    protected Folder(string path, ILoggerUseCase logger)
     {
         _Logger = logger;
         Path = PathStringHelper.Normalize(path);
@@ -188,7 +188,7 @@ public abstract class Directory : NotificationObject, IDisposable
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var alreadyExistsEntry))
                 RemoveEntryInternal(alreadyExistsEntry);
 
-            if (entry.IsDirectory)
+            if (entry.IsFolder)
             {
                 var span = Entries.AsSpan().Slice(0, _directoriesCount);
                 var index = SpanHelper.UpperBound(span, entry, _entryCompare);
@@ -237,7 +237,7 @@ public abstract class Directory : NotificationObject, IDisposable
 
             TrimRemovedSelectedEntries();
 
-            if (entry.IsDirectory)
+            if (entry.IsFolder)
                 --_directoriesCount;
             else
                 --_filesCount;

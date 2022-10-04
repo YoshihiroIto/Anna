@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Behaviors;
 
-public class DirectoryPanelInputBehavior : Behavior<DirectoryPanel>
+public class FolderPanelInputBehavior : Behavior<FolderPanel>
 {
     protected override void OnAttached()
     {
@@ -56,7 +56,7 @@ public class DirectoryPanelInputBehavior : Behavior<DirectoryPanel>
         if (FocusManager.Instance?.Current is MenuItem)
             return;
 
-        var viewModel = AssociatedObject?.DataContext as DirectoryPanelViewModel;
+        var viewModel = AssociatedObject?.DataContext as FolderPanelViewModel;
 
         if (viewModel is not null)
         {

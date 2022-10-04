@@ -5,7 +5,7 @@ namespace Anna.DomainModel;
 public class CommandLine
 {
     public string AppConfigFilePath { get; private set; } = DefaultAppConfigFilePath;
-    public string TargetDirectory { get; private set; } = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    public string TargetFolder { get; private set; } = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
     public static CommandLine? Parse(string[] args)
     {
@@ -21,7 +21,7 @@ public class CommandLine
             var options = new OptionSet
             {
                 { "config=", "config filepath", v => commandLine.AppConfigFilePath = v },
-                { "target=", "target directory", v => commandLine.TargetDirectory = v }
+                { "target=", "target folder", v => commandLine.TargetFolder = v }
             };
 
             options.Parse(args);

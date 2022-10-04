@@ -5,23 +5,23 @@ namespace Anna.Entry.Desktop.Tests;
 
 public class DesktopTestFixture : IDisposable
 {
-    public TempDir ConfigDir { get; }
+    public TempFolder ConfigFolder { get; }
     public TestApp App { get; }
 
     public DesktopTestFixture()
     {
         var workDir = "test";
         
-        ConfigDir = new TempDir(workDir);
-        ConfigDir.CreateWorkDirectory();
+        ConfigFolder = new TempFolder(workDir);
+        ConfigFolder.CreateWorkFolder();
         
-        App = new TestApp(ConfigDir, workDir);
+        App = new TestApp(ConfigFolder, workDir);
     }
 
     public void Dispose()
     {
         App.DisposeAsync().AsTask().Wait();
-        ConfigDir.Dispose();
+        ConfigFolder.Dispose();
     }
 }
 

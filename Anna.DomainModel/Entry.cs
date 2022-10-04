@@ -85,14 +85,14 @@ public class Entry : NotificationObject
     #endregion
 
 
-    #region IsParentDirectory
+    #region IsParentFolder
 
-    private bool _IsParentDirectory;
+    private bool _isParentFolder;
 
-    public bool IsParentDirectory
+    public bool IsParentFolder
     {
-        get => _IsParentDirectory;
-        set => SetProperty(ref _IsParentDirectory, value);
+        get => _isParentFolder;
+        set => SetProperty(ref _isParentFolder, value);
     }
 
     #endregion
@@ -110,7 +110,7 @@ public class Entry : NotificationObject
             if (SetProperty(ref _Attributes, value) == false)
                 return;
 
-            RaisePropertyChanged(nameof(IsDirectory));
+            RaisePropertyChanged(nameof(IsFolder));
             RaisePropertyChanged(nameof(IsReadOnly));
             RaisePropertyChanged(nameof(IsReparsePoint));
             RaisePropertyChanged(nameof(IsHidden));
@@ -124,8 +124,8 @@ public class Entry : NotificationObject
 
     public string Path { get;  set; } = "";
 
-    public bool IsDirectory => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
-    public bool IsSelectable => IsParentDirectory == false;
+    public bool IsFolder => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+    public bool IsSelectable => IsParentFolder == false;
 
     public bool IsReadOnly
     {
@@ -177,7 +177,7 @@ public class Entry : NotificationObject
         target.Extension = Extension;
         target.Timestamp = Timestamp;
         target.Size = Size;
-        target.IsParentDirectory = IsParentDirectory;
+        target.IsParentFolder = IsParentFolder;
         target.Attributes = Attributes;
         target.Path = Path;
     }

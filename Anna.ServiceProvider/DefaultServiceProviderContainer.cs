@@ -30,7 +30,7 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
             new KeyConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = keyConfigFilePath });
         RegisterSingleton<ILoggerUseCase>(() => new Log.DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerUseCase, FileSystemObjectSerializer>();
-        RegisterSingleton<IDirectoryServiceUseCase, DirectoryService>();
+        RegisterSingleton<IFolderServiceUseCase, FolderService>();
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();

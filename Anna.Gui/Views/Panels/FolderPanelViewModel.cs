@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Panels;
 
-public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILocalizableViewModel
+public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
 {
     public const string MessageKeyInformation = nameof(MessageKeyInformation);
     
@@ -32,16 +32,16 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
 
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
     
-    public DirectoryPanelViewModel(
+    public FolderPanelViewModel(
         IServiceProviderContainer dic,
-        IDirectoryServiceUseCase directoryService,
+        IFolderServiceUseCase folderService,
         ResourcesHolder resourcesHolder,
         ShortcutKeyManager shortcutKeyManager,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
-        _directoryService = directoryService;
+        _folderService = folderService;
         _resourcesHolder = resourcesHolder;
         ShortcutKeyManager = shortcutKeyManager;
         _logger = logger;
@@ -92,7 +92,7 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
                 .CollectionChangedAsObservable()
                 .Subscribe(_ =>
                     {
-                        // If it is not a directory move, do nothing.
+                        // If it is not a folder move, do nothing.
                         if (string.CompareOrdinal(_oldPath, Model.Path) != 0)
                         {
                             SetCurrentIndex(_oldPath);
@@ -159,17 +159,17 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
         if (CursorEntry.Value is null)
             return ValueTask.CompletedTask;
 
-        if (CursorEntry.Value.IsDirectory)
-            return JumpToDirectoryAsync(CursorEntry.Value.Model.Path);
+        if (CursorEntry.Value.IsFolder)
+            return JumpToFolderAsync(CursorEntry.Value.Model.Path);
         else
             _logger.Information("Not implemented: OpenCursorEntry");
 
         return ValueTask.CompletedTask;
     }
 
-    public ValueTask JumpToDirectoryAsync(string path)
+    public ValueTask JumpToFolderAsync(string path)
     {
-        if (_directoryService.IsAccessible(path) == false)
+        if (_folderService.IsAccessible(path) == false)
         {
             Messenger.Raise(new InformationMessage(Resources.AppName, string.Format(Resources.Message_AccessDenied, path), MessageKeyInformation));
             return ValueTask.CompletedTask;
@@ -239,7 +239,7 @@ public class DirectoryPanelViewModel : HasModelRefViewModelBase<Directory>, ILoc
     }
 
     private readonly ILoggerUseCase _logger;
-    private readonly IDirectoryServiceUseCase _directoryService;
+    private readonly IFolderServiceUseCase _folderService;
     private readonly ResourcesHolder _resourcesHolder;
     private EntryViewModel? _oldEntry;
 

@@ -8,11 +8,11 @@ using System.Runtime.CompilerServices;
 
 namespace Anna.DomainModel.FileSystem;
 
-public sealed class FileSystemDirectory : Directory
+public sealed class FileSystemFolder : Folder
 {
     public override bool IsRoot => string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
 
-    internal FileSystemDirectory(string path, ILoggerUseCase logger,
+    internal FileSystemFolder(string path, ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(path, logger)
     {
@@ -130,14 +130,14 @@ public sealed class FileSystemDirectory : Directory
         if ((int)fsInfo.Attributes == -1)
             return null;
 
-        var isDirectory = (fsInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+        var isFolder  = (fsInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
 
         var entry = new Entry
         {
             Timestamp = fsInfo.LastWriteTime,
-            Size = isDirectory ? 0 : (fsInfo as FileInfo)!.Length,
+            Size = isFolder ? 0 : (fsInfo as FileInfo)!.Length,
             Attributes = fsInfo.Attributes,
-            IsParentDirectory = string.CompareOrdinal(nameWithExtension, "..") == 0,
+            IsParentFolder = string.CompareOrdinal(nameWithExtension, "..") == 0,
             Path = path
         };
 

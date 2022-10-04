@@ -1,6 +1,5 @@
 ﻿using Anna.UseCase;
 using System;
-using System.Threading.Tasks;
 
 namespace Anna.Gui.ViewModels.Messaging;
 
@@ -18,11 +17,6 @@ public class InteractionMessenger : IHasServiceProviderContainer
     public void Raise(InteractionMessage message)
     {
         Raised?.Invoke(this, new InteractionMessageRaisedEventArgs(message));
-    }
-
-    public async Task RaiseAsync(InteractionMessage message)
-    {
-        await Task.Run(() => Raise(message));
     }
 }
 

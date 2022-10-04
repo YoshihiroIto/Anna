@@ -4,6 +4,7 @@ using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Views.Dialogs.Base;
 using Anna.Gui.Views.Panels;
 using Anna.Strings;
 using Anna.UseCase;
@@ -16,8 +17,6 @@ namespace Anna.Gui.Views.Windows;
 
 public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
 {
-    public const string MessageKeyClose = nameof(MessageKeyClose);
-    
     #region FolderPanelViewModel
 
     private readonly FolderPanelViewModel? _folderPanelViewModel;
@@ -77,7 +76,7 @@ public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocaliza
             .Subscribe(_ =>
             {
                 if (_dic.GetInstance<App>().Directories.IndexOf(Model) == -1)
-                    Messenger.Raise(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+                    Messenger.Raise(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
             }).AddTo(Trash);
     }
 

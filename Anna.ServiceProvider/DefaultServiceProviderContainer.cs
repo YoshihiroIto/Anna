@@ -22,12 +22,16 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
 #endif
         >();
 
-        var keyConfigFilePath = Path.Combine(Path.GetDirectoryName(appConfigFilePath) ?? "", "Key.json");
+        var configFolder = Path.GetDirectoryName(appConfigFilePath) ?? "";
+        var keyConfigFilePath = Path.Combine(configFolder, "Key.json");
+        var jumpFolderConfigFilePath = Path.Combine(configFolder, "JumpFolder.json");
 
         RegisterSingleton(() =>
             new AppConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = appConfigFilePath });
         RegisterSingleton(() =>
             new KeyConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = keyConfigFilePath });
+        RegisterSingleton(() =>
+            new JumpFolderConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = jumpFolderConfigFilePath });
         RegisterSingleton<ILoggerUseCase>(() => new Log.DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerUseCase, FileSystemObjectSerializer>();
         RegisterSingleton<IFolderServiceUseCase, FolderService>();
@@ -52,10 +56,12 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
         GetInstance<IObjectLifetimeCheckerUseCase>().Start(s => _logger.Error(s));
         GetInstance<AppConfig>().Load();
         GetInstance<KeyConfig>().Load();
+        GetInstance<JumpFolderConfig>().Load();
     }
 
     public void Destroy()
     {
+        GetInstance<JumpFolderConfig>().Save();
         GetInstance<KeyConfig>().Save();
         GetInstance<AppConfig>().Save();
 

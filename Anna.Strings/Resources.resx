@@ -179,4 +179,7 @@
 
 Access denied.</value>
   </data>
+  <data name="DialogTitle_JumpFolder" xml:space="preserve">
+    <value>Jump folder</value>
+  </data>
 </root>

@@ -31,6 +31,7 @@ public class KeyConfigData : ConfigData
         Keys = new KeyData[]
         {
             new(Key.S, KeyModifiers.None, Operations.SortEntry),
+            new(Key.J, KeyModifiers.None, Operations.JumpFolder),
             new(Key.Up, KeyModifiers.None, Operations.MoveCursorUp),
             new(Key.Down, KeyModifiers.None, Operations.MoveCursorDown),
             new(Key.Left, KeyModifiers.None, Operations.MoveCursorLeft),

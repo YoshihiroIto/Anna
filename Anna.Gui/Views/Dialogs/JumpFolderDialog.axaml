@@ -8,11 +8,19 @@
         xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:messaging="clr-namespace:Anna.Gui.Views.Behaviors.Messaging"
-        Title="{ReflectionBinding R.AppName}"
-        d:DesignHeight="450"
-        d:DesignWidth="800"
+        Title="{ReflectionBinding R.DialogTitle_JumpFolder}"
+        Width="600"
+        MinWidth="400"
+        MinHeight="200"
+        Padding="0"
+        d:DesignHeight="200"
+        d:DesignWidth="400"
         x:CompileBindings="True"
         x:DataType="dialogs:JumpFolderDialogViewModel"
+        CanResize="True"
+        FontFamily="avares://Anna.Gui/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
+        FontSize="14"
+        SizeToContent="Height"
         mc:Ignorable="d">
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->
@@ -29,5 +37,38 @@
             <messaging:WindowInteractionMessageAction />
         </messaging:InteractionMessageTrigger>
     </Interaction.Behaviors>
-    Jump Folder
+
+    <ListBox HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch"
+             Background="Transparent"
+             Grid.IsSharedSizeScope="True"
+             Items="{Binding Paths,
+                             Mode=OneTime}"
+             SelectedItem="{Binding SelectedPath.Value}"
+             x:Name="ListBox"
+             VirtualizationMode="None">
+        <ListBox.Styles>
+            <Style Selector="ListBoxItem">
+                <Setter Property="Padding" Value="0" />
+            </Style>
+        </ListBox.Styles>
+
+        <ListBox.ItemTemplate>
+            <DataTemplate DataType="dialogs:JumpFolderPathViewModel">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               HorizontalAlignment="Right"
+                               DockPanel.Dock="Left"
+                               Text="{Binding Key,
+                                              Mode=OneTime}" />
+                    <TextBlock Grid.Column="1" Text="{Binding Path.Value}" />
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
 </Window>

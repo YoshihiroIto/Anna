@@ -42,6 +42,7 @@ public enum Directions
 public enum Operations
 {
     SortEntry,
+    JumpFolder,
     MoveCursorUp,
     MoveCursorDown,
     MoveCursorLeft,

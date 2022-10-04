@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.Gui.Interfaces;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -15,6 +16,16 @@ public partial class ShortcutKeyManager
             return;
 
         shortcutKeyReceiver.Folder.SetSortModeAndOrder(result.SortMode, result.SortOrder);
+    }
+    
+    private async ValueTask JumpFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var result = await DialogOperator.JumpFolderAsync(_dic, shortcutKeyReceiver.Owner);
+
+        if (result.IsCancel)
+            return;
+        
+        Debug.WriteLine(result.Path);
     }
 
     private static ValueTask MoveCursorAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)

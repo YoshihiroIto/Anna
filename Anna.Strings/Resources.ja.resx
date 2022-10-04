@@ -73,4 +73,7 @@
 
 アクセスが拒否されました。</value>
     </data>
+    <data name="DialogTitle_JumpFolder" xml:space="preserve">
+        <value>フォルダー移動</value>
+    </data>
 </root>

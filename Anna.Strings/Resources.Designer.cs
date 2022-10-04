@@ -87,6 +87,15 @@ namespace Anna.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jump folder.
+        /// </summary>
+        public static string DialogTitle_JumpFolder {
+            get {
+                return ResourceManager.GetString("DialogTitle_JumpFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sort entry.
         /// </summary>
         public static string DialogTitle_SortEntry {

@@ -78,6 +78,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
         _operators = new Dictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>
         {
             { Operations.SortEntry, SelectSortModeAndOrderAsync },
+            { Operations.JumpFolder, JumpFolderAsync },
             { Operations.MoveCursorUp, s => MoveCursorAsync(s, Directions.Up) },
             { Operations.MoveCursorDown, s => MoveCursorAsync(s, Directions.Down) },
             { Operations.MoveCursorLeft, s => MoveCursorAsync(s, Directions.Left) },

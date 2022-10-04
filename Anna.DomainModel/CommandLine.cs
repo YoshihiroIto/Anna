@@ -36,6 +36,6 @@ public class CommandLine
 
     public static readonly string DefaultAppConfigFilePath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "Jewelry Development/Anna/AppConfig.json"
+        "Jewelry Development/Anna/App.json"
     );
 }

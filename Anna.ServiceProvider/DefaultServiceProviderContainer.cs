@@ -22,7 +22,7 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
 #endif
         >();
 
-        var keyConfigFilePath = Path.Combine(Path.GetDirectoryName(appConfigFilePath) ?? "", "KeyConfig.json");
+        var keyConfigFilePath = Path.Combine(Path.GetDirectoryName(appConfigFilePath) ?? "", "Key.json");
 
         RegisterSingleton(() =>
             new AppConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = appConfigFilePath });

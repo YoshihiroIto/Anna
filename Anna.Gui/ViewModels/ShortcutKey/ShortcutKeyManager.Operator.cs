@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Views.Dialogs.Base;
 using Anna.Gui.Views.Panels;
 using Anna.Strings;
 using System.IO;
@@ -88,7 +89,7 @@ public partial class ShortcutKeyManager
             new InformationMessage(
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),
-                FolderPanelViewModel.MessageKeyInformation));
+                DialogViewModel.MessageKeyInformation));
 
         return false;
     }

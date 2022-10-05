@@ -42,7 +42,7 @@ public static class DialogOperator
         return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
     }
 
-    public static async ValueTask DisplayInformationAsync(
+    public static async ValueTask<DialogResultTypes> DisplayInformationAsync(
         IServiceProviderContainer dic,
         Window owner,
         string title,
@@ -54,5 +54,25 @@ public static class DialogOperator
         view.DataContext = viewModel;
 
         await view.ShowDialog(owner);
+
+        return viewModel.DialogResult;
+    }
+
+    public static async ValueTask<DialogResultTypes> DisplayConfirmationAsync(
+        IServiceProviderContainer dic,
+        Window owner,
+        string title,
+        string text,
+        ConfirmationTypes confirmationType)
+    {
+        using var viewModel =
+            dic.GetInstance<ConfirmationDialogViewModel, (string Title, string Text, ConfirmationTypes confirmationType)>((title, text, confirmationType));
+
+        var view = dic.GetInstance<ConfirmationDialog>();
+        view.DataContext = viewModel;
+
+        await view.ShowDialog(owner);
+
+        return viewModel.DialogResult;
     }
 }

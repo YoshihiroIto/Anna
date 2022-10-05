@@ -12,6 +12,8 @@ namespace Anna.Gui.Views.Dialogs.Base;
 public class DialogViewModel : ViewModelBase, ILocalizableViewModel
 {
     public const string MessageKeyClose = nameof(MessageKeyClose);
+    public const string MessageKeyInformation = nameof(MessageKeyInformation);
+    public const string MessageKeyYesNoConfirmation = nameof(MessageKeyYesNoConfirmation);
 
     public Resources R => _resourcesHolder.Instance;
 
@@ -58,8 +60,15 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
     }
 }
 
+public enum ConfirmationTypes
+{
+    YesNo
+}
+
 public enum DialogResultTypes
 {
     Ok,
-    Cancel
+    Cancel,
+    Yes,
+    No
 }

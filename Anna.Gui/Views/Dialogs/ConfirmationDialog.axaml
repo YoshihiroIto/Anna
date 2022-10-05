@@ -1,0 +1,55 @@
+﻿<base:DialogBase x:Class="Anna.Gui.Views.Dialogs.ConfirmationDialog"
+                 Classes="dialog"
+                 xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
+                 xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:messaging="clr-namespace:Anna.Gui.Views.Behaviors.Messaging"
+                 Title="{Binding Title,
+                                 Mode=OneTime}"
+                 MinWidth="300"
+                 MinHeight="150"
+                 MaxWidth="600"
+                 d:DesignHeight="450"
+                 d:DesignWidth="800"
+                 x:CompileBindings="True"
+                 x:DataType="dialogs:ConfirmationDialogViewModel"
+                 mc:Ignorable="d">
+    <Design.DataContext>
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
+        <dialogs:ConfirmationDialogViewModel />
+    </Design.DataContext>
+
+    <Window.Styles>
+        <StyleInclude Source="/Views/Resources/Styles.axaml" />
+    </Window.Styles>
+
+    <Interaction.Behaviors>
+        <behaviors:DialogBehavior />
+        <messaging:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+            <messaging:WindowInteractionMessageAction />
+        </messaging:InteractionMessageTrigger>
+    </Interaction.Behaviors>
+
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <StackPanel DockPanel.Dock="Bottom">
+            <Button MinWidth="80"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Command="{Binding OkCommand,
+                                      Mode=OneTime}"
+                    Content="{ReflectionBinding R.Dialog_Ok}">
+                <Interaction.Behaviors>
+                    <behaviors:InputElementFocusBehavior />
+                </Interaction.Behaviors>
+            </Button>
+        </StackPanel>
+
+        <TextBlock Text="{Binding Text, Mode=OneTime}" />
+    </DockPanel>
+</base:DialogBase>

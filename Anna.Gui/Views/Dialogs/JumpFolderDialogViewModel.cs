@@ -2,6 +2,7 @@
 using Anna.Gui.Foundations;
 using Anna.Gui.ViewModels.Messaging;
 using Anna.Gui.Views.Dialogs.Base;
+using Anna.Strings;
 using Anna.UseCase;
 using Avalonia.Input;
 using Reactive.Bindings;
@@ -46,9 +47,17 @@ public class JumpFolderDialogViewModel
                 return;
 
             case Key.Delete:
-                // todo: confirmation dialog
+                var mes = new ConfirmationMessage(
+                    Resources.AppName,
+                    "ABC",
+                    ConfirmationTypes.YesNo,
+                    MessageKeyYesNoConfirmation);
+
+                Messenger.Raise(mes);
                 
-                SelectedPath.Value.Model.Path = "";
+                if (mes.Response == DialogResultTypes.Yes)
+                    SelectedPath.Value.Model.Path = "";
+                
                 return;
         }
 

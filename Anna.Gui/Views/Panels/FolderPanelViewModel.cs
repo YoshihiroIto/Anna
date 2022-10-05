@@ -6,6 +6,7 @@ using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels;
 using Anna.Gui.ViewModels.Messaging;
 using Anna.Gui.ViewModels.ShortcutKey;
+using Anna.Gui.Views.Dialogs.Base;
 using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings;
@@ -19,8 +20,6 @@ namespace Anna.Gui.Views.Panels;
 
 public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
 {
-    public const string MessageKeyInformation = nameof(MessageKeyInformation);
-    
     public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; }
     public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; }
 
@@ -31,7 +30,7 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
     public ReactivePropertySlim<int> CursorIndex { get; }
 
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
-    
+
     public FolderPanelViewModel(
         IServiceProviderContainer dic,
         IFolderServiceUseCase folderService,
@@ -171,7 +170,10 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
     {
         if (_folderService.IsAccessible(path) == false)
         {
-            Messenger.Raise(new InformationMessage(Resources.AppName, string.Format(Resources.Message_AccessDenied, path), MessageKeyInformation));
+            Messenger.Raise(new InformationMessage(
+                Resources.AppName,
+                string.Format(Resources.Message_AccessDenied, path),
+                DialogViewModel.MessageKeyInformation));
             return ValueTask.CompletedTask;
         }
 

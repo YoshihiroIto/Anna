@@ -1,5 +1,6 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Views.Dialogs.Base;
 using Anna.UseCase;
 using Avalonia;
 using Avalonia.Controls;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Behaviors.Messaging;
 
-public class InformationDialogInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
+public class ConfirmationDialogInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
 {
     public object Execute(object? sender, object? parameter)
     {
@@ -21,7 +22,7 @@ public class InformationDialogInteractionMessageAction : AvaloniaObject, IAction
         InteractionMessage message,
         IHasServiceProviderContainer hasServiceProviderContainer)
     {
-        if (message is not InformationMessage informationMessage)
+        if (message is not ConfirmationMessage confirmationMessage)
             return;
 
         if (sender is not { AssociatedObject: IControl control })
@@ -29,10 +30,11 @@ public class InformationDialogInteractionMessageAction : AvaloniaObject, IAction
 
         var owner = ControlHelper.FindOwnerWindow(control);
 
-        message.Response = await DialogOperator.DisplayInformationAsync(
+        message.Response = await DialogOperator.DisplayConfirmationAsync(
             hasServiceProviderContainer.ServiceProviderContainer,
             owner,
-            informationMessage.Title,
-            informationMessage.Text);
+            confirmationMessage.Title,
+            confirmationMessage.Text,
+            confirmationMessage.ConfirmationType);
     }
 }

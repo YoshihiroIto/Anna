@@ -1,5 +1,4 @@
-﻿using Anna.UseCase;
-using Avalonia;
+﻿using Avalonia;
 
 namespace Anna.Gui.ViewModels.Messaging;
 
@@ -7,6 +6,8 @@ public class InteractionMessage : AvaloniaObject
 {
     public static readonly StyledProperty<string> MessageKeyProperty =
         AvaloniaProperty.Register<InteractionMessage, string>(nameof(MessageKey));
+    
+    public object? Response { get; internal set; }
 
     public InteractionMessage(string messageKey)
     {

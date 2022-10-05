@@ -11,5 +11,6 @@
 
     <Application.Styles>
         <FluentTheme Mode="Dark" />
+        <StyleInclude Source="/Views/Controls/EditableTextBlock.axaml" />
     </Application.Styles>
 </Application>

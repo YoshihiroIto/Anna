@@ -249,5 +249,14 @@ namespace Anna.Strings {
                 return ResourceManager.GetString("SortEntry_Order_Descending", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string UI_Edit {
+            get {
+                return ResourceManager.GetString("UI_Edit", resourceCulture);
+            }
+        }
     }
 }

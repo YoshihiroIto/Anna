@@ -1,0 +1,40 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
+        xmlns:controls="clr-namespace:Anna.Gui.Views.Controls">
+    <Design.PreviewWith>
+        <controls:EditableTextBlock />
+    </Design.PreviewWith>
+
+    <Style Selector="TextBox.editing">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+    </Style>
+
+    <Style Selector="controls|EditableTextBlock">
+        <Setter Property="EditTemplate">
+            <ControlTemplate>
+                <TextBox Classes="editing"
+                         x:Name="TextBox"
+                         Text="{Binding $parent[controls:EditableTextBlock].Text,
+                                        Mode=TwoWay}">
+                    <Interaction.Behaviors>
+                        <behaviors:InputElementFocusBehavior />
+                        <controls:EditableTextBlockTextBoxBehavior />
+                    </Interaction.Behaviors>
+                </TextBox>
+            </ControlTemplate>
+        </Setter>
+
+        <Setter Property="DisplayTemplate">
+            <ControlTemplate>
+                <TextBlock x:Name="TextBlock"
+                           Background="Transparent"
+                           Text="{TemplateBinding Text}"
+                           TextTrimming="CharacterEllipsis" />
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

@@ -24,6 +24,9 @@ public partial class ShortcutKeyManager
         var result = await DialogOperator.JumpFolderAsync(_dic, shortcutKeyReceiver.Owner);
         if (result.IsCancel)
             return;
+        
+        if (string.IsNullOrEmpty(result.Path))
+            return;
 
         if (CheckIsAccessible(result.Path, shortcutKeyReceiver) == false)
             return;

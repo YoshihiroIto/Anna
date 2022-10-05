@@ -76,4 +76,7 @@
     <data name="DialogTitle_JumpFolder" xml:space="preserve">
         <value>フォルダー移動</value>
     </data>
+    <data name="UI_Edit" xml:space="preserve">
+        <value>編集</value>
+    </data>
 </root>

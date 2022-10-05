@@ -182,4 +182,7 @@ Access denied.</value>
   <data name="DialogTitle_JumpFolder" xml:space="preserve">
     <value>Jump folder</value>
   </data>
+  <data name="UI_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
 </root>

@@ -13,11 +13,13 @@ namespace Anna.Gui.Views.Dialogs;
 public class JumpFolderDialogViewModel
     : HasModelDialogViewModel<(string CurrentFolderPath, JumpFolderConfigData Config)>
 {
-    public string ResultPath { get; set; } = "";
+    public string ResultPath { get; private set; } = "";
 
     public JumpFolderPathViewModel[] Paths { get; }
 
     public ReactivePropertySlim<JumpFolderPathViewModel> SelectedPath { get; }
+
+    public string CurrentFolderPath => Model.CurrentFolderPath;
 
     public JumpFolderDialogViewModel(
         IServiceProviderContainer dic,
@@ -35,12 +37,19 @@ public class JumpFolderDialogViewModel
 
     public void OnKeyDown(KeyEventArgs e)
     {
-        if (e.Key == Key.Enter)
+        switch (e.Key)
         {
-            ResultPath = SelectedPath.Value.Model.Path;
-            DialogResult = DialogResultTypes.Ok;
-            Messenger.Raise(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
-            return;
+            case Key.Enter:
+                ResultPath = SelectedPath.Value.Model.Path;
+                DialogResult = DialogResultTypes.Ok;
+                Messenger.Raise(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+                return;
+
+            case Key.Delete:
+                // todo: confirmation dialog
+                
+                SelectedPath.Value.Model.Path = "";
+                return;
         }
 
         foreach (var path in Model.Config.Paths)
@@ -60,6 +69,7 @@ public class JumpFolderPathViewModel : HasModelRefViewModelBase<JumpFolderConfig
 {
     public string Key { get; }
     public ReactivePropertySlim<string> Path { get; }
+    public ReactivePropertySlim<bool> IsEditing { get; }
 
     public JumpFolderPathViewModel(
         IServiceProviderContainer dic,
@@ -70,5 +80,6 @@ public class JumpFolderPathViewModel : HasModelRefViewModelBase<JumpFolderConfig
 
         Key = (isNumber ? (Model.Key - Avalonia.Input.Key.D0).ToString() : Model.Key.ToString()) + " : ";
         Path = Model.ToReactivePropertySlimAsSynchronized(x => x.Path).AddTo(Trash);
+        IsEditing = new ReactivePropertySlim<bool>().AddTo(Trash);
     }
 }

@@ -4,6 +4,7 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
                  xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
+                 xmlns:controls="clr-namespace:Anna.Gui.Views.Controls"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -33,24 +34,24 @@
 
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
-        <messaging:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}"
-                                             Messenger="{Binding Messenger}">
+        <messaging:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
             <messaging:WindowInteractionMessageAction />
         </messaging:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
-    <ListBox HorizontalAlignment="Stretch"
+    <ListBox x:Name="ListBox"
+             HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
              Background="Transparent"
              Grid.IsSharedSizeScope="True"
              Items="{Binding Paths,
                              Mode=OneTime}"
              SelectedItem="{Binding SelectedPath.Value}"
-             x:Name="ListBox"
              VirtualizationMode="None">
         <ListBox.Styles>
             <Style Selector="ListBoxItem">
                 <Setter Property="Padding" Value="0" />
+                <Setter Property="FocusAdorner" Value="{x:Null}" />
             </Style>
         </ListBox.Styles>
 
@@ -60,14 +61,33 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0"
                                HorizontalAlignment="Right"
-                               DockPanel.Dock="Left"
+                               DoubleTapped="OnDoubleTapped"
                                Text="{Binding Key,
                                               Mode=OneTime}" />
-                    <TextBlock Grid.Column="1" Text="{Binding Path.Value}" />
+
+                    <controls:EditableTextBlock Grid.Column="1"
+                                                DoubleTapped="OnDoubleTapped"
+                                                IsEditing="{Binding IsEditing.Value,
+                                                                    Mode=TwoWay}"
+                                                IsEditingChanged="OnIsEditingChanged"
+                                                PreviewPointerPress="PathOnPreviewPointerPress"
+                                                Text="{Binding Path.Value}" />
+
+                    <!--  ReSharper disable once Xaml.BindingWithContextNotResolved  -->
+                    <Button Grid.Column="2"
+                            Margin="2,0,0,0"
+                            Padding="8,0"
+                            BorderThickness="0"
+                            VerticalAlignment="Stretch"
+                            Click="EditButton_OnClick"
+                            Content="{ReflectionBinding $parent[dialogs:JumpFolderDialog].DataContext.R.UI_Edit,
+                                                        FallbackValue=Edit}"
+                            IsVisible="{Binding $parent[ListBoxItem].IsPointerOver}" />
                 </Grid>
             </DataTemplate>
         </ListBox.ItemTemplate>

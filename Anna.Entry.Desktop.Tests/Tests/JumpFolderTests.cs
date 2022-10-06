@@ -20,7 +20,7 @@ public class JumpFolderTests : IDisposable
 
     public void Dispose()
     {
-        _fixture.ConfigFolder.DeleteWorkFolder();
+        _fixture.Teardown();
     }
 
     private readonly DesktopTestFixture _fixture;
@@ -29,11 +29,10 @@ public class JumpFolderTests : IDisposable
     public async Task Dialog_open_escape()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.J);
             await w.PressKeyAsync(Key.Escape);
@@ -50,11 +49,10 @@ public class JumpFolderTests : IDisposable
     public async Task Dialog_select_empty()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.J);
             await w.PressKeyAsync(Key.Enter);
@@ -67,7 +65,6 @@ public class JumpFolderTests : IDisposable
         Assert.Equal(configFolder.WorkPath, model.Path);
     }
 
-#if false
     [Fact]
     public async Task Dialog_select_folder()
     {
@@ -80,17 +77,13 @@ public class JumpFolderTests : IDisposable
         a.Path = Path.Combine(configFolder.WorkPath, "FolderA");
 
         var json = JsonSerializer.Serialize(c, FileSystemObjectSerializer.Options);
+        await File.WriteAllTextAsync(configFolder.JumpFolderConfigFilePath, json);
 
-        var configPath =
-            Path.Combine(Path.GetDirectoryName(configFolder.AppConfigFilePath)!, JumpFolderConfig.Filename);
-
-        await File.WriteAllTextAsync(configPath, json);
-
-        var app = _fixture.App;
+        _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Load();
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.J);
             await w.PressKeyAsync(Key.A);
@@ -102,5 +95,4 @@ public class JumpFolderTests : IDisposable
 
         Assert.Equal(a.Path, model.Path);
     }
-#endif
 }

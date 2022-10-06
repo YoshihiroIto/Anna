@@ -7,12 +7,13 @@ using Anna.Gui.Views.Dialogs.Base;
 using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
 using Anna.UseCase;
+using System.Runtime;
 
 namespace Anna.ServiceProvider;
 
 public class DefaultServiceProviderContainer : ServiceProviderContainerBase
 {
-    public DefaultServiceProviderContainer(string logOutputDir, string appConfigFilePath)
+    private DefaultServiceProviderContainer(string logOutputDir, string appConfigFilePath)
     {
         RegisterSingleton<IObjectLifetimeCheckerUseCase,
 #if DEBUG
@@ -72,6 +73,27 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
         checker.End();
         _logger.End("Application");
         _logger.Destroy();
+    }
+
+
+    public static DefaultServiceProviderContainer Create(string[] args)
+    {
+        var commandLine = CommandLine.Parse(args);
+
+        var appConfigFilePath = commandLine is null
+            ? CommandLine.DefaultAppConfigFilePath
+            : commandLine.AppConfigFilePath;
+
+        // Assembly loading optimization
+        var configDir = Path.GetDirectoryName(appConfigFilePath) ??
+                        CommandLine.DefaultAppConfigFilePath;
+        {
+            Directory.CreateDirectory(configDir);
+            ProfileOptimization.SetProfileRoot(configDir);
+            ProfileOptimization.StartProfile("Startup.Profile");
+        }
+
+        return new DefaultServiceProviderContainer(configDir, appConfigFilePath);
     }
 
     private readonly ILoggerUseCase _logger;

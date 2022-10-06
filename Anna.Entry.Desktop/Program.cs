@@ -1,5 +1,4 @@
-﻿using Anna.DomainModel;
-using Anna.Gui;
+﻿using Anna.Gui;
 using Anna.ServiceProvider;
 using Anna.UseCase;
 using Avalonia;
@@ -7,9 +6,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Xaml.Interactions.Core;
 using Avalonia.Xaml.Interactivity;
 using System;
-using System.IO;
 using System.Reflection;
-using System.Runtime;
 
 namespace Anna.Entry.Desktop;
 
@@ -18,7 +15,7 @@ public static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        var dic = CreateServiceProviderContainer(args);
+        var dic = DefaultServiceProviderContainer.Create(args);
 
         BuildAvaloniaApp(dic, null)
             .StartWithClassicDesktopLifetime(args);
@@ -27,11 +24,9 @@ public static class Program
         (App as IDisposable)?.Dispose();
     }
 
-    public static AppBuilder BuildAvaloniaAppForDesktopTests(string[] args)
+    public static AppBuilder BuildAvaloniaAppForDesktopTests(string[] args, DefaultServiceProviderContainer dic)
     {
-        var dic = CreateServiceProviderContainer(args);
-
-        return BuildAvaloniaApp(dic, () => dic.Destroy());
+        return BuildAvaloniaApp(dic, dic.Destroy);
     }
 
     // for designer
@@ -51,26 +46,6 @@ public static class Program
             .UsePlatformDetect()
             .LogToTrace();
 
-    private static DefaultServiceProviderContainer CreateServiceProviderContainer(string[] args)
-    {
-        var commandLine = CommandLine.Parse(args);
-
-        var appConfigFilePath = commandLine is null
-            ? CommandLine.DefaultAppConfigFilePath
-            : commandLine.AppConfigFilePath;
-
-        // Assembly loading optimization
-        var configDir = Path.GetDirectoryName(appConfigFilePath) ??
-                        CommandLine.DefaultAppConfigFilePath;
-        {
-            Directory.CreateDirectory(configDir);
-            ProfileOptimization.SetProfileRoot(configDir);
-            ProfileOptimization.StartProfile("Startup.Profile");
-        }
-
-        return new DefaultServiceProviderContainer(configDir, appConfigFilePath);
-    }
-    
     private static IClassicDesktopStyleApplicationLifetime? App =>
         (IClassicDesktopStyleApplicationLifetime?) Application.Current?.ApplicationLifetime;
 }

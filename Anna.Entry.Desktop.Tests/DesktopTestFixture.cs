@@ -1,4 +1,5 @@
-﻿using Anna.TestFoundation;
+﻿using Anna.DomainModel;
+using Anna.TestFoundation;
 using Xunit;
 
 namespace Anna.Entry.Desktop.Tests;
@@ -22,6 +23,12 @@ public class DesktopTestFixture : IDisposable
     {
         App.DisposeAsync().AsTask().Wait();
         ConfigFolder.Dispose();
+    }
+
+    public void Teardown ()
+    {
+        App.ServiceProviderContainer.GetInstance<App>().Directories[0].Path = ConfigFolder.WorkPath;
+        ConfigFolder.DeleteWorkFolder();
     }
 }
 

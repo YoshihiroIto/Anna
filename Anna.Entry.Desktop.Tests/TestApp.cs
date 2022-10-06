@@ -1,4 +1,5 @@
 using Anna.Gui.Views.Windows;
+using Anna.ServiceProvider;
 using Anna.TestFoundation;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -17,7 +18,9 @@ public class TestApp : IAsyncDisposable
     public IEnumerable<FolderWindow> FolderWindows => App.Windows.OfType<FolderWindow>();
  #pragma warning restore CA1822
 
-    public TestApp(TempFolder? configFolder = null, string workDir = "",  bool isHeadless = true)
+    public DefaultServiceProviderContainer ServiceProviderContainer { get; }
+
+    public TestApp(TempFolder? configFolder = null, string workDir = "", bool isHeadless = true)
     {
         if (configFolder is null)
         {
@@ -29,7 +32,14 @@ public class TestApp : IAsyncDisposable
             _configFolder = configFolder;
         }
 
-        Task.Run(() => StartAsync(Path.Combine(_configFolder.RootPath, workDir), isHeadless)).Wait();
+        var args = new[]
+        {
+            "--config", _configFolder.AppConfigFilePath, "--target", Path.Combine(_configFolder.RootPath, workDir)
+        };
+
+        ServiceProviderContainer = DefaultServiceProviderContainer.Create(args);
+
+        Task.Run(() => StartAsync(args, isHeadless)).Wait();
     }
 
     public async ValueTask DisposeAsync()
@@ -48,16 +58,14 @@ public class TestApp : IAsyncDisposable
         GC.SuppressFinalize(this);
     }
 
-    private async Task StartAsync(string targetDir, bool isHeadless)
+    private async Task StartAsync(string[] args, bool isHeadless)
     {
         await _sema.WaitAsync();
 
  #pragma warning disable CS4014
         Task.Run(() =>
         {
-            var args = new[] { "--config", _configFolder.AppConfigFilePath, "--target", targetDir };
-
-            BuildAvaloniaApp(isHeadless, args)
+            BuildAvaloniaApp(isHeadless, args, ServiceProviderContainer)
                 .StartWithClassicDesktopLifetime(args);
 
             _sema.Release();
@@ -85,9 +93,9 @@ public class TestApp : IAsyncDisposable
         Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime ??
         throw new NullReferenceException();
 
-    private static AppBuilder BuildAvaloniaApp(bool isHeadless, string[] args)
+    private static AppBuilder BuildAvaloniaApp(bool isHeadless, string[] args, DefaultServiceProviderContainer dic)
     {
-        var appBuilder = Program.BuildAvaloniaAppForDesktopTests(args);
+        var appBuilder = Program.BuildAvaloniaAppForDesktopTests(args, dic);
 
         if (isHeadless)
             appBuilder.UseHeadless(new AvaloniaHeadlessPlatformOptions { UseCompositor = false });

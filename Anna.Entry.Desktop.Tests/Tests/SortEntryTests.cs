@@ -17,7 +17,7 @@ public class SortEntryTests : IDisposable
 
     public void Dispose()
     {
-        _fixture.ConfigFolder.DeleteWorkFolder();
+        _fixture.Teardown();
     }
 
     private readonly DesktopTestFixture _fixture;

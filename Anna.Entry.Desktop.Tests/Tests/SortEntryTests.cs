@@ -35,7 +35,7 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFolder("dir1");
 
         await Task.Delay(100);
-        
+
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -44,11 +44,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(7, model.Entries.Count);
@@ -74,7 +72,7 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFolder("dir1");
 
         await Task.Delay(100);
-        
+
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -84,11 +82,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(7, model.Entries.Count);
@@ -111,7 +107,7 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("003.a");
 
         await Task.Delay(100);
-        
+
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -121,11 +117,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
@@ -145,7 +139,7 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("003.a");
 
         await Task.Delay(100);
-        
+
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -156,11 +150,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
@@ -180,7 +172,7 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("003.a", text: "A");
 
         await Task.Delay(100);
-        
+
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -191,11 +183,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
@@ -215,7 +205,7 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("003.a", text: "A");
 
         await Task.Delay(100);
-        
+
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -227,11 +217,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
@@ -253,7 +241,7 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("001.c", text: "AAA");
 
         await Task.Delay(100);
-        
+
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -265,11 +253,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
@@ -291,7 +277,7 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("001.c", text: "AAA");
 
         await Task.Delay(100);
-        
+
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -304,11 +290,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
@@ -327,7 +311,7 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("002.c", attributes: FileAttributes.Temporary);
 
         await Task.Delay(100);
-        
+
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -340,11 +324,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(3, model.Entries.Count);
@@ -360,7 +342,7 @@ public class SortEntryTests : IDisposable
 
         configFolder.CreateFile("001.b");
         configFolder.CreateFile("002.c", attributes: FileAttributes.Temporary);
-        
+
         await Task.Delay(100);
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
@@ -376,11 +358,9 @@ public class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model;
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
 
-        _ = model ?? throw new NullReferenceException();
-        
         await Task.Delay(100);
 
         Assert.Equal(3, model.Entries.Count);

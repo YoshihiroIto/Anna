@@ -78,11 +78,29 @@ namespace Anna.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _No.
+        /// </summary>
+        public static string Dialog_No {
+            get {
+                return ResourceManager.GetString("Dialog_No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _OK.
         /// </summary>
         public static string Dialog_Ok {
             get {
                 return ResourceManager.GetString("Dialog_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Yes.
+        /// </summary>
+        public static string Dialog_Yes {
+            get {
+                return ResourceManager.GetString("Dialog_Yes", resourceCulture);
             }
         }
         
@@ -184,6 +202,17 @@ namespace Anna.Strings {
         public static string Message_AccessDenied {
             get {
                 return ResourceManager.GetString("Message_AccessDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}
+        ///
+        ///Do you want to delete this?.
+        /// </summary>
+        public static string Message_ConfirmDelete {
+            get {
+                return ResourceManager.GetString("Message_ConfirmDelete", resourceCulture);
             }
         }
         

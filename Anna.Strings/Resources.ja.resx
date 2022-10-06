@@ -79,4 +79,15 @@
     <data name="UI_Edit" xml:space="preserve">
         <value>編集</value>
     </data>
+    <data name="Dialog_Yes" xml:space="preserve">
+        <value>はい(_Y)</value>
+    </data>
+    <data name="Dialog_No" xml:space="preserve">
+        <value>いいえ(_N)</value>
+    </data>
+    <data name="Message_ConfirmDelete" xml:space="preserve">
+        <value>{0}
+
+削除してよろしいですか？</value>
+    </data>
 </root>

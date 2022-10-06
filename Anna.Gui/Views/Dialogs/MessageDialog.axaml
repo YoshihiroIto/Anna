@@ -36,12 +36,10 @@
     </Interaction.Behaviors>
 
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <StackPanel DockPanel.Dock="Bottom">
-            <Button MinWidth="80"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
+        <StackPanel HorizontalAlignment="Center"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+            <Button Classes="dialog"
                     Command="{Binding OkCommand,
                                       Mode=OneTime}"
                     Content="{ReflectionBinding R.Dialog_Ok}">

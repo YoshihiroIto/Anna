@@ -17,12 +17,19 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
 
     public Resources R => _resourcesHolder.Instance;
 
-    public DelegateCommand OkCommand { get; }
+    public DelegateCommand OkCommand => _okCommand ??= CreateButtonCommand(DialogResultTypes.Ok);
+    public DelegateCommand CancelCommand => _cancelCommand ??= CreateButtonCommand(DialogResultTypes.Cancel);
+    public DelegateCommand YesCommand => _yesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
+    public DelegateCommand NoCommand => _noCommand ??= CreateButtonCommand(DialogResultTypes.No);
 
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
     private readonly ResourcesHolder _resourcesHolder;
     private readonly ILoggerUseCase _logger;
+    private DelegateCommand? _okCommand;
+    private DelegateCommand? _cancelCommand;
+    private DelegateCommand? _yesCommand;
+    private DelegateCommand? _noCommand;
 
     protected DialogViewModel(
         IServiceProviderContainer dic,
@@ -41,15 +48,6 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
-        OkCommand = new DelegateCommand(() =>
-        {
-            DialogResult = DialogResultTypes.Ok;
-            
- #pragma warning disable CS4014
-            Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
- #pragma warning restore CS4014
-        });
-
         _logger.Start(GetType().Name);
     }
 
@@ -60,6 +58,18 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
         base.Dispose();
 
         GC.SuppressFinalize(this);
+    }
+
+    private DelegateCommand CreateButtonCommand(DialogResultTypes result)
+    {
+        return new DelegateCommand(() =>
+        {
+            DialogResult = result;
+
+ #pragma warning disable CS4014
+            Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+ #pragma warning restore CS4014
+        });
     }
 }
 

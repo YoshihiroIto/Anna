@@ -47,10 +47,13 @@ public class JumpFolderDialogViewModel
                 return;
 
             case Key.Delete:
+                if (string.IsNullOrEmpty(SelectedPath.Value.Model.Path))
+                    return;
+
                 var mes = await Messenger.RaiseAsync(
                     new ConfirmationMessage(
                         Resources.AppName,
-                        "ABC",
+                        string.Format(Resources.Message_ConfirmDelete, SelectedPath.Value.Model.Path),
                         ConfirmationTypes.YesNo,
                         MessageKeyYesNoConfirmation));
 

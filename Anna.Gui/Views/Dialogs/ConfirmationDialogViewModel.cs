@@ -8,7 +8,7 @@ public class ConfirmationDialogViewModel
 {
     public string Title => Model.Title;
     public string Text => Model.Text;
-    public ConfirmationTypes ConfirmationType => Model.confirmationType;
+    public bool IsYesNo => Model.confirmationType == ConfirmationTypes.YesNo;
 
     public ConfirmationDialogViewModel(
         IServiceProviderContainer dic,

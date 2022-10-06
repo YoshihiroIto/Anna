@@ -45,18 +45,8 @@ public partial class SortModeAndOrderDialog : DialogBase
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        switch (e.Key)
-        {
-            case Key.Down or Key.Right:
-                MoveFocus(true);
-                e.Handled = true;
-                return;
-
-            case Key.Up or Key.Left:
-                MoveFocus(false);
-                e.Handled = true;
-                return;
-        }
+        if (DoMoveFocus(e))
+            return;
 
         if (_states == States.Mode)
         {
@@ -122,21 +112,6 @@ public partial class SortModeAndOrderDialog : DialogBase
     {
         ViewModel.DialogResult = DialogResultTypes.Cancel;
         Close();
-    }
-
-    private static void MoveFocus(bool isNext)
-    {
-        var current = FocusManager.Instance?.Current;
-        if (current is null)
-            return;
-
-        var next = KeyboardNavigationHandler.GetNext(current,
-            isNext
-                ? NavigationDirection.Next
-                : NavigationDirection.Previous);
-
-        if (next is not null)
-            FocusManager.Instance?.Focus(next, NavigationMethod.Directional);
     }
 
     private SortModeAndOrderDialogViewModel ViewModel =>

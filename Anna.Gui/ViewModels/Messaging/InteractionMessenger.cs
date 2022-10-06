@@ -1,31 +1,37 @@
 ﻿using Anna.UseCase;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Anna.Gui.ViewModels.Messaging;
 
 public class InteractionMessenger : IHasServiceProviderContainer
 {
     public IServiceProviderContainer ServiceProviderContainer { get; }
-    
+
     public InteractionMessenger(IServiceProviderContainer dic)
     {
         ServiceProviderContainer = dic;
     }
-    
-    public event EventHandler<InteractionMessageRaisedEventArgs>? Raised;
 
-    public void Raise(InteractionMessage message)
+    public event InteractionMessageRaisedEventHandler? Raised;
+
+    public async ValueTask<T> RaiseAsync<T>(T message)
+        where T : InteractionMessage
     {
-        Raised?.Invoke(this, new InteractionMessageRaisedEventArgs(message));
-    }
-}
+        if (Raised is null)
+            return message;
 
-public class InteractionMessageRaisedEventArgs : EventArgs
-{
-    public InteractionMessageRaisedEventArgs(InteractionMessage message)
-    {
-        Message = message;
+        foreach (var d in Raised.GetInvocationList())
+        {
+            if (d is not InteractionMessageRaisedEventHandler eventHandler)
+                throw new InvalidOperationException();
+
+            await eventHandler.Invoke(this, message);
+        }
+
+        return message;
     }
 
-    public readonly InteractionMessage Message;
+    public delegate ValueTask InteractionMessageRaisedEventHandler(object? sender, InteractionMessage message);
 }

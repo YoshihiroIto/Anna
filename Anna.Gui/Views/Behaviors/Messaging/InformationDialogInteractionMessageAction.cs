@@ -29,7 +29,7 @@ public class InformationDialogInteractionMessageAction : AvaloniaObject, IAction
 
         var owner = ControlHelper.FindOwnerWindow(control);
 
-        message.Response = await DialogOperator.DisplayInformationAsync(
+        informationMessage.Response = await DialogOperator.DisplayInformationAsync(
             hasServiceProviderContainer.ServiceProviderContainer,
             owner,
             informationMessage.Title,

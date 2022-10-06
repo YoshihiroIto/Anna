@@ -30,6 +30,7 @@
 
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
+
         <messaging:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
             <messaging:WindowInteractionMessageAction />
         </messaging:InteractionMessageTrigger>
@@ -68,8 +69,8 @@
                    DockPanel.Dock="Top" />
 
         <panels:FolderPanel Margin="0,8,0,0"
-                               DataContext="{Binding FolderPanelViewModel}"
-                               SelectedIndex="{Binding CursorIndex.Value}">
+                            DataContext="{Binding FolderPanelViewModel}"
+                            SelectedIndex="{Binding CursorIndex.Value}">
             <Interaction.Behaviors>
                 <behaviors:InputElementFocusBehavior />
             </Interaction.Behaviors>

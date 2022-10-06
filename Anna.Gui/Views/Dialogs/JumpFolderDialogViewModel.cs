@@ -36,28 +36,27 @@ public class JumpFolderDialogViewModel
         SelectedPath = new ReactivePropertySlim<JumpFolderPathViewModel>(Paths[0]).AddTo(Trash);
     }
 
-    public void OnKeyDown(KeyEventArgs e)
+    public async void OnKeyDown(KeyEventArgs e)
     {
         switch (e.Key)
         {
             case Key.Enter:
                 ResultPath = SelectedPath.Value.Model.Path;
                 DialogResult = DialogResultTypes.Ok;
-                Messenger.Raise(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+                await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
                 return;
 
             case Key.Delete:
-                var mes = new ConfirmationMessage(
-                    Resources.AppName,
-                    "ABC",
-                    ConfirmationTypes.YesNo,
-                    MessageKeyYesNoConfirmation);
+                var mes = await Messenger.RaiseAsync(
+                    new ConfirmationMessage(
+                        Resources.AppName,
+                        "ABC",
+                        ConfirmationTypes.YesNo,
+                        MessageKeyYesNoConfirmation));
 
-                Messenger.Raise(mes);
-                
                 if (mes.Response == DialogResultTypes.Yes)
                     SelectedPath.Value.Model.Path = "";
-                
+
                 return;
         }
 
@@ -68,7 +67,7 @@ public class JumpFolderDialogViewModel
 
             ResultPath = path.Path;
             DialogResult = string.IsNullOrWhiteSpace(path.Path) ? DialogResultTypes.Cancel : DialogResultTypes.Ok;
-            Messenger.Raise(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
             return;
         }
     }

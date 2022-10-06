@@ -32,7 +32,7 @@ public class ConfirmationMessage : InteractionMessage
         init => SetValue(ConfirmationTypeProperty, value);
     }
 
-    public new DialogResultTypes? Response => (DialogResultTypes?)base.Response;
+    public DialogResultTypes Response { get; internal set; }
 
     public ConfirmationMessage(
         string title,

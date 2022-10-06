@@ -1,6 +1,5 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.ViewModels.Messaging;
-using Anna.Gui.Views.Dialogs.Base;
 using Anna.UseCase;
 using Avalonia;
 using Avalonia.Controls;
@@ -30,7 +29,7 @@ public class ConfirmationDialogInteractionMessageAction : AvaloniaObject, IActio
 
         var owner = ControlHelper.FindOwnerWindow(control);
 
-        message.Response = await DialogOperator.DisplayConfirmationAsync(
+        confirmationMessage.Response = await DialogOperator.DisplayConfirmationAsync(
             hasServiceProviderContainer.ServiceProviderContainer,
             owner,
             confirmationMessage.Title,

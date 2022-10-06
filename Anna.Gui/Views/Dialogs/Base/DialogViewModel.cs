@@ -44,7 +44,10 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
         OkCommand = new DelegateCommand(() =>
         {
             DialogResult = DialogResultTypes.Ok;
-            Messenger.Raise(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            
+ #pragma warning disable CS4014
+            Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+ #pragma warning restore CS4014
         });
 
         _logger.Start(GetType().Name);

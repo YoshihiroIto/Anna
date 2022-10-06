@@ -76,7 +76,9 @@ public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocaliza
             .Subscribe(_ =>
             {
                 if (_dic.GetInstance<App>().Directories.IndexOf(Model) == -1)
-                    Messenger.Raise(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
+ #pragma warning disable CS4014
+                    Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
+ #pragma warning restore CS4014
             }).AddTo(Trash);
     }
 

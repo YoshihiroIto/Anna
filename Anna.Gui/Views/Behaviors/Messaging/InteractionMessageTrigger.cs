@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Xaml.Interactivity;
 using System;
+using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Behaviors.Messaging;
 
@@ -41,9 +42,9 @@ public class InteractionMessageTrigger : Trigger<Control>
         if (newValue is not null)
             self.Messenger.Raised += self.MessengerOnRaised;
     }
-    private async void MessengerOnRaised(object? sender, InteractionMessageRaisedEventArgs e)
+    private async ValueTask MessengerOnRaised(object? sender, InteractionMessage message)
     {
-        if (string.CompareOrdinal(e.Message.MessageKey, MessageKey) != 0)
+        if (string.CompareOrdinal(message.MessageKey, MessageKey) != 0)
             return;
 
         foreach (var avaloniaObject in Actions)
@@ -51,7 +52,7 @@ public class InteractionMessageTrigger : Trigger<Control>
             if (avaloniaObject is not IAsyncAction action)
                 throw new NotSupportedException();
 
-            await action.ExecuteAsync(this, e.Message, Messenger);
+            await action.ExecuteAsync(this, message, Messenger);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using Anna.Gui.Views.Dialogs.Base;
+using Avalonia;
 
 namespace Anna.Gui.ViewModels.Messaging;
 
@@ -21,6 +22,8 @@ public class InformationMessage : InteractionMessage
         get => GetValue(TextProperty);
         init => SetValue(TextProperty, value);
     }
+    
+    public DialogResultTypes Response { get; internal set; }
 
     public InformationMessage(
         string title,

@@ -166,21 +166,19 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
         return ValueTask.CompletedTask;
     }
 
-    public ValueTask JumpToFolderAsync(string path)
+    public async ValueTask JumpToFolderAsync(string path)
     {
         if (_folderService.IsAccessible(path) == false)
         {
-            Messenger.Raise(new InformationMessage(
+            await Messenger.RaiseAsync(new InformationMessage(
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),
                 DialogViewModel.MessageKeyInformation));
-            return ValueTask.CompletedTask;
+            return;
         }
 
         _oldPath = Model.Path;
         Model.Path = PathStringHelper.Normalize(path);
-
-        return ValueTask.CompletedTask;
     }
 
     private string _oldPath;

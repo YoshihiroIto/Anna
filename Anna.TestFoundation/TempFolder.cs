@@ -7,32 +7,29 @@ public class TempFolder : IDisposable
 
     public string[] ReadLogLines() => File.ReadAllLines(LogFilePath);
 
-    private readonly string _workDir;
+    private readonly string _workFolder;
 
-    public TempFolder(string workDir = "")
+    public TempFolder(string workFolder = "")
     {
-        _workDir = workDir;
+        _workFolder = workFolder;
 
         RootPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         Directory.CreateDirectory(RootPath);
-        DirectoryInfo = new DirectoryInfo(RootPath);
     }
 
     public string RootPath { get; }
 
-    public DirectoryInfo DirectoryInfo { get; }
-
     public TempFolder CreateFolder(string path)
     {
-        Directory.CreateDirectory(Path.Combine(RootPath, _workDir, path));
+        Directory.CreateDirectory(Path.Combine(RootPath, _workFolder, path));
         return this;
     }
 
-    public TempFolder CreateDirectories(params string[] paths)
+    public TempFolder CreateFolders(params string[] paths)
     {
         foreach (var path in paths)
         {
-            var fullPath = Path.Combine(RootPath, _workDir, path);
+            var fullPath = Path.Combine(RootPath, _workFolder, path);
             Directory.CreateDirectory(fullPath);
         }
 
@@ -41,7 +38,7 @@ public class TempFolder : IDisposable
 
     public TempFolder CreateFile(string path, string text = "temp", FileAttributes attributes = 0)
     {
-        var filePath = Path.Combine(RootPath, _workDir, path);
+        var filePath = Path.Combine(RootPath, _workFolder, path);
 
         File.WriteAllText(filePath, text);
 
@@ -55,7 +52,7 @@ public class TempFolder : IDisposable
     {
         foreach (var path in fileRelativePaths)
         {
-            var fullPath = Path.Combine(RootPath, _workDir, path);
+            var fullPath = Path.Combine(RootPath, _workFolder, path);
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? throw new NullReferenceException());
 
             File.WriteAllText(
@@ -69,7 +66,7 @@ public class TempFolder : IDisposable
 
     public TempFolder CreateWorkFolder()
     {
-        Directory.CreateDirectory(Path.Combine(RootPath, _workDir));
+        Directory.CreateDirectory(Path.Combine(RootPath, _workFolder));
 
         return this;
     }
@@ -78,7 +75,7 @@ public class TempFolder : IDisposable
     {
         //Directory.Delete(Path.Combine(RootPath, _workDir), true);
 
-        var di = new DirectoryInfo(Path.Combine(RootPath, _workDir));
+        var di = new DirectoryInfo(Path.Combine(RootPath, _workFolder));
 
         foreach (var d in di.EnumerateDirectories())
             Directory.Delete(d.FullName);

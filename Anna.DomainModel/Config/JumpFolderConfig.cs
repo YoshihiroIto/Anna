@@ -6,6 +6,8 @@ namespace Anna.DomainModel.Config;
 
 public class JumpFolderConfig : ConfigBase<JumpFolderConfigData>
 {
+    public const string Filename = "JumpFolder.json";
+
     public JumpFolderConfig(IObjectSerializerUseCase objectSerializer)
         : base(objectSerializer)
     {

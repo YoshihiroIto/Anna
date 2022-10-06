@@ -96,7 +96,7 @@ public class FileSystemObjectSerializer : IObjectSerializerUseCase
 
     private readonly ILoggerUseCase _logger;
 
-    private static readonly JsonSerializerOptions Options = new()
+    public static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = true, Converters = { new JsonStringEnumConverter() }
     };

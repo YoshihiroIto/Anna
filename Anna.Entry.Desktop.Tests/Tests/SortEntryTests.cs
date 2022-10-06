@@ -34,6 +34,8 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFolder("dir3");
         configFolder.CreateFolder("dir1");
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -46,6 +48,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(7, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);
@@ -69,6 +73,8 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFolder("dir3");
         configFolder.CreateFolder("dir1");
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -82,6 +88,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(7, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);
@@ -102,6 +110,8 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("002.b");
         configFolder.CreateFile("003.a");
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -115,6 +125,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);
@@ -132,6 +144,8 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("002.b");
         configFolder.CreateFile("003.a");
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -146,6 +160,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);
@@ -163,6 +179,8 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("002.b", text: "AA");
         configFolder.CreateFile("003.a", text: "A");
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -177,6 +195,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);
@@ -194,6 +214,8 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("002.b", text: "AA");
         configFolder.CreateFile("003.a", text: "A");
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -209,6 +231,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);
@@ -228,6 +252,8 @@ public class SortEntryTests : IDisposable
         await Task.Delay(100);
         configFolder.CreateFile("001.c", text: "AAA");
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -243,6 +269,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);
@@ -262,6 +290,8 @@ public class SortEntryTests : IDisposable
         await Task.Delay(100);
         configFolder.CreateFile("001.c", text: "AAA");
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -278,6 +308,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(4, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);
@@ -294,6 +326,8 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("001.b");
         configFolder.CreateFile("002.c", attributes: FileAttributes.Temporary);
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -310,6 +344,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(3, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);
@@ -324,6 +360,8 @@ public class SortEntryTests : IDisposable
 
         configFolder.CreateFile("001.b");
         configFolder.CreateFile("002.c", attributes: FileAttributes.Temporary);
+        
+        await Task.Delay(100);
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
@@ -342,6 +380,8 @@ public class SortEntryTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(3, model.Entries.Count);
         Assert.Equal("..", model.Entries[0].NameWithExtension);

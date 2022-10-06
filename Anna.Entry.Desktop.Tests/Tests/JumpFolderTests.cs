@@ -30,6 +30,8 @@ public class JumpFolderTests : IDisposable
     {
         var configFolder = _fixture.ConfigFolder;
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -41,6 +43,8 @@ public class JumpFolderTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(configFolder.WorkPath, model.Path);
     }
@@ -50,6 +54,8 @@ public class JumpFolderTests : IDisposable
     {
         var configFolder = _fixture.ConfigFolder;
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -61,6 +67,8 @@ public class JumpFolderTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(configFolder.WorkPath, model.Path);
     }
@@ -81,6 +89,8 @@ public class JumpFolderTests : IDisposable
 
         _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Load();
 
+        await Task.Delay(100);
+        
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
@@ -92,6 +102,8 @@ public class JumpFolderTests : IDisposable
         });
 
         _ = model ?? throw new NullReferenceException();
+        
+        await Task.Delay(100);
 
         Assert.Equal(a.Path, model.Path);
     }

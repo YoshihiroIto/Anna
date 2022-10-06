@@ -6,6 +6,9 @@ public class TempFolder : IDisposable
     public string LogFilePath => Path.Combine(RootPath, "logs", "log" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
 
     public string[] ReadLogLines() => File.ReadAllLines(LogFilePath);
+    
+    public string RootPath { get; }
+    public string WorkPath => Path.Combine(RootPath, _workFolder);
 
     private readonly string _workFolder;
 
@@ -16,8 +19,6 @@ public class TempFolder : IDisposable
         RootPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
         Directory.CreateDirectory(RootPath);
     }
-
-    public string RootPath { get; }
 
     public TempFolder CreateFolder(string path)
     {

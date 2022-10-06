@@ -26,7 +26,6 @@ public class SortEntryTests : IDisposable
     public async Task Name_Ascending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("002.dat");
         configFolder.CreateFile("003.dat");
@@ -37,7 +36,7 @@ public class SortEntryTests : IDisposable
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Enter);
@@ -62,7 +61,6 @@ public class SortEntryTests : IDisposable
     public async Task Name_Descending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("002.dat");
         configFolder.CreateFile("003.dat");
@@ -73,7 +71,7 @@ public class SortEntryTests : IDisposable
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Enter);
@@ -99,7 +97,6 @@ public class SortEntryTests : IDisposable
     public async Task Extension_Ascending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("001.c");
         configFolder.CreateFile("002.b");
@@ -107,7 +104,7 @@ public class SortEntryTests : IDisposable
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Down);
@@ -130,7 +127,6 @@ public class SortEntryTests : IDisposable
     public async Task Extension_Descending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("001.c");
         configFolder.CreateFile("002.b");
@@ -138,7 +134,7 @@ public class SortEntryTests : IDisposable
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Down);
@@ -162,7 +158,6 @@ public class SortEntryTests : IDisposable
     public async Task Size_Ascending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("001.c", text: "AAA");
         configFolder.CreateFile("002.b", text: "AA");
@@ -170,7 +165,7 @@ public class SortEntryTests : IDisposable
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Down);
@@ -194,7 +189,6 @@ public class SortEntryTests : IDisposable
     public async Task Size_Descending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("001.c", text: "AAA");
         configFolder.CreateFile("002.b", text: "AA");
@@ -202,7 +196,7 @@ public class SortEntryTests : IDisposable
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Down);
@@ -227,7 +221,6 @@ public class SortEntryTests : IDisposable
     public async Task Timestamp_Ascending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("003.a", text: "A");
         await Task.Delay(100);
@@ -237,7 +230,7 @@ public class SortEntryTests : IDisposable
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Down);
@@ -262,7 +255,6 @@ public class SortEntryTests : IDisposable
     public async Task Timestamp_Descending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("003.a", text: "A");
         await Task.Delay(100);
@@ -272,7 +264,7 @@ public class SortEntryTests : IDisposable
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Down);
@@ -298,14 +290,13 @@ public class SortEntryTests : IDisposable
     public async Task Attributes_Ascending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("001.b");
         configFolder.CreateFile("002.c", attributes: FileAttributes.Temporary);
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Down);
@@ -330,14 +321,13 @@ public class SortEntryTests : IDisposable
     public async Task Attributes_Descending()
     {
         var configFolder = _fixture.ConfigFolder;
-        var app = _fixture.App;
 
         configFolder.CreateFile("001.b");
         configFolder.CreateFile("002.c", attributes: FileAttributes.Temporary);
 
         var model = await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            var w = app.FolderWindows.First();
+            var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
             await w.PressKeyAsync(Key.Down);

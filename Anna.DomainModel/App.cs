@@ -6,11 +6,11 @@ namespace Anna.DomainModel;
 
 public class App : DisposableNotificationObject
 {
-    public ReadOnlyObservableCollection<Folder> Directories { get; }
+    public ReadOnlyObservableCollection<Folder> Folders { get; }
 
     private readonly IFolderServiceUseCase _folderService;
     private readonly DomainModelOperator _domainModelOperator;
-    private readonly ObservableCollection<Folder> _Directories = new();
+    private readonly ObservableCollection<Folder> _folders = new();
 
     public App(
         IFolderServiceUseCase folderService,
@@ -19,7 +19,7 @@ public class App : DisposableNotificationObject
         _folderService = folderService;
         _domainModelOperator = domainModelOperator;
 
-        Directories = new ReadOnlyObservableCollection<Folder>(_Directories);
+        Folders = new ReadOnlyObservableCollection<Folder>(_folders);
     }
 
     public ValueTask ShowFolderAsync(string path)
@@ -31,7 +31,7 @@ public class App : DisposableNotificationObject
             return ValueTask.CompletedTask;
         }
 
-        _Directories.Add(_domainModelOperator.CreateFolder(path));
+        _folders.Add(_domainModelOperator.CreateFolder(path));
 
         return ValueTask.CompletedTask;
     }
@@ -40,12 +40,12 @@ public class App : DisposableNotificationObject
     {
         folder.Dispose();
 
-        _Directories.Remove(folder);
+        _folders.Remove(folder);
     }
 
-    public void CloseAllDirectories()
+    public void CloseAllFolders()
     {
-        foreach (var d in Directories.ToArray())
+        foreach (var d in Folders.ToArray())
             CloseFolder(d);
     }
 }

@@ -72,10 +72,10 @@ public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocaliza
         FolderPanelViewModel = _dic.GetInstance<FolderPanelViewModel, Folder>(Model)
             .AddTo(Trash);
 
-        _dic.GetInstance<App>().Directories.CollectionChangedAsObservable()
+        _dic.GetInstance<App>().Folders.CollectionChangedAsObservable()
             .Subscribe(_ =>
             {
-                if (_dic.GetInstance<App>().Directories.IndexOf(Model) == -1)
+                if (_dic.GetInstance<App>().Folders.IndexOf(Model) == -1)
  #pragma warning disable CS4014
                     Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
  #pragma warning restore CS4014

@@ -161,10 +161,10 @@ public abstract class Folder : NotificationObject, IDisposable
                 Entries.Clear();
 
                 Entries.AddRange(EnumerateDirectories());
-                _directoriesCount = Entries.Count;
+                _foldersCount = Entries.Count;
 
                 Entries.AddRange(EnumerateFiles());
-                _filesCount = Entries.Count - _directoriesCount;
+                _filesCount = Entries.Count - _foldersCount;
 
                 SortEntries();
 
@@ -190,19 +190,19 @@ public abstract class Folder : NotificationObject, IDisposable
 
             if (entry.IsFolder)
             {
-                var span = Entries.AsSpan().Slice(0, _directoriesCount);
+                var span = Entries.AsSpan().Slice(0, _foldersCount);
                 var index = SpanHelper.UpperBound(span, entry, _entryCompare);
 
                 Entries.Insert(index, entry);
 
-                ++_directoriesCount;
+                ++_foldersCount;
             }
             else
             {
-                var span = Entries.AsSpan().Slice(_directoriesCount, _filesCount);
+                var span = Entries.AsSpan().Slice(_foldersCount, _filesCount);
                 var index = SpanHelper.UpperBound(span, entry, _entryCompare);
 
-                Entries.Insert(_directoriesCount + index, entry);
+                Entries.Insert(_foldersCount + index, entry);
 
                 ++_filesCount;
             }
@@ -238,7 +238,7 @@ public abstract class Folder : NotificationObject, IDisposable
             TrimRemovedSelectedEntries();
 
             if (entry.IsFolder)
-                --_directoriesCount;
+                --_foldersCount;
             else
                 --_filesCount;
 
@@ -259,8 +259,8 @@ public abstract class Folder : NotificationObject, IDisposable
             {
                 Entries.BeginChange();
 
-                Entries.AsSpan().Slice(0, _directoriesCount).Sort(_entryCompare);
-                Entries.AsSpan().Slice(_directoriesCount, _filesCount).Sort(_entryCompare);
+                Entries.AsSpan().Slice(0, _foldersCount).Sort(_entryCompare);
+                Entries.AsSpan().Slice(_foldersCount, _filesCount).Sort(_entryCompare);
             }
         }
         finally
@@ -288,7 +288,7 @@ public abstract class Folder : NotificationObject, IDisposable
     protected abstract IEnumerable<Entry> EnumerateFiles();
 
     private Comparison<Entry> _entryCompare = EntryComparison.FindEntryCompare(SortModes.Name, SortOrders.Ascending);
-    private int _directoriesCount;
+    private int _foldersCount;
     private int _filesCount;
     private readonly Dictionary<string, Entry> _entriesDict = new();
     private readonly Dictionary<string, DateTime> _removedSelectedEntries = new();

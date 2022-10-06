@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.UseCase;
 using Avalonia.Input;
+using System.Diagnostics;
 
 namespace Anna.DomainModel.Config;
 
@@ -45,5 +46,6 @@ public class KeyConfigData : ConfigData
         };
     }
 
+    [DebuggerDisplay("Key={Key}, Modifier={Modifier}, Operation={Operation}")]
     public readonly record struct KeyData(Key Key, KeyModifiers Modifier, Operations Operation);
 }

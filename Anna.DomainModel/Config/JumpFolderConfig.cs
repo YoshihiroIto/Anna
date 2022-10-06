@@ -1,6 +1,7 @@
 ﻿using Anna.Foundation;
 using Anna.UseCase;
 using Avalonia.Input;
+using System.Diagnostics;
 
 namespace Anna.DomainModel.Config;
 
@@ -54,6 +55,7 @@ public class JumpFolderConfigData : ConfigData
         Paths = paths;
     }
 
+    [DebuggerDisplay("Key={Key}, Path={Path}")]
     public class PathData : NotificationObject
     {
         #region Key

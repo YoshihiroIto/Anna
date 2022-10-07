@@ -71,7 +71,7 @@ public partial class JumpFolderDialog : DialogBase
 
         if (listBox.SelectedItem is JumpFolderPathViewModel vm)
         {
-            if (string.IsNullOrEmpty(vm.Path.Value))
+            if (vm.Path.Value == "")
                 vm.Path.Value = ViewModel.CurrentFolderPath;
         }
 

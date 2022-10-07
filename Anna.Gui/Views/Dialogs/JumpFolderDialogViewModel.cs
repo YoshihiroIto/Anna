@@ -47,7 +47,7 @@ public class JumpFolderDialogViewModel
                 return;
 
             case Key.Delete:
-                if (string.IsNullOrEmpty(SelectedPath.Value.Model.Path))
+                if (SelectedPath.Value.Model.Path == "")
                     return;
 
                 var mes = await Messenger.RaiseAsync(

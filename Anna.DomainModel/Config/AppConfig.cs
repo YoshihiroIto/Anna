@@ -92,7 +92,7 @@ public class AppConfigData : ConfigData
     public override void SetDefault()
     {
         var lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-        if (string.IsNullOrEmpty(lang) == false)
+        if (lang != "")
             Culture = CulturesExtensions.TryParse(lang, true, out var result) ? result : Cultures.En;
     }
 }

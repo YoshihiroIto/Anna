@@ -26,7 +26,7 @@ public partial class ShortcutKeyManager
         if (result.IsCancel)
             return;
 
-        if (string.IsNullOrEmpty(result.Path))
+        if (result.Path == "")
             return;
 
         if (await CheckIsAccessibleAsync(result.Path, shortcutKeyReceiver) == false)

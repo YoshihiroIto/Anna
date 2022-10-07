@@ -26,7 +26,7 @@ public class JumpFolderTests : IDisposable
     private readonly DesktopTestFixture _fixture;
 
     [Fact]
-    public async Task Dialog_open_escape()
+    public async Task Open_escape()
     {
         var configFolder = _fixture.ConfigFolder;
 
@@ -48,7 +48,7 @@ public class JumpFolderTests : IDisposable
     }
 
     [Fact]
-    public async Task Dialog_select_empty()
+    public async Task Select_empty()
     {
         var configFolder = _fixture.ConfigFolder;
 
@@ -70,7 +70,7 @@ public class JumpFolderTests : IDisposable
     }
 
     [Fact]
-    public async Task Dialog_select_folder()
+    public async Task Select_folder()
     {
         var configFolder = _fixture.ConfigFolder;
         configFolder.CreateFolder("FolderA");

@@ -48,7 +48,7 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
 
-        _oldPath = Model.Path;
+        var oldPath = Model.Path;
 
         Observable
             .FromEventPattern(
@@ -92,10 +92,10 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
                 .Subscribe(_ =>
                     {
                         // If it is not a folder move, do nothing.
-                        if (string.CompareOrdinal(_oldPath, Model.Path) != 0)
+                        if (string.CompareOrdinal(oldPath, Model.Path) != 0)
                         {
-                            SetCurrentIndex(_oldPath);
-                            _oldPath = Model.Path;
+                            SetCurrentIndex(oldPath);
+                            oldPath = Model.Path;
                         }
                     }
                 )
@@ -152,36 +152,6 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
         if (isMoveDown)
             MoveCursor(Directions.Down);
     }
-
-    public ValueTask OpenCursorEntryAsync()
-    {
-        if (CursorEntry.Value is null)
-            return ValueTask.CompletedTask;
-
-        if (CursorEntry.Value.IsFolder)
-            return JumpToFolderAsync(CursorEntry.Value.Model.Path);
-        else
-            _logger.Information("Not implemented: OpenCursorEntry");
-
-        return ValueTask.CompletedTask;
-    }
-
-    public async ValueTask JumpToFolderAsync(string path)
-    {
-        if (_folderService.IsAccessible(path) == false)
-        {
-            await Messenger.RaiseAsync(new InformationMessage(
-                Resources.AppName,
-                string.Format(Resources.Message_AccessDenied, path),
-                DialogViewModel.MessageKeyInformation));
-            return;
-        }
-
-        _oldPath = Model.Path;
-        Model.Path = PathStringHelper.Normalize(path);
-    }
-
-    private string _oldPath;
 
     private EntryViewModel? UpdateCursorEntry(int index)
     {

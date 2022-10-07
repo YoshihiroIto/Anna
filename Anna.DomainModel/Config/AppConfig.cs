@@ -40,14 +40,14 @@ public class AppConfigData : ConfigData
     #endregion
 
 
-    #region Editor1Option
+    #region Editor1Options
 
-    private string _Editor1Option = "";
+    private string _editor1Options = "";
 
-    public string Editor1Option
+    public string Editor1Options
     {
-        get => _Editor1Option;
-        set => SetProperty(ref _Editor1Option, value);
+        get => _editor1Options;
+        set => SetProperty(ref _editor1Options, value);
     }
 
     #endregion
@@ -66,25 +66,25 @@ public class AppConfigData : ConfigData
     #endregion
 
 
-    #region Editor2Option
+    #region Editor2Options
 
-    private string _Editor2Option = "";
+    private string _editor2Options = "";
 
-    public string Editor2Option
+    public string Editor2Options
     {
-        get => _Editor2Option;
-        set => SetProperty(ref _Editor2Option, value);
+        get => _editor2Options;
+        set => SetProperty(ref _editor2Options, value);
     }
 
     #endregion
     
     
-    public (string Editor, string Option) FindEditor(int index)
+    public (string Editor, string Options) FindEditor(int index)
     {
         return index switch
         {
-            1 => (Editor1, Editor1Option),
-            2 => (Editor2, Editor2Option),
+            1 => (Editor1, Editor1Options),
+            2 => (Editor2, Editor2Options),
             _ => throw new IndexOutOfRangeException()
         };
     }

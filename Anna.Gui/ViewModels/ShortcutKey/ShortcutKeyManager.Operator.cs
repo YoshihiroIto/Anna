@@ -1,4 +1,5 @@
 ﻿using Anna.Constants;
+using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels.Messaging;
 using Anna.Gui.Views.Dialogs.Base;
@@ -63,8 +64,20 @@ public partial class ShortcutKeyManager
         }
     }
 
-    private static ValueTask OpenEntryByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
+    private ValueTask OpenEntryByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
     {
+        var target = shortcutKeyReceiver.CurrentEntry;
+        if (target.IsFolder)
+            return ValueTask.CompletedTask;
+
+        Task.Run(() =>
+        {
+            var editor = _appConfig.Data.FindEditor(index);
+            var arguments = ProcessHelper.MakeEditorArguments(editor.Options, target.Path, 1);
+
+            ProcessHelper.Execute(editor.Editor, arguments);
+        });
+
         return ValueTask.CompletedTask;
     }
 

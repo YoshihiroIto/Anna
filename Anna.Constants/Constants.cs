@@ -51,6 +51,7 @@ public enum Operations
     OpenEntry,
     OpenEntryByEditor1,
     OpenEntryByEditor2,
+    OpenEntryByApp,
     JumpToParentFolder,
     JumpToRootFolder
 }

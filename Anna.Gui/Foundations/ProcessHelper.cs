@@ -12,11 +12,16 @@ namespace Anna.Gui.Foundations
                 Process.Start(command, arguments);
         }
 
+        public static void RunAssociatedApp(string path)
+        {
+            Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = path });
+        }
+
         public static string MakeEditorArguments(string options, string targetFilepath, int line)
         {
             if (options == "")
                 return "\"" + targetFilepath + "\"";
-            
+
             return options
                 .Replace("%F", targetFilepath)
                 .Replace("%L", line.ToString());

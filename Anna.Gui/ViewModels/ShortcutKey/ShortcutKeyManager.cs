@@ -94,6 +94,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
             { Operations.OpenEntry, OpenEntryAsync },
             { Operations.OpenEntryByEditor1, s => OpenEntryByEditorAsync(s, 1) },
             { Operations.OpenEntryByEditor2, s => OpenEntryByEditorAsync(s, 2) },
+            { Operations.OpenEntryByApp, OpenEntryByAppAsync },
             { Operations.JumpToParentFolder, JumpToParentFolderAsync },
             { Operations.JumpToRootFolder, JumpToRootFolderAsync },
         };

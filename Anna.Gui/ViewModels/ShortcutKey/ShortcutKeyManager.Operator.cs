@@ -81,6 +81,15 @@ public partial class ShortcutKeyManager
         return ValueTask.CompletedTask;
     }
 
+    private ValueTask OpenEntryByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var targetPath = shortcutKeyReceiver.CurrentEntry.Path;
+
+        Task.Run(() => ProcessHelper.RunAssociatedApp(targetPath));
+
+        return ValueTask.CompletedTask;
+    }
+
     private async ValueTask JumpToParentFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var parentDir = new DirectoryInfo(shortcutKeyReceiver.Folder.Path).Parent?.FullName;

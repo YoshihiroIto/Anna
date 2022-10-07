@@ -1,6 +1,8 @@
 ﻿using Anna.DomainModel.Config;
+using Anna.Gui.Views.Dialogs;
 using Anna.Gui.Views.Windows;
 using Anna.Repository;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
 using System.Text.Json;
@@ -106,8 +108,7 @@ public class JumpFolderTests : IDisposable
     public async Task Delete_folder()
     {
         var configFolder = _fixture.ConfigFolder;
-        configFolder.CreateFolder("FolderA");
-        
+
         var c = new JumpFolderConfigData();
         c.SetDefault();
         var f1 = c.Paths.First(x => x.Key == Key.F1);
@@ -126,7 +127,7 @@ public class JumpFolderTests : IDisposable
 
             await w.PressKeyAsync(Key.J);
             await w.PressKeyAsync(Key.Delete);
-            await w.PressKeyAsync(Key.Enter);       // Confirmation dialog
+            await w.PressKeyAsync(Key.Enter);// Confirmation dialog
             await w.PressKeyAsync(Key.Escape);
         });
 
@@ -134,7 +135,34 @@ public class JumpFolderTests : IDisposable
 
         var afterF1 = _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Data.Paths
             .First(x => x.Key == Key.F1);
-        
+
         Assert.Equal("", afterF1.Path);
+    }
+
+    [Theory]
+    [InlineData(Key.Space)]
+    [InlineData(Key.Insert)]
+    public async Task Edit_folder(Key key)
+    {
+        await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = _fixture.App.FolderWindows.First();
+
+            await w.PressKeyAsync(Key.J);
+            await w.PressKeyAsync(key);
+
+            var textBox = FocusManager.Instance?.Current as TextBox ?? throw new NullReferenceException();
+            textBox.Text = "123abc";
+
+            await w.PressKeyAsync(Key.Enter);
+            await w.PressKeyAsync(Key.Escape);
+        });
+
+        await Task.Delay(100);
+
+        var afterF1 = _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Data.Paths
+            .First(x => x.Key == Key.F1);
+
+        Assert.Equal("123abc", afterF1.Path);
     }
 }

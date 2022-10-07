@@ -49,6 +49,8 @@ public enum Operations
     MoveCursorRight,
     ToggleSelectionCursorEntry,
     OpenEntry,
+    OpenEntryByEditor1,
+    OpenEntryByEditor2,
     JumpToParentFolder,
     JumpToRootFolder
 }

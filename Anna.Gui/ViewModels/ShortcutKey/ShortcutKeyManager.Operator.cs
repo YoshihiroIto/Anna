@@ -51,6 +51,11 @@ public partial class ShortcutKeyManager
         return shortcutKeyReceiver.FolderPanelViewModel.OpenCursorEntryAsync();
     }
 
+    private static ValueTask OpenEntryByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
+    {
+        return ValueTask.CompletedTask;
+    }
+
     private async ValueTask JumpToParentFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var parentDir = new DirectoryInfo(shortcutKeyReceiver.Folder.Path).Parent?.FullName;

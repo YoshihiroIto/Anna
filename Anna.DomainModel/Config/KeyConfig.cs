@@ -43,6 +43,7 @@ public class KeyConfigData : ConfigData
             new(Key.Enter, KeyModifiers.None, Operations.OpenEntry),
             new(Key.Back, KeyModifiers.None, Operations.JumpToParentFolder),
             new(Key.OemPipe, KeyModifiers.None, Operations.JumpToRootFolder),
+            new(Key.Enter, KeyModifiers.Shift, Operations.OpenEntryByEditor1),
         };
     }
 

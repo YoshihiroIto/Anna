@@ -83,8 +83,8 @@ public partial class FolderPanel : UserControl, IShortcutKeyReceiver
     }
 
     public Window Owner => ControlHelper.FindOwnerWindow(this);
-
     public Folder Folder => FolderPanelViewModel.Model;
+    public Entry CurrentEntry => FolderPanelViewModel.CursorEntry.Value?.Model ?? throw new InvalidOperationException();
 
     public FolderPanelViewModel FolderPanelViewModel =>
         DataContext as FolderPanelViewModel ?? throw new NotSupportedException();
@@ -214,7 +214,7 @@ internal class EntriesControl : Control
     private void UpdateChildren(IReadOnlyList<EntryViewModel> entries)
     {
         _currentEntries = entries;
-        
+
         var pageRange = CurrentPageRange(entries);
         var deletionTargets = new DeletionTargets(_childrenControls);
         var entitiesToAdd = new List<EntryViewModel>(pageRange.EndIndex - pageRange.StartIndex);
@@ -281,11 +281,11 @@ internal class EntriesControl : Control
         var y = 0.0;
 
         var pageRange = CurrentPageRange(_currentEntries);
-        
+
         for (var i = pageRange.StartIndex; i < pageRange.EndIndex; ++i)
         {
             var entry = _currentEntries[i];
-            
+
             if (_childrenControls.TryGetValue(entry, out var child) == false)
                 throw new InvalidOperationException();
 

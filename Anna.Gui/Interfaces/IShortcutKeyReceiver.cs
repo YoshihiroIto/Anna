@@ -9,6 +9,7 @@ public interface IShortcutKeyReceiver
 {
     Window Owner { get; }
     Folder Folder { get; }
+    Entry CurrentEntry { get; }
     FolderPanelViewModel FolderPanelViewModel { get; }
 
     Entry[] CollectTargetEntries();

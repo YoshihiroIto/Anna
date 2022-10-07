@@ -24,7 +24,7 @@ public partial class ShortcutKeyManager
         var result = await DialogOperator.JumpFolderAsync(_dic, shortcutKeyReceiver.Owner);
         if (result.IsCancel)
             return;
-        
+
         if (string.IsNullOrEmpty(result.Path))
             return;
 
@@ -46,9 +46,21 @@ public partial class ShortcutKeyManager
         return ValueTask.CompletedTask;
     }
 
-    private static ValueTask OpenEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    private async ValueTask OpenEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        return shortcutKeyReceiver.FolderPanelViewModel.OpenCursorEntryAsync();
+        var target = shortcutKeyReceiver.CurrentEntry;
+
+        if (target.IsFolder)
+        {
+            if (await CheckIsAccessibleAsync(target.Path, shortcutKeyReceiver) == false)
+                return;
+
+            shortcutKeyReceiver.Folder.Path = target.Path;
+        }
+        else
+        {
+            _logger.Information("Not implemented: OpenEntryAsync");
+        }
     }
 
     private static ValueTask OpenEntryByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
@@ -73,7 +85,7 @@ public partial class ShortcutKeyManager
         var rootDir = Path.GetPathRoot(shortcutKeyReceiver.Folder.Path);
         if (rootDir is null)
             return;
-        
+
         if (await CheckIsAccessibleAsync(rootDir, shortcutKeyReceiver) == false)
             return;
 

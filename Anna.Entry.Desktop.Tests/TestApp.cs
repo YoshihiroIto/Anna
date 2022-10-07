@@ -46,8 +46,8 @@ public class TestApp : IAsyncDisposable
     {
         await WaitForAllWindowClosedAsync();
 
-        await _sema.WaitAsync();
-        _sema.Dispose();
+        _sync.Wait();
+        _sync.Dispose();
 
         if (_useSelfConfigDir)
             _configFolder.Dispose();
@@ -60,15 +60,13 @@ public class TestApp : IAsyncDisposable
 
     private async Task StartAsync(string[] args, bool isHeadless)
     {
-        await _sema.WaitAsync();
-
  #pragma warning disable CS4014
         Task.Run(() =>
         {
             BuildAvaloniaApp(isHeadless, ServiceProviderContainer)
                 .StartWithClassicDesktopLifetime(args);
 
-            _sema.Release();
+            _sync.Set();
         });
  #pragma warning restore CS4014
 
@@ -105,5 +103,5 @@ public class TestApp : IAsyncDisposable
 
     private readonly TempFolder _configFolder;
     private readonly bool _useSelfConfigDir;
-    private readonly SemaphoreSlim _sema = new(1, 1);
+    private readonly ManualResetEventSlim _sync = new();
 }

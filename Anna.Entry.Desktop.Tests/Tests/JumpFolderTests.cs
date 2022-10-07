@@ -101,4 +101,40 @@ public class JumpFolderTests : IDisposable
 
         Assert.Equal(a.Path, model.Path);
     }
+
+    [Fact]
+    public async Task Delete_folder()
+    {
+        var configFolder = _fixture.ConfigFolder;
+        configFolder.CreateFolder("FolderA");
+        
+        var c = new JumpFolderConfigData();
+        c.SetDefault();
+        var f1 = c.Paths.First(x => x.Key == Key.F1);
+        f1.Path = "ABC";
+
+        var json = JsonSerializer.Serialize(c, FileSystemObjectSerializer.Options);
+        await File.WriteAllTextAsync(configFolder.JumpFolderConfigFilePath, json);
+
+        _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Load();
+
+        await Task.Delay(100);
+
+        await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = _fixture.App.FolderWindows.First();
+
+            await w.PressKeyAsync(Key.J);
+            await w.PressKeyAsync(Key.Delete);
+            await w.PressKeyAsync(Key.Enter);       // Confirmation dialog
+            await w.PressKeyAsync(Key.Escape);
+        });
+
+        await Task.Delay(100);
+
+        var afterF1 = _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Data.Paths
+            .First(x => x.Key == Key.F1);
+        
+        Assert.Equal("", afterF1.Path);
+    }
 }

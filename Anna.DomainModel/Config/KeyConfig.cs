@@ -2,6 +2,7 @@
 using Anna.UseCase;
 using Avalonia.Input;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Anna.DomainModel.Config;
 
@@ -31,6 +32,9 @@ public class KeyConfigData : ConfigData
 
     public override void SetDefault()
     {
+        var isMacOs = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+        var metaKey = isMacOs ? KeyModifiers.Meta : KeyModifiers.Control;
+        
         Keys = new KeyData[]
         {
             new(Key.S, KeyModifiers.None, Operations.SortEntry),
@@ -44,7 +48,7 @@ public class KeyConfigData : ConfigData
             new(Key.Back, KeyModifiers.None, Operations.JumpToParentFolder),
             new(Key.OemPipe, KeyModifiers.None, Operations.JumpToRootFolder),
             new(Key.Enter, KeyModifiers.Shift, Operations.OpenEntryByEditor1),
-            new(Key.Enter, KeyModifiers.Control, Operations.OpenEntryByApp),
+            new(Key.Enter, metaKey, Operations.OpenEntryByApp),
         };
     }
 

@@ -4,9 +4,7 @@ using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels;
-using Anna.Gui.ViewModels.Messaging;
 using Anna.Gui.ViewModels.ShortcutKey;
-using Anna.Gui.Views.Dialogs.Base;
 using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings;
@@ -14,7 +12,6 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -33,17 +30,13 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
 
     public FolderPanelViewModel(
         IServiceProviderContainer dic,
-        IFolderServiceUseCase folderService,
         ResourcesHolder resourcesHolder,
         ShortcutKeyManager shortcutKeyManager,
-        ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
-        _folderService = folderService;
         _resourcesHolder = resourcesHolder;
         ShortcutKeyManager = shortcutKeyManager;
-        _logger = logger;
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
@@ -208,8 +201,6 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
         CursorIndex.Value = 0;
     }
 
-    private readonly ILoggerUseCase _logger;
-    private readonly IFolderServiceUseCase _folderService;
     private readonly ResourcesHolder _resourcesHolder;
     private EntryViewModel? _oldEntry;
 

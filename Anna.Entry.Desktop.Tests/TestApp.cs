@@ -65,7 +65,7 @@ public class TestApp : IAsyncDisposable
  #pragma warning disable CS4014
         Task.Run(() =>
         {
-            BuildAvaloniaApp(isHeadless, args, ServiceProviderContainer)
+            BuildAvaloniaApp(isHeadless, ServiceProviderContainer)
                 .StartWithClassicDesktopLifetime(args);
 
             _sema.Release();
@@ -93,9 +93,9 @@ public class TestApp : IAsyncDisposable
         Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime ??
         throw new NullReferenceException();
 
-    private static AppBuilder BuildAvaloniaApp(bool isHeadless, string[] args, DefaultServiceProviderContainer dic)
+    private static AppBuilder BuildAvaloniaApp(bool isHeadless, DefaultServiceProviderContainer dic)
     {
-        var appBuilder = Program.BuildAvaloniaAppForDesktopTests(args, dic);
+        var appBuilder = Program.BuildAvaloniaAppForDesktopTests(dic);
 
         if (isHeadless)
             appBuilder.UseHeadless(new AvaloniaHeadlessPlatformOptions { UseCompositor = false });

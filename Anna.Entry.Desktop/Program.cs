@@ -24,7 +24,7 @@ public static class Program
         (App as IDisposable)?.Dispose();
     }
 
-    public static AppBuilder BuildAvaloniaAppForDesktopTests(string[] args, DefaultServiceProviderContainer dic)
+    public static AppBuilder BuildAvaloniaAppForDesktopTests(DefaultServiceProviderContainer dic)
     {
         return BuildAvaloniaApp(dic, dic.Destroy);
     }

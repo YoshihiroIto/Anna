@@ -61,10 +61,6 @@ public partial class EntryDisplayDialog : DialogBase
             // ignored
         }
 
-        var prop = typeof(TextEditor).GetProperty("ScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic) ??
-                   throw new NullReferenceException();
-        _scrollViewer = prop.GetValue(_textEditor) as ScrollViewer ?? throw new NullReferenceException();
-
         _textEditor.TextArea.Focus();
     }
 
@@ -77,7 +73,13 @@ public partial class EntryDisplayDialog : DialogBase
     private void TextEditor_OnKeyDown(object? sender, KeyEventArgs e)
     {
         _ = _textEditor ?? throw new NullReferenceException();
-        _ = _scrollViewer ?? throw new NullReferenceException();
+        
+        if (_scrollViewer is null)
+        {
+            var prop = typeof(TextEditor).GetProperty("ScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic) ??
+                       throw new NullReferenceException();
+            _scrollViewer = prop.GetValue(_textEditor) as ScrollViewer ?? throw new NullReferenceException();
+        }
 
         var lineHeight =
             _textEditor.TextArea.TextView.GetVisualTopByDocumentLine(2) -

@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.ShortcutKey;
 
-public class EntryDisplayDialogShortcutKey : ShortcutKeyBase
+public class TextViewerShortcutKey : ShortcutKeyBase
 {
     private readonly AppConfig _appConfig;
-    public EntryDisplayDialogShortcutKey(
+    public TextViewerShortcutKey(
         IFolderServiceUseCase folderService,
         AppConfig appConfig,
         KeyConfig keyConfig,
@@ -40,14 +40,14 @@ public class EntryDisplayDialogShortcutKey : ShortcutKeyBase
 
     private static async ValueTask CloseAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IEntryDisplayDialogShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
 
         await r.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
     }
 
     private async ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
     {
-        var r = shortcutKeyReceiver as IEntryDisplayDialogShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
 
         var targetFilepath = r.TargetFilepath;
         var lineIndex = r.LineIndex;
@@ -67,7 +67,7 @@ public class EntryDisplayDialogShortcutKey : ShortcutKeyBase
 
     private static ValueTask ScrollAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)
     {
-        var r = shortcutKeyReceiver as IEntryDisplayDialogShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
 
         var lineHeight = r.CalcLineHeight();
         var pageHeight = TrimmingScrollY(r.TextEditor.TextArea.Bounds.Height);

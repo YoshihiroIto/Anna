@@ -2,7 +2,9 @@
 using Anna.DomainModel.Config;
 using Anna.Gui.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Panels;
 using Anna.UseCase;
+using Reactive.Bindings.Extensions;
 using System.IO;
 
 namespace Anna.Gui.Views.Dialogs;
@@ -12,16 +14,16 @@ public class EntryDisplayDialogViewModel
 {
     public string Title => Model.NameWithExtension + " - " + Path.GetDirectoryName(Model.Path);
 
-    public readonly EntryDisplayDialogShortcutKey ShortcutKey;
+    public TextViewerViewModel TextViewerViewModel { get; }
 
     public EntryDisplayDialogViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
-        EntryDisplayDialogShortcutKey entryDisplayDialogShortcutKey,
+        TextViewerShortcutKey textViewerShortcutKey,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, resourcesHolder, logger, objectLifetimeChecker)
     {
-        ShortcutKey = entryDisplayDialogShortcutKey;
+        TextViewerViewModel = dic.GetInstance<TextViewerViewModel, Entry>(Model).AddTo(Trash);
     }
 }

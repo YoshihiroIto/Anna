@@ -22,7 +22,7 @@ public interface IFolderPanelShortcutKeyReceiver : IShortcutKeyReceiver
     void ToggleSelectionCursorEntry(bool isMoveDown);
 }
 
-public interface IEntryDisplayDialogShortcutKeyReceiver : IShortcutKeyReceiver
+public interface ITextViewerShortcutKeyReceiver : IShortcutKeyReceiver
 {
     public TextEditor TextEditor { get; }
     public ScrollViewer ScrollViewer { get; }

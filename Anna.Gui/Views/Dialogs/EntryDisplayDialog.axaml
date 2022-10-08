@@ -2,13 +2,13 @@
                  Classes="dialog"
                  xmlns="https://github.com/avaloniaui"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
                  xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
                  xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                  xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
                  Title="{Binding Title,
                                  Mode=OneTime}"
                  Width="800"
@@ -42,8 +42,5 @@
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
-    <avaloniaEdit:TextEditor x:Name="ViewTextEditor"
-                             HorizontalScrollBarVisibility="Disabled"
-                             IsReadOnly="True"
-                             ShowLineNumbers="True" />
+    <panels:TextViewer DataContext="{Binding TextViewerViewModel}" />
 </base:DialogBase>

@@ -3,6 +3,7 @@ using Anna.DomainModel;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
+using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
 using Anna.Strings;
 using Anna.UseCase;
@@ -11,7 +12,6 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
-using ShortcutKeyManager=Anna.Gui.ShortcutKey.ShortcutKeyManager;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -22,7 +22,7 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
 
     public Resources R => _resourcesHolder.Instance;
 
-    public readonly ShortcutKeyManager ShortcutKeyManager;
+    public readonly FolderPanelShortcutKeyManager ShortcutKeyManager;
 
     public ReactivePropertySlim<int> CursorIndex { get; }
 
@@ -31,12 +31,12 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
     public FolderPanelViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
-        ShortcutKeyManager shortcutKeyManager,
+        FolderPanelShortcutKeyManager folderPanelShortcutKeyManager,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
         _resourcesHolder = resourcesHolder;
-        ShortcutKeyManager = shortcutKeyManager;
+        ShortcutKeyManager = folderPanelShortcutKeyManager;
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);

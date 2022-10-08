@@ -1,5 +1,4 @@
-﻿using Anna.Constants;
-using Anna.DomainModel.Config;
+﻿using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Interfaces;
 using Anna.Gui.Messaging;
@@ -14,21 +13,18 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.ShortcutKey;
 
-public partial class ShortcutKeyManager : DisposableNotificationObject
+public abstract class ShortcutKeyManager : DisposableNotificationObject
 {
-    public ShortcutKeyManager(
-        IServiceProviderContainer dic,
+    protected ShortcutKeyManager(
         IFolderServiceUseCase folderService,
-        AppConfig appConfig,
         KeyConfig keyConfig,
         ILoggerUseCase logger)
     {
-        _dic = dic;
         _folderService = folderService;
-        _appConfig = appConfig;
         _logger = logger;
 
-        SetupOperators();
+        // ReSharper disable once VirtualMemberCallInConstructor
+        _operators = SetupOperators();
 
         keyConfig.ObserveProperty(x => x.Data)
             .Subscribe(UpdateShortcutKeys)
@@ -57,8 +53,6 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
                 key.Modifier,
                 async x =>
                 {
-                    _ = _operators ?? throw new NullReferenceException();
-
                     if (_operators.TryGetValue(key.Operation, out var value) == false)
                     {
                         _logger.Error($"UpdateShortcutKeys: Not found ({key.Key}, {key.Modifier})");
@@ -70,12 +64,12 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
         }
     }
     
-    private async ValueTask<bool> CheckIsAccessibleAsync(string path, IShortcutKeyReceiver shortcutKeyReceiver)
+    protected async ValueTask<bool> CheckIsAccessibleAsync(string path, InteractionMessenger messenger)
     {
         if (_folderService.IsAccessible(path))
             return true;
 
-        await shortcutKeyReceiver.Messenger.RaiseAsync(
+        await messenger.RaiseAsync(
             new InformationMessage(
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),
@@ -97,31 +91,10 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
         _shortcutKeys[k] = action;
     }
 
-    private void SetupOperators()
-    {
-        _operators = new Dictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>
-        {
-            { Operations.SortEntry, SelectSortModeAndOrderAsync },
-            { Operations.JumpFolder, JumpFolderAsync },
-            { Operations.MoveCursorUp, s => ShortcutKeyManager.MoveCursorAsync(s, Directions.Up) },
-            { Operations.MoveCursorDown, s => ShortcutKeyManager.MoveCursorAsync(s, Directions.Down) },
-            { Operations.MoveCursorLeft, s => ShortcutKeyManager.MoveCursorAsync(s, Directions.Left) },
-            { Operations.MoveCursorRight, s => ShortcutKeyManager.MoveCursorAsync(s, Directions.Right) },
-            { Operations.ToggleSelectionCursorEntry, s => ShortcutKeyManager.ToggleSelectionCursorEntryAsync(s, true) },
-            { Operations.OpenEntry, OpenEntryAsync },
-            { Operations.OpenEntryByEditor1, s => OpenEntryByEditorAsync(s, 1) },
-            { Operations.OpenEntryByEditor2, s => OpenEntryByEditorAsync(s, 2) },
-            { Operations.OpenEntryByApp, OpenEntryByAppAsync },
-            { Operations.JumpToParentFolder, JumpToParentFolderAsync },
-            { Operations.JumpToRootFolder, JumpToRootFolderAsync },
-        };
-    }
+    protected abstract IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators();
 
-    private readonly IServiceProviderContainer _dic;
     private readonly IFolderServiceUseCase _folderService;
-    private readonly AppConfig _appConfig;
     private readonly ILoggerUseCase _logger;
     private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
-
-    private IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>? _operators;
+    private readonly IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> _operators;
 }

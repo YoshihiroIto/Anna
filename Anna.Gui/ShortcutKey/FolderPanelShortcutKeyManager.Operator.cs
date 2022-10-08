@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.ShortcutKey;
 
-public partial class ShortcutKeyManager
+public partial class FolderPanelShortcutKeyManager
 {
     private async ValueTask SelectSortModeAndOrderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
@@ -26,7 +26,7 @@ public partial class ShortcutKeyManager
         if (result.Path == "")
             return;
 
-        if (await CheckIsAccessibleAsync(result.Path, shortcutKeyReceiver) == false)
+        if (await CheckIsAccessibleAsync(result.Path, shortcutKeyReceiver.Messenger) == false)
             return;
 
         shortcutKeyReceiver.Folder.Path = result.Path;
@@ -50,14 +50,14 @@ public partial class ShortcutKeyManager
 
         if (target.IsFolder)
         {
-            if (await CheckIsAccessibleAsync(target.Path, shortcutKeyReceiver) == false)
+            if (await CheckIsAccessibleAsync(target.Path, shortcutKeyReceiver.Messenger) == false)
                 return;
 
             shortcutKeyReceiver.Folder.Path = target.Path;
         }
         else
         {
-            if (await CheckIsAccessibleAsync(target.Path, shortcutKeyReceiver) == false)
+            if (await CheckIsAccessibleAsync(target.Path, shortcutKeyReceiver.Messenger) == false)
                 return;
 
             await DialogOperator.EntryDisplay(_dic, shortcutKeyReceiver.Owner, target);
@@ -96,7 +96,7 @@ public partial class ShortcutKeyManager
         if (parentDir is null)
             return;
 
-        if (await CheckIsAccessibleAsync(shortcutKeyReceiver.Folder.Path, shortcutKeyReceiver) == false)
+        if (await CheckIsAccessibleAsync(shortcutKeyReceiver.Folder.Path, shortcutKeyReceiver.Messenger) == false)
             return;
 
         shortcutKeyReceiver.Folder.Path = parentDir;
@@ -108,7 +108,7 @@ public partial class ShortcutKeyManager
         if (rootDir is null)
             return;
 
-        if (await CheckIsAccessibleAsync(rootDir, shortcutKeyReceiver) == false)
+        if (await CheckIsAccessibleAsync(rootDir, shortcutKeyReceiver.Messenger) == false)
             return;
 
         shortcutKeyReceiver.Folder.Path = rootDir;

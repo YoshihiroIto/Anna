@@ -7,7 +7,6 @@ using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
-using ShortcutKeyManager=Anna.Gui.ShortcutKey.ShortcutKeyManager;
 
 namespace Anna.Gui.Views.Behaviors;
 
@@ -66,12 +65,11 @@ public class FolderPanelInputBehavior : Behavior<FolderPanel>
                 return;
         }
 
-        var manager = _shortcutKeyManager ??= viewModel?.ShortcutKeyManager;
+        var manager = viewModel?.ShortcutKeyManager;
         
         if (manager is not null)
             await manager.OnKeyDownAsync(AssociatedObject ?? throw new NullReferenceException(), e);
     }
 
     private Window? _parentWindow;
-    private ShortcutKeyManager? _shortcutKeyManager;
 }

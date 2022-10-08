@@ -2,12 +2,12 @@
 using Anna.DomainModel.Config;
 using Anna.DomainModel.FileSystem;
 using Anna.Gui;
+using Anna.Gui.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
 using Anna.UseCase;
 using System.Runtime;
-using ShortcutKeyManager=Anna.Gui.ShortcutKey.ShortcutKeyManager;
 
 namespace Anna.ServiceProvider;
 
@@ -39,7 +39,7 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();
-        RegisterSingleton<ShortcutKeyManager>();
+        RegisterSingleton<FolderPanelShortcutKeyManager>();
 
         // property injection
         RegisterInitializer<DialogBase>(d => d.Logger = GetInstance<ILoggerUseCase>());

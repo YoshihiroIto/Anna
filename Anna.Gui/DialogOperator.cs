@@ -1,4 +1,5 @@
 ﻿using Anna.Constants;
+using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Views.Dialogs;
 using Anna.Gui.Views.Dialogs.Base;
@@ -42,6 +43,16 @@ public static class DialogOperator
         return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
     }
 
+    public static async ValueTask EntryDisplay(IServiceProviderContainer dic, Window owner, Entry target)
+    {
+        using var viewModel = dic.GetInstance<EntryDisplayDialogViewModel, Entry>(target);
+
+        var view = dic.GetInstance<EntryDisplayDialog>();
+        view.DataContext = viewModel;
+
+        await view.ShowDialog(owner);
+    }
+
     public static async ValueTask<DialogResultTypes> DisplayInformationAsync(
         IServiceProviderContainer dic,
         Window owner,
@@ -66,7 +77,8 @@ public static class DialogOperator
         ConfirmationTypes confirmationType)
     {
         using var viewModel =
-            dic.GetInstance<ConfirmationDialogViewModel, (string Title, string Text, ConfirmationTypes confirmationType)>((title, text, confirmationType));
+            dic.GetInstance<ConfirmationDialogViewModel, (string Title, string Text, ConfirmationTypes confirmationType
+                )>((title, text, confirmationType));
 
         var view = dic.GetInstance<ConfirmationDialog>();
         view.DataContext = viewModel;

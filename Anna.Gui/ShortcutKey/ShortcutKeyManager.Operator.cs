@@ -57,7 +57,7 @@ public partial class ShortcutKeyManager
         }
         else
         {
-            _logger.Information("Not implemented: OpenEntryAsync");
+            await DialogOperator.EntryDisplay(_dic, shortcutKeyReceiver.Owner, target);
         }
     }
 

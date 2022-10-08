@@ -13,6 +13,7 @@ namespace Anna.Gui.Views.Panels;
 public partial class ImageViewer : UserControl, IImageViewerShortcutKeyReceiver
 {
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
+    public string TargetFilepath => ViewModel.Model.Path;
 
     public InteractionMessenger Messenger =>
         ((ControlHelper.FindOwnerWindow(this) as DialogBase)?.DataContext as ViewModelBase)?.Messenger ??

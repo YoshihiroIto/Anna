@@ -34,4 +34,5 @@ public interface ITextViewerShortcutKeyReceiver : IShortcutKeyReceiver
 
 public interface IImageViewerShortcutKeyReceiver : IShortcutKeyReceiver
 {
+    public string TargetFilepath { get; }
 }

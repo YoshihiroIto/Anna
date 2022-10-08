@@ -31,6 +31,7 @@ public class TextViewerShortcutKey : ShortcutKeyBase
             { Operations.OpenEntry, CloseAsync },
             { Operations.OpenEntryByEditor1, s => OpenFileByEditorAsync(s, 1) },
             { Operations.OpenEntryByEditor2, s => OpenFileByEditorAsync(s, 2) },
+            { Operations.OpenEntryByApp, OpenFileByAppAsync },
             { Operations.MoveCursorUp, s => ScrollAsync(s, Directions.Up) },
             { Operations.MoveCursorDown, s => ScrollAsync(s, Directions.Down) },
             { Operations.MoveCursorLeft, s => ScrollAsync(s, Directions.Left) },
@@ -63,6 +64,17 @@ public class TextViewerShortcutKey : ShortcutKeyBase
  #pragma warning restore CS4014
 
         await r.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
+    }
+    
+    private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
+        
+        var targetFilepath = r.TargetFilepath;
+
+        Task.Run(() => ProcessHelper.RunAssociatedApp(targetFilepath));
+
+        return ValueTask.CompletedTask;
     }
 
     private static ValueTask ScrollAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)

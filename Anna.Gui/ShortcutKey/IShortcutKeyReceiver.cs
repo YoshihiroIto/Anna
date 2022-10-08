@@ -26,4 +26,8 @@ public interface IEntryDisplayDialogShortcutKeyReceiver : IShortcutKeyReceiver
 {
     public TextEditor TextEditor { get; }
     public ScrollViewer ScrollViewer { get; }
+    public double CalcLineHeight();
+    
+    public string TargetFilepath { get; }
+    public int LineIndex { get; }
 }

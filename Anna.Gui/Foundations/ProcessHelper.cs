@@ -17,14 +17,14 @@ namespace Anna.Gui.Foundations
             Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = path });
         }
 
-        public static string MakeEditorArguments(string options, string targetFilepath, int line)
+        public static string MakeEditorArguments(string options, string targetFilepath, int lineIndex)
         {
             if (options == "")
                 return "\"" + targetFilepath + "\"";
 
             return options
                 .Replace("%F", targetFilepath)
-                .Replace("%L", line.ToString());
+                .Replace("%L", lineIndex.ToString());
         }
     }
 }

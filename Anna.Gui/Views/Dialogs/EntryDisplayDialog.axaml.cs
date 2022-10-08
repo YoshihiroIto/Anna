@@ -21,6 +21,8 @@ public partial class EntryDisplayDialog
 {
     Window IShortcutKeyReceiver.Owner => this;
     InteractionMessenger IShortcutKeyReceiver.Messenger => ViewModel.Messenger;
+    public string TargetFilepath => ViewModel.Model.Path;
+    public int LineIndex => (int)(ScrollViewer.Offset.Y / CalcLineHeight()) + 1;
 
     public TextEditor TextEditor { get; private set; } = null!;
 
@@ -37,6 +39,13 @@ public partial class EntryDisplayDialog
 
             return _scrollViewer;
         }
+    }
+
+    public double CalcLineHeight()
+    {
+        return
+            TextEditor.TextArea.TextView.GetVisualTopByDocumentLine(2) -
+            TextEditor.TextArea.TextView.GetVisualTopByDocumentLine(1);
     }
 
     private ScrollViewer? _scrollViewer;

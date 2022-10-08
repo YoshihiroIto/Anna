@@ -5,11 +5,11 @@
              xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
              xmlns:converters="clr-namespace:Anna.Gui.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dataTemplateSelector="clr-namespace:Anna.Gui.Views.DataTemplateSelector"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
              xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
              xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
+             xmlns:templateSelector="clr-namespace:Anna.Gui.Views.TemplateSelector"
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
@@ -93,8 +93,8 @@
     </UserControl.Styles>
 
     <panels:FolderPanel.ItemTemplate>
-        <dataTemplateSelector:EntryDataTemplateSelector>
-            <dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
+        <templateSelector:EntryDataTemplateSelector>
+            <templateSelector:EntryDataTemplateSelector.FileDataTemplate>
                 <DataTemplate DataType="viewModels1:EntryViewModel">
                     <StackPanel Classes="entry">
                         <Viewbox Classes="entry">
@@ -110,9 +110,9 @@
                                    Text="{Binding Extension.Value}" />
                     </StackPanel>
                 </DataTemplate>
-            </dataTemplateSelector:EntryDataTemplateSelector.FileDataTemplate>
+            </templateSelector:EntryDataTemplateSelector.FileDataTemplate>
 
-            <dataTemplateSelector:EntryDataTemplateSelector.FolderDataTemplate>
+            <templateSelector:EntryDataTemplateSelector.FolderDataTemplate>
                 <DataTemplate DataType="viewModels1:EntryViewModel">
                     <StackPanel Classes="entry">
                         <Viewbox Classes="entry">
@@ -124,8 +124,8 @@
                                    Text="{Binding NameWithExtension.Value}" />
                     </StackPanel>
                 </DataTemplate>
-            </dataTemplateSelector:EntryDataTemplateSelector.FolderDataTemplate>
-        </dataTemplateSelector:EntryDataTemplateSelector>
+            </templateSelector:EntryDataTemplateSelector.FolderDataTemplate>
+        </templateSelector:EntryDataTemplateSelector>
     </panels:FolderPanel.ItemTemplate>
 
     <panels:EntriesControl />

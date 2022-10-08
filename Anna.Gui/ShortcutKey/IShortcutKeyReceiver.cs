@@ -31,3 +31,7 @@ public interface ITextViewerShortcutKeyReceiver : IShortcutKeyReceiver
     public string TargetFilepath { get; }
     public int LineIndex { get; }
 }
+
+public interface IImageViewerShortcutKeyReceiver : IShortcutKeyReceiver
+{
+}

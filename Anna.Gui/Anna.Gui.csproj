@@ -27,5 +27,9 @@
         <DependentUpon>ConfirmationDialog.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Panels\ImageViewer.axaml.cs">
+        <DependentUpon>ImageViewer.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

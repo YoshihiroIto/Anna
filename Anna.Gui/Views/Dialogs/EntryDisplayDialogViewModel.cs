@@ -1,10 +1,13 @@
-﻿using Anna.DomainModel;
+﻿using Anna.Constants;
+using Anna.DomainModel;
 using Anna.DomainModel.Config;
+using Anna.Gui.Foundations;
 using Anna.Gui.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Gui.Views.Panels;
 using Anna.UseCase;
 using Reactive.Bindings.Extensions;
+using System;
 using System.IO;
 
 namespace Anna.Gui.Views.Dialogs;
@@ -14,7 +17,7 @@ public class EntryDisplayDialogViewModel
 {
     public string Title => Model.NameWithExtension + " - " + Path.GetDirectoryName(Model.Path);
 
-    public TextViewerViewModel TextViewerViewModel { get; }
+    public ViewModelBase? ContentViewModel { get; }
 
     public EntryDisplayDialogViewModel(
         IServiceProviderContainer dic,
@@ -24,6 +27,18 @@ public class EntryDisplayDialogViewModel
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, resourcesHolder, logger, objectLifetimeChecker)
     {
-        TextViewerViewModel = dic.GetInstance<TextViewerViewModel, Entry>(Model).AddTo(Trash);
+        switch (Model.Format)
+        {
+            case FileEntryFormat.Image:
+                ContentViewModel = dic.GetInstance<ImageViewerViewModel, Entry>(Model).AddTo(Trash);
+                break;
+            
+            case FileEntryFormat.Text:
+                ContentViewModel = dic.GetInstance<TextViewerViewModel, Entry>(Model).AddTo(Trash);
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 }

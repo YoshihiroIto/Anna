@@ -9,6 +9,7 @@
                  xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
+                 xmlns:templateSelector="clr-namespace:Anna.Gui.Views.TemplateSelector"
                  Title="{Binding Title,
                                  Mode=OneTime}"
                  Width="800"
@@ -37,10 +38,27 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}"
+                                              Messenger="{Binding Messenger}">
             <behaviors1:WindowInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
-    <panels:TextViewer DataContext="{Binding TextViewerViewModel}" />
+    <ContentControl Content="{Binding}">
+        <ContentControl.Template>
+            <templateSelector:EntryDisplayControlTemplateSelector>
+                <templateSelector:EntryDisplayControlTemplateSelector.TextTemplate>
+                    <ControlTemplate>
+                        <panels:TextViewer DataContext="{Binding ContentViewModel}" />
+                    </ControlTemplate>
+                </templateSelector:EntryDisplayControlTemplateSelector.TextTemplate>
+
+                <templateSelector:EntryDisplayControlTemplateSelector.ImageTemplate>
+                    <ControlTemplate>
+                        <panels:ImageViewer DataContext="{Binding ContentViewModel}" />
+                    </ControlTemplate>
+                </templateSelector:EntryDisplayControlTemplateSelector.ImageTemplate>
+            </templateSelector:EntryDisplayControlTemplateSelector>
+        </ContentControl.Template>
+    </ContentControl>
 </base:DialogBase>

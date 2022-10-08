@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="Anna.Gui.Views.Panels.ImageViewer"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             x:DataType="panels:ImageViewerViewModel"
+             KeyDown="OnKeyDown"
+             mc:Ignorable="d">
+    <Design.DataContext>
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
+        <panels:ImageViewerViewModel />
+    </Design.DataContext>
+
+    <Image FocusAdorner="{x:Null}"
+           Source="{Binding Image}"
+           Stretch="Uniform">
+        <Interaction.Behaviors>
+            <behaviors:InputElementFocusBehavior />
+        </Interaction.Behaviors>
+    </Image>
+</UserControl>

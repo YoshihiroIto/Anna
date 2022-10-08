@@ -81,6 +81,11 @@ public sealed class FileSystemFolder : Folder
     {
         return File.ReadAllTextAsync(path);
     }
+    
+    public override Task<byte[]> ReadBinaryAsync(string path)
+    {
+        return File.ReadAllBytesAsync(path);
+    }
 
     private void UpdateWatcher(string path)
     {

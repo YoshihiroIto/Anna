@@ -1,6 +1,5 @@
 ﻿using Anna.Gui.Views.Dialogs.Base;
 using Avalonia;
-using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 
 namespace Anna.Gui.Views.Dialogs;

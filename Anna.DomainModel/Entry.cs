@@ -1,4 +1,5 @@
-﻿using Anna.Foundation;
+﻿using Anna.Constants;
+using Anna.Foundation;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
@@ -122,10 +123,15 @@ public class Entry : NotificationObject
 
     #endregion
 
-    public string Path { get;  set; } = "";
+    public string Path { get; set; } = "";
 
     public bool IsFolder => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+
+    public FileEntryFormat Format =>
+        SupportedImageFormats.Contains(Extension) ? FileEntryFormat.Image : FileEntryFormat.Text;
+
     public bool IsSelectable => IsParentFolder == false;
+
 
     public bool IsReadOnly
     {
@@ -237,6 +243,11 @@ public class Entry : NotificationObject
         return _folder.ReadStringAsync(Path);
     }
 
+    public Task<byte[]> ReadBinaryAsync()
+    {
+        return _folder.ReadBinaryAsync(Path);
+    }
+
     private void SetAttribute(FileAttributes a, bool i, [CallerMemberName] string propertyName = "")
     {
         if ((Attributes & a) == a == i)
@@ -249,4 +260,23 @@ public class Entry : NotificationObject
 
         RaisePropertyChanged(propertyName);
     }
+
+    private static HashSet<string> SupportedImageFormats => new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".jpeg",
+        ".jpg",
+        ".png",
+        ".dng",
+        ".webp",
+        ".gif",
+        ".bmp",
+        ".ico",
+        ".astc",
+        ".ktx",
+        ".pkm",
+        ".wbmp",
+        ".cr2",
+        ".nef",
+        ".arw"
+    };
 }

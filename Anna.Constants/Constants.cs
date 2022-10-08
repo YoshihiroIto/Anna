@@ -38,3 +38,9 @@ public enum Directions
     Left = 1 << 2,
     Right = 1 << 3
 }
+
+public enum FileEntryFormat
+{
+    Image,
+    Text
+}

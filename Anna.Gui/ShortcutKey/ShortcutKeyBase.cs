@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.ShortcutKey;
 
-public abstract class ShortcutKeyManager : DisposableNotificationObject
+public abstract class ShortcutKeyBase : DisposableNotificationObject
 {
-    protected ShortcutKeyManager(
+    protected ShortcutKeyBase(
         IFolderServiceUseCase folderService,
         KeyConfig keyConfig,
         ILoggerUseCase logger)

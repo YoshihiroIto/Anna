@@ -3,6 +3,7 @@ using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels;
+using Anna.Gui.ViewModels.Messaging;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -85,6 +86,7 @@ public partial class FolderPanel : UserControl, IShortcutKeyReceiver
     public Window Owner => ControlHelper.FindOwnerWindow(this);
     public Folder Folder => FolderPanelViewModel.Model;
     public Entry CurrentEntry => FolderPanelViewModel.CursorEntry.Value?.Model ?? throw new InvalidOperationException();
+    public InteractionMessenger Messenger => FolderPanelViewModel.Messenger;
 
     public FolderPanelViewModel FolderPanelViewModel =>
         DataContext as FolderPanelViewModel ?? throw new NotSupportedException();

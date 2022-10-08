@@ -75,7 +75,7 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
         if (_folderService.IsAccessible(path))
             return true;
 
-        await shortcutKeyReceiver.FolderPanelViewModel.Messenger.RaiseAsync(
+        await shortcutKeyReceiver.Messenger.RaiseAsync(
             new InformationMessage(
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),

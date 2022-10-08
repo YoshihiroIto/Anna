@@ -1,4 +1,5 @@
 ﻿using Anna.DomainModel;
+using Anna.Gui.ViewModels.Messaging;
 using Anna.Gui.Views.Panels;
 using Avalonia.Controls;
 using Entry=Anna.DomainModel.Entry;
@@ -10,6 +11,8 @@ public interface IShortcutKeyReceiver
     Window Owner { get; }
     Folder Folder { get; }
     Entry CurrentEntry { get; }
+    InteractionMessenger Messenger { get; }
+    
     FolderPanelViewModel FolderPanelViewModel { get; }
 
     Entry[] CollectTargetEntries();

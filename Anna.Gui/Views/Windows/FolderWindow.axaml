@@ -5,9 +5,9 @@
         xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:messaging="clr-namespace:Anna.Gui.Views.Behaviors.Messaging"
         xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
         xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
+        xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
         Title="{ReflectionBinding R.AppName}"
         Width="1000"
         Height="600"
@@ -31,9 +31,9 @@
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
 
-        <messaging:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
-            <messaging:WindowInteractionMessageAction />
-        </messaging:InteractionMessageTrigger>
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+            <behaviors1:WindowInteractionMessageAction />
+        </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <DockPanel>

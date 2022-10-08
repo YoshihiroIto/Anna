@@ -2,7 +2,7 @@
 using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Interfaces;
-using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Messaging;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Strings;
 using Anna.UseCase;
@@ -12,7 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Anna.Gui.ViewModels.ShortcutKey;
+namespace Anna.Gui.ShortcutKey;
 
 public partial class ShortcutKeyManager : DisposableNotificationObject
 {
@@ -103,11 +103,11 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
         {
             { Operations.SortEntry, SelectSortModeAndOrderAsync },
             { Operations.JumpFolder, JumpFolderAsync },
-            { Operations.MoveCursorUp, s => MoveCursorAsync(s, Directions.Up) },
-            { Operations.MoveCursorDown, s => MoveCursorAsync(s, Directions.Down) },
-            { Operations.MoveCursorLeft, s => MoveCursorAsync(s, Directions.Left) },
-            { Operations.MoveCursorRight, s => MoveCursorAsync(s, Directions.Right) },
-            { Operations.ToggleSelectionCursorEntry, s => ToggleSelectionCursorEntryAsync(s, true) },
+            { Operations.MoveCursorUp, s => ShortcutKeyManager.MoveCursorAsync(s, Directions.Up) },
+            { Operations.MoveCursorDown, s => ShortcutKeyManager.MoveCursorAsync(s, Directions.Down) },
+            { Operations.MoveCursorLeft, s => ShortcutKeyManager.MoveCursorAsync(s, Directions.Left) },
+            { Operations.MoveCursorRight, s => ShortcutKeyManager.MoveCursorAsync(s, Directions.Right) },
+            { Operations.ToggleSelectionCursorEntry, s => ShortcutKeyManager.ToggleSelectionCursorEntryAsync(s, true) },
             { Operations.OpenEntry, OpenEntryAsync },
             { Operations.OpenEntryByEditor1, s => OpenEntryByEditorAsync(s, 1) },
             { Operations.OpenEntryByEditor2, s => OpenEntryByEditorAsync(s, 2) },

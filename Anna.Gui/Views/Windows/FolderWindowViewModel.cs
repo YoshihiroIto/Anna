@@ -3,7 +3,7 @@ using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
-using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Messaging;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Gui.Views.Panels;
 using Anna.Strings;

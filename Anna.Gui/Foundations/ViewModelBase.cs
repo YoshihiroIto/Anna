@@ -1,5 +1,5 @@
 ﻿using Anna.Foundation;
-using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Messaging;
 using Anna.UseCase;
 
 namespace Anna.Gui.Foundations;

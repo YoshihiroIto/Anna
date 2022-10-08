@@ -1,9 +1,8 @@
 ﻿using Anna.UseCase;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace Anna.Gui.ViewModels.Messaging;
+namespace Anna.Gui.Messaging;
 
 public class InteractionMessenger : IHasServiceProviderContainer
 {

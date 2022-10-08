@@ -7,7 +7,7 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:messaging="clr-namespace:Anna.Gui.Views.Behaviors.Messaging"
+                 xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
                  Title="{Binding Title,
                                  Mode=OneTime}"
                  MinWidth="300"
@@ -31,9 +31,9 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <messaging:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
-            <messaging:WindowInteractionMessageAction />
-        </messaging:InteractionMessageTrigger>
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+            <behaviors1:WindowInteractionMessageAction />
+        </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

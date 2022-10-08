@@ -1,6 +1,6 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
-using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Messaging;
 using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings.Extensions;

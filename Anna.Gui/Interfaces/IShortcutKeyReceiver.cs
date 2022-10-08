@@ -1,5 +1,5 @@
 ﻿using Anna.DomainModel;
-using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Messaging;
 using Anna.Gui.Views.Panels;
 using Avalonia.Controls;
 using Entry=Anna.DomainModel.Entry;

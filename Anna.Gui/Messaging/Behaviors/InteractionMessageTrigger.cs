@@ -1,12 +1,11 @@
-﻿using Anna.Gui.ViewModels.Messaging;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
 
-namespace Anna.Gui.Views.Behaviors.Messaging;
+namespace Anna.Gui.Messaging.Behaviors;
 
 public class InteractionMessageTrigger : Trigger<Control>
 {

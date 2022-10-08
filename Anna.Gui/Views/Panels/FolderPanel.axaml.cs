@@ -2,8 +2,8 @@
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
+using Anna.Gui.Messaging;
 using Anna.Gui.ViewModels;
-using Anna.Gui.ViewModels.Messaging;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;

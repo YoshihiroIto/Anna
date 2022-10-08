@@ -1,5 +1,4 @@
 ﻿using Anna.Gui.Foundations;
-using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Panels;
 using Avalonia;
 using Avalonia.Controls;
@@ -8,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
+using ShortcutKeyManager=Anna.Gui.ShortcutKey.ShortcutKeyManager;
 
 namespace Anna.Gui.Views.Behaviors;
 

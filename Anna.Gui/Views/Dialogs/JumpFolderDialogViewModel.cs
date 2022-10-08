@@ -1,6 +1,6 @@
 ﻿using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
-using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Messaging;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Strings;
 using Anna.UseCase;

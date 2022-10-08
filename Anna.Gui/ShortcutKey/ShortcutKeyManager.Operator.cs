@@ -4,7 +4,7 @@ using Anna.Gui.Interfaces;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Anna.Gui.ViewModels.ShortcutKey;
+namespace Anna.Gui.ShortcutKey;
 
 public partial class ShortcutKeyManager
 {

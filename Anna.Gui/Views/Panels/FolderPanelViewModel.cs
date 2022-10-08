@@ -4,7 +4,6 @@ using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.ViewModels;
-using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings;
@@ -12,6 +11,7 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
+using ShortcutKeyManager=Anna.Gui.ShortcutKey.ShortcutKeyManager;
 
 namespace Anna.Gui.Views.Panels;
 

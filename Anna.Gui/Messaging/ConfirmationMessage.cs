@@ -1,7 +1,7 @@
 ﻿using Anna.Gui.Views.Dialogs.Base;
 using Avalonia;
 
-namespace Anna.Gui.ViewModels.Messaging;
+namespace Anna.Gui.Messaging;
 
 public class ConfirmationMessage : InteractionMessage
 {

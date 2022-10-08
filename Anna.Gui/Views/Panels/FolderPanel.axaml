@@ -7,9 +7,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dataTemplateSelector="clr-namespace:Anna.Gui.Views.DataTemplateSelector"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:messaging="clr-namespace:Anna.Gui.Views.Behaviors.Messaging"
              xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
              xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
+             xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
@@ -39,9 +39,9 @@
     <Interaction.Behaviors>
         <behaviors:FolderPanelInputBehavior />
 
-        <messaging:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
-            <messaging:InformationDialogInteractionMessageAction />
-        </messaging:InteractionMessageTrigger>
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
+            <behaviors1:InformationDialogInteractionMessageAction />
+        </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <UserControl.Styles>

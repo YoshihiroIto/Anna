@@ -2,12 +2,12 @@
 using Anna.DomainModel.Config;
 using Anna.DomainModel.FileSystem;
 using Anna.Gui;
-using Anna.Gui.ViewModels.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
 using Anna.UseCase;
 using System.Runtime;
+using ShortcutKeyManager=Anna.Gui.ShortcutKey.ShortcutKeyManager;
 
 namespace Anna.ServiceProvider;
 

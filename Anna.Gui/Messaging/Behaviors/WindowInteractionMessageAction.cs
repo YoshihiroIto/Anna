@@ -1,11 +1,10 @@
-﻿using Anna.Gui.ViewModels.Messaging;
-using Anna.UseCase;
+﻿using Anna.UseCase;
 using Avalonia;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
 
-namespace Anna.Gui.Views.Behaviors.Messaging;
+namespace Anna.Gui.Messaging.Behaviors;
 
 public class WindowInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
 {

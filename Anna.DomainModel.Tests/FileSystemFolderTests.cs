@@ -38,7 +38,7 @@ public class FileSystemFolderTests : IDisposable
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
-        lock (folder.EntitiesUpdatingLockObj)
+        lock (folder.EntriesUpdatingLockObj)
         {
             Assert.DoesNotContain("..", folder.Entries.Select(x => x.NameWithExtension));
         }
@@ -59,7 +59,7 @@ public class FileSystemFolderTests : IDisposable
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
-        lock (folder.EntitiesUpdatingLockObj)
+        lock (folder.EntriesUpdatingLockObj)
         {
             Assert.Equal(filesWithParentDir, folder.Entries.Select(x => x.NameWithExtension));
         }
@@ -86,7 +86,7 @@ public class FileSystemFolderTests : IDisposable
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
-        lock (folder.EntitiesUpdatingLockObj)
+        lock (folder.EntriesUpdatingLockObj)
         {
             Assert.Equal(filesWithParentDir, folder.Entries.Select(x => x.NameWithExtension));
         }
@@ -110,7 +110,7 @@ public class FileSystemFolderTests : IDisposable
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
-        lock (folder.EntitiesUpdatingLockObj)
+        lock (folder.EntriesUpdatingLockObj)
         {
             Assert.Equal(filesWithParentDir, folder.Entries.Select(x => x.NameWithExtension));
         }
@@ -135,7 +135,7 @@ public class FileSystemFolderTests : IDisposable
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
-        lock (folder.EntitiesUpdatingLockObj)
+        lock (folder.EntriesUpdatingLockObj)
         {
             Assert.Equal(filesWithParentDir, folder.Entries.Select(x => x.NameWithExtension));
         }

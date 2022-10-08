@@ -9,7 +9,7 @@ namespace Anna.DomainModel;
 public abstract class Folder : NotificationObject, IDisposable
 {
     public ObservableCollectionEx<Entry> Entries { get; } = new();
-    public readonly object EntitiesUpdatingLockObj = new();
+    public readonly object EntriesUpdatingLockObj = new();
 
     public EventHandler? EntrySizeChanged;
 
@@ -104,7 +104,7 @@ public abstract class Folder : NotificationObject, IDisposable
 
         bool isSizeChanged;
         
-        lock (EntitiesUpdatingLockObj)
+        lock (EntriesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var target) == false)
                 return;
@@ -122,7 +122,7 @@ public abstract class Folder : NotificationObject, IDisposable
     {
         _Logger.Information($"OnDeleted: {Path}, {name}");
 
-        lock (EntitiesUpdatingLockObj)
+        lock (EntriesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(name, out var target) == false)
                 return;
@@ -135,7 +135,7 @@ public abstract class Folder : NotificationObject, IDisposable
     {
         _Logger.Information($"OnRenamed: {Path}, {oldName}, {newName}");
 
-        lock (EntitiesUpdatingLockObj)
+        lock (EntriesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(oldName, out var target) == false)
                 return;
@@ -153,7 +153,7 @@ public abstract class Folder : NotificationObject, IDisposable
     {
         try
         {
-            lock (EntitiesUpdatingLockObj)
+            lock (EntriesUpdatingLockObj)
             {
                 IsInEntriesUpdating = true;
                 Entries.BeginChange();
@@ -183,7 +183,7 @@ public abstract class Folder : NotificationObject, IDisposable
 
     private void AddEntryInternal(Entry entry)
     {
-        lock (EntitiesUpdatingLockObj)
+        lock (EntriesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var alreadyExistsEntry))
                 RemoveEntryInternal(alreadyExistsEntry);
@@ -222,7 +222,7 @@ public abstract class Folder : NotificationObject, IDisposable
 
     private void RemoveEntryInternal(Entry entry)
     {
-        lock (EntitiesUpdatingLockObj)
+        lock (EntriesUpdatingLockObj)
         {
             // todo: Binary search
             var index = Entries.IndexOf(entry);
@@ -255,7 +255,7 @@ public abstract class Folder : NotificationObject, IDisposable
     {
         try
         {
-            lock (EntitiesUpdatingLockObj)
+            lock (EntriesUpdatingLockObj)
             {
                 Entries.BeginChange();
 
@@ -271,7 +271,7 @@ public abstract class Folder : NotificationObject, IDisposable
 
     private void TrimRemovedSelectedEntries()
     {
-        lock (EntitiesUpdatingLockObj)
+        lock (EntriesUpdatingLockObj)
         {
             var now = DateTime.Now;
             foreach (var name in _removedSelectedEntries.Keys)

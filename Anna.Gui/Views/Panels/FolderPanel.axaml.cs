@@ -219,7 +219,7 @@ internal class EntriesControl : Control
 
         var pageRange = CurrentPageRange(entries);
         var deletionTargets = new DeletionTargets(_childrenControls);
-        var entitiesToAdd = new List<EntryViewModel>(pageRange.EndIndex - pageRange.StartIndex);
+        var entriesToAdd = new List<EntryViewModel>(pageRange.EndIndex - pageRange.StartIndex);
 
         for (var i = pageRange.StartIndex; i < pageRange.EndIndex; ++i)
         {
@@ -233,12 +233,12 @@ internal class EntriesControl : Control
                 continue;
             }
 
-            entitiesToAdd.Add(entry);
+            entriesToAdd.Add(entry);
         }
 
         List<Control>? childrenToAdd = null;
         {
-            foreach (var entry in entitiesToAdd)
+            foreach (var entry in entriesToAdd)
             {
                 var r = _recyclingChildrenPool.Rent(entry, deletionTargets);
                 if (r.IsNew)

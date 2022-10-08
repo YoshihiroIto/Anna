@@ -56,7 +56,7 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
-        lock (Model.EntitiesUpdatingLockObj)
+        lock (Model.EntriesUpdatingLockObj)
         {
             if (_isBufferingUpdate)
             {
@@ -152,17 +152,17 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
         if (_oldEntry is not null)
             _oldEntry.IsOnCursor.Value = false;
 
-        EntryViewModel? newEntity = null;
+        EntryViewModel? newEntry= null;
 
         if (index >= 0 && index < Entries.Count)
-            newEntity = Entries[index];
+            newEntry = Entries[index];
 
-        if (newEntity is not null)
-            newEntity.IsOnCursor.Value = true;
+        if (newEntry is not null)
+            newEntry.IsOnCursor.Value = true;
 
-        _oldEntry = newEntity;
+        _oldEntry = newEntry;
 
-        return newEntity;
+        return newEntry;
     }
 
     private void UpdateCursorIndex(EntryViewModel? entry)

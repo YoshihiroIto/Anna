@@ -68,7 +68,7 @@ public class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizable
         var totalSize = 0L;
         var selectedTotalSize = 0L;
 
-        lock (Model.EntitiesUpdatingLockObj)
+        lock (Model.EntriesUpdatingLockObj)
         {
             foreach (var entry in Model.Entries)
             {

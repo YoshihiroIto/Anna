@@ -32,8 +32,7 @@ public class KeyConfigData : ConfigData
 
     public override void SetDefault()
     {
-        var isMacOs = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-        var metaKey = isMacOs ? KeyModifiers.Meta : KeyModifiers.Control;
+        var metaKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
         
         Keys = new KeyData[]
         {

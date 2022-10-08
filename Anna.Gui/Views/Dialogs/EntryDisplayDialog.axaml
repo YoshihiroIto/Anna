@@ -42,7 +42,7 @@
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
-    <avaloniaEdit:TextEditor x:Name="TextEditor"
+    <avaloniaEdit:TextEditor x:Name="ViewTextEditor"
                              HorizontalScrollBarVisibility="Disabled"
                              IsReadOnly="True"
                              ShowLineNumbers="True" />

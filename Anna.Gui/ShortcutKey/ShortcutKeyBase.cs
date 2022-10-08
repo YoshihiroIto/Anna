@@ -54,10 +54,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                 async x =>
                 {
                     if (_operators.TryGetValue(key.Operation, out var value) == false)
-                    {
-                        _logger.Error($"UpdateShortcutKeys: Not found ({key.Key}, {key.Modifier})");
                         return;
-                    }
 
                     await value(x);
                 });

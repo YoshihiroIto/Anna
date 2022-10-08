@@ -1,4 +1,6 @@
-﻿using Anna.Gui.Views.Dialogs.Base;
+﻿using Anna.Gui.Messaging;
+using Anna.Gui.ShortcutKey;
+using Anna.Gui.Views.Dialogs.Base;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -14,8 +16,31 @@ using TextMateSharp.Grammars;
 namespace Anna.Gui.Views.Dialogs;
 
 // ReSharper disable once PartialTypeWithSinglePart
-public partial class EntryDisplayDialog : DialogBase<EntryDisplayDialogViewModel>
+public partial class EntryDisplayDialog
+    : DialogBase<EntryDisplayDialogViewModel>, IEntryDisplayDialogShortcutKeyReceiver
 {
+    Window IShortcutKeyReceiver.Owner => this;
+    InteractionMessenger IShortcutKeyReceiver.Messenger => ViewModel.Messenger;
+
+    public TextEditor TextEditor { get; private set; } = null!;
+
+    public ScrollViewer ScrollViewer
+    {
+        get
+        {
+            if (_scrollViewer is not null)
+                return _scrollViewer;
+
+            var prop = typeof(TextEditor).GetProperty("ScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic) ??
+                       throw new NullReferenceException();
+            _scrollViewer = prop.GetValue(TextEditor) as ScrollViewer ?? throw new NullReferenceException();
+
+            return _scrollViewer;
+        }
+    }
+
+    private ScrollViewer? _scrollViewer;
+
     public EntryDisplayDialog()
     {
         InitializeComponent();
@@ -33,89 +58,48 @@ public partial class EntryDisplayDialog : DialogBase<EntryDisplayDialogViewModel
     {
         base.OnOpened(e);
 
-        _textEditor = this.FindControl<TextEditor>("TextEditor") ?? throw new NullReferenceException();
+        TextEditor = this.FindControl<TextEditor>("ViewTextEditor") ?? throw new NullReferenceException();
 
         var registryOptions = new RegistryOptions(ThemeName.TomorrowNightBlue);
-        _textEditor.InstallTextMate(registryOptions);
+        TextEditor.InstallTextMate(registryOptions);
 
         var lang = registryOptions.GetLanguageByExtension(ViewModel.Model.Extension);
         if (lang is not null)
         {
-            var textMateInstallation = _textEditor.InstallTextMate(registryOptions);
+            var textMateInstallation = TextEditor.InstallTextMate(registryOptions);
             textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(lang.Id));
         }
 
-        _textEditor.AddHandler(KeyDownEvent, TextEditor_OnKeyDown, RoutingStrategies.Tunnel);
+        TextEditor.AddHandler(KeyDownEvent, TextEditor_OnKeyDown, RoutingStrategies.Tunnel);
 
         // https://stackoverflow.com/questions/43654090/avalonedit-as-a-text-viewer-no-caret
-        _textEditor.TextArea.Caret.CaretBrush = Brushes.Transparent;
-        _textEditor.TextArea.DefaultInputHandler.NestedInputHandlers.Remove(
-            _textEditor.TextArea.DefaultInputHandler.CaretNavigation);
+        TextEditor.TextArea.Caret.CaretBrush = Brushes.Transparent;
+        TextEditor.TextArea.DefaultInputHandler.NestedInputHandlers.Remove(
+            TextEditor.TextArea.DefaultInputHandler.CaretNavigation);
 
         try
         {
-            _textEditor.Text = await ViewModel.Model.ReadStringAsync();
+            TextEditor.Text = await ViewModel.Model.ReadStringAsync();
         }
         catch
         {
             // ignored
         }
 
-        _textEditor.TextArea.Focus();
+        TextEditor.TextArea.Focus();
     }
 
-    private TextEditor? _textEditor;
-    private ScrollViewer? _scrollViewer;
-
-    private void TextEditor_OnKeyDown(object? sender, KeyEventArgs e)
+    private async void TextEditor_OnKeyDown(object? sender, KeyEventArgs e)
     {
-        _ = _textEditor ?? throw new NullReferenceException();
-        
-        if (_scrollViewer is null)
+        if (e.Key == Key.Escape)
         {
-            var prop = typeof(TextEditor).GetProperty("ScrollViewer", BindingFlags.Instance | BindingFlags.NonPublic) ??
-                       throw new NullReferenceException();
-            _scrollViewer = prop.GetValue(_textEditor) as ScrollViewer ?? throw new NullReferenceException();
+            ViewModel.DialogResult = DialogResultTypes.Cancel;
+            Close();
+            e.Handled = true;
         }
-
-        var lineHeight =
-            _textEditor.TextArea.TextView.GetVisualTopByDocumentLine(2) -
-            _textEditor.TextArea.TextView.GetVisualTopByDocumentLine(1);
-
-        var pageHeight = TrimmingScrollY(_textEditor.TextArea.Bounds.Height, lineHeight);
-
-        switch (e.Key)
+        else
         {
-            case Key.Escape:
-                ViewModel.DialogResult = DialogResultTypes.Cancel;
-                Close();
-                e.Handled = true;
-                break;
-
-            case Key.Up:
-                _scrollViewer.Offset = new Vector(0, TrimmingScrollY(_scrollViewer.Offset.Y - lineHeight, lineHeight));
-                e.Handled = true;
-                break;
-
-            case Key.Down:
-                _scrollViewer.Offset = new Vector(0, TrimmingScrollY(_scrollViewer.Offset.Y + lineHeight, lineHeight));
-                e.Handled = true;
-                break;
-
-            case Key.Left:
-                _scrollViewer.Offset = new Vector(0, TrimmingScrollY(_scrollViewer.Offset.Y - pageHeight, lineHeight));
-                e.Handled = true;
-                break;
-
-            case Key.Right:
-                _scrollViewer.Offset = new Vector(0, TrimmingScrollY(_scrollViewer.Offset.Y + pageHeight, lineHeight));
-                e.Handled = true;
-                break;
+            await ViewModel.ShortcutKey.OnKeyDownAsync(this, e);
         }
-    }
-
-    private static double TrimmingScrollY(double v, double lineHeight)
-    {
-        return Math.Round(v / lineHeight) * lineHeight;
     }
 }

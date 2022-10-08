@@ -1,8 +1,9 @@
-﻿using Anna.DomainModel;
+﻿using Anna.Constants;
+using Anna.DomainModel;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
-using Anna.Gui.Interfaces;
 using Anna.Gui.Messaging;
+using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
 using Avalonia;
 using Avalonia.Controls;
@@ -17,7 +18,7 @@ using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Views.Panels;
 
-public partial class FolderPanel : UserControl, IShortcutKeyReceiver
+public partial class FolderPanel : UserControl, IFolderPanelShortcutKeyReceiver
 {
     public static readonly StyledProperty<IDataTemplate?> ItemTemplateProperty =
         AvaloniaProperty.Register<FolderPanel, IDataTemplate?>(nameof(ItemTemplate));
@@ -83,16 +84,15 @@ public partial class FolderPanel : UserControl, IShortcutKeyReceiver
         LayoutUpdated += (_, _) => UpdateItemCellSize();
     }
 
-    public Window Owner => ControlHelper.FindOwnerWindow(this);
-    public Folder Folder => FolderPanelViewModel.Model;
-    public Entry CurrentEntry => FolderPanelViewModel.CursorEntry.Value?.Model ?? throw new InvalidOperationException();
-    public InteractionMessenger Messenger => FolderPanelViewModel.Messenger;
-
-    public FolderPanelViewModel FolderPanelViewModel =>
+    Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
+    InteractionMessenger IShortcutKeyReceiver.Messenger => ViewModel.Messenger;
+    Folder IFolderPanelShortcutKeyReceiver.Folder => ViewModel.Model;
+    Entry IFolderPanelShortcutKeyReceiver.CurrentEntry => ViewModel.CursorEntry.Value?.Model ?? throw new InvalidOperationException();
+    void IFolderPanelShortcutKeyReceiver.MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
+    void IFolderPanelShortcutKeyReceiver.ToggleSelectionCursorEntry(bool isMoveDown) => ViewModel.ToggleSelectionCursorEntry(isMoveDown);
+    
+    private FolderPanelViewModel ViewModel =>
         DataContext as FolderPanelViewModel ?? throw new NotSupportedException();
-
-    public Entry[] CollectTargetEntries()
-        => FolderPanelViewModel.CollectTargetEntries();
 
     private void UpdateItemCellSize()
     {

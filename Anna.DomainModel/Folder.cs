@@ -295,6 +295,8 @@ public abstract class Folder : NotificationObject, IDisposable
 
     protected readonly ILoggerUseCase _Logger;
 
+    public abstract Task<string> ReadStringAsync(string path);
+
     public virtual void Dispose()
     {
     }

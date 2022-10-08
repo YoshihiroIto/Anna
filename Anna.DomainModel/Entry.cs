@@ -163,6 +163,13 @@ public class Entry : NotificationObject
         set => SetAttribute(FileAttributes.Compressed, value);
     }
 
+    private Folder _folder;
+
+    public Entry(Folder folder)
+    {
+        _folder = folder;
+    }
+
     public void CopyTo(Entry target)
     {
         CopyToWithoutIsSelected(target);
@@ -172,6 +179,7 @@ public class Entry : NotificationObject
 
     public void CopyToWithoutIsSelected(Entry target)
     {
+        target._folder = _folder;
         target.NameWithExtension = NameWithExtension;
         target.Name = Name;
         target.Extension = Extension;
@@ -218,10 +226,15 @@ public class Entry : NotificationObject
 
     public static Entry CreateFrom(Entry from)
     {
-        var entry = new Entry();
+        var entry = new Entry(from._folder);
         from.CopyTo(entry);
 
         return entry;
+    }
+
+    public Task<string> ReadStringAsync()
+    {
+        return _folder.ReadStringAsync(Path);
     }
 
     private void SetAttribute(FileAttributes a, bool i, [CallerMemberName] string propertyName = "")

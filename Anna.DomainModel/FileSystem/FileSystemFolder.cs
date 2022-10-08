@@ -76,6 +76,11 @@ public sealed class FileSystemFolder : Folder
         _watchTrash.Dispose();
         _objectLifetimeChecker.Remove(this);
     }
+    
+    public override Task<string> ReadStringAsync(string path)
+    {
+        return File.ReadAllTextAsync(path);
+    }
 
     private void UpdateWatcher(string path)
     {
@@ -118,21 +123,21 @@ public sealed class FileSystemFolder : Folder
             .AddTo(_watchTrash);
     }
 
-    private static Entry? Create(string path, string nameWithExtension)
+    private Entry? Create(string path, string nameWithExtension)
     {
         var fileInfo = new FileInfo(path);
 
         return Create(fileInfo, path, nameWithExtension);
     }
 
-    private static Entry? Create(FileSystemInfo fsInfo, string path, string nameWithExtension)
+    private Entry? Create(FileSystemInfo fsInfo, string path, string nameWithExtension)
     {
         if ((int)fsInfo.Attributes == -1)
             return null;
 
-        var isFolder  = (fsInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
+        var isFolder = (fsInfo.Attributes & FileAttributes.Directory) == FileAttributes.Directory;
 
-        var entry = new Entry
+        var entry = new Entry(this)
         {
             Timestamp = fsInfo.LastWriteTime,
             Size = isFolder ? 0 : (fsInfo as FileInfo)!.Length,

@@ -57,6 +57,9 @@ public partial class ShortcutKeyManager
         }
         else
         {
+            if (await CheckIsAccessibleAsync(target.Path, shortcutKeyReceiver) == false)
+                return;
+
             await DialogOperator.EntryDisplay(_dic, shortcutKeyReceiver.Owner, target);
         }
     }

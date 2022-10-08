@@ -11,6 +11,7 @@
 
     <Application.Styles>
         <FluentTheme Mode="Dark" />
+        <StyleInclude Source="avares://AvaloniaEdit/AvaloniaEdit.xaml" />
         <StyleInclude Source="/Views/Controls/EditableTextBlock.axaml" />
     </Application.Styles>
 </Application>

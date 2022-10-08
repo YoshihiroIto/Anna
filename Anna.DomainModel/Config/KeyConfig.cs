@@ -2,7 +2,6 @@
 using Anna.UseCase;
 using Avalonia.Input;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 namespace Anna.DomainModel.Config;
 

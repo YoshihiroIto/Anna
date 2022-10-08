@@ -31,7 +31,7 @@ public class JumpFolderConfigData : ConfigData
 
     public override void SetDefault()
     {
-        var count =
+        const int count =
             (Key.F12 - Key.F1) +
             1 +
             (Key.Z - Key.A) +

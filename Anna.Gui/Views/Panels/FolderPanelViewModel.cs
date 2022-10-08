@@ -97,6 +97,7 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
             Entries
                 .CollectionChangedAsObservable()
                 .Throttle(TimeSpan.FromMilliseconds(50))
+                .ObserveOnUIDispatcher()
                 .Subscribe(_ => UpdateCursorIndex(CursorEntry.Value))
                 .AddTo(Trash);
         }

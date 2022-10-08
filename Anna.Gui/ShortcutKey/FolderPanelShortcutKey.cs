@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.ShortcutKey;
 
-public class FolderPanelShortcutKeyManager : ShortcutKeyBase
+public class FolderPanelShortcutKey : ShortcutKeyBase
 {
-    public FolderPanelShortcutKeyManager(
+    public FolderPanelShortcutKey(
         IServiceProviderContainer dic,
         IFolderServiceUseCase folderService,
         AppConfig appConfig,

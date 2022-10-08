@@ -22,7 +22,7 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
 
     public Resources R => _resourcesHolder.Instance;
 
-    public readonly FolderPanelShortcutKeyManager ShortcutKeyManager;
+    public readonly FolderPanelShortcutKey ShortcutKey;
 
     public ReactivePropertySlim<int> CursorIndex { get; }
 
@@ -31,12 +31,12 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
     public FolderPanelViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
-        FolderPanelShortcutKeyManager folderPanelShortcutKeyManager,
+        FolderPanelShortcutKey folderPanelShortcutKey,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
         _resourcesHolder = resourcesHolder;
-        ShortcutKeyManager = folderPanelShortcutKeyManager;
+        ShortcutKey = folderPanelShortcutKey;
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);

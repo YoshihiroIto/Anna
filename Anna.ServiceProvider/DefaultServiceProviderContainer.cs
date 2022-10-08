@@ -39,7 +39,7 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();
-        RegisterSingleton<FolderPanelShortcutKeyManager>();
+        RegisterSingleton<FolderPanelShortcutKey>();
 
         // property injection
         RegisterInitializer<DialogBase>(d => d.Logger = GetInstance<ILoggerUseCase>());

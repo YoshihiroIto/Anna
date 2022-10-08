@@ -65,10 +65,10 @@ public class FolderPanelInputBehavior : Behavior<FolderPanel>
                 return;
         }
 
-        var manager = viewModel?.ShortcutKeyManager;
+        var shortcutKey = viewModel?.ShortcutKey;
         
-        if (manager is not null)
-            await manager.OnKeyDownAsync(AssociatedObject ?? throw new NullReferenceException(), e);
+        if (shortcutKey is not null)
+            await shortcutKey.OnKeyDownAsync(AssociatedObject ?? throw new NullReferenceException(), e);
     }
 
     private Window? _parentWindow;

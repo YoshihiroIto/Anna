@@ -11,7 +11,7 @@ using System.Linq;
 namespace Anna.Gui.Views.Dialogs;
 
 // ReSharper disable once PartialTypeWithSinglePart
-public partial class JumpFolderDialog : DialogBase
+public partial class JumpFolderDialog : DialogBase<JumpFolderDialogViewModel>
 {
     public JumpFolderDialog()
     {
@@ -54,9 +54,6 @@ public partial class JumpFolderDialog : DialogBase
         else
             ViewModel.OnKeyDown(e);
     }
-
-    private JumpFolderDialogViewModel ViewModel =>
-        DataContext as JumpFolderDialogViewModel ?? throw new NullReferenceException();
 
     private void PathOnPreviewPointerPress(object? sender, PointerPressedEventArgs e)
     {

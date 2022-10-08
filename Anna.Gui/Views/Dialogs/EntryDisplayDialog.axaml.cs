@@ -14,7 +14,7 @@ using TextMateSharp.Grammars;
 namespace Anna.Gui.Views.Dialogs;
 
 // ReSharper disable once PartialTypeWithSinglePart
-public partial class EntryDisplayDialog : DialogBase
+public partial class EntryDisplayDialog : DialogBase<EntryDisplayDialogViewModel>
 {
     public EntryDisplayDialog()
     {
@@ -66,9 +66,6 @@ public partial class EntryDisplayDialog : DialogBase
 
     private TextEditor? _textEditor;
     private ScrollViewer? _scrollViewer;
-
-    private EntryDisplayDialogViewModel ViewModel =>
-        DataContext as EntryDisplayDialogViewModel ?? throw new NullReferenceException();
 
     private void TextEditor_OnKeyDown(object? sender, KeyEventArgs e)
     {

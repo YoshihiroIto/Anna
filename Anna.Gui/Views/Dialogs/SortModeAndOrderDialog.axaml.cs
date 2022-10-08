@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace Anna.Gui.Views.Dialogs;
 
 // ReSharper disable once PartialTypeWithSinglePart
-public partial class SortModeAndOrderDialog : DialogBase
+public partial class SortModeAndOrderDialog : DialogBase<SortModeAndOrderDialogViewModel>
 {
     public SortModeAndOrderDialog()
     {
@@ -114,9 +114,6 @@ public partial class SortModeAndOrderDialog : DialogBase
         ViewModel.DialogResult = DialogResultTypes.Cancel;
         Close();
     }
-
-    private SortModeAndOrderDialogViewModel ViewModel =>
-        DataContext as SortModeAndOrderDialogViewModel ?? throw new NullReferenceException();
 
     private States _states = States.Mode;
 

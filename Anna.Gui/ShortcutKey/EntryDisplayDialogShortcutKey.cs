@@ -1,5 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.Config;
+using Anna.Gui.Messaging;
+using Anna.Gui.Views.Dialogs.Base;
 using Anna.UseCase;
 using Avalonia;
 using System;
@@ -22,11 +24,19 @@ public class EntryDisplayDialogShortcutKey : ShortcutKeyBase
     {
         return new Dictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>
         {
+            { Operations.OpenEntry, CloseAsync },
             { Operations.MoveCursorUp, s => ScrollAsync(s, Directions.Up) },
             { Operations.MoveCursorDown, s => ScrollAsync(s, Directions.Down) },
             { Operations.MoveCursorLeft, s => ScrollAsync(s, Directions.Left) },
             { Operations.MoveCursorRight, s => ScrollAsync(s, Directions.Right) },
         };
+    }
+
+    private static async ValueTask CloseAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var r = shortcutKeyReceiver as IEntryDisplayDialogShortcutKeyReceiver ?? throw new InvalidOperationException();
+        
+        await r.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
     }
 
     private static ValueTask ScrollAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)

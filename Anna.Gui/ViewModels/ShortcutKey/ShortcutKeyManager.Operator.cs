@@ -1,9 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
-using Anna.Gui.ViewModels.Messaging;
-using Anna.Gui.Views.Dialogs.Base;
-using Anna.Strings;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -112,19 +109,5 @@ public partial class ShortcutKeyManager
             return;
 
         shortcutKeyReceiver.Folder.Path = rootDir;
-    }
-
-    private async ValueTask<bool> CheckIsAccessibleAsync(string path, IShortcutKeyReceiver shortcutKeyReceiver)
-    {
-        if (_folderService.IsAccessible(path))
-            return true;
-
-        await shortcutKeyReceiver.FolderPanelViewModel.Messenger.RaiseAsync(
-            new InformationMessage(
-                Resources.AppName,
-                string.Format(Resources.Message_AccessDenied, path),
-                DialogViewModel.MessageKeyInformation));
-
-        return false;
     }
 }

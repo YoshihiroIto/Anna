@@ -2,6 +2,9 @@
 using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Interfaces;
+using Anna.Gui.ViewModels.Messaging;
+using Anna.Gui.Views.Dialogs.Base;
+using Anna.Strings;
 using Anna.UseCase;
 using Avalonia.Input;
 using Reactive.Bindings.Extensions;
@@ -65,6 +68,20 @@ public partial class ShortcutKeyManager : DisposableNotificationObject
                     await value(x);
                 });
         }
+    }
+    
+    private async ValueTask<bool> CheckIsAccessibleAsync(string path, IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        if (_folderService.IsAccessible(path))
+            return true;
+
+        await shortcutKeyReceiver.FolderPanelViewModel.Messenger.RaiseAsync(
+            new InformationMessage(
+                Resources.AppName,
+                string.Format(Resources.Message_AccessDenied, path),
+                DialogViewModel.MessageKeyInformation));
+
+        return false;
     }
 
     private void Register(Key key, KeyModifiers modifierKeys, Func<IShortcutKeyReceiver, ValueTask> action)

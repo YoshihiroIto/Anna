@@ -1,5 +1,4 @@
-﻿using Anna.Constants;
-using Anna.UseCase;
+﻿using Anna.UseCase;
 using Avalonia.Input;
 using System.Diagnostics;
 
@@ -32,7 +31,7 @@ public class KeyConfigData : ConfigData
     public override void SetDefault()
     {
         var metaKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
-        
+
         Keys = new KeyData[]
         {
             new(Key.S, KeyModifiers.None, Operations.SortEntry),
@@ -52,4 +51,21 @@ public class KeyConfigData : ConfigData
 
     [DebuggerDisplay("Key={Key}, Modifier={Modifier}, Operation={Operation}")]
     public readonly record struct KeyData(Key Key, KeyModifiers Modifier, Operations Operation);
+}
+
+public enum Operations
+{
+    SortEntry,
+    JumpFolder,
+    MoveCursorUp,
+    MoveCursorDown,
+    MoveCursorLeft,
+    MoveCursorRight,
+    ToggleSelectionCursorEntry,
+    OpenEntry,
+    OpenEntryByEditor1,
+    OpenEntryByEditor2,
+    OpenEntryByApp,
+    JumpToParentFolder,
+    JumpToRootFolder
 }

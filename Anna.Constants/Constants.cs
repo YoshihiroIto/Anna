@@ -38,20 +38,3 @@ public enum Directions
     Left = 1 << 2,
     Right = 1 << 3
 }
-
-public enum Operations
-{
-    SortEntry,
-    JumpFolder,
-    MoveCursorUp,
-    MoveCursorDown,
-    MoveCursorLeft,
-    MoveCursorRight,
-    ToggleSelectionCursorEntry,
-    OpenEntry,
-    OpenEntryByEditor1,
-    OpenEntryByEditor2,
-    OpenEntryByApp,
-    JumpToParentFolder,
-    JumpToRootFolder
-}

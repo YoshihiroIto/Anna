@@ -51,8 +51,8 @@ public class AppConfigData : ConfigData
     }
 
     #endregion
-    
-    
+
+
     #region Editor2
 
     private string _Editor2 = "";
@@ -77,8 +77,21 @@ public class AppConfigData : ConfigData
     }
 
     #endregion
-    
-    
+
+
+    #region TextViewerMaxBufferSize
+
+    private int _textViewerMaxBufferSize = 16 * 1024 * 1024;
+
+    public int TextViewerMaxBufferSize
+    {
+        get => _textViewerMaxBufferSize;
+        set => SetProperty(ref _textViewerMaxBufferSize, value);
+    }
+
+    #endregion
+
+
     public (string Editor, string Options) FindEditor(int index)
     {
         return index switch

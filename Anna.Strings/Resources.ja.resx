@@ -90,4 +90,7 @@
 
 削除してよろしいですか？</value>
     </data>
+    <data name="Message_OmittedDueToLargeSize" xml:space="preserve">
+        <value>サイズが大きいため省略しました。</value>
+    </data>
 </root>

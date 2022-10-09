@@ -79,12 +79,12 @@ public sealed class FileSystemFolder : Folder
         _objectLifetimeChecker.Remove(this);
     }
 
-    public override Task<string> ReadStringAsync(string path)
+    public override Stream OpenRead(string path)
     {
-        return File.ReadAllTextAsync(path);
+        return File.OpenRead(path);
     }
 
-    public override Task<byte[]> ReadBinaryAsync(string path)
+    public override Task<byte[]> ReadAllAsync(string path)
     {
         return File.ReadAllBytesAsync(path);
     }

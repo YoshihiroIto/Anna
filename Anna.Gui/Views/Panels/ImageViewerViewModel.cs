@@ -35,7 +35,7 @@ public class ImageViewerViewModel : HasModelRefViewModelBase<Entry>
 
         Task.Run(async () =>
         {
-            var image = await Model.ReadBinaryAsync();
+            var image = await Model.ReadAllBinaryAsync();
             using var ms = new MemoryStream(image);
 
             // ReSharper disable once AccessToDisposedClosure

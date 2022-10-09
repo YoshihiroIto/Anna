@@ -217,6 +217,15 @@ namespace Anna.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Omitted due to large size..
+        /// </summary>
+        public static string Message_OmittedDueToLargeSize {
+            get {
+                return ResourceManager.GetString("Message_OmittedDueToLargeSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Att_ribute.
         /// </summary>
         public static string SortEntry_Mode_Attribute {

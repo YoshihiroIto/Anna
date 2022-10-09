@@ -83,14 +83,7 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
         TextEditor.TextArea.DefaultInputHandler.NestedInputHandlers.Remove(
             TextEditor.TextArea.DefaultInputHandler.CaretNavigation);
 
-        try
-        {
-            TextEditor.Text = await ViewModel.Model.ReadStringAsync();
-        }
-        catch
-        {
-            // ignored
-        }
+        TextEditor.Text = await ViewModel.ReadText();
 
         TextEditor.AddHandler(KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
         TextEditor.TextArea.Focus();
@@ -108,7 +101,7 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
             await ViewModel.ShortcutKey.OnKeyDownAsync(this, e);
         }
     }
-    
+
     private void SetupTextMate()
     {
         var lang = TextMateRegistryOptions.GetLanguageByExtension(ViewModel.Model.Extension);
@@ -120,6 +113,6 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
 
         Unloaded += (_, _) => installation.Dispose();
     }
-    
+
     private static readonly RegistryOptions TextMateRegistryOptions = new(ThemeName.DarkPlus);
 }

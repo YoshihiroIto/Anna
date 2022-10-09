@@ -238,14 +238,14 @@ public class Entry : NotificationObject
         return entry;
     }
 
-    public Task<string> ReadStringAsync()
+    public Stream OpenRead()
     {
-        return _folder.ReadStringAsync(Path);
+        return _folder.OpenRead(Path);
     }
 
-    public Task<byte[]> ReadBinaryAsync()
+    public Task<byte[]> ReadAllBinaryAsync()
     {
-        return _folder.ReadBinaryAsync(Path);
+        return _folder.ReadAllAsync(Path);
     }
 
     private void SetAttribute(FileAttributes a, bool i, [CallerMemberName] string propertyName = "")

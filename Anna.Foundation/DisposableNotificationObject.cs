@@ -1,12 +1,22 @@
-﻿using System.Reactive.Disposables;
+﻿using Anna.UseCase;
+using System.Reactive.Disposables;
 
 namespace Anna.Foundation;
 
 public class DisposableNotificationObject : NotificationObject, IDisposable
 {
+    private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
+
     protected CompositeDisposable Trash =>
         LazyInitializer.EnsureInitialized(ref _trashes, () => new CompositeDisposable()) ??
         throw new NullReferenceException();
+
+    public DisposableNotificationObject(IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+    {
+        _objectLifetimeChecker = objectLifetimeChecker;
+        
+        _objectLifetimeChecker.Add(this);
+    }
 
     protected virtual void Dispose(bool disposing)
     {
@@ -16,6 +26,8 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
         if (disposing)
             _trashes?.Dispose();
 
+        _objectLifetimeChecker.Remove(this);
+        
         _disposed = true;
     }
 

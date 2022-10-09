@@ -14,7 +14,9 @@ public class App : DisposableNotificationObject
 
     public App(
         IFolderServiceUseCase folderService,
-        DomainModelOperator domainModelOperator)
+        DomainModelOperator domainModelOperator,
+        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+        : base(objectLifetimeChecker)
     {
         _folderService = folderService;
         _domainModelOperator = domainModelOperator;

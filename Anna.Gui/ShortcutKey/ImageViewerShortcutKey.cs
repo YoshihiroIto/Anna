@@ -16,8 +16,9 @@ public class ImageViewerShortcutKey : ShortcutKeyBase
         IFolderServiceUseCase folderService,
         AppConfig appConfig,
         KeyConfig keyConfig,
-        ILoggerUseCase logger)
-        : base(folderService, keyConfig, logger)
+        ILoggerUseCase logger,
+        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+        : base(folderService, keyConfig, logger, objectLifetimeChecker)
     {
         _appConfig = appConfig;
     }
@@ -32,7 +33,7 @@ public class ImageViewerShortcutKey : ShortcutKeyBase
             { Operations.OpenEntryByApp, OpenFileByAppAsync },
         };
     }
-    
+
     private static async ValueTask CloseAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var r = shortcutKeyReceiver as IImageViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
@@ -58,11 +59,11 @@ public class ImageViewerShortcutKey : ShortcutKeyBase
 
         await r.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
     }
-    
+
     private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var r = shortcutKeyReceiver as IImageViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
-        
+
         var targetFilepath = r.TargetFilepath;
 
         Task.Run(() => ProcessHelper.RunAssociatedApp(targetFilepath));

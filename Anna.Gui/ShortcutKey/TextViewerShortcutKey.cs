@@ -18,8 +18,9 @@ public class TextViewerShortcutKey : ShortcutKeyBase
         IFolderServiceUseCase folderService,
         AppConfig appConfig,
         KeyConfig keyConfig,
-        ILoggerUseCase logger)
-        : base(folderService, keyConfig, logger)
+        ILoggerUseCase logger,
+        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+        : base(folderService, keyConfig, logger, objectLifetimeChecker)
     {
         _appConfig = appConfig;
     }
@@ -65,11 +66,11 @@ public class TextViewerShortcutKey : ShortcutKeyBase
 
         await r.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
     }
-    
+
     private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
-        
+
         var targetFilepath = r.TargetFilepath;
 
         Task.Run(() => ProcessHelper.RunAssociatedApp(targetFilepath));
@@ -83,7 +84,7 @@ public class TextViewerShortcutKey : ShortcutKeyBase
 
         var lineHeight = r.CalcLineHeight();
         var pageHeight = TrimmingScrollY(r.TextEditor.TextArea.Bounds.Height);
-        
+
         r.ScrollViewer.Offset = dir switch
         {
             Directions.Up => new Vector(0, TrimmingScrollY(r.ScrollViewer.Offset.Y - lineHeight)),

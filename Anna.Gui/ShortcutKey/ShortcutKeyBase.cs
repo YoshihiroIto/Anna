@@ -8,6 +8,7 @@ using Avalonia.Input;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Anna.Gui.ShortcutKey;
@@ -17,7 +18,9 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
     protected ShortcutKeyBase(
         IFolderServiceUseCase folderService,
         KeyConfig keyConfig,
-        ILoggerUseCase logger)
+        ILoggerUseCase logger,
+        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+        : base(objectLifetimeChecker)
     {
         _folderService = folderService;
         _logger = logger;
@@ -59,7 +62,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                 });
         }
     }
-    
+
     protected async ValueTask<bool> CheckIsAccessibleAsync(string path, InteractionMessenger messenger)
     {
         if (_folderService.IsAccessible(path))

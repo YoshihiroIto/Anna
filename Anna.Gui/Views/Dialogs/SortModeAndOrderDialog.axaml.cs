@@ -121,8 +121,8 @@ public partial class SortModeAndOrderDialog : DialogBase<SortModeAndOrderDialogV
     {
         { Key.N, SortModes.Name },
         { Key.E, SortModes.Extension },
-        { Key.S, SortModes.Size },
         { Key.T, SortModes.Timestamp },
+        { Key.S, SortModes.Size },
         { Key.R, SortModes.Attributes }
     };
 

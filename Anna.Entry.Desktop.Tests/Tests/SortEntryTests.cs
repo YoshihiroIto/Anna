@@ -163,73 +163,6 @@ public class SortEntryTests : IDisposable
     }
 
     [Fact]
-    public async Task Size_Ascending()
-    {
-        var configFolder = _fixture.ConfigFolder;
-
-        configFolder.CreateFile("001.c", text: "AAA");
-        configFolder.CreateFile("002.b", text: "AA");
-        configFolder.CreateFile("003.a", text: "A");
-
-        await Task.Delay(100);
-
-        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var w = _fixture.App.FolderWindows.First();
-
-            await w.PressKeyAsync(Key.S);
-            await w.PressKeyAsync(Key.Down);
-            await w.PressKeyAsync(Key.Down);
-            await w.PressKeyAsync(Key.Enter);
-            await w.PressKeyAsync(Key.Enter);
-
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
-        });
-
-        await Task.Delay(100);
-
-        Assert.Equal(4, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("003.a", model.Entries[1].NameWithExtension);
-        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
-        Assert.Equal("001.c", model.Entries[3].NameWithExtension);
-    }
-
-    [Fact]
-    public async Task Size_Descending()
-    {
-        var configFolder = _fixture.ConfigFolder;
-
-        configFolder.CreateFile("001.c", text: "AAA");
-        configFolder.CreateFile("002.b", text: "AA");
-        configFolder.CreateFile("003.a", text: "A");
-
-        await Task.Delay(100);
-
-        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var w = _fixture.App.FolderWindows.First();
-
-            await w.PressKeyAsync(Key.S);
-            await w.PressKeyAsync(Key.Down);
-            await w.PressKeyAsync(Key.Down);
-            await w.PressKeyAsync(Key.Enter);
-            await w.PressKeyAsync(Key.Right);
-            await w.PressKeyAsync(Key.Enter);
-
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
-        });
-
-        await Task.Delay(100);
-
-        Assert.Equal(4, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("001.c", model.Entries[1].NameWithExtension);
-        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
-        Assert.Equal("003.a", model.Entries[3].NameWithExtension);
-    }
-
-    [Fact]
     public async Task Timestamp_Ascending()
     {
         var configFolder = _fixture.ConfigFolder;
@@ -247,7 +180,6 @@ public class SortEntryTests : IDisposable
             var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.S);
-            await w.PressKeyAsync(Key.Down);
             await w.PressKeyAsync(Key.Down);
             await w.PressKeyAsync(Key.Down);
             await w.PressKeyAsync(Key.Enter);
@@ -275,6 +207,74 @@ public class SortEntryTests : IDisposable
         configFolder.CreateFile("002.b", text: "AA");
         await Task.Delay(100);
         configFolder.CreateFile("001.c", text: "AAA");
+
+        await Task.Delay(100);
+
+        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = _fixture.App.FolderWindows.First();
+
+            await w.PressKeyAsync(Key.S);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Enter);
+            await w.PressKeyAsync(Key.Right);
+            await w.PressKeyAsync(Key.Enter);
+
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+        });
+
+        await Task.Delay(100);
+
+        Assert.Equal(4, model.Entries.Count);
+        Assert.Equal("..", model.Entries[0].NameWithExtension);
+        Assert.Equal("001.c", model.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
+        Assert.Equal("003.a", model.Entries[3].NameWithExtension);
+    }
+
+    [Fact]
+    public async Task Size_Ascending()
+    {
+        var configFolder = _fixture.ConfigFolder;
+
+        configFolder.CreateFile("001.c", text: "AAA");
+        configFolder.CreateFile("002.b", text: "AA");
+        configFolder.CreateFile("003.a", text: "A");
+
+        await Task.Delay(100);
+
+        var model = await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            var w = _fixture.App.FolderWindows.First();
+
+            await w.PressKeyAsync(Key.S);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Down);
+            await w.PressKeyAsync(Key.Enter);
+            await w.PressKeyAsync(Key.Enter);
+
+            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+        });
+
+        await Task.Delay(100);
+
+        Assert.Equal(4, model.Entries.Count);
+        Assert.Equal("..", model.Entries[0].NameWithExtension);
+        Assert.Equal("003.a", model.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
+        Assert.Equal("001.c", model.Entries[3].NameWithExtension);
+    }
+
+    [Fact]
+    public async Task Size_Descending()
+    {
+        var configFolder = _fixture.ConfigFolder;
+
+        configFolder.CreateFile("001.c", text: "AAA");
+        configFolder.CreateFile("002.b", text: "AA");
+        configFolder.CreateFile("003.a", text: "A");
 
         await Task.Delay(100);
 

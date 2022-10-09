@@ -4,6 +4,7 @@ using Anna.Gui.ShortcutKey;
 using Anna.UseCase;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using Reactive.Bindings.Extensions;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -27,11 +28,10 @@ public class ImageViewerViewModel : HasModelRefViewModelBase<Entry>
 
     public ImageViewerViewModel(
         IServiceProviderContainer dic,
-        ImageViewerShortcutKey imageViewerShortcutKey,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
-        ShortcutKey = imageViewerShortcutKey;
+        ShortcutKey = dic.GetInstance<ImageViewerShortcutKey>().AddTo(Trash);
 
         Task.Run(async () =>
         {

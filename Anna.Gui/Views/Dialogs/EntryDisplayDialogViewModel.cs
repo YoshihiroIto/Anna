@@ -2,7 +2,6 @@
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
-using Anna.Gui.ShortcutKey;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Gui.Views.Panels;
 using Anna.UseCase;
@@ -22,7 +21,6 @@ public class EntryDisplayDialogViewModel
     public EntryDisplayDialogViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
-        TextViewerShortcutKey textViewerShortcutKey,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, resourcesHolder, logger, objectLifetimeChecker)

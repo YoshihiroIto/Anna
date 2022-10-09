@@ -2,6 +2,7 @@
 using Anna.Gui.Foundations;
 using Anna.Gui.ShortcutKey;
 using Anna.UseCase;
+using Reactive.Bindings.Extensions;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -11,10 +12,9 @@ public class TextViewerViewModel : HasModelRefViewModelBase<Entry>
 
     public TextViewerViewModel(
         IServiceProviderContainer dic,
-        TextViewerShortcutKey textViewerShortcutKey,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
-        ShortcutKey = textViewerShortcutKey;
+        ShortcutKey = dic.GetInstance<TextViewerShortcutKey>().AddTo(Trash);
     }
 }

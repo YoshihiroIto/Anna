@@ -31,12 +31,11 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
     public FolderPanelViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
-        FolderPanelShortcutKey folderPanelShortcutKey,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
     {
         _resourcesHolder = resourcesHolder;
-        ShortcutKey = folderPanelShortcutKey;
+        ShortcutKey = dic.GetInstance<FolderPanelShortcutKey>().AddTo(Trash);
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);

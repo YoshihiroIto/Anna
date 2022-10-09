@@ -6,7 +6,6 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Anna.Gui.Views.Panels.TextViewer">
     <avaloniaEdit:TextEditor x:Name="ViewTextEditor"
-                             HorizontalScrollBarVisibility="Disabled"
                              IsReadOnly="True"
                              ShowLineNumbers="True" />
 </UserControl>

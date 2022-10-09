@@ -8,7 +8,6 @@ using Avalonia.Input;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Anna.Gui.ShortcutKey;

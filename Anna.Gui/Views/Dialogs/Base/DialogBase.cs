@@ -18,7 +18,6 @@ public class DialogBase : Window
 {
     protected internal ILoggerUseCase Logger { get; set; } = null!;
 
-
     public DialogBase()
     {
         Loaded += (_, _) => Logger.Start(GetType().Name);

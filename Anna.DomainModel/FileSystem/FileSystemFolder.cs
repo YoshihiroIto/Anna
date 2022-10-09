@@ -12,7 +12,9 @@ public sealed class FileSystemFolder : Folder
 {
     public override bool IsRoot => string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
 
-    internal FileSystemFolder(string path, ILoggerUseCase logger,
+    internal FileSystemFolder(
+        string path,
+        ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(path, logger)
     {
@@ -76,12 +78,12 @@ public sealed class FileSystemFolder : Folder
         _watchTrash.Dispose();
         _objectLifetimeChecker.Remove(this);
     }
-    
+
     public override Task<string> ReadStringAsync(string path)
     {
         return File.ReadAllTextAsync(path);
     }
-    
+
     public override Task<byte[]> ReadBinaryAsync(string path)
     {
         return File.ReadAllBytesAsync(path);

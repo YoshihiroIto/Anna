@@ -12,6 +12,8 @@ namespace Anna.Gui.Views.Behaviors;
 
 public class FolderPanelInputBehavior : Behavior<FolderPanel>
 {
+    private Window? _parentWindow;
+    
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -70,6 +72,4 @@ public class FolderPanelInputBehavior : Behavior<FolderPanel>
         if (shortcutKey is not null)
             await shortcutKey.OnKeyDownAsync(AssociatedObject ?? throw new NullReferenceException(), e);
     }
-
-    private Window? _parentWindow;
 }

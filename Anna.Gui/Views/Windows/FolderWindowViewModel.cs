@@ -45,6 +45,10 @@ public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocaliza
 
     public ICommand ToEnglishCommand { get; }
     public ICommand ToJapaneseCommand { get; }
+    
+    private bool _isDispose;
+    private readonly IServiceProviderContainer _dic;
+    private readonly ResourcesHolder _resourcesHolder;
 
     public FolderWindowViewModel(
         IServiceProviderContainer dic,
@@ -93,8 +97,4 @@ public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocaliza
 
         base.Dispose();
     }
-
-    private bool _isDispose;
-    private readonly IServiceProviderContainer _dic;
-    private readonly ResourcesHolder _resourcesHolder;
 }

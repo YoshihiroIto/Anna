@@ -13,6 +13,8 @@ namespace Anna.ServiceProvider;
 
 public class DefaultServiceProviderContainer : ServiceProviderContainerBase
 {
+    private readonly ILoggerUseCase _logger;
+    
     private DefaultServiceProviderContainer(string logOutputDir, string appConfigFilePath)
     {
         RegisterSingleton<IObjectLifetimeCheckerUseCase,
@@ -93,6 +95,4 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
 
         return new DefaultServiceProviderContainer(configDir, appConfigFilePath);
     }
-
-    private readonly ILoggerUseCase _logger;
 }

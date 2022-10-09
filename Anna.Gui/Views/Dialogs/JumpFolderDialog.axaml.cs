@@ -13,6 +13,9 @@ namespace Anna.Gui.Views.Dialogs;
 // ReSharper disable once PartialTypeWithSinglePart
 public partial class JumpFolderDialog : DialogBase<JumpFolderDialogViewModel>
 {
+    private bool IsEditing => _editingDepth > 0;
+    private int _editingDepth;
+    
     public JumpFolderDialog()
     {
         InitializeComponent();
@@ -124,7 +127,4 @@ public partial class JumpFolderDialog : DialogBase<JumpFolderDialogViewModel>
         EditSelectedItem();
         e.Handled = true;
     }
-
-    private bool IsEditing => _editingDepth > 0;
-    private int _editingDepth;
 }

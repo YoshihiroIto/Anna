@@ -22,4 +22,9 @@
       <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
       <ProjectReference Include="..\Anna.Strings\Anna.Strings.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\Controls\EditableTextBlock.cs">
+        <DependentUpon>EditableTextBlock.axaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

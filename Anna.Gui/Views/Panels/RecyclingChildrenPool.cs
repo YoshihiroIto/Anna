@@ -10,6 +10,9 @@ namespace Anna.Gui.Views.Panels;
 internal class RecyclingChildrenPool
 {
     public IDataTemplate? ItemTemplate { get; set; }
+    
+    private readonly Stack<Control> _folderPool = new();
+    private readonly Stack<Control> _filePool = new();
 
     public (Control Child, EntryViewModel? OldEntry, bool IsNew) Rent(
         EntryViewModel entry,
@@ -65,13 +68,13 @@ internal class RecyclingChildrenPool
     {
         return entry.IsFolder ? _folderPool : _filePool;
     }
-
-    private readonly Stack<Control> _folderPool = new();
-    private readonly Stack<Control> _filePool = new();
 }
 
 internal class DeletionTargets
 {
+    private readonly Dictionary<EntryViewModel, Control> _fileTargets = new();
+    private readonly Dictionary<EntryViewModel, Control> _folderTargets = new();
+    
     public IEnumerable<(EntryViewModel Entry, Control Child)> AllTargets
     {
         get
@@ -111,7 +114,4 @@ internal class DeletionTargets
     {
         return entry.IsFolder ? _folderTargets : _fileTargets;
     }
-
-    private readonly Dictionary<EntryViewModel, Control> _fileTargets = new();
-    private readonly Dictionary<EntryViewModel, Control> _folderTargets = new();
 }

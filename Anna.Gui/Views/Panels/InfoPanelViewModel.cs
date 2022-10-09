@@ -20,6 +20,8 @@ public class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizable
 
     public ReactiveProperty<long> TotalSize { get; }
     public ReactiveProperty<long> SelectedTotalSize { get; }
+    
+    private readonly ResourcesHolder _resourcesHolder;
 
     public InfoPanelViewModel(
         IServiceProviderContainer dic,
@@ -82,6 +84,4 @@ public class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizable
         TotalSize.Value = totalSize;
         SelectedTotalSize.Value = selectedTotalSize;
     }
-
-    private readonly ResourcesHolder _resourcesHolder;
 }

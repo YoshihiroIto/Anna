@@ -44,3 +44,26 @@ public enum FileEntryFormat
     Image,
     Text
 }
+
+public static class Constants
+{
+    // todo: ReadOnlyHashSet
+    public static readonly HashSet<string> SupportedImageFormats = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".jpeg",
+        ".jpg",
+        ".png",
+        ".dng",
+        ".webp",
+        ".gif",
+        ".bmp",
+        ".ico",
+        ".astc",
+        ".ktx",
+        ".pkm",
+        ".wbmp",
+        ".cr2",
+        ".nef",
+        ".arw"
+    };
+}

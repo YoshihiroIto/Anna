@@ -157,6 +157,8 @@ public class FolderPanelLayout : NotificationObject
 
     public static Thickness ItemMargin { get; } = new(0, 0, 32, 0);
     public static Thickness SelectedMarkMargin { get; } = new(0, 0, 2, 0);
+    
+    private static readonly Dictionary<int, Size> ItemHeightCache = new();
 
     public FolderPanelLayout()
     {
@@ -198,6 +200,4 @@ public class FolderPanelLayout : NotificationObject
                     NameWithExtensionWidth;
         ItemHeight = value.Height;
     }
-
-    private static readonly Dictionary<int, Size> ItemHeightCache = new();
 }

@@ -2,6 +2,9 @@
 
 public readonly struct IntSize
 {
+    public readonly int Width;
+    public readonly int Height;
+    
     public IntSize(int w, int h)
     {
         Width = w;
@@ -15,11 +18,5 @@ public readonly struct IntSize
     public override bool Equals(object? obj) => obj is IntSize other && Equals(other);
     public override int GetHashCode() => HashCode.Combine(Width, Height);
 
-    public override string ToString()
-    {
-        return $"({Width}, {Height})";
-    }
-
-    public readonly int Width;
-    public readonly int Height;
+    public override string ToString() => $"({Width}, {Height})";
 }

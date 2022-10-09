@@ -16,6 +16,10 @@ namespace Anna.Gui;
 
 public class GuiApp : Application
 {
+    private readonly IServiceProviderContainer? _dic;
+    private readonly Action? _onExit;
+    private readonly CompositeDisposable _trash = new();
+    
     public GuiApp()
     {
     }
@@ -72,8 +76,4 @@ public class GuiApp : Application
 
         _dic.GetInstance<App>().ShowFolderAsync(targetDir);
     }
-
-    private readonly IServiceProviderContainer? _dic;
-    private readonly Action? _onExit;
-    private readonly CompositeDisposable _trash = new();
 }

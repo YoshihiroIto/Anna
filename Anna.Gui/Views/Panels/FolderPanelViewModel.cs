@@ -27,6 +27,10 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
     public ReactivePropertySlim<int> CursorIndex { get; }
 
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
+    
+    private readonly ResourcesHolder _resourcesHolder;
+    private EntryViewModel? _oldEntry;
+    private readonly bool _isBufferingUpdate = false;
 
     public FolderPanelViewModel(
         IServiceProviderContainer dic,
@@ -200,9 +204,4 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
 
         CursorIndex.Value = 0;
     }
-
-    private readonly ResourcesHolder _resourcesHolder;
-    private EntryViewModel? _oldEntry;
-
-    private readonly bool _isBufferingUpdate = false;
 }

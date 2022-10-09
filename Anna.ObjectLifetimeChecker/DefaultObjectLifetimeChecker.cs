@@ -7,6 +7,14 @@ namespace Anna.ObjectLifetimeChecker;
 
 public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeCheckerUseCase
 {
+    private ConcurrentDictionary<IDisposable, byte> Disposables =>
+        LazyInitializer.EnsureInitialized(ref _disposables, () => new ConcurrentDictionary<IDisposable, byte>()) ??
+        throw new NullReferenceException();
+
+    private ConcurrentDictionary<IDisposable, byte>? _disposables;
+    private Action<string>? _showError;
+    private int _nestCount;
+    
     public void Start(Action<string> showError)
     {
         var old = Interlocked.Exchange(ref _nestCount, 1);
@@ -52,14 +60,6 @@ public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeCheckerUseCase
 
         Disposables.TryRemove(disposable, out _);
     }
-
-    private ConcurrentDictionary<IDisposable, byte> Disposables =>
-        LazyInitializer.EnsureInitialized(ref _disposables, () => new ConcurrentDictionary<IDisposable, byte>()) ??
-        throw new NullReferenceException();
-
-    private ConcurrentDictionary<IDisposable, byte>? _disposables;
-    private Action<string>? _showError;
-    private int _nestCount;
 }
 
 public class NestingException : Exception

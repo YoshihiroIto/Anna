@@ -41,6 +41,7 @@ public class InteractionMessageTrigger : Trigger<Control>
         if (newValue is not null)
             self.Messenger.Raised += self.MessengerOnRaised;
     }
+    
     private async ValueTask MessengerOnRaised(object? sender, InteractionMessage message)
     {
         if (string.CompareOrdinal(message.MessageKey, MessageKey) != 0)

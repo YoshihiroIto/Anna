@@ -12,6 +12,11 @@ public sealed class FileSystemFolder : Folder
 {
     public override bool IsRoot => string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
 
+    private bool _isDispose;
+    private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
+    private readonly IDisposable _pathObserver;
+    private readonly CompositeDisposable _watchTrash = new();
+    
     internal FileSystemFolder(
         string path,
         ILoggerUseCase logger,
@@ -157,10 +162,4 @@ public sealed class FileSystemFolder : Folder
 
         return entry;
     }
-
-    private bool _isDispose;
-    private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
-
-    private readonly IDisposable _pathObserver;
-    private readonly CompositeDisposable _watchTrash = new();
 }

@@ -6,6 +6,8 @@ namespace Anna.ServiceProvider;
 
 public class ServiceProviderContainerBase : Container, IServiceProviderContainer
 {
+    private readonly Stack<object> _args = new();
+    
     public ServiceProviderContainerBase()
     {
         RegisterSingleton<IServiceProviderContainer>(() => this);
@@ -35,6 +37,4 @@ public class ServiceProviderContainerBase : Container, IServiceProviderContainer
     {
         arg = (TArg)_args.Pop();
     }
-
-    private readonly Stack<object> _args = new();
 }

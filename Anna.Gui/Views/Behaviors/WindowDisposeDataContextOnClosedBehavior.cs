@@ -6,6 +6,8 @@ namespace Anna.Gui.Views.Behaviors;
 
 public class WindowDisposeDataContextOnClosedBehavior : Behavior<Window>
 {
+    private bool _isDisposed;
+    
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -37,6 +39,4 @@ public class WindowDisposeDataContextOnClosedBehavior : Behavior<Window>
         _isDisposed = true;
         (AssociatedObject?.DataContext as IDisposable)?.Dispose();
     }
-
-    private bool _isDisposed;
 }

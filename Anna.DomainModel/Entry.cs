@@ -128,7 +128,7 @@ public class Entry : NotificationObject
     public bool IsFolder => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
 
     public FileEntryFormat Format =>
-        SupportedImageFormats.Contains(Extension) ? FileEntryFormat.Image : FileEntryFormat.Text;
+        Constants.Constants.SupportedImageFormats.Contains(Extension) ? FileEntryFormat.Image : FileEntryFormat.Text;
 
     public bool IsSelectable => IsParentFolder == false;
 
@@ -260,23 +260,4 @@ public class Entry : NotificationObject
 
         RaisePropertyChanged(propertyName);
     }
-
-    private static HashSet<string> SupportedImageFormats => new(StringComparer.OrdinalIgnoreCase)
-    {
-        ".jpeg",
-        ".jpg",
-        ".png",
-        ".dng",
-        ".webp",
-        ".gif",
-        ".bmp",
-        ".ico",
-        ".astc",
-        ".ktx",
-        ".pkm",
-        ".wbmp",
-        ".cr2",
-        ".nef",
-        ".arw"
-    };
 }

@@ -10,6 +10,8 @@ public class ObservableFileSystemWatcher : IDisposable
     public readonly IObservable<RenamedEventArgs> Renamed;
     public readonly IObservable<ErrorEventArgs> Errors;
 
+    private readonly FileSystemWatcher _watcher;
+
     public ObservableFileSystemWatcher(string path)
     {
         _watcher = new FileSystemWatcher(path)
@@ -62,6 +64,4 @@ public class ObservableFileSystemWatcher : IDisposable
     {
         _watcher.Dispose();
     }
-
-    private readonly FileSystemWatcher _watcher;
 }

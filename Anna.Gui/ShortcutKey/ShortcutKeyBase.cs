@@ -15,6 +15,14 @@ namespace Anna.Gui.ShortcutKey;
 
 public abstract class ShortcutKeyBase : DisposableNotificationObject
 {
+    protected abstract IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators();
+
+    private readonly IFolderServiceUseCase _folderService;
+    private readonly AppConfig _appConfig;
+    private readonly ILoggerUseCase _logger;
+    private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
+    private readonly IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> _operators;
+    
     protected ShortcutKeyBase(
         IFolderServiceUseCase folderService,
         AppConfig appConfig,
@@ -132,12 +140,4 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                     DialogViewModel.MessageKeyInformation));
         }
     }
-
-    protected abstract IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators();
-
-    private readonly IFolderServiceUseCase _folderService;
-    private readonly AppConfig _appConfig;
-    private readonly ILoggerUseCase _logger;
-    private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
-    private readonly IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> _operators;
 }

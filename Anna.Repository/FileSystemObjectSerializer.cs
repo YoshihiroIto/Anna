@@ -7,6 +7,13 @@ namespace Anna.Repository;
 
 public class FileSystemObjectSerializer : IObjectSerializerUseCase
 {
+    private readonly ILoggerUseCase _logger;
+
+    public static readonly JsonSerializerOptions Options = new()
+    {
+        WriteIndented = true, Converters = { new JsonStringEnumConverter() }
+    };
+    
     public FileSystemObjectSerializer(ILoggerUseCase logger)
     {
         _logger = logger;
@@ -93,11 +100,4 @@ public class FileSystemObjectSerializer : IObjectSerializerUseCase
 
         return ResultCode.Error;
     }
-
-    private readonly ILoggerUseCase _logger;
-
-    public static readonly JsonSerializerOptions Options = new()
-    {
-        WriteIndented = true, Converters = { new JsonStringEnumConverter() }
-    };
 }

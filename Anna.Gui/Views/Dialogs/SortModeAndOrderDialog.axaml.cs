@@ -13,6 +13,28 @@ namespace Anna.Gui.Views.Dialogs;
 // ReSharper disable once PartialTypeWithSinglePart
 public partial class SortModeAndOrderDialog : DialogBase<SortModeAndOrderDialogViewModel>
 {
+    private static readonly IReadOnlyDictionary<Key, SortModes> KeyToSortMode = new Dictionary<Key, SortModes>
+    {
+        { Key.N, SortModes.Name },
+        { Key.E, SortModes.Extension },
+        { Key.T, SortModes.Timestamp },
+        { Key.S, SortModes.Size },
+        { Key.R, SortModes.Attributes }
+    };
+
+    private static readonly IReadOnlyDictionary<Key, SortOrders> KeyToSortOrder = new Dictionary<Key, SortOrders>
+    {
+        { Key.A, SortOrders.Ascending }, { Key.E, SortOrders.Descending }
+    };
+    
+    private States _states = States.Mode;
+
+    private enum States
+    {
+        Mode,
+        Order
+    }
+    
     public SortModeAndOrderDialog()
     {
         InitializeComponent();
@@ -113,27 +135,5 @@ public partial class SortModeAndOrderDialog : DialogBase<SortModeAndOrderDialogV
     {
         ViewModel.DialogResult = DialogResultTypes.Cancel;
         Close();
-    }
-
-    private States _states = States.Mode;
-
-    private static readonly IReadOnlyDictionary<Key, SortModes> KeyToSortMode = new Dictionary<Key, SortModes>
-    {
-        { Key.N, SortModes.Name },
-        { Key.E, SortModes.Extension },
-        { Key.T, SortModes.Timestamp },
-        { Key.S, SortModes.Size },
-        { Key.R, SortModes.Attributes }
-    };
-
-    private static readonly IReadOnlyDictionary<Key, SortOrders> KeyToSortOrder = new Dictionary<Key, SortOrders>
-    {
-        { Key.A, SortOrders.Ascending }, { Key.E, SortOrders.Descending }
-    };
-
-    private enum States
-    {
-        Mode,
-        Order
     }
 }

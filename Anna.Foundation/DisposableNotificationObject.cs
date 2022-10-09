@@ -6,6 +6,8 @@ namespace Anna.Foundation;
 public class DisposableNotificationObject : NotificationObject, IDisposable
 {
     private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
+    private CompositeDisposable? _trashes;
+    private bool _disposed;
 
     protected CompositeDisposable Trash =>
         LazyInitializer.EnsureInitialized(ref _trashes, () => new CompositeDisposable()) ??
@@ -36,8 +38,4 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-
-    private CompositeDisposable? _trashes;
-
-    private bool _disposed;
 }

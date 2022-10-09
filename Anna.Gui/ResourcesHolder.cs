@@ -9,13 +9,16 @@ namespace Anna.Gui;
 
 public class ResourcesHolder
 {
+    public event EventHandler? CultureChanged;
+    
     public Resources Instance
     {
         get => _Instance ??= ResourcesCreator.Create();
         private set => _Instance = value;
     }
-
-    public event EventHandler? CultureChanged;
+    
+    private Resources? _Instance;
+    private readonly Dictionary<Cultures, Resources> _resourcesCache = new();
 
     public void SetCulture(Cultures culture)
     {
@@ -34,8 +37,4 @@ public class ResourcesHolder
 
         CultureChanged?.Invoke(this, EventArgs.Empty);
     }
-
-    private Resources? _Instance;
-
-    private readonly Dictionary<Cultures, Resources> _resourcesCache = new();
 }

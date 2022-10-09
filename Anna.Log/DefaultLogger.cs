@@ -8,6 +8,8 @@ namespace Anna.Log;
 
 public class DefaultLogger : ILoggerUseCase
 {
+    private readonly Serilog.Core.Logger _logger;
+    
     public DefaultLogger(string logOutputDir)
     {
         // https://qiita.com/soi/items/e74918a924c02e3a3097
@@ -61,6 +63,4 @@ public class DefaultLogger : ILoggerUseCase
         Debugger.Break();
     }
     // ReSharper restore TemplateIsNotCompileTimeConstantProblem
-
-    private readonly Serilog.Core.Logger _logger;
 }

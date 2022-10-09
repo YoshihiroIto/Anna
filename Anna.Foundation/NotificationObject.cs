@@ -6,6 +6,12 @@ namespace Anna.Foundation;
 
 public class NotificationObject : INotifyPropertyChanged
 {
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    // use Hashtable to get free lockless reading
+    private static readonly Hashtable PropChanged = new();
+    private static readonly object PropChangedLockObj = new();
+
     protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
     {
         if (EqualityComparer<T>.Default.Equals(storage, value))
@@ -17,8 +23,6 @@ public class NotificationObject : INotifyPropertyChanged
 
         return true;
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
     {
@@ -42,8 +46,4 @@ public class NotificationObject : INotifyPropertyChanged
 
         PropertyChanged?.Invoke(this, pc);
     }
-
-    // use Hashtable to get free lockless reading
-    private static readonly Hashtable PropChanged = new();
-    private static readonly object PropChangedLockObj = new();
 }

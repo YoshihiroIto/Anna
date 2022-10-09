@@ -91,6 +91,11 @@ public class IsEditingChangedArgs : EventArgs
 
 internal class EditableTextBlockTextBoxBehavior : Behavior<TextBox>
 {
+    private EditableTextBlock Parent =>
+        AssociatedObject?.Parent as EditableTextBlock ?? throw new NullReferenceException();
+    
+    private string _currentText = "";
+    
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -141,9 +146,4 @@ internal class EditableTextBlockTextBoxBehavior : Behavior<TextBox>
     {
         Parent.IsEditing = false;
     }
-
-    private string _currentText = "";
-
-    private EditableTextBlock Parent =>
-        AssociatedObject?.Parent as EditableTextBlock ?? throw new NullReferenceException();
 }

@@ -16,6 +16,9 @@ public class TextViewerViewModel : HasModelRefViewModelBase<Entry>, ILocalizable
     public Resources R => _resourcesHolder.Instance;
 
     public readonly TextViewerShortcutKey ShortcutKey;
+    
+    private readonly ResourcesHolder _resourcesHolder;
+    private readonly AppConfig _appConfig;
 
     public async ValueTask<string> ReadText()
     {
@@ -39,7 +42,4 @@ public class TextViewerViewModel : HasModelRefViewModelBase<Entry>, ILocalizable
 
         ShortcutKey = dic.GetInstance<TextViewerShortcutKey>().AddTo(Trash);
     }
-
-    private readonly ResourcesHolder _resourcesHolder;
-    private readonly AppConfig _appConfig;
 }

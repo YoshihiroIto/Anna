@@ -10,6 +10,8 @@ namespace Anna.Gui.ShortcutKey;
 
 public class FolderPanelShortcutKey : ShortcutKeyBase
 {
+    private readonly IServiceProviderContainer _dic;
+    
     public FolderPanelShortcutKey(
         IServiceProviderContainer dic,
         IFolderServiceUseCase folderService,
@@ -21,8 +23,6 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
     {
         _dic = dic;
     }
-
-    private readonly IServiceProviderContainer _dic;
 
     protected override IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators()
     {

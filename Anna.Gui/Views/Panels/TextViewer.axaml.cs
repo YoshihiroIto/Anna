@@ -52,6 +52,8 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
     }
 
     private ScrollViewer? _scrollViewer;
+    
+    private static readonly RegistryOptions TextMateRegistryOptions = new(ThemeName.DarkPlus);
 
     public TextViewer()
     {
@@ -113,6 +115,4 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
 
         Unloaded += (_, _) => installation.Dispose();
     }
-
-    private static readonly RegistryOptions TextMateRegistryOptions = new(ThemeName.DarkPlus);
 }

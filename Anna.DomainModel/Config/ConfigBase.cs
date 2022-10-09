@@ -29,6 +29,8 @@ public class ConfigBase<T> : NotificationObject
     }
 
     #endregion
+    
+    private readonly IObjectSerializerUseCase _objectSerializer;
 
     public ConfigBase(IObjectSerializerUseCase objectSerializer)
     {
@@ -51,8 +53,6 @@ public class ConfigBase<T> : NotificationObject
     {
         _objectSerializer.Write(FilePath, Data);
     }
-
-    private readonly IObjectSerializerUseCase _objectSerializer;
 }
 
 public abstract class ConfigData : NotificationObject

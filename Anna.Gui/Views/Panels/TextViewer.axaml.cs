@@ -46,13 +46,23 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
 
     public double CalcLineHeight()
     {
-        return
-            TextEditor.TextArea.TextView.GetVisualTopByDocumentLine(2) -
-            TextEditor.TextArea.TextView.GetVisualTopByDocumentLine(1);
+        try
+        {
+            if (TextEditor.LineCount <= 1)
+                return 1;
+
+            return
+                TextEditor.TextArea.TextView.GetVisualTopByDocumentLine(2) -
+                TextEditor.TextArea.TextView.GetVisualTopByDocumentLine(1);
+        }
+        catch
+        {
+            return 1;
+        }
     }
 
     private ScrollViewer? _scrollViewer;
-    
+
     private static readonly RegistryOptions TextMateRegistryOptions = new(ThemeName.DarkPlus);
 
     public TextViewer()

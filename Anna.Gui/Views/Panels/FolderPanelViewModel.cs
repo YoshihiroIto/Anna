@@ -151,7 +151,7 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
         if (_oldEntry is not null)
             _oldEntry.IsOnCursor.Value = false;
 
-        EntryViewModel? newEntry= null;
+        EntryViewModel? newEntry = null;
 
         if (index >= 0 && index < Entries.Count)
             newEntry = Entries[index];

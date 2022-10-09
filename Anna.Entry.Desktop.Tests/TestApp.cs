@@ -20,12 +20,12 @@ public class TestApp : IAsyncDisposable
 
     public DefaultServiceProviderContainer ServiceProviderContainer { get; }
 
-    public TestApp(TempFolder? configFolder = null, string workDir = "", bool isHeadless = true)
+    public TestApp(TempFolder? configFolder = null, string workFolder = "", bool isHeadless = true)
     {
         if (configFolder is null)
         {
             _configFolder = new TempFolder();
-            _useSelfConfigDir = true;
+            _useSelfConfigFolder = true;
         }
         else
         {
@@ -34,7 +34,7 @@ public class TestApp : IAsyncDisposable
 
         var args = new[]
         {
-            "--config", _configFolder.AppConfigFilePath, "--target", Path.Combine(_configFolder.RootPath, workDir)
+            "--config", _configFolder.AppConfigFilePath, "--target", Path.Combine(_configFolder.RootPath, workFolder)
         };
 
         ServiceProviderContainer = DefaultServiceProviderContainer.Create(args);
@@ -49,7 +49,7 @@ public class TestApp : IAsyncDisposable
         _sync.Wait();
         _sync.Dispose();
 
-        if (_useSelfConfigDir)
+        if (_useSelfConfigFolder)
             _configFolder.Dispose();
 
         Dispatcher.UIThread.Post(() => App.Shutdown());
@@ -102,6 +102,6 @@ public class TestApp : IAsyncDisposable
     }
 
     private readonly TempFolder _configFolder;
-    private readonly bool _useSelfConfigDir;
+    private readonly bool _useSelfConfigFolder;
     private readonly ManualResetEventSlim _sync = new();
 }

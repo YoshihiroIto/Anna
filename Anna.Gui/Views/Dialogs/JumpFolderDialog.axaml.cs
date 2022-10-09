@@ -57,7 +57,7 @@ public partial class JumpFolderDialog : DialogBase<JumpFolderDialogViewModel>
 
     private void PathOnPreviewPointerPress(object? sender, PointerPressedEventArgs e)
     {
-        if (!e.GetCurrentPoint(null).Properties.IsRightButtonPressed)
+        if (e.GetCurrentPoint(null).Properties.IsRightButtonPressed == false)
             return;
 
         var editableTextBlock = sender as EditableTextBlock ?? throw new InvalidCastException();

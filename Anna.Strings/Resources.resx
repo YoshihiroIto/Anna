@@ -199,4 +199,13 @@ Do you want to delete this?</value>
   <data name="Message_OmittedDueToLargeSize" xml:space="preserve">
     <value>Omitted due to large size.</value>
   </data>
+  <data name="Message_FailedToStartEditor" xml:space="preserve">
+    <value>{0}
+
+Failed to start editor.
+The editor is not registered or does not exist.</value>
+  </data>
+  <data name="Message_FailedToStartAssociatedApp" xml:space="preserve">
+    <value>Failed to start associated app</value>
+  </data>
 </root>

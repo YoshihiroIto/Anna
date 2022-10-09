@@ -1,6 +1,5 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.Config;
-using Anna.Gui.Foundations;
 using Anna.UseCase;
 using System;
 using System.Collections.Generic;
@@ -18,14 +17,12 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
         KeyConfig keyConfig,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(folderService, keyConfig, logger, objectLifetimeChecker)
+        : base(folderService, appConfig, keyConfig, logger, objectLifetimeChecker)
     {
         _dic = dic;
-        _appConfig = appConfig;
     }
 
     private readonly IServiceProviderContainer _dic;
-    private readonly AppConfig _appConfig;
 
     protected override IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators()
     {
@@ -117,30 +114,16 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
     {
         var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        var target = r.CurrentEntry;
-        if (target.IsFolder)
-            return ValueTask.CompletedTask;
-
-        Task.Run(() =>
-        {
-            var editor = _appConfig.Data.FindEditor(index);
-            var arguments = ProcessHelper.MakeEditorArguments(editor.Options, target.Path, 1);
-
-            ProcessHelper.Execute(editor.Editor, arguments);
-        });
-
-        return ValueTask.CompletedTask;
+        return r.CurrentEntry.IsFolder
+            ? ValueTask.CompletedTask
+            : OpenFileByEditorAsync(index, r.CurrentEntry.Path, r.Messenger);
     }
 
     private ValueTask OpenEntryByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        var targetPath = r.CurrentEntry.Path;
-
-        Task.Run(() => ProcessHelper.RunAssociatedApp(targetPath));
-
-        return ValueTask.CompletedTask;
+        return StartAssociatedAppAsync(r.CurrentEntry.Path, r.Messenger);
     }
 
     private async ValueTask JumpToParentFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)

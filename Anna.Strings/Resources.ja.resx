@@ -93,4 +93,13 @@
     <data name="Message_OmittedDueToLargeSize" xml:space="preserve">
         <value>サイズが大きいため省略しました。</value>
     </data>
+    <data name="Message_FailedToStartEditor" xml:space="preserve">
+        <value>{0}
+
+エディタの起動に失敗しました。
+エディタが登録されていないか、存在しません。</value>
+    </data>
+    <data name="Message_FailedToStartAssociatedApp" xml:space="preserve">
+        <value>関連づいたアプリの起動に失敗しました。</value>
+    </data>
 </root>

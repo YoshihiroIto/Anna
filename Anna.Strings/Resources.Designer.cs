@@ -217,6 +217,27 @@ namespace Anna.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to start associated app.
+        /// </summary>
+        public static string Message_FailedToStartAssociatedApp {
+            get {
+                return ResourceManager.GetString("Message_FailedToStartAssociatedApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}
+        ///
+        ///Failed to start editor.
+        ///The editor is not registered or does not exist..
+        /// </summary>
+        public static string Message_FailedToStartEditor {
+            get {
+                return ResourceManager.GetString("Message_FailedToStartEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Omitted due to large size..
         /// </summary>
         public static string Message_OmittedDueToLargeSize {

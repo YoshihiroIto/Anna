@@ -1,5 +1,4 @@
 ﻿using Anna.DomainModel.Config;
-using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.UseCase;
@@ -11,16 +10,14 @@ namespace Anna.Gui.ShortcutKey;
 
 public class ImageViewerShortcutKey : ShortcutKeyBase
 {
-    private readonly AppConfig _appConfig;
     public ImageViewerShortcutKey(
         IFolderServiceUseCase folderService,
         AppConfig appConfig,
         KeyConfig keyConfig,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(folderService, keyConfig, logger, objectLifetimeChecker)
+        : base(folderService, appConfig, keyConfig, logger, objectLifetimeChecker)
     {
-        _appConfig = appConfig;
     }
 
     protected override IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators()
@@ -41,33 +38,17 @@ public class ImageViewerShortcutKey : ShortcutKeyBase
         await r.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
     }
 
-    private async ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
+    private ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
     {
         var r = shortcutKeyReceiver as IImageViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        var targetFilepath = r.TargetFilepath;
-
- #pragma warning disable CS4014
-        Task.Run(() =>
-        {
-            var editor = _appConfig.Data.FindEditor(index);
-            var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilepath, 0);
-
-            ProcessHelper.Execute(editor.Editor, arguments);
-        });
- #pragma warning restore CS4014
-
-        await r.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
+        return OpenFileByEditorAsync(index, r.TargetFilepath, r.Messenger);
     }
 
     private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var r = shortcutKeyReceiver as IImageViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        var targetFilepath = r.TargetFilepath;
-
-        Task.Run(() => ProcessHelper.RunAssociatedApp(targetFilepath));
-
-        return ValueTask.CompletedTask;
+        return StartAssociatedAppAsync(r.TargetFilepath, r.Messenger);
     }
 }

@@ -208,4 +208,7 @@ The editor is not registered or does not exist.</value>
   <data name="Message_FailedToStartAssociatedApp" xml:space="preserve">
     <value>Failed to start associated app</value>
   </data>
+  <data name="Message_BinaryFileCannotBePreviewed" xml:space="preserve">
+    <value>Binary files cannot be previewed.</value>
+  </data>
 </root>

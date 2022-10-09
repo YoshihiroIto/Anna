@@ -206,6 +206,15 @@ namespace Anna.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Binary files cannot be previewed..
+        /// </summary>
+        public static string Message_BinaryFileCannotBePreviewed {
+            get {
+                return ResourceManager.GetString("Message_BinaryFileCannotBePreviewed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}
         ///
         ///Do you want to delete this?.

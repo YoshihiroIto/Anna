@@ -24,10 +24,12 @@ public class TextViewerViewModel : HasModelRefViewModelBase<Entry>, ILocalizable
     {
         await using var stream = Model.OpenRead();
 
-        return await StringHelper.BuildString(
+        (string result, bool isText) = await StringHelper.BuildString(
             stream,
             _appConfig.Data.TextViewerMaxBufferSize,
             "\n\n" + Resources.Message_OmittedDueToLargeSize);
+
+        return isText ? result : Resources.Message_BinaryFileCannotBePreviewed;
     }
 
     public TextViewerViewModel(

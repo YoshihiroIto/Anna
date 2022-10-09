@@ -102,4 +102,7 @@
     <data name="Message_FailedToStartAssociatedApp" xml:space="preserve">
         <value>関連づいたアプリの起動に失敗しました。</value>
     </data>
+    <data name="Message_BinaryFileCannotBePreviewed" xml:space="preserve">
+        <value>バイナリファイルはプレビューできません。</value>
+    </data>
 </root>

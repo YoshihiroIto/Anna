@@ -76,17 +76,7 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
     {
         TextEditor = this.FindControl<TextEditor>("ViewTextEditor") ?? throw new NullReferenceException();
 
-        var registryOptions = new RegistryOptions(ThemeName.TomorrowNightBlue);
-        TextEditor.InstallTextMate(registryOptions);
-
-        var lang = registryOptions.GetLanguageByExtension(ViewModel.Model.Extension);
-        if (lang is not null)
-        {
-            var textMateInstallation = TextEditor.InstallTextMate(registryOptions);
-            textMateInstallation.SetGrammar(registryOptions.GetScopeByLanguageId(lang.Id));
-        }
-
-        TextEditor.AddHandler(KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
+        SetupTextMate();
 
         // https://stackoverflow.com/questions/43654090/avalonedit-as-a-text-viewer-no-caret
         TextEditor.TextArea.Caret.CaretBrush = Brushes.Transparent;
@@ -102,6 +92,7 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
             // ignored
         }
 
+        TextEditor.AddHandler(KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
         TextEditor.TextArea.Focus();
     }
 
@@ -117,4 +108,18 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
             await ViewModel.ShortcutKey.OnKeyDownAsync(this, e);
         }
     }
+    
+    private void SetupTextMate()
+    {
+        var lang = TextMateRegistryOptions.GetLanguageByExtension(ViewModel.Model.Extension);
+        if (lang is null)
+            return;
+
+        var installation = TextEditor.InstallTextMate(TextMateRegistryOptions);
+        installation.SetGrammar(TextMateRegistryOptions.GetScopeByLanguageId(lang.Id));
+
+        Unloaded += (_, _) => installation.Dispose();
+    }
+    
+    private static readonly RegistryOptions TextMateRegistryOptions = new(ThemeName.DarkPlus);
 }

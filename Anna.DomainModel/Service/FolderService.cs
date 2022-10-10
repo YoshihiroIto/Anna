@@ -1,6 +1,6 @@
 ﻿using Anna.Service;
 
-namespace Anna.DomainModel.FileSystem;
+namespace Anna.DomainModel.Service;
 
 public sealed class FolderService : IFolderService
 {

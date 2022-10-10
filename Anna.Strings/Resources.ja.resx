@@ -105,4 +105,7 @@
     <data name="Message_BinaryFileCannotBePreviewed" xml:space="preserve">
         <value>バイナリファイルはプレビューできません。</value>
     </data>
+    <data name="DialogTitle_CopyEntry" xml:space="preserve">
+        <value>エントリーのコピー</value>
+    </data>
 </root>

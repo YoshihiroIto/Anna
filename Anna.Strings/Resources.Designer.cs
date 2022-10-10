@@ -105,6 +105,15 @@ namespace Anna.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy entry.
+        /// </summary>
+        public static string DialogTitle_CopyEntry {
+            get {
+                return ResourceManager.GetString("DialogTitle_CopyEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Jump folder.
         /// </summary>
         public static string DialogTitle_JumpFolder {

@@ -211,4 +211,7 @@ The editor is not registered or does not exist.</value>
   <data name="Message_BinaryFileCannotBePreviewed" xml:space="preserve">
     <value>Binary files cannot be previewed.</value>
   </data>
+  <data name="DialogTitle_CopyEntry" xml:space="preserve">
+    <value>Copy entry</value>
+  </data>
 </root>

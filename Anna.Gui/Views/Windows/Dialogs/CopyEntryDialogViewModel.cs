@@ -23,7 +23,8 @@ public sealed class CopyEntryDialogViewModel : HasModelWindowViewModelBase<Entry
     public CopyEntryDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
-        Stats = new EntriesStats(Model);
+        Stats = dic.GetInstance<EntriesStats>()
+            .Measure(Model);
 
         FileCount = Stats.ObserveProperty(x => x.FileCount)
             .Throttle(TimeSpan.FromMilliseconds(100))

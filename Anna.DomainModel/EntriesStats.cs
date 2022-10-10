@@ -1,9 +1,12 @@
 ﻿using Anna.Foundation;
+using Anna.Service;
 
 namespace Anna.DomainModel;
 
 public sealed class EntriesStats : NotificationObject
 {
+    private readonly IFolderService _folderService;
+
     #region FileCount
 
     private int _FileCount;
@@ -40,7 +43,12 @@ public sealed class EntriesStats : NotificationObject
 
     #endregion
 
-    public EntriesStats(Entry[] targets)
+    public EntriesStats(IFolderService folderService)
+    {
+        _folderService = folderService;
+    }
+
+    public EntriesStats Measure(Entry[] targets)
     {
         // for make minimum stats
         var mre = new ManualResetEventSlim();
@@ -48,6 +56,8 @@ public sealed class EntriesStats : NotificationObject
         Task.Run(() => Measure(targets, mre));
 
         mre.Wait();
+
+        return this;
     }
 
     private void Measure(Entry[] targets, ManualResetEventSlim? mre)
@@ -80,6 +90,9 @@ public sealed class EntriesStats : NotificationObject
 
     private void MeasureFolder(string path)
     {
+        if (_folderService.IsAccessible(path) == false)
+            return;
+        
         var di = new DirectoryInfo(path);
 
         foreach (var d in di.EnumerateDirectories())

@@ -43,7 +43,7 @@ public class TextViewerShortcutKey : ShortcutKeyBase
     {
         var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        return OpenFileByEditorAsync(index, r.TargetFilepath, r.Messenger);
+        return OpenFileByEditorAsync(index, r.TargetFilepath, r.LineIndex, r.Messenger);
     }
 
     private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)

@@ -108,7 +108,7 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
 
         return r.CurrentEntry.IsFolder
             ? ValueTask.CompletedTask
-            : OpenFileByEditorAsync(index, r.CurrentEntry.Path, r.Messenger);
+            : OpenFileByEditorAsync(index, r.CurrentEntry.Path, 1, r.Messenger);
     }
 
     private ValueTask OpenEntryByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)

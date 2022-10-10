@@ -37,7 +37,7 @@ public class ImageViewerShortcutKey : ShortcutKeyBase
     {
         var r = shortcutKeyReceiver as IImageViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        return OpenFileByEditorAsync(index, r.TargetFilepath, r.Messenger);
+        return OpenFileByEditorAsync(index, r.TargetFilepath, 1, r.Messenger);
     }
 
     private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)

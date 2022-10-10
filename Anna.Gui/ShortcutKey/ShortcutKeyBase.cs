@@ -89,10 +89,11 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         return false;
     }
 
-    protected async ValueTask OpenFileByEditorAsync(int index, string targetFilepath, InteractionMessenger messenger)
+    protected async ValueTask OpenFileByEditorAsync(
+        int index, string targetFilepath, int targetLineIndex, InteractionMessenger messenger)
     {
         var editor = Dic.GetInstance<AppConfig>().Data.FindEditor(index);
-        var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilepath, 0);
+        var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilepath, targetLineIndex);
 
         try
         {
@@ -103,7 +104,8 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         }
         catch
         {
-            Dic.GetInstance<ILoggerService>().Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
+            Dic.GetInstance<ILoggerService>()
+                .Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
 
             await messenger.RaiseAsync(
                 new InformationMessage(
@@ -121,7 +123,8 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         }
         catch
         {
-            Dic.GetInstance<ILoggerService>().Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
+            Dic.GetInstance<ILoggerService>()
+                .Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
 
             await messenger.RaiseAsync(
                 new InformationMessage(

@@ -10,7 +10,6 @@ using System.Collections.Generic;
 
 namespace Anna.Gui.Views.Dialogs;
 
-// ReSharper disable once PartialTypeWithSinglePart
 public partial class SortModeAndOrderDialog : DialogBase<SortModeAndOrderDialogViewModel>
 {
     private static readonly IReadOnlyDictionary<Key, SortModes> KeyToSortMode = new Dictionary<Key, SortModes>

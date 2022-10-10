@@ -10,7 +10,6 @@ using System.Linq;
 
 namespace Anna.Gui.Views.Dialogs;
 
-// ReSharper disable once PartialTypeWithSinglePart
 public partial class JumpFolderDialog : DialogBase<JumpFolderDialogViewModel>
 {
     private bool IsEditing => _editingDepth > 0;

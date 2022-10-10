@@ -5,7 +5,6 @@ using Avalonia.Markup.Xaml;
 
 namespace Anna.Gui.Views.Dialogs;
 
-// ReSharper disable once PartialTypeWithSinglePart
 public partial class ConfirmationDialog : DialogBase<ConfirmationDialogViewModel>
 {
     public ConfirmationDialog()

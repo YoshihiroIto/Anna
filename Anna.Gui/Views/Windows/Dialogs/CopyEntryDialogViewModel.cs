@@ -13,7 +13,7 @@ public sealed class CopyEntryDialogViewModel : HasModelWindowViewModelBase<Entry
     public string LeaderName => Model[0].NameWithExtension;
 
     public ReadOnlyReactivePropertySlim<bool> IsSingleTarget { get; }
-
+    public ReadOnlyReactivePropertySlim<bool> IsInMeasuring { get; }
     public ReadOnlyReactivePropertySlim<int> FileCount { get; }
     public ReadOnlyReactivePropertySlim<int> FolderCount { get; }
     public ReadOnlyReactivePropertySlim<long> AllSize { get; }
@@ -26,24 +26,29 @@ public sealed class CopyEntryDialogViewModel : HasModelWindowViewModelBase<Entry
         Stats = dic.GetInstance<EntriesStats>()
             .Measure(Model);
 
+        IsInMeasuring = Stats.ObserveProperty(x => x.IsInMeasuring)
+            .ObserveOnUIDispatcher()
+            .ToReadOnlyReactivePropertySlim(Stats.IsInMeasuring)
+            .AddTo(Trash);
+        
         FileCount = Stats.ObserveProperty(x => x.FileCount)
-            .Throttle(TimeSpan.FromMilliseconds(100))
+            .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim(Stats.FileCount)
             .AddTo(Trash);
 
         FolderCount = Stats.ObserveProperty(x => x.FolderCount)
-            .Throttle(TimeSpan.FromMilliseconds(100))
+            .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim(Stats.FolderCount)
             .AddTo(Trash);
 
         AllSize = Stats.ObserveProperty(x => x.AllSize)
-            .Throttle(TimeSpan.FromMilliseconds(100))
+            .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim(Stats.AllSize)
             .AddTo(Trash);
-
+        
         IsSingleTarget = Observable
             .Merge(FileCount)
             .Merge(FolderCount)

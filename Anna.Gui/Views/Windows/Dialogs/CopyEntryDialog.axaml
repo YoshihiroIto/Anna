@@ -38,7 +38,7 @@
 
     <StackPanel>
         <TextBlock Text="{Binding IsSingleTarget.Value}" />
-        <TextBlock Text="{Binding LeaderName}" />
+        <TextBlock Text="{Binding LeaderName}" TextTrimming="CharacterEllipsis" />
         <TextBlock Text="{Binding FileCount.Value}" />
         <TextBlock Text="{Binding FolderCount.Value}" />
         <TextBlock Text="{Binding AllSize.Value, Converter={x:Static converters:BytesValueToHumanizedConverter.Default}}" />

@@ -49,6 +49,6 @@
             </Button>
         </StackPanel>
 
-        <TextBlock Text="{Binding Text, Mode=OneTime}" />
+        <TextBlock Text="{Binding Text, Mode=OneTime}" TextTrimming="CharacterEllipsis" />
     </DockPanel>
 </base1:WindowBase>

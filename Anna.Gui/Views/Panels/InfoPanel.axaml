@@ -1,5 +1,4 @@
-﻿<!--  ReSharper disable Xaml.PossibleNullReferenceException  -->
-<!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+﻿<!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
 <UserControl x:Class="Anna.Gui.Views.Panels.InfoPanel"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,14 +9,12 @@
              d:DesignWidth="800"
              x:CompileBindings="True"
              x:DataType="panels:InfoPanelViewModel"
-             FontFamily="{ReflectionBinding DataContext.ViewerFontFamily.Value,
-                                            RelativeSource={RelativeSource AncestorType=WindowBase}}"
-             FontSize="{ReflectionBinding DataContext.ViewerFontSize.Value,
-                                          RelativeSource={RelativeSource AncestorType=WindowBase}}"
+             FontFamily="{ReflectionBinding $parent[WindowBase].DataContext.ViewerFontFamily.Value,
+                                            FallbackValue=$parent[WindowBase].FontFamily}"
+             FontSize="{ReflectionBinding $parent[WindowBase].DataContext.ViewerFontSize.Value,
+                                          FallbackValue=$parent[WindowBase].FontSize}"
              mc:Ignorable="d">
-    <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
-    <!--  ReSharper restore Xaml.PossibleNullReferenceException  -->
-
+    <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->
         <panels:InfoPanelViewModel />

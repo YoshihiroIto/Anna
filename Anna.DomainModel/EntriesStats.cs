@@ -1,9 +1,10 @@
 ﻿using Anna.Foundation;
 using Anna.Service;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel;
 
-public sealed class EntriesStats : NotificationObject
+public sealed class EntriesStats : DisposableNotificationObject
 {
     #region IsInMeasuring
 
@@ -56,38 +57,51 @@ public sealed class EntriesStats : NotificationObject
     #endregion
 
     private readonly IFolderService _folderService;
+    private readonly ManualResetEventSlim _measuringMre = new();
 
-    public EntriesStats(IFolderService folderService)
+    // for make minimum stats
+    private readonly ManualResetEventSlim _mre = new();
+
+    public EntriesStats(IServiceProvider dic)
+        : base(dic)
     {
-        _folderService = folderService;
+        _folderService = dic.GetInstance<IFolderService>();
     }
 
-    public EntriesStats Measure(Entry[] targets)
+    public override void Dispose()
     {
-        // for make minimum stats
-        using var mre = new ManualResetEventSlim();
+        _measuringMre.Wait();
+        _measuringMre.Dispose();
 
+        _mre.Dispose();
+        base.Dispose();
+    }
+
+    public EntriesStats Measure(Entry[] targets, CancellationToken ct)
+    {
         Task.Run(() =>
-        {
-            try
             {
-                IsInMeasuring = true;
+                try
+                {
+                    IsInMeasuring = true;
 
-                // ReSharper disable once AccessToDisposedClosure
-                Measure(targets, mre);
-            }
-            finally
-            {
-                IsInMeasuring = false;
-            }
-        });
+                    // ReSharper disable once AccessToDisposedClosure
+                    MeasureInternal(targets, ct);
+                }
+                finally
+                {
+                    IsInMeasuring = false;
+                    _measuringMre.Set();
+                }
+            },
+            ct);
 
-        mre.Wait();
+        _mre.Wait(ct);
 
         return this;
     }
 
-    private void Measure(Entry[] targets, ManualResetEventSlim mre)
+    private void MeasureInternal(Entry[] targets, CancellationToken ct)
     {
         foreach (var target in targets)
         {
@@ -97,23 +111,26 @@ public sealed class EntriesStats : NotificationObject
             if (target.IsFolder)
             {
                 ++FolderCount;
-                MeasureFolder(target.Path, mre);
+                MeasureFolder(target.Path, ct);
             }
             else
             {
                 ++FileCount;
                 AllSize += target.Size;
 
-                if (mre.IsSet == false)
-                    mre.Set();
+                if (_mre.IsSet == false)
+                    _mre.Set();
             }
+
+            if (ct.IsCancellationRequested)
+                break;
         }
 
-        if (mre.IsSet == false)
-            mre.Set();
+        if (_mre.IsSet == false)
+            _mre.Set();
     }
 
-    private void MeasureFolder(string path, ManualResetEventSlim mre)
+    private void MeasureFolder(string path, CancellationToken ct)
     {
         if (_folderService.IsAccessible(path) == false)
             return;
@@ -123,7 +140,10 @@ public sealed class EntriesStats : NotificationObject
         foreach (var d in di.EnumerateDirectories())
         {
             ++FolderCount;
-            MeasureFolder(d.FullName, mre);
+            MeasureFolder(d.FullName, ct);
+
+            if (ct.IsCancellationRequested)
+                break;
         }
 
         foreach (var f in di.EnumerateFiles())
@@ -131,8 +151,11 @@ public sealed class EntriesStats : NotificationObject
             ++FileCount;
             AllSize += f.Length;
 
-            if (mre.IsSet == false)
-                mre.Set();
+            if (_mre.IsSet == false)
+                _mre.Set();
+
+            if (ct.IsCancellationRequested)
+                break;
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Anna.DomainModel;
+using Anna.Foundation;
 using Anna.Gui.Views.Windows.Base;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Linq;
+using System.Threading;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
@@ -20,17 +22,22 @@ public sealed class CopyEntryDialogViewModel : HasModelWindowViewModelBase<Entry
 
     private EntriesStats Stats { get; }
 
+    private readonly CancellationTokenSource _cts = new();
+
     public CopyEntryDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
+        Trash.Add(() => _cts.Cancel());
+        
         Stats = dic.GetInstance<EntriesStats>()
-            .Measure(Model);
+            .Measure(Model, _cts.Token)
+            .AddTo(Trash);
 
         IsInMeasuring = Stats.ObserveProperty(x => x.IsInMeasuring)
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim(Stats.IsInMeasuring)
             .AddTo(Trash);
-        
+
         FileCount = Stats.ObserveProperty(x => x.FileCount)
             .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
@@ -48,7 +55,7 @@ public sealed class CopyEntryDialogViewModel : HasModelWindowViewModelBase<Entry
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim(Stats.AllSize)
             .AddTo(Trash);
-        
+
         IsSingleTarget = Observable
             .Merge(FileCount)
             .Merge(FolderCount)

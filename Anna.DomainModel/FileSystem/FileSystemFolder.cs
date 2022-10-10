@@ -16,7 +16,7 @@ public sealed class FileSystemFolder : Folder
     private readonly IObjectLifetimeCheckerService _objectLifetimeChecker;
     private readonly IDisposable _pathObserver;
     private readonly CompositeDisposable _watchTrash = new();
-    
+
     internal FileSystemFolder(
         string path,
         ILoggerService logger,

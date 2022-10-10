@@ -1,8 +1,11 @@
-﻿using Anna.Gui.Foundations;
+﻿using Anna.DomainModel.Config;
+using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.Messaging;
 using Anna.Strings;
 using Anna.UseCase;
+using Avalonia.Media;
+using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Linq;
@@ -22,6 +25,9 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
     public DelegateCommand YesCommand => _yesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
     public DelegateCommand NoCommand => _noCommand ??= CreateButtonCommand(DialogResultTypes.No);
 
+    public ReadOnlyReactiveProperty<FontFamily> ViewerFontFamily { get; }
+    public ReadOnlyReactiveProperty<double> ViewerFontSize { get; }
+
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
     private readonly ResourcesHolder _resourcesHolder;
@@ -34,6 +40,7 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
     protected DialogViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
+        AppConfig appConfig,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, objectLifetimeChecker)
@@ -46,6 +53,18 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
                 h => _resourcesHolder.CultureChanged += h,
                 h => _resourcesHolder.CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
+            .AddTo(Trash);
+
+ #pragma warning disable CS8619
+        ViewerFontFamily = appConfig.Data
+            .ObserveProperty(x => x.ViewerFontFamily)
+            .ToReadOnlyReactiveProperty()
+            .AddTo(Trash);
+ #pragma warning restore CS8619
+
+        ViewerFontSize = appConfig.Data
+            .ObserveProperty(x => x.ViewerFontSize)
+            .ToReadOnlyReactiveProperty()
             .AddTo(Trash);
 
         _logger.Start(GetType().Name);

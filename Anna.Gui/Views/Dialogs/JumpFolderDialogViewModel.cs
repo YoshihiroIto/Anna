@@ -15,9 +15,6 @@ namespace Anna.Gui.Views.Dialogs;
 public class JumpFolderDialogViewModel
     : HasModelDialogViewModel<(string CurrentFolderPath, JumpFolderConfigData Config)>
 {
-    public ReadOnlyReactiveProperty<FontFamily> ViewerFontFamily { get; }
-    public ReadOnlyReactiveProperty<double> ViewerFontSize { get; }
-    
     public string ResultPath { get; private set; } = "";
 
     public JumpFolderPathViewModel[] Paths { get; }
@@ -32,25 +29,13 @@ public class JumpFolderDialogViewModel
         AppConfig appConfig,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, resourcesHolder, logger, objectLifetimeChecker)
+        : base(dic, resourcesHolder, appConfig, logger, objectLifetimeChecker)
     {
         Paths = Model.Config.Paths
             .Select(x => dic.GetInstance<JumpFolderPathViewModel, JumpFolderConfigData.PathData>(x).AddTo(Trash))
             .ToArray();
 
         SelectedPath = new ReactivePropertySlim<JumpFolderPathViewModel>(Paths[0]).AddTo(Trash);
-
- #pragma warning disable CS8619
-        ViewerFontFamily = appConfig.Data
-            .ObserveProperty(x => x.ViewerFontFamily)
-            .ToReadOnlyReactiveProperty()
-            .AddTo(Trash);
- #pragma warning restore CS8619
-
-        ViewerFontSize = appConfig.Data
-            .ObserveProperty(x => x.ViewerFontSize)
-            .ToReadOnlyReactiveProperty()
-            .AddTo(Trash);
     }
 
     public async void OnKeyDown(KeyEventArgs e)

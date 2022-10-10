@@ -30,9 +30,6 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
 
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
     
-    public ReadOnlyReactiveProperty<FontFamily> ViewerFontFamily { get; }
-    public ReadOnlyReactiveProperty<double> ViewerFontSize { get; }
-    
     private readonly ResourcesHolder _resourcesHolder;
     private EntryViewModel? _oldEntry;
     private readonly bool _isBufferingUpdate = false;
@@ -63,18 +60,6 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
             .ObserveOnUIDispatcher()
             .Select(UpdateCursorEntry)
             .ToReadOnlyReactivePropertySlim()
-            .AddTo(Trash);
-        
- #pragma warning disable CS8619
-        ViewerFontFamily = appConfig.Data
-            .ObserveProperty(x => x.ViewerFontFamily)
-            .ToReadOnlyReactiveProperty()
-            .AddTo(Trash);
- #pragma warning restore CS8619
-
-        ViewerFontSize = appConfig.Data
-            .ObserveProperty(x => x.ViewerFontSize)
-            .ToReadOnlyReactiveProperty()
             .AddTo(Trash);
 
         lock (Model.EntriesUpdatingLockObj)

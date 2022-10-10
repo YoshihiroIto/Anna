@@ -21,9 +21,10 @@ public class EntryDisplayDialogViewModel
     public EntryDisplayDialogViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
+        AppConfig appConfig,
         ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, resourcesHolder, logger, objectLifetimeChecker)
+        : base(dic, resourcesHolder, appConfig, logger, objectLifetimeChecker)
     {
         switch (Model.Format)
         {

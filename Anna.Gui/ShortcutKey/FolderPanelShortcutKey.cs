@@ -153,7 +153,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         if (receiver.TargetEntries.Length == 0)
             return;
             
-        var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner);
+        var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner, receiver.TargetEntries);
         if (result.IsCancel)
             return;
     }

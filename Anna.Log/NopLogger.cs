@@ -1,8 +1,8 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 
 namespace Anna.Log;
 
-public class NopLogger : ILoggerUseCase
+public class NopLogger : ILoggerService
 {
     public void Destroy() {}
     public void Verbose(string message) {}

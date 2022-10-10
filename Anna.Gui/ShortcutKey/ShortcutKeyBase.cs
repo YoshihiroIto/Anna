@@ -3,14 +3,14 @@ using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Service;
 using Anna.Strings;
-using Anna.UseCase;
 using Avalonia.Input;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.ShortcutKey;
 
@@ -68,7 +68,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
 
         if (_shortcutKeys.ContainsKey(k))
         {
-            Dic.GetInstance<ILoggerUseCase>().Warning("Already registered");
+            Dic.GetInstance<ILoggerService>().Warning("Already registered");
             return;
         }
 
@@ -77,7 +77,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
 
     protected async ValueTask<bool> CheckIsAccessibleAsync(string path, InteractionMessenger messenger)
     {
-        if (Dic.GetInstance<IFolderServiceUseCase>().IsAccessible(path))
+        if (Dic.GetInstance<IFolderService>().IsAccessible(path))
             return true;
 
         await messenger.RaiseAsync(
@@ -103,7 +103,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         }
         catch
         {
-            Dic.GetInstance<ILoggerUseCase>().Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
+            Dic.GetInstance<ILoggerService>().Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
 
             await messenger.RaiseAsync(
                 new InformationMessage(
@@ -121,7 +121,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         }
         catch
         {
-            Dic.GetInstance<ILoggerUseCase>().Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
+            Dic.GetInstance<ILoggerService>().Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
 
             await messenger.RaiseAsync(
                 new InformationMessage(

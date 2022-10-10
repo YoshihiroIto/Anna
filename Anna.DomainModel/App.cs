@@ -1,6 +1,6 @@
 ﻿using Anna.Foundation;
 using System.Collections.ObjectModel;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel;
 

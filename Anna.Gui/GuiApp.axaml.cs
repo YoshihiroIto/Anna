@@ -10,7 +10,7 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Disposables;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui;
 

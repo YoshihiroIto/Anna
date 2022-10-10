@@ -1,4 +1,4 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 
 namespace Anna.Gui.Views.Windows.Base;
 

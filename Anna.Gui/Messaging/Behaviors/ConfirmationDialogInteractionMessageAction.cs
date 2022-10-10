@@ -1,6 +1,6 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Views.Windows;
-using Anna.UseCase;
+using Anna.Service;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Xaml.Interactivity;

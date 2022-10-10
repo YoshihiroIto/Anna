@@ -1,11 +1,11 @@
 ﻿#if DEBUG
-using Anna.UseCase;
+using Anna.Service;
 using System.Collections.Concurrent;
 using System.Text;
 
 namespace Anna.ObjectLifetimeChecker;
 
-public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeCheckerUseCase
+public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeCheckerService
 {
     private ConcurrentDictionary<IDisposable, byte> Disposables =>
         LazyInitializer.EnsureInitialized(ref _disposables, () => new ConcurrentDictionary<IDisposable, byte>()) ??

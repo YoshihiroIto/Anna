@@ -7,7 +7,7 @@ using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
 using System;
 using System.Reactive.Linq;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Panels;
 

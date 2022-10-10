@@ -6,7 +6,7 @@ using Avalonia.Xaml.Interactions.Core;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Reflection;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Entry.Desktop;
 

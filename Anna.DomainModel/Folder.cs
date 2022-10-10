@@ -1,6 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.Foundation;
-using Anna.UseCase;
+using Anna.Service;
 using System.Diagnostics;
 
 namespace Anna.DomainModel;
@@ -85,7 +85,7 @@ public abstract class Folder : NotificationObject, IDisposable
         SortEntries();
     }
 
-    protected Folder(string path, ILoggerUseCase logger)
+    protected Folder(string path, ILoggerService logger)
     {
         _Logger = logger;
         Path = PathStringHelper.Normalize(path);
@@ -293,7 +293,7 @@ public abstract class Folder : NotificationObject, IDisposable
     private readonly Dictionary<string, Entry> _entriesDict = new();
     private readonly Dictionary<string, DateTime> _removedSelectedEntries = new();
 
-    protected readonly ILoggerUseCase _Logger;
+    protected readonly ILoggerService _Logger;
 
     public abstract Stream OpenRead(string path);
     public abstract Task<byte[]> ReadAllAsync(string path);

@@ -1,4 +1,4 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 using Avalonia.Input;
 using System.Diagnostics;
 
@@ -8,7 +8,7 @@ public class KeyConfig : ConfigBase<KeyConfigData>
 {
     public const string Filename = "Key.json";
 
-    public KeyConfig(IObjectSerializerUseCase objectSerializer)
+    public KeyConfig(IObjectSerializerService objectSerializer)
         : base(objectSerializer)
     {
     }

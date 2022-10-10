@@ -1,7 +1,7 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 using System;
 using System.Threading.Tasks;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Messaging;
 

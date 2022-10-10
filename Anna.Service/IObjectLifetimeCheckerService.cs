@@ -1,6 +1,6 @@
-﻿namespace Anna.UseCase;
+﻿namespace Anna.Service;
 
-public interface IObjectLifetimeCheckerUseCase
+public interface IObjectLifetimeCheckerService
 {
     void Start(Action<string> showError);
     void End();

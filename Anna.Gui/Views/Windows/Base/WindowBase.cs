@@ -1,4 +1,4 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 using Avalonia.Controls;
 using Avalonia.Input;
 using System;
@@ -16,7 +16,7 @@ public class WindowBase<T> : WindowBase
 
 public class WindowBase : Window
 {
-    protected internal ILoggerUseCase Logger { get; set; } = null!;
+    protected internal ILoggerService Logger { get; set; } = null!;
 
     public WindowBase()
     {

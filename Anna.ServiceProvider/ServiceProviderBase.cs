@@ -1,11 +1,11 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 using SimpleInjector;
 using System.Diagnostics;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.ServiceProvider;
 
-public class ServiceProviderBase : Container, IServiceProvider
+public class ServiceProviderBase : Container, Service.IServiceProvider
 {
     private readonly Stack<object> _args = new();
     

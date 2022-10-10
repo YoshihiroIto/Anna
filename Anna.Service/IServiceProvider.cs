@@ -1,4 +1,4 @@
-﻿namespace Anna.UseCase;
+﻿namespace Anna.Service;
 
 public interface IServiceProvider
 {

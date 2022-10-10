@@ -1,8 +1,8 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 
 namespace Anna.ObjectLifetimeChecker;
 
-public sealed class NopObjectLifetimeChecker : IObjectLifetimeCheckerUseCase
+public sealed class NopObjectLifetimeChecker : IObjectLifetimeCheckerService
 {
     public void Start(Action<string> showError) {}
     public void End() {}

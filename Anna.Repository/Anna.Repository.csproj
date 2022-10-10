@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Anna.UseCase\Anna.UseCase.csproj" />
+      <ProjectReference Include="..\Anna.Service\Anna.Service.csproj" />
     </ItemGroup>
 
 </Project>

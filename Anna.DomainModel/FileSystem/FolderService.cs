@@ -1,8 +1,8 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 
 namespace Anna.DomainModel.FileSystem;
 
-public class FolderService : IFolderServiceUseCase
+public class FolderService : IFolderService
 {
     public bool IsAccessible(string path)
     {

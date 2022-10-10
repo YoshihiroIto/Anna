@@ -1,6 +1,6 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 using System.Reactive.Disposables;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Foundation;
 
@@ -19,7 +19,7 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
     {
         Dic = dic;
         
-        Dic.GetInstance<IObjectLifetimeCheckerUseCase>().Add(this);
+        Dic.GetInstance<IObjectLifetimeCheckerService>().Add(this);
     }
 
     protected virtual void Dispose(bool disposing)
@@ -30,7 +30,7 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
         if (disposing)
             _trashes?.Dispose();
 
-        Dic.GetInstance<IObjectLifetimeCheckerUseCase>().Remove(this);
+        Dic.GetInstance<IObjectLifetimeCheckerService>().Remove(this);
         
         _disposed = true;
     }

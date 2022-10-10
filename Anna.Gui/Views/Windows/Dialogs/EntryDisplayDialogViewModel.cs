@@ -4,11 +4,11 @@ using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
-using Anna.UseCase;
+using Anna.Service;
 using Reactive.Bindings.Extensions;
 using System;
 using System.IO;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 

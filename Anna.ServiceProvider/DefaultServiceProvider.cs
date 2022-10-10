@@ -5,22 +5,22 @@ using Anna.Gui;
 using Anna.Gui.Views.Windows.Base;
 using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
-using Anna.UseCase;
+using Anna.Service;
 using System.Runtime;
 
 namespace Anna.ServiceProvider;
 
 public class DefaultServiceProvider : ServiceProviderBase
 {
-    private readonly ILoggerUseCase _logger;
+    private readonly ILoggerService _logger;
     
     private DefaultServiceProvider(string logOutputDir, string appConfigFilePath)
     {
-        RegisterSingleton<IObjectLifetimeCheckerUseCase,
+        RegisterSingleton<IObjectLifetimeCheckerService,
 #if DEBUG
             DefaultObjectLifetimeChecker
 #else
-           NopObjectLifetimeChecker
+            NopObjectLifetimeChecker
 #endif
         >();
 
@@ -29,20 +29,20 @@ public class DefaultServiceProvider : ServiceProviderBase
         var jumpFolderConfigFilePath = Path.Combine(configFolder, JumpFolderConfig.Filename);
 
         RegisterSingleton(() =>
-            new AppConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = appConfigFilePath });
+            new AppConfig(GetInstance<IObjectSerializerService>()) { FilePath = appConfigFilePath });
         RegisterSingleton(() =>
-            new KeyConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = keyConfigFilePath });
+            new KeyConfig(GetInstance<IObjectSerializerService>()) { FilePath = keyConfigFilePath });
         RegisterSingleton(() =>
-            new JumpFolderConfig(GetInstance<IObjectSerializerUseCase>()) { FilePath = jumpFolderConfigFilePath });
-        RegisterSingleton<ILoggerUseCase>(() => new Log.DefaultLogger(logOutputDir));
-        RegisterSingleton<IObjectSerializerUseCase, FileSystemObjectSerializer>();
-        RegisterSingleton<IFolderServiceUseCase, FolderService>();
+            new JumpFolderConfig(GetInstance<IObjectSerializerService>()) { FilePath = jumpFolderConfigFilePath });
+        RegisterSingleton<ILoggerService>(() => new Log.DefaultLogger(logOutputDir));
+        RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
+        RegisterSingleton<IFolderService, FolderService>();
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();
 
         // property injection
-        RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerUseCase>());
+        RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerService>());
 
         Options.ResolveUnregisteredConcreteTypes = true;
 
@@ -50,11 +50,11 @@ public class DefaultServiceProvider : ServiceProviderBase
         Verify();
 #endif
 
-        _logger = GetInstance<ILoggerUseCase>();
+        _logger = GetInstance<ILoggerService>();
 
         _logger.Start("Application");
 
-        GetInstance<IObjectLifetimeCheckerUseCase>().Start(s => _logger.Error(s));
+        GetInstance<IObjectLifetimeCheckerService>().Start(s => _logger.Error(s));
         GetInstance<AppConfig>().Load();
         GetInstance<KeyConfig>().Load();
         GetInstance<JumpFolderConfig>().Load();
@@ -66,7 +66,7 @@ public class DefaultServiceProvider : ServiceProviderBase
         GetInstance<KeyConfig>().Save();
         GetInstance<AppConfig>().Save();
 
-        var checker = GetInstance<IObjectLifetimeCheckerUseCase>();
+        var checker = GetInstance<IObjectLifetimeCheckerService>();
 
         Dispose();
 

@@ -1,8 +1,8 @@
 ﻿using Anna.Constants;
 
-namespace Anna.UseCase;
+namespace Anna.Service;
 
-public interface IObjectSerializerUseCase
+public interface IObjectSerializerService
 {
     ValueTask<(T obj, ResultCode code)> ReadAsync<T>(string path, Func<T> defaultGenerator);
     (T obj, ResultCode code) Read<T>(string path, Func<T> defaultGenerator);

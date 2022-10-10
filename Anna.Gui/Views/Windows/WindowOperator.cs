@@ -3,7 +3,7 @@ using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Gui.Views.Windows.Dialogs;
-using Anna.UseCase;
+using Anna.Service;
 using Avalonia.Controls;
 using System.Threading.Tasks;
 using ConfirmationDialog=Anna.Gui.Views.Windows.Dialogs.ConfirmationDialog;

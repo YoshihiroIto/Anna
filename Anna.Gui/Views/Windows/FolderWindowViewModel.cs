@@ -9,7 +9,7 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows;
 

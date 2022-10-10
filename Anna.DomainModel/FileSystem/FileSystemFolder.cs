@@ -1,5 +1,5 @@
 ﻿using Anna.Foundation;
-using Anna.UseCase;
+using Anna.Service;
 using Reactive.Bindings.Extensions;
 using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
@@ -13,14 +13,14 @@ public sealed class FileSystemFolder : Folder
     public override bool IsRoot => string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
 
     private bool _isDispose;
-    private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
+    private readonly IObjectLifetimeCheckerService _objectLifetimeChecker;
     private readonly IDisposable _pathObserver;
     private readonly CompositeDisposable _watchTrash = new();
     
     internal FileSystemFolder(
         string path,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+        ILoggerService logger,
+        IObjectLifetimeCheckerService objectLifetimeChecker)
         : base(path, logger)
     {
         _objectLifetimeChecker = objectLifetimeChecker;

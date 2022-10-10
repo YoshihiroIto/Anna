@@ -1,7 +1,7 @@
 ﻿using Anna.Log;
 using Anna.ObjectLifetimeChecker;
+using Anna.Service;
 using Anna.ServiceProvider;
-using Anna.UseCase;
 
 namespace Anna.TestFoundation;
 
@@ -9,8 +9,8 @@ public class TestServiceProvider : ServiceProviderBase
 {
     public TestServiceProvider()
     {
-        RegisterSingleton<IObjectLifetimeCheckerUseCase, NopObjectLifetimeChecker>();
-        RegisterSingleton<ILoggerUseCase, NopLogger>();
+        RegisterSingleton<IObjectLifetimeCheckerService, NopObjectLifetimeChecker>();
+        RegisterSingleton<ILoggerService, NopLogger>();
 
         Options.ResolveUnregisteredConcreteTypes = true;
 

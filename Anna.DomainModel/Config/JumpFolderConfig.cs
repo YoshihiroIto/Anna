@@ -1,5 +1,5 @@
 ﻿using Anna.Foundation;
-using Anna.UseCase;
+using Anna.Service;
 using Avalonia.Input;
 using System.Diagnostics;
 
@@ -9,7 +9,7 @@ public class JumpFolderConfig : ConfigBase<JumpFolderConfigData>
 {
     public const string Filename = "JumpFolder.json";
 
-    public JumpFolderConfig(IObjectSerializerUseCase objectSerializer)
+    public JumpFolderConfig(IObjectSerializerService objectSerializer)
         : base(objectSerializer)
     {
     }

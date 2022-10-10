@@ -1,5 +1,5 @@
 ﻿using Anna.Foundation;
-using Anna.UseCase;
+using Anna.Service;
 
 namespace Anna.DomainModel.Config;
 
@@ -30,9 +30,9 @@ public class ConfigBase<T> : NotificationObject
 
     #endregion
     
-    private readonly IObjectSerializerUseCase _objectSerializer;
+    private readonly IObjectSerializerService _objectSerializer;
 
-    public ConfigBase(IObjectSerializerUseCase objectSerializer)
+    public ConfigBase(IObjectSerializerService objectSerializer)
     {
         _objectSerializer = objectSerializer;
     }

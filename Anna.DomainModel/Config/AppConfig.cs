@@ -1,5 +1,5 @@
 ﻿using Anna.Constants;
-using Anna.UseCase;
+using Anna.Service;
 using Avalonia.Media;
 using System.Globalization;
 using System.Text.Json.Serialization;
@@ -8,7 +8,7 @@ namespace Anna.DomainModel.Config;
 
 public class AppConfig : ConfigBase<AppConfigData>
 {
-    public AppConfig(IObjectSerializerUseCase objectSerializer)
+    public AppConfig(IObjectSerializerService objectSerializer)
         : base(objectSerializer)
     {
     }

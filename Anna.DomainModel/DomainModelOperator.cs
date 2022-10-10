@@ -1,16 +1,16 @@
 ﻿using Anna.DomainModel.FileSystem;
-using Anna.UseCase;
+using Anna.Service;
 
 namespace Anna.DomainModel;
 
 public class DomainModelOperator
 {
-    private readonly ILoggerUseCase _logger;
-    private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
+    private readonly ILoggerService _logger;
+    private readonly IObjectLifetimeCheckerService _objectLifetimeChecker;
 
     public DomainModelOperator(
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+        ILoggerService logger,
+        IObjectLifetimeCheckerService objectLifetimeChecker)
     {
         _logger = logger;
         _objectLifetimeChecker = objectLifetimeChecker;

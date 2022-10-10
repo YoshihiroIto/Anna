@@ -1,20 +1,20 @@
 ﻿using Anna.Constants;
-using Anna.UseCase;
+using Anna.Service;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Anna.Repository;
 
-public class FileSystemObjectSerializer : IObjectSerializerUseCase
+public class FileSystemObjectSerializer : IObjectSerializerService
 {
-    private readonly ILoggerUseCase _logger;
+    private readonly ILoggerService _logger;
 
     public static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = true, Converters = { new JsonStringEnumConverter() }
     };
     
-    public FileSystemObjectSerializer(ILoggerUseCase logger)
+    public FileSystemObjectSerializer(ILoggerService logger)
     {
         _logger = logger;
     }

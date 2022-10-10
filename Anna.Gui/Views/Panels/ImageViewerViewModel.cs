@@ -1,7 +1,7 @@
 ﻿using Anna.DomainModel;
 using Anna.Gui.Foundations;
 using Anna.Gui.ShortcutKey;
-using Anna.UseCase;
+using Anna.Service;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using Reactive.Bindings.Extensions;

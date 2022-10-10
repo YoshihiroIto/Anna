@@ -1,5 +1,5 @@
 ﻿using Anna.Gui.Views.Windows.Base;
-using Anna.UseCase;
+using Anna.Service;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 

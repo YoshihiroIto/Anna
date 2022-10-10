@@ -1,6 +1,6 @@
-﻿namespace Anna.UseCase;
+﻿namespace Anna.Service;
 
-public interface ILoggerUseCase
+public interface ILoggerService
 {
     public void Destroy();
 
@@ -14,7 +14,7 @@ public interface ILoggerUseCase
 
 public static class LoggerExtensions
 {
-    public static void Start(this ILoggerUseCase logger, string name) => logger.Information($"Start [{name}]");
+    public static void Start(this ILoggerService logger, string name) => logger.Information($"Start [{name}]");
 
-    public static void End(this ILoggerUseCase logger, string name) => logger.Information($"End   [{name}]");
+    public static void End(this ILoggerService logger, string name) => logger.Information($"End   [{name}]");
 }

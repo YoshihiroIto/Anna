@@ -2,14 +2,14 @@
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.Messaging;
+using Anna.Service;
 using Anna.Strings;
-using Anna.UseCase;
 using Avalonia.Media;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Linq;
-using IServiceProvider=Anna.UseCase.IServiceProvider;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Base;
 
@@ -48,12 +48,12 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
-        Dic.GetInstance<ILoggerUseCase>().Start(GetType().Name);
+        Dic.GetInstance<ILoggerService>().Start(GetType().Name);
     }
 
     public override void Dispose()
     {
-        Dic.GetInstance<ILoggerUseCase>().End(GetType().Name);
+        Dic.GetInstance<ILoggerService>().End(GetType().Name);
 
         base.Dispose();
 

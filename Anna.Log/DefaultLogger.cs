@@ -1,4 +1,4 @@
-﻿using Anna.UseCase;
+﻿using Anna.Service;
 using Serilog;
 using Serilog.Events;
 using Serilog.Exceptions;
@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Anna.Log;
 
-public class DefaultLogger : ILoggerUseCase
+public class DefaultLogger : ILoggerService
 {
     private readonly Serilog.Core.Logger _logger;
     

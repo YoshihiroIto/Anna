@@ -5,7 +5,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.ServiceProvider;
 
-public class ServiceProviderBase : Container, Service.IServiceProvider
+public class ServiceProviderBase : Container, IServiceProvider
 {
     private readonly Stack<object> _args = new();
     

@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Anna.Repository;
 
-public class FileSystemObjectSerializer : IObjectSerializerService
+public sealed class FileSystemObjectSerializer : IObjectSerializerService
 {
     private readonly ILoggerService _logger;
 

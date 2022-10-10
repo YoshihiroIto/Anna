@@ -7,7 +7,7 @@ using System;
 
 namespace Anna.Gui.Views.TemplateSelector;
 
-public class EntryDisplayControlTemplateSelector : IControlTemplate
+public sealed class EntryDisplayControlTemplateSelector : IControlTemplate
 {
     public IControlTemplate? TextTemplate { get; set; }
     public IControlTemplate? ImageTemplate { get; set; }

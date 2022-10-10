@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Anna.Log;
 
-public class DefaultLogger : ILoggerService
+public sealed class DefaultLogger : ILoggerService
 {
     private readonly Serilog.Core.Logger _logger;
     

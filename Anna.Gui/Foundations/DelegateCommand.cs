@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace Anna.Gui.Foundations;
 
-public class DelegateCommand : ICommand
+public sealed class DelegateCommand : ICommand
 {
     private readonly Action _execute;
     private readonly Func<bool>? _canExecute;
@@ -27,7 +27,7 @@ public class DelegateCommand : ICommand
     void ICommand.Execute(object? parameter) => _execute.Invoke();
 }
 
-public class DelegateCommand<T> : ICommand
+public sealed class DelegateCommand<T> : ICommand
 {
     private readonly Action<T?> _execute;
     private readonly Func<T?, bool>? _canExecute;

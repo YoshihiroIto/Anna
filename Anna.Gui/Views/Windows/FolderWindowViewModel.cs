@@ -13,7 +13,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows;
 
-public class FolderWindowViewModel : HasModelWindowViewModelBase<Folder>
+public sealed class FolderWindowViewModel : HasModelWindowViewModelBase<Folder>
 {
     public FolderPanelViewModel FolderPanelViewModel { get; }
     public InfoPanelViewModel InfoPanelViewModel { get; }

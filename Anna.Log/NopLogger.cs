@@ -2,7 +2,7 @@
 
 namespace Anna.Log;
 
-public class NopLogger : ILoggerService
+public sealed class NopLogger : ILoggerService
 {
     public void Destroy() {}
     public void Verbose(string message) {}

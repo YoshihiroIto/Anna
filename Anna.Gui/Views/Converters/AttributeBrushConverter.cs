@@ -14,7 +14,7 @@ public enum AttributeBrushConverterBrushTypes
     Background
 }
 
-public class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
+public sealed class AttributeBrushConverter : AvaloniaObject, IMultiValueConverter
 {
     public static readonly StyledProperty<IBrush> NoneAttributeBrushProperty =
         AvaloniaProperty.Register<AttributeBrushConverter, IBrush>(nameof(NoneAttributeBrush));

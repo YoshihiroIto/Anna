@@ -14,7 +14,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui;
 
-public class GuiApp : Application
+public sealed class GuiApp : Application
 {
     private readonly IServiceProvider? _dic;
     private readonly Action? _onExit;

@@ -8,7 +8,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.ShortcutKey;
 
-public class ImageViewerShortcutKey : ShortcutKeyBase
+public sealed class ImageViewerShortcutKey : ShortcutKeyBase
 {
     public ImageViewerShortcutKey(IServiceProvider dic)
         : base(dic)

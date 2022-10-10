@@ -10,7 +10,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.ShortcutKey;
 
-public class TextViewerShortcutKey : ShortcutKeyBase
+public sealed class TextViewerShortcutKey : ShortcutKeyBase
 {
     public TextViewerShortcutKey(IServiceProvider dic)
         : base(dic)

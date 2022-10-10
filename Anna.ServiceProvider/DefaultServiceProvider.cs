@@ -10,7 +10,7 @@ using System.Runtime;
 
 namespace Anna.ServiceProvider;
 
-public class DefaultServiceProvider : ServiceProviderBase
+public sealed class DefaultServiceProvider : ServiceProviderBase
 {
     private readonly ILoggerService _logger;
     

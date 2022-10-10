@@ -10,7 +10,7 @@ using System;
 
 namespace Anna.Gui.Views.Controls;
 
-public class EditableTextBlock : TemplatedControl
+public sealed class EditableTextBlock : TemplatedControl
 {
     public static readonly StyledProperty<string> TextProperty =
         AvaloniaProperty.Register<EditableTextBlock, string>(nameof(Text), defaultBindingMode: BindingMode.TwoWay);
@@ -79,7 +79,7 @@ public class EditableTextBlock : TemplatedControl
     }
 }
 
-public class IsEditingChangedArgs : EventArgs
+public sealed class IsEditingChangedArgs : EventArgs
 {
     public readonly bool IsEditing;
 
@@ -89,7 +89,7 @@ public class IsEditingChangedArgs : EventArgs
     }
 }
 
-internal class EditableTextBlockTextBoxBehavior : Behavior<TextBox>
+internal sealed class EditableTextBlockTextBoxBehavior : Behavior<TextBox>
 {
     private EditableTextBlock Parent =>
         AssociatedObject?.Parent as EditableTextBlock ?? throw new NullReferenceException();

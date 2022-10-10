@@ -11,7 +11,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Panels;
 
-public class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
+public sealed class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
 {
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 

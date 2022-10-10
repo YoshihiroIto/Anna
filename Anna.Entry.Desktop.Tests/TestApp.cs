@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Anna.Entry.Desktop.Tests;
 
-public class TestApp : IAsyncDisposable
+public sealed class TestApp : IAsyncDisposable
 {
  #pragma warning disable CA1822
     // ReSharper disable once MemberCanBeMadeStatic.Global

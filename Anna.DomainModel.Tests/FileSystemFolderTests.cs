@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Anna.DomainModel.Tests;
 
-public class FileSystemFolderTests : IDisposable
+public sealed class FileSystemFolderTests : IDisposable
 {
     private readonly TestServiceProvider _dic = new();
     private readonly TempFolder _tempFolder = new();

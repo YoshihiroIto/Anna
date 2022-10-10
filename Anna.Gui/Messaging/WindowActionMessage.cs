@@ -11,7 +11,7 @@ public enum WindowAction
     Active
 }
 
-public class WindowActionMessage : InteractionMessage
+public sealed class WindowActionMessage : InteractionMessage
 {
     public static readonly StyledProperty<WindowAction> ActionProperty =
         AvaloniaProperty.Register<WindowActionMessage, WindowAction>(nameof(Action));

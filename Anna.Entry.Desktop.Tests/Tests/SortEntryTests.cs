@@ -6,7 +6,7 @@ using Xunit;
 namespace Anna.Entry.Desktop.Tests.Tests;
 
 [Collection("Desktop test collection")]
-public class SortEntryTests : IDisposable
+public sealed class SortEntryTests : IDisposable
 {
     public SortEntryTests(DesktopTestFixture fixture)
     {

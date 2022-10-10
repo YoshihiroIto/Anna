@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Messaging.Behaviors;
 
-public class InteractionMessageTrigger : Trigger<Control>
+public sealed class InteractionMessageTrigger : Trigger<Control>
 {
     public static readonly StyledProperty<InteractionMessenger> MessengerProperty =
         AvaloniaProperty.Register<InteractionMessageTrigger, InteractionMessenger>(

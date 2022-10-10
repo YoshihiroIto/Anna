@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Panels;
 
-public class TextViewerViewModel : HasModelRefViewModelBase<Entry>, ILocalizableViewModel
+public sealed class TextViewerViewModel : HasModelRefViewModelBase<Entry>, ILocalizableViewModel
 {
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 

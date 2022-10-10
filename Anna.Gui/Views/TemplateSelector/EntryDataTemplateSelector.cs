@@ -5,7 +5,7 @@ using System;
 
 namespace Anna.Gui.Views.TemplateSelector;
 
-public class EntryDataTemplateSelector : IDataTemplate
+public sealed class EntryDataTemplateSelector : IDataTemplate
 {
     public IDataTemplate? FileDataTemplate { get; set; }
     public IDataTemplate? FolderDataTemplate { get; set; }

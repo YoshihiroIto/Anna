@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Anna.DomainModel.Config;
 
-public class KeyConfig : ConfigBase<KeyConfigData>
+public sealed class KeyConfig : ConfigBase<KeyConfigData>
 {
     public const string Filename = "Key.json";
 
@@ -14,7 +14,7 @@ public class KeyConfig : ConfigBase<KeyConfigData>
     }
 }
 
-public class KeyConfigData : ConfigData
+public sealed class KeyConfigData : ConfigData
 {
     #region Keys
 

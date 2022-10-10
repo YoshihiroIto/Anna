@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 namespace Anna.DomainModel;
 
 [DebuggerDisplay("Name={Name}, Path={Path}")]
-public class Entry : NotificationObject
+public sealed class Entry : NotificationObject
 {
     #region NameWithExtension
 

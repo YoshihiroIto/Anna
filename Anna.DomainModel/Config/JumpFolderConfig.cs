@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Anna.DomainModel.Config;
 
-public class JumpFolderConfig : ConfigBase<JumpFolderConfigData>
+public sealed class JumpFolderConfig : ConfigBase<JumpFolderConfigData>
 {
     public const string Filename = "JumpFolder.json";
 
@@ -15,7 +15,7 @@ public class JumpFolderConfig : ConfigBase<JumpFolderConfigData>
     }
 }
 
-public class JumpFolderConfigData : ConfigData
+public sealed class JumpFolderConfigData : ConfigData
 {
     #region Paths
 
@@ -56,7 +56,7 @@ public class JumpFolderConfigData : ConfigData
     }
 
     [DebuggerDisplay("Key={Key}, Path={Path}")]
-    public class PathData : NotificationObject
+    public sealed class PathData : NotificationObject
     {
         #region Key
 

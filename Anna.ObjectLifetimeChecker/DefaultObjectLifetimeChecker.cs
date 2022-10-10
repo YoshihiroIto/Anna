@@ -62,7 +62,7 @@ public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeCheckerService
     }
 }
 
-public class NestingException : Exception
+public sealed class NestingException : Exception
 {
 }
 

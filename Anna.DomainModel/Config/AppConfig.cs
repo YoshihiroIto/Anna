@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Anna.DomainModel.Config;
 
-public class AppConfig : ConfigBase<AppConfigData>
+public sealed class AppConfig : ConfigBase<AppConfigData>
 {
     public AppConfig(IObjectSerializerService objectSerializer)
         : base(objectSerializer)
@@ -14,7 +14,7 @@ public class AppConfig : ConfigBase<AppConfigData>
     }
 }
 
-public class AppConfigData : ConfigData
+public sealed class AppConfigData : ConfigData
 {
     public static readonly FontFamily DefaultViewerFontFamily =
         new(new Uri("avares://Anna.Gui/Assets/UDEVGothicNF-Regular.ttf"), "UDEV Gothic NF");

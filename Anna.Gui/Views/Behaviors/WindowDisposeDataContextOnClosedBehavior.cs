@@ -4,7 +4,7 @@ using System;
 
 namespace Anna.Gui.Views.Behaviors;
 
-public class WindowDisposeDataContextOnClosedBehavior : Behavior<Window>
+public sealed class WindowDisposeDataContextOnClosedBehavior : Behavior<Window>
 {
     private bool _isDisposed;
     

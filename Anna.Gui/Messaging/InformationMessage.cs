@@ -3,7 +3,7 @@ using Avalonia;
 
 namespace Anna.Gui.Messaging;
 
-public class InformationMessage : InteractionMessage
+public sealed class InformationMessage : InteractionMessage
 {
     public static readonly StyledProperty<string> TitleProperty =
         AvaloniaProperty.Register<InformationMessage, string>(nameof(Title));

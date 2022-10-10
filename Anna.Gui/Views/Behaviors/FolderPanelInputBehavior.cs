@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Behaviors;
 
-public class FolderPanelInputBehavior : Behavior<FolderPanel>
+public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
 {
     private Window? _parentWindow;
     

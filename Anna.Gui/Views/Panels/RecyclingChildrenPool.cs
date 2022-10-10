@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Anna.Gui.Views.Panels;
 
-internal class RecyclingChildrenPool
+internal sealed class RecyclingChildrenPool
 {
     public IDataTemplate? ItemTemplate { get; set; }
     
@@ -70,7 +70,7 @@ internal class RecyclingChildrenPool
     }
 }
 
-internal class DeletionTargets
+internal sealed class DeletionTargets
 {
     private readonly Dictionary<EntryViewModel, Control> _fileTargets = new();
     private readonly Dictionary<EntryViewModel, Control> _folderTargets = new();

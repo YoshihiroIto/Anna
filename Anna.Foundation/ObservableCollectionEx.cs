@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Anna.Foundation;
 
-public class ObservableCollectionEx<T> : ObservableCollection<T>
+public sealed class ObservableCollectionEx<T> : ObservableCollection<T>
 {
     public void BeginChange()
     {

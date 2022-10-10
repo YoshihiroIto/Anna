@@ -2,7 +2,7 @@
 
 namespace Anna.DomainModel;
 
-public class CommandLine
+public sealed class CommandLine
 {
     public string AppConfigFilePath { get; private set; } = DefaultAppConfigFilePath;
     public string TargetFolder { get; private set; } = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);

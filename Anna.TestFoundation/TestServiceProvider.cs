@@ -5,7 +5,7 @@ using Anna.ServiceProvider;
 
 namespace Anna.TestFoundation;
 
-public class TestServiceProvider : ServiceProviderBase
+public sealed class TestServiceProvider : ServiceProviderBase
 {
     public TestServiceProvider()
     {

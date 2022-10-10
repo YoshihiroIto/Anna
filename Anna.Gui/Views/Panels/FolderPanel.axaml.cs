@@ -137,7 +137,7 @@ public partial class FolderPanel : UserControl, IFolderPanelShortcutKeyReceiver
     }
 }
 
-internal class EntriesControl : Control
+internal sealed class EntriesControl : Control
 {
     private readonly CompositeDisposable _entriesObservers = new();
     private readonly Dictionary<EntryViewModel, Control> _childrenControls = new();

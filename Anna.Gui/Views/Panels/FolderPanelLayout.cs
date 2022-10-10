@@ -9,7 +9,7 @@ using FormattedText=Avalonia.Media.FormattedText;
 
 namespace Anna.Gui.Views.Panels;
 
-public class FolderPanelLayout : NotificationObject
+public sealed class FolderPanelLayout : NotificationObject
 {
     #region FontFamily
 

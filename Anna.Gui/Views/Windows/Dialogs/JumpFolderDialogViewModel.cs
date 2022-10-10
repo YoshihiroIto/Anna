@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public class JumpFolderDialogViewModel
+public sealed class JumpFolderDialogViewModel
     : HasModelWindowViewModelBase<(string CurrentFolderPath, JumpFolderConfigData Config)>
 {
     public string ResultPath { get; private set; } = "";
@@ -72,7 +72,7 @@ public class JumpFolderDialogViewModel
     }
 }
 
-public class JumpFolderPathViewModel : HasModelRefViewModelBase<JumpFolderConfigData.PathData>
+public sealed class JumpFolderPathViewModel : HasModelRefViewModelBase<JumpFolderConfigData.PathData>
 {
     public string Key { get; }
     public ReactivePropertySlim<string> Path { get; }

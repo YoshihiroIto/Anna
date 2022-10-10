@@ -2,7 +2,7 @@
 
 namespace Anna.DomainModel.FileSystem;
 
-public class FolderService : IFolderService
+public sealed class FolderService : IFolderService
 {
     public bool IsAccessible(string path)
     {

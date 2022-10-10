@@ -12,7 +12,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public class EntryDisplayDialogViewModel
+public sealed class EntryDisplayDialogViewModel
     : HasModelWindowViewModelBase<Entry>, IHasArg<(string CurrentFolderPath, JumpFolderConfigData Config)>
 {
     public string Title => Model.NameWithExtension + " - " + Path.GetDirectoryName(Model.Path);

@@ -4,7 +4,7 @@ using Avalonia.Xaml.Interactivity;
 
 namespace Anna.Gui.Views.Behaviors;
 
-public class InputElementFocusBehavior : Behavior<InputElement>
+public sealed class InputElementFocusBehavior : Behavior<InputElement>
 {
     protected override void OnAttached()
     {

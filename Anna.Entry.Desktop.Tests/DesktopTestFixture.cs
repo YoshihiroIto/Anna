@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Anna.Entry.Desktop.Tests;
 
-public class DesktopTestFixture : IDisposable
+public sealed class DesktopTestFixture : IDisposable
 {
     public TempFolder ConfigFolder { get; }
     public TestApp App { get; }
@@ -44,6 +44,6 @@ public class DesktopTestFixture : IDisposable
 }
 
 [CollectionDefinition("Desktop test collection")]
-public class DesktopTestCollection : ICollectionFixture<DesktopTestFixture>
+public sealed class DesktopTestCollection : ICollectionFixture<DesktopTestFixture>
 {
 }

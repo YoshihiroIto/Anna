@@ -10,7 +10,7 @@ using Xunit;
 namespace Anna.Entry.Desktop.Tests.Tests;
 
 [Collection("Desktop test collection")]
-public class JumpFolderTests : IDisposable
+public sealed class JumpFolderTests : IDisposable
 {
     public JumpFolderTests(DesktopTestFixture fixture)
     {

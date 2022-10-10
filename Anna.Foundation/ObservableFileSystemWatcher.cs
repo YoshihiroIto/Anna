@@ -2,7 +2,7 @@
 
 namespace Anna.Foundation;
 
-public class ObservableFileSystemWatcher : IDisposable
+public sealed class ObservableFileSystemWatcher : IDisposable
 {
     public readonly IObservable<FileSystemEventArgs> Created;
     public readonly IObservable<FileSystemEventArgs> Changed;

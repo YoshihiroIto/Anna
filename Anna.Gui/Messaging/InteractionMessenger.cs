@@ -5,7 +5,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Messaging;
 
-public class InteractionMessenger : IHasServiceProviderContainer
+public sealed class InteractionMessenger : IHasServiceProviderContainer
 {
     public IServiceProvider Dic { get; }
 

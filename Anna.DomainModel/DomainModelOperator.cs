@@ -3,7 +3,7 @@ using Anna.Service;
 
 namespace Anna.DomainModel;
 
-public class DomainModelOperator
+public sealed class DomainModelOperator
 {
     private readonly ILoggerService _logger;
     private readonly IObjectLifetimeCheckerService _objectLifetimeChecker;

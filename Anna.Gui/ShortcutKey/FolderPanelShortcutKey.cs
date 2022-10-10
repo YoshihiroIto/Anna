@@ -9,7 +9,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.ShortcutKey;
 
-public class FolderPanelShortcutKey : ShortcutKeyBase
+public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 {
     public FolderPanelShortcutKey(IServiceProvider dic)
         : base(dic)

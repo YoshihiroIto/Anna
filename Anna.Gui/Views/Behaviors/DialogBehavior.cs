@@ -5,7 +5,7 @@ using Avalonia.Xaml.Interactivity;
 
 namespace Anna.Gui.Views.Behaviors;
 
-public class DialogBehavior : Behavior<Window>
+public sealed class DialogBehavior : Behavior<Window>
 {
     protected override void OnAttached()
     {

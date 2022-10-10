@@ -4,7 +4,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel;
 
-public class App : DisposableNotificationObject
+public sealed class App : DisposableNotificationObject
 {
     public ReadOnlyObservableCollection<Folder> Folders { get; }
 

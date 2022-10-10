@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Anna.Gui;
 
-public class ResourcesHolder
+public sealed class ResourcesHolder
 {
     public event EventHandler? CultureChanged;
     

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Panels;
 
-public class ImageViewerViewModel : HasModelRefViewModelBase<Entry>
+public sealed class ImageViewerViewModel : HasModelRefViewModelBase<Entry>
 {
     public readonly ImageViewerShortcutKey ShortcutKey;
 

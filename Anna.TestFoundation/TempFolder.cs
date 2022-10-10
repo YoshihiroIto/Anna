@@ -2,7 +2,7 @@
 
 namespace Anna.TestFoundation;
 
-public class TempFolder : IDisposable
+public sealed class TempFolder : IDisposable
 {
     public string AppConfigFilePath => $"{RootPath}/AppConfig.json";
     public string JumpFolderConfigFilePath => $"{RootPath}/{JumpFolderConfig.Filename}";

@@ -33,6 +33,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             { Operations.OpenEntryByApp, OpenEntryByAppAsync },
             { Operations.JumpToParentFolder, JumpToParentFolderAsync },
             { Operations.JumpToRootFolder, JumpToRootFolderAsync },
+            { Operations.CopyEntry, CopyEntryAsync },
         };
     }
 
@@ -144,5 +145,14 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             return;
 
         r.Folder.Path = rootDir;
+    }
+
+    private async ValueTask CopyEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+
+        var result = await WindowOperator.EntryCopyAsync(Dic, r.Owner);
+        if (result.IsCancel)
+            return;
     }
 }

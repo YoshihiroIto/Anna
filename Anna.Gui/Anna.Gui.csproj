@@ -26,6 +26,10 @@
       <Compile Update="Views\Controls\EditableTextBlock.cs">
         <DependentUpon>EditableTextBlock.axaml</DependentUpon>
       </Compile>
+      <Compile Update="Views\Windows\Dialogs\CopyEntryDialog.axaml.cs">
+        <DependentUpon>EntryCopyDialog.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <UpToDateCheckInput Remove="Views\Dialogs\ConfirmationDialog.axaml" />

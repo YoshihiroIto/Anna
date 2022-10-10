@@ -91,4 +91,18 @@ public static class WindowOperator
 
         return viewModel.DialogResult;
     }
+
+    public static async ValueTask<(bool IsCancel, int dummy)> EntryCopyAsync(
+        IServiceProvider dic,
+        Window owner)
+    {
+        using var viewModel = dic.GetInstance<CopyEntryDialogViewModel, (string Title, string Text)>(("AAA", "BBB"));
+
+        var view = dic.GetInstance<CopyEntryDialog>();
+        view.DataContext = viewModel;
+
+        await view.ShowDialog(owner);
+
+        return (viewModel.DialogResult == DialogResultTypes.Cancel, 0);
+    }
 }

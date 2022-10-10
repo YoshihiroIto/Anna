@@ -24,7 +24,7 @@ public class WindowBase : Window
         Closed += (_, _) => Logger.End(GetType().Name);
     }
 
-    protected bool DoMoveFocus(KeyEventArgs e)
+    protected static bool DoMoveFocus(KeyEventArgs e)
     {
         switch (e.Key)
         {

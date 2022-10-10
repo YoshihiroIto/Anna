@@ -2,11 +2,9 @@
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
-using Anna.Gui.Interfaces;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Dialogs.Base;
 using Anna.Gui.Views.Panels;
-using Anna.Strings;
 using Anna.UseCase;
 using Reactive.Bindings.Extensions;
 using System;
@@ -15,10 +13,8 @@ using System.Windows.Input;
 
 namespace Anna.Gui.Views.Windows;
 
-public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
+public class FolderWindowViewModel : HasModelDialogViewModel<Folder>
 {
-    public Resources R => _resourcesHolder.Instance;
-
     public FolderPanelViewModel FolderPanelViewModel { get; }
     public InfoPanelViewModel InfoPanelViewModel { get; }
 
@@ -26,23 +22,22 @@ public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocaliza
     public ICommand ToJapaneseCommand { get; }
 
     private readonly IServiceProviderContainer _dic;
-    private readonly ResourcesHolder _resourcesHolder;
     private bool _isDispose;
 
     public FolderWindowViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
         AppConfig appConfig,
+        ILoggerUseCase logger,
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, objectLifetimeChecker)
+        : base(dic, resourcesHolder, appConfig, logger, objectLifetimeChecker)
     {
         _dic = dic;
-        _resourcesHolder = resourcesHolder;
 
         Observable
             .FromEventPattern(
-                h => _resourcesHolder.CultureChanged += h,
-                h => _resourcesHolder.CultureChanged -= h)
+                h => resourcesHolder.CultureChanged += h,
+                h => resourcesHolder.CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 

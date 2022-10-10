@@ -64,7 +64,8 @@ public class GuiApp : Application
         _dic.GetInstance<App>().Folders.ObserveAddChanged()
             .Subscribe(x =>
             {
-                var d = new FolderWindow { DataContext = _dic.GetInstance<FolderWindowViewModel, Folder>(x) };
+                var d = _dic.GetInstance<FolderWindow>();
+                d.DataContext = _dic.GetInstance<FolderWindowViewModel, Folder>(x);
                 d.Show();
             }).AddTo(_trash);
 

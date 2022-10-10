@@ -67,7 +67,7 @@ public class FolderWindowViewModel : HasModelWindowViewModelBase<Folder>
 
         _isDispose = true;
 
-        _dic.GetInstance<App>().CloseFolder(Model);
+        _dic.GetInstance<App>().RemoveFolder(Model);
 
         base.Dispose();
     }

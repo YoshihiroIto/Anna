@@ -75,6 +75,6 @@ public class GuiApp : Application
             ? commandLine.TargetFolder
             : Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
-        _dic.GetInstance<App>().ShowFolderAsync(targetDir);
+        _dic.GetInstance<App>().AddFolder(targetDir);
     }
 }

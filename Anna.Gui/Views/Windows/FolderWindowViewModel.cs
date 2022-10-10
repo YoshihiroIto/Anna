@@ -17,38 +17,17 @@ namespace Anna.Gui.Views.Windows;
 
 public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
 {
-    #region FolderPanelViewModel
-
-    private readonly FolderPanelViewModel? _folderPanelViewModel;
-
-    public FolderPanelViewModel FolderPanelViewModel
-    {
-        get => _folderPanelViewModel ?? throw new NullReferenceException();
-        private init => SetProperty(ref _folderPanelViewModel, value);
-    }
-
-    #endregion
-
-    #region InfoPanelViewModel
-
-    private readonly InfoPanelViewModel? _InfoPanelViewModel;
-
-    public InfoPanelViewModel InfoPanelViewModel
-    {
-        get => _InfoPanelViewModel ?? throw new NullReferenceException();
-        private init => SetProperty(ref _InfoPanelViewModel, value);
-    }
-
-    #endregion
-
     public Resources R => _resourcesHolder.Instance;
+
+    public FolderPanelViewModel FolderPanelViewModel { get; }
+    public InfoPanelViewModel InfoPanelViewModel { get; }
 
     public ICommand ToEnglishCommand { get; }
     public ICommand ToJapaneseCommand { get; }
-    
-    private bool _isDispose;
+
     private readonly IServiceProviderContainer _dic;
     private readonly ResourcesHolder _resourcesHolder;
+    private bool _isDispose;
 
     public FolderWindowViewModel(
         IServiceProviderContainer dic,

@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.Service;
 using Avalonia.Media;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
@@ -20,8 +21,8 @@ public sealed class AppConfigData : ConfigData
         new(new Uri("avares://Anna.Gui/Assets/UDEVGothicNF-Regular.ttf"), "UDEV Gothic NF");
 
     public const double DefaultViewerFontSize = 14;
-    
-    
+
+
     #region Culture
 
     private Cultures _Culture;
@@ -33,7 +34,7 @@ public sealed class AppConfigData : ConfigData
     }
 
     #endregion
-    
+
 
     #region Editor1
 
@@ -121,6 +122,19 @@ public sealed class AppConfigData : ConfigData
     {
         get => _ViewerFontSize;
         set => SetProperty(ref _ViewerFontSize, value);
+    }
+
+    #endregion
+
+
+    #region DestinationFolders
+
+    private ObservableCollection<string> _DestinationFolders = new();
+
+    public ObservableCollection<string> DestinationFolders
+    {
+        get => _DestinationFolders;
+        set => SetProperty(ref _DestinationFolders, value);
     }
 
     #endregion

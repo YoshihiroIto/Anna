@@ -38,6 +38,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         RegisterSingleton<ILoggerService>(() => new Log.DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
         RegisterSingleton<IFolderService, FolderService>();
+        RegisterSingleton<IFolderHistoryService, FolderHistoryService>();
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();

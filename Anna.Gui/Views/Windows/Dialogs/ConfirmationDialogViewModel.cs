@@ -1,11 +1,11 @@
 ﻿using Anna.DomainModel.Config;
-using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Windows.Base;
 using Anna.UseCase;
 
-namespace Anna.Gui.Views.Dialogs;
+namespace Anna.Gui.Views.Windows.Dialogs;
 
 public class ConfirmationDialogViewModel
-    : HasModelDialogViewModel<(string Title, string Text, ConfirmationTypes confirmationType)>
+    : HasModelWindowViewModelBase<(string Title, string Text, ConfirmationTypes confirmationType)>
 {
     public string Title => Model.Title;
     public string Text => Model.Text;

@@ -1,19 +1,18 @@
 ﻿using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
-using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Windows.Base;
 using Anna.Strings;
 using Anna.UseCase;
 using Avalonia.Input;
-using Avalonia.Media;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Linq;
 
-namespace Anna.Gui.Views.Dialogs;
+namespace Anna.Gui.Views.Windows.Dialogs;
 
 public class JumpFolderDialogViewModel
-    : HasModelDialogViewModel<(string CurrentFolderPath, JumpFolderConfigData Config)>
+    : HasModelWindowViewModelBase<(string CurrentFolderPath, JumpFolderConfigData Config)>
 {
     public string ResultPath { get; private set; } = "";
 

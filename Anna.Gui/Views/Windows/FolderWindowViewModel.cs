@@ -3,8 +3,8 @@ using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
-using Anna.Gui.Views.Dialogs.Base;
 using Anna.Gui.Views.Panels;
+using Anna.Gui.Views.Windows.Base;
 using Anna.UseCase;
 using Reactive.Bindings.Extensions;
 using System;
@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Anna.Gui.Views.Windows;
 
-public class FolderWindowViewModel : HasModelDialogViewModel<Folder>
+public class FolderWindowViewModel : HasModelWindowViewModelBase<Folder>
 {
     public FolderPanelViewModel FolderPanelViewModel { get; }
     public InfoPanelViewModel InfoPanelViewModel { get; }
@@ -55,7 +55,7 @@ public class FolderWindowViewModel : HasModelDialogViewModel<Folder>
             {
                 if (_dic.GetInstance<App>().Folders.IndexOf(Model) == -1)
  #pragma warning disable CS4014
-                    Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
+                    Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
  #pragma warning restore CS4014
             }).AddTo(Trash);
     }

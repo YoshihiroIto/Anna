@@ -1,4 +1,4 @@
-﻿using Anna.Gui.Views.Dialogs.Base;
+﻿using Anna.Gui.Views.Windows.Base;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Xaml.Interactivity;
@@ -29,7 +29,7 @@ public class DialogBehavior : Behavior<Window>
 
         if (e.Key == Key.Escape)
         {
-            if (AssociatedObject.DataContext is not DialogViewModel viewModel)
+            if (AssociatedObject.DataContext is not WindowViewModelBase viewModel)
                 return;
 
             viewModel.DialogResult = DialogResultTypes.Cancel;

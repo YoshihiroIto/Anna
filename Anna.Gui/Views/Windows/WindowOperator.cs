@@ -1,16 +1,20 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
-using Anna.Gui.Views.Dialogs;
-using Anna.Gui.Views.Dialogs.Base;
-using Anna.Gui.Views.Windows;
+using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows.Dialogs;
 using Anna.UseCase;
 using Avalonia.Controls;
 using System.Threading.Tasks;
+using ConfirmationDialog=Anna.Gui.Views.Windows.Dialogs.ConfirmationDialog;
+using EntryDisplayDialog=Anna.Gui.Views.Windows.Dialogs.EntryDisplayDialog;
+using JumpFolderDialog=Anna.Gui.Views.Windows.Dialogs.JumpFolderDialog;
+using MessageDialog=Anna.Gui.Views.Windows.Dialogs.MessageDialog;
+using SortModeAndOrderDialog=Anna.Gui.Views.Windows.Dialogs.SortModeAndOrderDialog;
 
-namespace Anna.Gui;
+namespace Anna.Gui.Views.Windows;
 
-public static class DialogOperator
+public static class WindowOperator
 {
     public static async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)>
         SelectSortModeAndOrderAsync(IServiceProviderContainer dic, Window owner)

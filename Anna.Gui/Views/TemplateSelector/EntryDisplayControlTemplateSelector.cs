@@ -1,5 +1,5 @@
-﻿using Anna.Gui.Views.Dialogs;
-using Anna.Gui.Views.Panels;
+﻿using Anna.Gui.Views.Panels;
+using Anna.Gui.Views.Windows.Dialogs;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Styling;

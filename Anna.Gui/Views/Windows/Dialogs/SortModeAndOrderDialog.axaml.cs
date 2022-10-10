@@ -1,5 +1,5 @@
 ﻿using Anna.Constants;
-using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Windows.Base;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -8,9 +8,9 @@ using Avalonia.Markup.Xaml;
 using System;
 using System.Collections.Generic;
 
-namespace Anna.Gui.Views.Dialogs;
+namespace Anna.Gui.Views.Windows.Dialogs;
 
-public partial class SortModeAndOrderDialog : DialogBase<SortModeAndOrderDialogViewModel>
+public partial class SortModeAndOrderDialog : WindowBase<SortModeAndOrderDialogViewModel>
 {
     private static readonly IReadOnlyDictionary<Key, SortModes> KeyToSortMode = new Dictionary<Key, SortModes>
     {

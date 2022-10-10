@@ -1,4 +1,5 @@
 ﻿using Anna.Gui.Foundations;
+using Anna.Gui.Views.Windows;
 using Anna.UseCase;
 using Avalonia;
 using Avalonia.Controls;
@@ -28,7 +29,7 @@ public class InformationDialogInteractionMessageAction : AvaloniaObject, IAction
 
         var owner = ControlHelper.FindOwnerWindow(control);
 
-        informationMessage.Response = await DialogOperator.DisplayInformationAsync(
+        informationMessage.Response = await WindowOperator.DisplayInformationAsync(
             hasServiceProviderContainer.ServiceProviderContainer,
             owner,
             informationMessage.Title,

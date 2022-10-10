@@ -10,9 +10,9 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Linq;
 
-namespace Anna.Gui.Views.Dialogs.Base;
+namespace Anna.Gui.Views.Windows.Base;
 
-public class DialogViewModel : ViewModelBase, ILocalizableViewModel
+public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
 {
     public const string MessageKeyClose = nameof(MessageKeyClose);
     public const string MessageKeyInformation = nameof(MessageKeyInformation);
@@ -37,7 +37,7 @@ public class DialogViewModel : ViewModelBase, ILocalizableViewModel
     private DelegateCommand? _yesCommand;
     private DelegateCommand? _noCommand;
 
-    protected DialogViewModel(
+    protected WindowViewModelBase(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
         AppConfig appConfig,

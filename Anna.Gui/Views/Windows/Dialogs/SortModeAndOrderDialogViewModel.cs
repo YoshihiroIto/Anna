@@ -1,11 +1,11 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.Config;
-using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Windows.Base;
 using Anna.UseCase;
 
-namespace Anna.Gui.Views.Dialogs;
+namespace Anna.Gui.Views.Windows.Dialogs;
 
-public class SortModeAndOrderDialogViewModel : DialogViewModel
+public class SortModeAndOrderDialogViewModel : WindowViewModelBase
 {
     public SortModes ResultSortMode { get; set; }
     public SortOrders ResultSortOrder { get; set; }

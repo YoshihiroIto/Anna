@@ -1,14 +1,14 @@
-﻿<base:DialogBase x:Class="Anna.Gui.Views.Dialogs.JumpFolderDialog"
+﻿<base1:WindowBase x:Class="Anna.Gui.Views.Windows.Dialogs.JumpFolderDialog"
                  Classes="dialog"
                  xmlns="https://github.com/avaloniaui"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
                  xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                  xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
                  xmlns:controls="clr-namespace:Anna.Gui.Views.Controls"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
+                 xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                  Title="{ReflectionBinding R.DialogTitle_JumpFolder}"
                  Width="600"
                  MinWidth="400"
@@ -17,13 +17,13 @@
                  d:DesignHeight="200"
                  d:DesignWidth="400"
                  x:CompileBindings="True"
-                 x:DataType="dialogs:JumpFolderDialogViewModel"
+                 x:DataType="dialogs1:JumpFolderDialogViewModel"
                  CanResize="True"
                  SizeToContent="Height"
                  mc:Ignorable="d">
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->
-        <dialogs:JumpFolderDialogViewModel />
+        <dialogs1:JumpFolderDialogViewModel />
     </Design.DataContext>
 
     <Window.Styles>
@@ -33,11 +33,11 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowViewModelBase.MessageKeyClose}" Messenger="{Binding Messenger}">
             <behaviors1:WindowInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyYesNoConfirmation}" Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowViewModelBase.MessageKeyYesNoConfirmation}" Messenger="{Binding Messenger}">
             <behaviors1:ConfirmationDialogInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
@@ -61,7 +61,7 @@
         </ListBox.Styles>
 
         <ListBox.ItemTemplate>
-            <DataTemplate DataType="dialogs:JumpFolderPathViewModel">
+            <DataTemplate DataType="dialogs1:JumpFolderPathViewModel">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" SharedSizeGroup="Key" />
@@ -90,11 +90,11 @@
                             VerticalAlignment="Stretch"
                             BorderThickness="0"
                             Click="EditButton_OnClick"
-                            Content="{ReflectionBinding $parent[dialogs:JumpFolderDialog].DataContext.R.UI_Edit,
+                            Content="{ReflectionBinding $parent[dialogs1:JumpFolderDialog].DataContext.R.UI_Edit,
                                                         FallbackValue=Edit}"
                             IsVisible="{Binding $parent[ListBoxItem].IsPointerOver}" />
                 </Grid>
             </DataTemplate>
         </ListBox.ItemTemplate>
     </ListBox>
-</base:DialogBase>
+</base1:WindowBase>

@@ -27,4 +27,18 @@
         <DependentUpon>EditableTextBlock.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Dialogs\ConfirmationDialog.axaml" />
+      <UpToDateCheckInput Remove="Views\Dialogs\EntryDisplayDialog.axaml" />
+      <UpToDateCheckInput Remove="Views\Dialogs\JumpFolderDialog.axaml" />
+      <UpToDateCheckInput Remove="Views\Dialogs\MessageDialog.axaml" />
+      <UpToDateCheckInput Remove="Views\Dialogs\SortModeAndOrderDialog.axaml" />
+    </ItemGroup>
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Windows\Dialogs\ConfirmationDialog.axaml" />
+      <AdditionalFiles Include="Views\Windows\Dialogs\EntryDisplayDialog.axaml" />
+      <AdditionalFiles Include="Views\Windows\Dialogs\JumpFolderDialog.axaml" />
+      <AdditionalFiles Include="Views\Windows\Dialogs\MessageDialog.axaml" />
+      <AdditionalFiles Include="Views\Windows\Dialogs\SortModeAndOrderDialog.axaml" />
+    </ItemGroup>
 </Project>

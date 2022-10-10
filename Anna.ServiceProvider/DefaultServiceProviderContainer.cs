@@ -3,7 +3,7 @@ using Anna.DomainModel.Config;
 using Anna.DomainModel.FileSystem;
 using Anna.Gui;
 using Anna.Gui.ShortcutKey;
-using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Windows.Base;
 using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
 using Anna.UseCase;
@@ -43,7 +43,7 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
         RegisterSingleton<DomainModelOperator>();
 
         // property injection
-        RegisterInitializer<DialogBase>(d => d.Logger = GetInstance<ILoggerUseCase>());
+        RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerUseCase>());
 
         Options.ResolveUnregisteredConcreteTypes = true;
 

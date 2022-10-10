@@ -1,13 +1,15 @@
 ﻿using Anna.DomainModel.Config;
+using Anna.Gui.Views.Windows.Base;
 using Anna.UseCase;
 
-namespace Anna.Gui.Views.Dialogs.Base;
+namespace Anna.Gui.Views.Windows.Dialogs;
 
-public class HasModelDialogViewModel<TModel> : DialogViewModel, IHasArg<TModel>
+public class MessageDialogViewModel : HasModelWindowViewModelBase<(string Title, string Text)>
 {
-    public readonly TModel Model;
+    public string Title => Model.Title;
+    public string Text => Model.Text;
 
-    protected HasModelDialogViewModel(
+    public MessageDialogViewModel(
         IServiceProviderContainer dic,
         ResourcesHolder resourcesHolder,
         AppConfig appConfig,
@@ -15,6 +17,5 @@ public class HasModelDialogViewModel<TModel> : DialogViewModel, IHasArg<TModel>
         IObjectLifetimeCheckerUseCase objectLifetimeChecker)
         : base(dic, resourcesHolder, appConfig, logger, objectLifetimeChecker)
     {
-        dic.PopArg(out Model);
     }
 }

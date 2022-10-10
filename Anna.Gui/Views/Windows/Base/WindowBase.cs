@@ -6,19 +6,19 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Anna.ServiceProvider")]
 
-namespace Anna.Gui.Views.Dialogs.Base;
+namespace Anna.Gui.Views.Windows.Base;
 
-public class DialogBase<T> : DialogBase
-    where T : DialogViewModel
+public class WindowBase<T> : WindowBase
+    where T : WindowViewModelBase
 {
     protected T ViewModel => DataContext as T ?? throw new NullReferenceException();
 }
 
-public class DialogBase : Window
+public class WindowBase : Window
 {
     protected internal ILoggerUseCase Logger { get; set; } = null!;
 
-    public DialogBase()
+    public WindowBase()
     {
         Loaded += (_, _) => Logger.Start(GetType().Name);
         Closed += (_, _) => Logger.End(GetType().Name);

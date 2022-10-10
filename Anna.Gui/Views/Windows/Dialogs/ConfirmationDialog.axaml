@@ -1,13 +1,13 @@
-﻿<base:DialogBase x:Class="Anna.Gui.Views.Dialogs.ConfirmationDialog"
+﻿<base1:WindowBase x:Class="Anna.Gui.Views.Windows.Dialogs.ConfirmationDialog"
                  Classes="dialog"
                  xmlns="https://github.com/avaloniaui"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
                  xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
+                 xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
+                 xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                  Title="{Binding Title,
                                  Mode=OneTime}"
                  MinWidth="300"
@@ -16,12 +16,12 @@
                  d:DesignHeight="450"
                  d:DesignWidth="800"
                  x:CompileBindings="True"
-                 x:DataType="dialogs:ConfirmationDialogViewModel"
+                 x:DataType="dialogs1:ConfirmationDialogViewModel"
                  KeyDown="OnKeyDown"
                  mc:Ignorable="d">
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->
-        <dialogs:ConfirmationDialogViewModel />
+        <dialogs1:ConfirmationDialogViewModel />
     </Design.DataContext>
 
     <Window.Styles>
@@ -31,7 +31,7 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowViewModelBase.MessageKeyClose}" Messenger="{Binding Messenger}">
             <behaviors1:WindowInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
@@ -59,4 +59,4 @@
 
         <TextBlock Text="{Binding Text, Mode=OneTime}" />
     </DockPanel>
-</base:DialogBase>
+</base1:WindowBase>

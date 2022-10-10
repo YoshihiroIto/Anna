@@ -1,10 +1,10 @@
-﻿using Anna.Gui.Views.Dialogs.Base;
+﻿using Anna.Gui.Views.Windows.Base;
 using Avalonia;
 using Avalonia.Markup.Xaml;
 
 namespace Anna.Gui.Views.Windows;
 
-public partial class FolderWindow : DialogBase<FolderWindowViewModel>
+public partial class FolderWindow : WindowBase<FolderWindowViewModel>
 {
     public FolderWindow()
     {

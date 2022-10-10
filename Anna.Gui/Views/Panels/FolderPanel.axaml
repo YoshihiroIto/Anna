@@ -1,7 +1,6 @@
 ﻿<UserControl x:Class="Anna.Gui.Views.Panels.FolderPanel"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
              xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
              xmlns:converters="clr-namespace:Anna.Gui.Views.Converters"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,6 +9,7 @@
              xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
              xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
              xmlns:templateSelector="clr-namespace:Anna.Gui.Views.TemplateSelector"
+             xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
@@ -39,7 +39,7 @@
     <Interaction.Behaviors>
         <behaviors:FolderPanelInputBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowViewModelBase.MessageKeyInformation}" Messenger="{Binding Messenger}">
             <behaviors1:InformationDialogInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>

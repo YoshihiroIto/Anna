@@ -1,4 +1,4 @@
-﻿using Anna.Gui.Views.Dialogs.Base;
+﻿using Anna.Gui.Views.Windows.Base;
 using Avalonia;
 
 namespace Anna.Gui.Messaging;

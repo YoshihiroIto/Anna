@@ -1,5 +1,5 @@
 ﻿using Anna.Gui.Views.Controls;
-using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Windows.Base;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -8,9 +8,9 @@ using Avalonia.Markup.Xaml;
 using System;
 using System.Linq;
 
-namespace Anna.Gui.Views.Dialogs;
+namespace Anna.Gui.Views.Windows.Dialogs;
 
-public partial class JumpFolderDialog : DialogBase<JumpFolderDialogViewModel>
+public partial class JumpFolderDialog : WindowBase<JumpFolderDialogViewModel>
 {
     private bool IsEditing => _editingDepth > 0;
     private int _editingDepth;

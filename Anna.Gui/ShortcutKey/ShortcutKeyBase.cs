@@ -2,7 +2,7 @@
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
-using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Windows.Base;
 using Anna.Strings;
 using Anna.UseCase;
 using Avalonia.Input;
@@ -95,7 +95,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
             new InformationMessage(
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),
-                DialogViewModel.MessageKeyInformation));
+                WindowViewModelBase.MessageKeyInformation));
 
         return false;
     }
@@ -109,7 +109,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         {
             ProcessHelper.Execute(editor.Editor, arguments);
 
-            await messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
+            await messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
         }
         catch
         {
@@ -119,7 +119,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                 new InformationMessage(
                     Resources.AppName,
                     string.Format(Resources.Message_FailedToStartEditor, editor.Editor),
-                    DialogViewModel.MessageKeyInformation));
+                    WindowViewModelBase.MessageKeyInformation));
         }
     }
 
@@ -137,7 +137,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                 new InformationMessage(
                     Resources.AppName,
                     Resources.Message_FailedToStartAssociatedApp,
-                    DialogViewModel.MessageKeyInformation));
+                    WindowViewModelBase.MessageKeyInformation));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.Config;
+using Anna.Gui.Views.Windows;
 using Anna.UseCase;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
     {
         var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        var result = await DialogOperator.SelectSortModeAndOrderAsync(_dic, r.Owner);
+        var result = await WindowOperator.SelectSortModeAndOrderAsync(_dic, r.Owner);
         if (result.IsCancel)
             return;
 
@@ -59,7 +60,7 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
     {
         var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        var result = await DialogOperator.JumpFolderAsync(_dic, r.Owner);
+        var result = await WindowOperator.JumpFolderAsync(_dic, r.Owner);
         if (result.IsCancel)
             return;
 
@@ -106,7 +107,7 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
             if (await CheckIsAccessibleAsync(target.Path, r.Messenger) == false)
                 return;
 
-            await DialogOperator.EntryDisplay(_dic, r.Owner, target);
+            await WindowOperator.EntryDisplay(_dic, r.Owner, target);
         }
     }
 

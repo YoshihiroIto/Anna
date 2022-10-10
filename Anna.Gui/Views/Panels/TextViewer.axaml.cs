@@ -1,7 +1,7 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.ShortcutKey;
-using Anna.Gui.Views.Dialogs.Base;
+using Anna.Gui.Views.Windows.Base;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -13,6 +13,7 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using TextMateSharp.Grammars;
+using WindowBase=Anna.Gui.Views.Windows.Base.WindowBase;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -21,7 +22,7 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
 
     public InteractionMessenger Messenger =>
-        ((ControlHelper.FindOwnerWindow(this) as DialogBase)?.DataContext as ViewModelBase)?.Messenger ??
+        ((ControlHelper.FindOwnerWindow(this) as WindowBase)?.DataContext as ViewModelBase)?.Messenger ??
         throw new NullReferenceException();
 
     public string TargetFilepath => ViewModel.Model.Path;
@@ -105,7 +106,7 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
     {
         if (e.Key == Key.Escape)
         {
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, DialogViewModel.MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
             e.Handled = true;
         }
         else

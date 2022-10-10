@@ -1,13 +1,13 @@
-﻿<base:DialogBase x:Class="Anna.Gui.Views.Dialogs.SortModeAndOrderDialog"
+﻿<base1:WindowBase x:Class="Anna.Gui.Views.Windows.Dialogs.SortModeAndOrderDialog"
                  Classes="dialog"
                  xmlns="https://github.com/avaloniaui"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
                  xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                  xmlns:constants="clr-namespace:Anna.Constants;assembly=Anna.Constants"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                 xmlns:dialogs="clr-namespace:Anna.Gui.Views.Dialogs"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
+                 xmlns:dialogs="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                  Title="{ReflectionBinding R.DialogTitle_SortEntry}"
                  d:DesignHeight="400"
                  d:DesignWidth="400"
@@ -89,4 +89,4 @@
                     TabIndex="8" />
         </Grid>
     </StackPanel>
-</base:DialogBase>
+</base1:WindowBase>

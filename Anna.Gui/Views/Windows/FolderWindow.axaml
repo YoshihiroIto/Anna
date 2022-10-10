@@ -1,13 +1,13 @@
-﻿<base:DialogBase x:Class="Anna.Gui.Views.Windows.FolderWindow"
+﻿<base1:WindowBase x:Class="Anna.Gui.Views.Windows.FolderWindow"
                  xmlns="https://github.com/avaloniaui"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                 xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
                  xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                  xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
                  xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
+                 xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
                  Title="{ReflectionBinding R.AppName}"
                  Width="1000"
                  Height="600"
@@ -31,7 +31,7 @@
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowViewModelBase.MessageKeyClose}" Messenger="{Binding Messenger}">
             <behaviors1:WindowInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
@@ -76,4 +76,4 @@
             </Interaction.Behaviors>
         </panels:FolderPanel>
     </DockPanel>
-</base:DialogBase>
+</base1:WindowBase>

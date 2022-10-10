@@ -84,7 +84,7 @@ public class JumpFolderTests : IDisposable
         var json = JsonSerializer.Serialize(c, FileSystemObjectSerializer.Options);
         await File.WriteAllTextAsync(configFolder.JumpFolderConfigFilePath, json);
 
-        _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Load();
+        _fixture.App.Dic.GetInstance<JumpFolderConfig>().Load();
 
         await Task.Delay(100);
 
@@ -116,7 +116,7 @@ public class JumpFolderTests : IDisposable
         var json = JsonSerializer.Serialize(c, FileSystemObjectSerializer.Options);
         await File.WriteAllTextAsync(configFolder.JumpFolderConfigFilePath, json);
 
-        _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Load();
+        _fixture.App.Dic.GetInstance<JumpFolderConfig>().Load();
 
         await Task.Delay(100);
 
@@ -132,7 +132,7 @@ public class JumpFolderTests : IDisposable
 
         await Task.Delay(100);
 
-        var afterF1 = _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Data.Paths
+        var afterF1 = _fixture.App.Dic.GetInstance<JumpFolderConfig>().Data.Paths
             .First(x => x.Key == Key.F1);
 
         Assert.Equal("", afterF1.Path);
@@ -159,7 +159,7 @@ public class JumpFolderTests : IDisposable
 
         await Task.Delay(100);
 
-        var afterF1 = _fixture.App.ServiceProviderContainer.GetInstance<JumpFolderConfig>().Data.Paths
+        var afterF1 = _fixture.App.Dic.GetInstance<JumpFolderConfig>().Data.Paths
             .First(x => x.Key == Key.F1);
 
         Assert.Equal("123abc", afterF1.Path);

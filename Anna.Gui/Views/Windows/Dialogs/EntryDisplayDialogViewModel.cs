@@ -18,20 +18,15 @@ public class EntryDisplayDialogViewModel
 
     public ViewModelBase? ContentViewModel { get; }
 
-    public EntryDisplayDialogViewModel(
-        IServiceProviderContainer dic,
-        ResourcesHolder resourcesHolder,
-        AppConfig appConfig,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, resourcesHolder, appConfig, logger, objectLifetimeChecker)
+    public EntryDisplayDialogViewModel(IServiceProviderContainer dic)
+        : base(dic)
     {
         switch (Model.Format)
         {
             case FileEntryFormat.Image:
                 ContentViewModel = dic.GetInstance<ImageViewerViewModel, Entry>(Model).AddTo(Trash);
                 break;
-            
+
             case FileEntryFormat.Text:
                 ContentViewModel = dic.GetInstance<TextViewerViewModel, Entry>(Model).AddTo(Trash);
                 break;

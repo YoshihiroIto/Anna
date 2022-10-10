@@ -30,7 +30,7 @@ public class ConfirmationDialogInteractionMessageAction : AvaloniaObject, IActio
         var owner = ControlHelper.FindOwnerWindow(control);
 
         confirmationMessage.Response = await WindowOperator.DisplayConfirmationAsync(
-            hasServiceProviderContainer.ServiceProviderContainer,
+            hasServiceProviderContainer.Dic,
             owner,
             confirmationMessage.Title,
             confirmationMessage.Text,

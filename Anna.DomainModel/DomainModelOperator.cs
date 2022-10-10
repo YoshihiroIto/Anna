@@ -5,17 +5,19 @@ namespace Anna.DomainModel;
 
 public class DomainModelOperator
 {
-    private readonly IServiceProviderContainer _dic;
+    private readonly ILoggerUseCase _logger;
+    private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
 
-    public DomainModelOperator(IServiceProviderContainer dic)
+    public DomainModelOperator(
+        ILoggerUseCase logger,
+        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
     {
-        _dic = dic;
+        _logger = logger;
+        _objectLifetimeChecker = objectLifetimeChecker;
     }
 
     public Folder CreateFolder(string path)
     {
-        return new FileSystemFolder(path,
-            _dic.GetInstance<ILoggerUseCase>(),
-            _dic.GetInstance<IObjectLifetimeCheckerUseCase>());
+        return new FileSystemFolder(path, _logger, _objectLifetimeChecker);
     }
 }

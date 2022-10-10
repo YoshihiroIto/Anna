@@ -1,5 +1,4 @@
-﻿using Anna.DomainModel.Config;
-using Anna.UseCase;
+﻿using Anna.UseCase;
 
 namespace Anna.Gui.Views.Windows.Base;
 
@@ -7,13 +6,8 @@ public class HasModelWindowViewModelBase<TModel> : WindowViewModelBase, IHasArg<
 {
     public readonly TModel Model;
 
-    protected HasModelWindowViewModelBase(
-        IServiceProviderContainer dic,
-        ResourcesHolder resourcesHolder,
-        AppConfig appConfig,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, resourcesHolder, appConfig, logger, objectLifetimeChecker)
+    protected HasModelWindowViewModelBase(IServiceProviderContainer dic)
+        : base(dic)
     {
         dic.PopArg(out Model);
     }

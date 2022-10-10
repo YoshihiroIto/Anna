@@ -6,16 +6,12 @@ namespace Anna.Gui.Foundations;
 
 public class ViewModelBase : DisposableNotificationObject
 {
-    public InteractionMessenger Messenger => _messenger ??= _dic.GetInstance<InteractionMessenger>();
+    public InteractionMessenger Messenger => _messenger ??= Dic.GetInstance<InteractionMessenger>();
 
     private InteractionMessenger? _messenger;
-    private readonly IServiceProviderContainer _dic;
 
-    protected ViewModelBase(
-        IServiceProviderContainer dic,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(objectLifetimeChecker)
+    protected ViewModelBase(IServiceProviderContainer dic)
+        : base(dic)
     {
-        _dic = dic;
     }
 }

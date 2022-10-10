@@ -1,5 +1,4 @@
 ﻿using Anna.DomainModel;
-using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Strings;
@@ -14,7 +13,7 @@ namespace Anna.Gui.Views.Panels;
 
 public class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
 {
-    public Resources R => _resourcesHolder.Instance;
+    public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
     public ReadOnlyReactivePropertySlim<int> EntriesCount { get; }
     public ReadOnlyReactivePropertySlim<int> SelectedEntriesCount { get; }
@@ -22,17 +21,9 @@ public class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizable
     public ReactiveProperty<long> TotalSize { get; }
     public ReactiveProperty<long> SelectedTotalSize { get; }
 
-    private readonly ResourcesHolder _resourcesHolder;
-
-    public InfoPanelViewModel(
-        IServiceProviderContainer dic,
-        AppConfig appConfig,
-        ResourcesHolder resourcesHolder,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, objectLifetimeChecker)
+    public InfoPanelViewModel(IServiceProviderContainer dic)
+        : base(dic)
     {
-        _resourcesHolder = resourcesHolder;
-
         var selectedEntries = Model.Entries
             .ToFilteredReadOnlyObservableCollection(x => x.IsSelected)
             .AddTo(Trash);

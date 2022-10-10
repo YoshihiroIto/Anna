@@ -17,5 +17,5 @@ public interface IHasArg<TArg>
 
 public interface IHasServiceProviderContainer
 {
-    IServiceProviderContainer ServiceProviderContainer { get; }
+    IServiceProviderContainer Dic { get; }
 }

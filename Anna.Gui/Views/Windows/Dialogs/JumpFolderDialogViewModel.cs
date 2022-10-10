@@ -22,13 +22,8 @@ public class JumpFolderDialogViewModel
 
     public string CurrentFolderPath => Model.CurrentFolderPath;
 
-    public JumpFolderDialogViewModel(
-        IServiceProviderContainer dic,
-        ResourcesHolder resourcesHolder,
-        AppConfig appConfig,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, resourcesHolder, appConfig, logger, objectLifetimeChecker)
+    public JumpFolderDialogViewModel(IServiceProviderContainer dic)
+        : base(dic)
     {
         Paths = Model.Config.Paths
             .Select(x => dic.GetInstance<JumpFolderPathViewModel, JumpFolderConfigData.PathData>(x).AddTo(Trash))
@@ -83,10 +78,8 @@ public class JumpFolderPathViewModel : HasModelRefViewModelBase<JumpFolderConfig
     public ReactivePropertySlim<string> Path { get; }
     public ReactivePropertySlim<bool> IsEditing { get; }
 
-    public JumpFolderPathViewModel(
-        IServiceProviderContainer dic,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, objectLifetimeChecker)
+    public JumpFolderPathViewModel(IServiceProviderContainer dic)
+        : base(dic)
     {
         var isNumber = Model.Key is >= Avalonia.Input.Key.D0 and <= Avalonia.Input.Key.D9;
 

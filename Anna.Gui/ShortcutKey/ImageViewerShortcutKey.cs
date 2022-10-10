@@ -10,13 +10,8 @@ namespace Anna.Gui.ShortcutKey;
 
 public class ImageViewerShortcutKey : ShortcutKeyBase
 {
-    public ImageViewerShortcutKey(
-        IFolderServiceUseCase folderService,
-        AppConfig appConfig,
-        KeyConfig keyConfig,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(folderService, appConfig, keyConfig, logger, objectLifetimeChecker)
+    public ImageViewerShortcutKey(IServiceProviderContainer dic)
+        : base(dic)
     {
     }
 

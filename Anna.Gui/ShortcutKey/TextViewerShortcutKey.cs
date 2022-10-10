@@ -12,13 +12,8 @@ namespace Anna.Gui.ShortcutKey;
 
 public class TextViewerShortcutKey : ShortcutKeyBase
 {
-    public TextViewerShortcutKey(
-        IFolderServiceUseCase folderService,
-        AppConfig appConfig,
-        KeyConfig keyConfig,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(folderService, appConfig, keyConfig, logger, objectLifetimeChecker)
+    public TextViewerShortcutKey(IServiceProviderContainer dic)
+        : base(dic)
     {
     }
 

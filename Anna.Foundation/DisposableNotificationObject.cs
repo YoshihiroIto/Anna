@@ -5,7 +5,8 @@ namespace Anna.Foundation;
 
 public class DisposableNotificationObject : NotificationObject, IDisposable
 {
-    private readonly IObjectLifetimeCheckerUseCase _objectLifetimeChecker;
+    protected readonly IServiceProviderContainer Dic;
+    
     private CompositeDisposable? _trashes;
     private bool _disposed;
 
@@ -13,11 +14,11 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
         LazyInitializer.EnsureInitialized(ref _trashes, () => new CompositeDisposable()) ??
         throw new NullReferenceException();
 
-    public DisposableNotificationObject(IObjectLifetimeCheckerUseCase objectLifetimeChecker)
+    public DisposableNotificationObject(IServiceProviderContainer dic)
     {
-        _objectLifetimeChecker = objectLifetimeChecker;
+        Dic = dic;
         
-        _objectLifetimeChecker.Add(this);
+        Dic.GetInstance<IObjectLifetimeCheckerUseCase>().Add(this);
     }
 
     protected virtual void Dispose(bool disposing)
@@ -28,7 +29,7 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
         if (disposing)
             _trashes?.Dispose();
 
-        _objectLifetimeChecker.Remove(this);
+        Dic.GetInstance<IObjectLifetimeCheckerUseCase>().Remove(this);
         
         _disposed = true;
     }

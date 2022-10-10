@@ -17,28 +17,16 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
 {
     protected abstract IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators();
 
-    private readonly IFolderServiceUseCase _folderService;
-    private readonly AppConfig _appConfig;
-    private readonly ILoggerUseCase _logger;
     private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
     private readonly IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> _operators;
-    
-    protected ShortcutKeyBase(
-        IFolderServiceUseCase folderService,
-        AppConfig appConfig,
-        KeyConfig keyConfig,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(objectLifetimeChecker)
-    {
-        _folderService = folderService;
-        _appConfig = appConfig;
-        _logger = logger;
 
+    protected ShortcutKeyBase(IServiceProviderContainer dic)
+        : base(dic)
+    {
         // ReSharper disable once VirtualMemberCallInConstructor
         _operators = SetupOperators();
 
-        keyConfig.ObserveProperty(x => x.Data)
+        dic.GetInstance<KeyConfig>().ObserveProperty(x => x.Data)
             .Subscribe(UpdateShortcutKeys)
             .AddTo(Trash);
     }
@@ -79,7 +67,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
 
         if (_shortcutKeys.ContainsKey(k))
         {
-            _logger.Warning("Already registered");
+            Dic.GetInstance<ILoggerUseCase>().Warning("Already registered");
             return;
         }
 
@@ -88,7 +76,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
 
     protected async ValueTask<bool> CheckIsAccessibleAsync(string path, InteractionMessenger messenger)
     {
-        if (_folderService.IsAccessible(path))
+        if (Dic.GetInstance<IFolderServiceUseCase>().IsAccessible(path))
             return true;
 
         await messenger.RaiseAsync(
@@ -102,19 +90,20 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
 
     protected async ValueTask OpenFileByEditorAsync(int index, string targetFilepath, InteractionMessenger messenger)
     {
-        var editor = _appConfig.Data.FindEditor(index);
+        var editor = Dic.GetInstance<AppConfig>().Data.FindEditor(index);
         var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilepath, 0);
 
         try
         {
             ProcessHelper.Execute(editor.Editor, arguments);
 
-            await messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
+            await messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close,
+                WindowViewModelBase.MessageKeyClose));
         }
         catch
         {
-            _logger.Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
-            
+            Dic.GetInstance<ILoggerUseCase>().Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
+
             await messenger.RaiseAsync(
                 new InformationMessage(
                     Resources.AppName,
@@ -131,8 +120,8 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         }
         catch
         {
-            _logger.Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
-            
+            Dic.GetInstance<ILoggerUseCase>().Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
+
             await messenger.RaiseAsync(
                 new InformationMessage(
                     Resources.AppName,

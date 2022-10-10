@@ -26,10 +26,8 @@ public class EntryViewModel : HasModelRefViewModelBase<Entry>
     private ReadOnlyReactivePropertySlim<FileAttributes>? _Attributes;
     private ReadOnlyReactivePropertySlim<bool>? _IsSelected;
 
-    public EntryViewModel(
-        IServiceProviderContainer dic,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, objectLifetimeChecker)
+    public EntryViewModel(IServiceProviderContainer dic)
+        : base(dic)
     {
     }
 

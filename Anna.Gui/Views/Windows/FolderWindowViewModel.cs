@@ -21,39 +21,31 @@ public class FolderWindowViewModel : HasModelWindowViewModelBase<Folder>
     public ICommand ToEnglishCommand { get; }
     public ICommand ToJapaneseCommand { get; }
 
-    private readonly IServiceProviderContainer _dic;
     private bool _isDispose;
 
-    public FolderWindowViewModel(
-        IServiceProviderContainer dic,
-        ResourcesHolder resourcesHolder,
-        AppConfig appConfig,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, resourcesHolder, appConfig, logger, objectLifetimeChecker)
+    public FolderWindowViewModel(IServiceProviderContainer dic)
+        : base(dic)
     {
-        _dic = dic;
-
         Observable
             .FromEventPattern(
-                h => resourcesHolder.CultureChanged += h,
-                h => resourcesHolder.CultureChanged -= h)
+                h => Dic.GetInstance<ResourcesHolder>().CultureChanged += h,
+                h => Dic.GetInstance<ResourcesHolder>().CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
-        ToEnglishCommand = new DelegateCommand(() => appConfig.Data.Culture = Cultures.En);
-        ToJapaneseCommand = new DelegateCommand(() => appConfig.Data.Culture = Cultures.Ja);
+        ToEnglishCommand = new DelegateCommand(() => Dic.GetInstance<AppConfig>().Data.Culture = Cultures.En);
+        ToJapaneseCommand = new DelegateCommand(() => Dic.GetInstance<AppConfig>().Data.Culture = Cultures.Ja);
 
-        InfoPanelViewModel = _dic.GetInstance<InfoPanelViewModel, Folder>(Model)
+        InfoPanelViewModel = dic.GetInstance<InfoPanelViewModel, Folder>(Model)
             .AddTo(Trash);
 
-        FolderPanelViewModel = _dic.GetInstance<FolderPanelViewModel, Folder>(Model)
+        FolderPanelViewModel = dic.GetInstance<FolderPanelViewModel, Folder>(Model)
             .AddTo(Trash);
         
-        _dic.GetInstance<App>().Folders.CollectionChangedAsObservable()
+        dic.GetInstance<App>().Folders.CollectionChangedAsObservable()
             .Subscribe(_ =>
             {
-                if (_dic.GetInstance<App>().Folders.IndexOf(Model) == -1)
+                if (dic.GetInstance<App>().Folders.IndexOf(Model) == -1)
  #pragma warning disable CS4014
                     Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
  #pragma warning restore CS4014
@@ -67,7 +59,7 @@ public class FolderWindowViewModel : HasModelWindowViewModelBase<Folder>
 
         _isDispose = true;
 
-        _dic.GetInstance<App>().RemoveFolder(Model);
+        Dic.GetInstance<App>().RemoveFolder(Model);
 
         base.Dispose();
     }

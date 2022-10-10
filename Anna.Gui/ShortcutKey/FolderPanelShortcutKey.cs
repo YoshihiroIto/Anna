@@ -11,18 +11,9 @@ namespace Anna.Gui.ShortcutKey;
 
 public class FolderPanelShortcutKey : ShortcutKeyBase
 {
-    private readonly IServiceProviderContainer _dic;
-    
-    public FolderPanelShortcutKey(
-        IServiceProviderContainer dic,
-        IFolderServiceUseCase folderService,
-        AppConfig appConfig,
-        KeyConfig keyConfig,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(folderService, appConfig, keyConfig, logger, objectLifetimeChecker)
+    public FolderPanelShortcutKey(IServiceProviderContainer dic)
+        : base(dic)
     {
-        _dic = dic;
     }
 
     protected override IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators()
@@ -49,7 +40,7 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
     {
         var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        var result = await WindowOperator.SelectSortModeAndOrderAsync(_dic, r.Owner);
+        var result = await WindowOperator.SelectSortModeAndOrderAsync(Dic, r.Owner);
         if (result.IsCancel)
             return;
 
@@ -60,7 +51,7 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
     {
         var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
 
-        var result = await WindowOperator.JumpFolderAsync(_dic, r.Owner);
+        var result = await WindowOperator.JumpFolderAsync(Dic, r.Owner);
         if (result.IsCancel)
             return;
 
@@ -107,7 +98,7 @@ public class FolderPanelShortcutKey : ShortcutKeyBase
             if (await CheckIsAccessibleAsync(target.Path, r.Messenger) == false)
                 return;
 
-            await WindowOperator.EntryDisplay(_dic, r.Owner, target);
+            await WindowOperator.EntryDisplay(Dic, r.Owner, target);
         }
     }
 

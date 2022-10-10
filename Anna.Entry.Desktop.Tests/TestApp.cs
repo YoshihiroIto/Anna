@@ -18,7 +18,7 @@ public class TestApp : IAsyncDisposable
     public IEnumerable<FolderWindow> FolderWindows => App.Windows.OfType<FolderWindow>();
  #pragma warning restore CA1822
 
-    public DefaultServiceProviderContainer ServiceProviderContainer { get; }
+    public DefaultServiceProviderContainer Dic { get; }
 
     public TestApp(TempFolder? configFolder = null, string workFolder = "", bool isHeadless = true)
     {
@@ -37,7 +37,7 @@ public class TestApp : IAsyncDisposable
             "--config", _configFolder.AppConfigFilePath, "--target", Path.Combine(_configFolder.RootPath, workFolder)
         };
 
-        ServiceProviderContainer = DefaultServiceProviderContainer.Create(args);
+        Dic = DefaultServiceProviderContainer.Create(args);
 
         Task.Run(() => StartAsync(args, isHeadless)).Wait();
     }
@@ -63,7 +63,7 @@ public class TestApp : IAsyncDisposable
  #pragma warning disable CS4014
         Task.Run(() =>
         {
-            BuildAvaloniaApp(isHeadless, ServiceProviderContainer)
+            BuildAvaloniaApp(isHeadless, Dic)
                 .StartWithClassicDesktopLifetime(args);
 
             _sync.Set();

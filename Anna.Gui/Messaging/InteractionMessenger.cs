@@ -6,11 +6,11 @@ namespace Anna.Gui.Messaging;
 
 public class InteractionMessenger : IHasServiceProviderContainer
 {
-    public IServiceProviderContainer ServiceProviderContainer { get; }
+    public IServiceProviderContainer Dic { get; }
 
     public InteractionMessenger(IServiceProviderContainer dic)
     {
-        ServiceProviderContainer = dic;
+        Dic = dic;
     }
 
     public event InteractionMessageRaisedEventHandler? Raised;

@@ -18,7 +18,7 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
     public const string MessageKeyInformation = nameof(MessageKeyInformation);
     public const string MessageKeyYesNoConfirmation = nameof(MessageKeyYesNoConfirmation);
 
-    public Resources R => _resourcesHolder.Instance;
+    public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
     public DelegateCommand OkCommand => _okCommand ??= CreateButtonCommand(DialogResultTypes.Ok);
     public DelegateCommand CancelCommand => _cancelCommand ??= CreateButtonCommand(DialogResultTypes.Cancel);
@@ -30,9 +30,6 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
 
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
-    private readonly ResourcesHolder _resourcesHolder;
-    private readonly AppConfig _appConfig;
-    private readonly ILoggerUseCase _logger;
     private DelegateCommand? _okCommand;
     private DelegateCommand? _cancelCommand;
     private DelegateCommand? _yesCommand;
@@ -40,31 +37,22 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
     private ReadOnlyReactiveProperty<FontFamily>? _ViewerFontFamily;
     private ReadOnlyReactiveProperty<double>? _ViewerFontSize;
 
-    protected WindowViewModelBase(
-        IServiceProviderContainer dic,
-        ResourcesHolder resourcesHolder,
-        AppConfig appConfig,
-        ILoggerUseCase logger,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, objectLifetimeChecker)
+    protected WindowViewModelBase(IServiceProviderContainer dic)
+        : base(dic)
     {
-        _resourcesHolder = resourcesHolder;
-        _appConfig = appConfig;
-        _logger = logger;
-
         Observable
             .FromEventPattern(
-                h => _resourcesHolder.CultureChanged += h,
-                h => _resourcesHolder.CultureChanged -= h)
+                h => Dic.GetInstance<ResourcesHolder>().CultureChanged += h,
+                h => Dic.GetInstance<ResourcesHolder>().CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
-        _logger.Start(GetType().Name);
+        Dic.GetInstance<ILoggerUseCase>().Start(GetType().Name);
     }
 
     public override void Dispose()
     {
-        _logger.End(GetType().Name);
+        Dic.GetInstance<ILoggerUseCase>().End(GetType().Name);
 
         base.Dispose();
 
@@ -85,7 +73,7 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
 
     private ReadOnlyReactiveProperty<FontFamily> CreateViewerFontFamily()
     {
-        return _appConfig.Data
+        return Dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.ViewerFontFamily)
             .ToReadOnlyReactiveProperty()
             .AddTo(Trash)!;
@@ -93,7 +81,7 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
 
     private ReadOnlyReactiveProperty<double> CreateViewerFontSize()
     {
-        return _appConfig.Data
+        return Dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.ViewerFontSize)
             .ToReadOnlyReactiveProperty()
             .AddTo(Trash);

@@ -30,7 +30,7 @@ public class DesktopTestFixture : IDisposable
 
     public void Teardown()
     {
-        App.ServiceProviderContainer.GetInstance<App>().Folders[0].Path = ConfigFolder.WorkPath;
+        App.Dic.GetInstance<App>().Folders[0].Path = ConfigFolder.WorkPath;
         ConfigFolder.DeleteWorkFolder();
 
         {

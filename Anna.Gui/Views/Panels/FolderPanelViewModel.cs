@@ -1,6 +1,5 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
-using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
@@ -8,7 +7,6 @@ using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
 using Anna.Strings;
 using Anna.UseCase;
-using Avalonia.Media;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
@@ -22,26 +20,20 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
     public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; }
     public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; }
 
-    public Resources R => _resourcesHolder.Instance;
+    public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
     public readonly FolderPanelShortcutKey ShortcutKey;
 
     public ReactivePropertySlim<int> CursorIndex { get; }
 
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
-    
-    private readonly ResourcesHolder _resourcesHolder;
+
     private EntryViewModel? _oldEntry;
     private readonly bool _isBufferingUpdate = false;
 
-    public FolderPanelViewModel(
-        IServiceProviderContainer dic,
-        ResourcesHolder resourcesHolder,
-        AppConfig appConfig,
-        IObjectLifetimeCheckerUseCase objectLifetimeChecker)
-        : base(dic, objectLifetimeChecker)
+    public FolderPanelViewModel(IServiceProviderContainer dic)
+        : base(dic)
     {
-        _resourcesHolder = resourcesHolder;
         ShortcutKey = dic.GetInstance<FolderPanelShortcutKey>().AddTo(Trash);
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
@@ -51,8 +43,8 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
 
         Observable
             .FromEventPattern(
-                h => _resourcesHolder.CultureChanged += h,
-                h => _resourcesHolder.CultureChanged -= h)
+                h => Dic.GetInstance<ResourcesHolder>().CultureChanged += h,
+                h => Dic.GetInstance<ResourcesHolder>().CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 

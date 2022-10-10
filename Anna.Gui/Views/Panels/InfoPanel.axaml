@@ -8,8 +8,8 @@
              d:DesignWidth="800"
              x:CompileBindings="True"
              x:DataType="panels:InfoPanelViewModel"
-             FontFamily="avares://Anna.Gui/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
-             FontSize="14"
+             FontFamily="{Binding ViewerFontFamily.Value}"
+             FontSize="{Binding ViewerFontSize.Value}"
              mc:Ignorable="d">
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->

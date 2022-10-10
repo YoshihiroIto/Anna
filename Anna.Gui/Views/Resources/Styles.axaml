@@ -1,6 +1,9 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:CompileBindings="True">
     <Style Selector="Window">
         <Setter Property="FontFamily" Value="/Assets/InGenUI-Regular.ttf#InGen UI" />
+        <Setter Property="FontSize" Value="12" />
     </Style>
 
     <Style Selector="MenuItem">
@@ -14,7 +17,6 @@
     </Style>
 
     <Style Selector="Window.dialog">
-        <Setter Property="FontSize" Value="12" />
         <Setter Property="Padding" Value="12" />
         <Setter Property="CanResize" Value="False" />
         <Setter Property="ShowInTaskbar" Value="False" />

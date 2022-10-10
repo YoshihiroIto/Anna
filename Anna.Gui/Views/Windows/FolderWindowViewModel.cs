@@ -54,7 +54,7 @@ public class FolderWindowViewModel : HasModelRefViewModelBase<Folder>, ILocaliza
 
         FolderPanelViewModel = _dic.GetInstance<FolderPanelViewModel, Folder>(Model)
             .AddTo(Trash);
-
+        
         _dic.GetInstance<App>().Folders.CollectionChangedAsObservable()
             .Subscribe(_ =>
             {

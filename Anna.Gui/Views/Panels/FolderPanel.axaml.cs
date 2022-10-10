@@ -75,13 +75,21 @@ public partial class FolderPanel : UserControl, IFolderPanelShortcutKeyReceiver
     public FolderPanel()
     {
         InitializeComponent();
+        
+        LayoutUpdated += (_, _) => UpdateItemCellSize();
+        
+        PropertyChanged += (_, e) =>
+        {
+            if (e.Property == FontFamilyProperty)
+                Layout.FontFamily = FontFamily;
+            else if (e.Property == FontSizeProperty)
+                Layout.FontSize = FontSize;
+        };
     }
 
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
-
-        LayoutUpdated += (_, _) => UpdateItemCellSize();
     }
 
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);

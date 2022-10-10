@@ -1,5 +1,4 @@
 ﻿<base:DialogBase x:Class="Anna.Gui.Views.Dialogs.EntryDisplayDialog"
-                 Classes="dialog"
                  xmlns="https://github.com/avaloniaui"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:base="clr-namespace:Anna.Gui.Views.Dialogs.Base"
@@ -22,8 +21,6 @@
                  x:CompileBindings="True"
                  x:DataType="dialogs:EntryDisplayDialogViewModel"
                  CanResize="True"
-                 FontFamily="avares://Anna.Gui/Assets/UDEVGothicNF-Regular.ttf#UDEV Gothic NF"
-                 FontSize="14"
                  SizeToContent="Manual"
                  mc:Ignorable="d">
     <Design.DataContext>
@@ -38,8 +35,7 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}"
-                                              Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base:DialogViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
             <behaviors1:WindowInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>

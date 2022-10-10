@@ -1,6 +1,8 @@
 ﻿using Anna.Constants;
 using Anna.UseCase;
+using Avalonia.Media;
 using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace Anna.DomainModel.Config;
 
@@ -14,6 +16,12 @@ public class AppConfig : ConfigBase<AppConfigData>
 
 public class AppConfigData : ConfigData
 {
+    public static readonly FontFamily DefaultViewerFontFamily =
+        new(new Uri("avares://Anna.Gui/Assets/UDEVGothicNF-Regular.ttf"), "UDEV Gothic NF");
+
+    public const double DefaultViewerFontSize = 14;
+    
+    
     #region Culture
 
     private Cultures _Culture;
@@ -25,7 +33,7 @@ public class AppConfigData : ConfigData
     }
 
     #endregion
-
+    
 
     #region Editor1
 
@@ -87,6 +95,32 @@ public class AppConfigData : ConfigData
     {
         get => _textViewerMaxBufferSize;
         set => SetProperty(ref _textViewerMaxBufferSize, value);
+    }
+
+    #endregion
+
+    #region ViewerFontFamily
+
+    private FontFamily _ViewerFontFamily = DefaultViewerFontFamily;
+
+    [JsonIgnore]
+    public FontFamily ViewerFontFamily
+    {
+        get => _ViewerFontFamily;
+        set => SetProperty(ref _ViewerFontFamily, value);
+    }
+
+    #endregion
+
+
+    #region ViewerFontSize
+
+    private double _ViewerFontSize = DefaultViewerFontSize;
+
+    public double ViewerFontSize
+    {
+        get => _ViewerFontSize;
+        set => SetProperty(ref _ViewerFontSize, value);
     }
 
     #endregion

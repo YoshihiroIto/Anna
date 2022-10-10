@@ -1,4 +1,5 @@
-﻿using Anna.Foundation;
+﻿using Anna.DomainModel.Config;
+using Anna.Foundation;
 using Avalonia;
 using Avalonia.Media;
 using System;
@@ -12,8 +13,7 @@ public class FolderPanelLayout : NotificationObject
 {
     #region FontFamily
 
-    private FontFamily _FontFamily =
-        new(new Uri("avares://Anna.Gui/Assets/UDEVGothicNF-Regular.ttf"), "UDEV Gothic NF");
+    private FontFamily _FontFamily = AppConfigData.DefaultViewerFontFamily;
 
     public FontFamily FontFamily
     {
@@ -32,7 +32,7 @@ public class FolderPanelLayout : NotificationObject
 
     #region FontSize
 
-    private double _FontSize = 14;
+    private double _FontSize = AppConfigData.DefaultViewerFontSize;
 
     public double FontSize
     {

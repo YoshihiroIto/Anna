@@ -5,6 +5,7 @@
                   xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
                   xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                   xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
+                  xmlns:converters="clr-namespace:Anna.Gui.Views.Converters"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -40,6 +41,6 @@
         <TextBlock Text="{Binding LeaderName}" />
         <TextBlock Text="{Binding FileCount.Value}" />
         <TextBlock Text="{Binding FolderCount.Value}" />
-        <TextBlock Text="{Binding AllSize.Value, StringFormat='{}{0:#,0}'}" />
+        <TextBlock Text="{Binding AllSize.Value, Converter={x:Static converters:BytesValueToHumanizedConverter.Default}}" />
     </StackPanel>
 </base1:WindowBase>

@@ -13,8 +13,10 @@ public static class StringHelper
         try
         {
             var readLength = await source.ReadAsync(buf);
+            if (readLength == 0)
+                return ("", true);
+            
             var encoding = CharsetDetector.DetectFromBytes(buf, 0, Math.Min(readLength, 4096));
-
             if (encoding?.Detected is null)
                 return ("", false);
 

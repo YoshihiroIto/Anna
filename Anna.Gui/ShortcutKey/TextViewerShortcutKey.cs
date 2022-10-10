@@ -34,38 +34,39 @@ public sealed class TextViewerShortcutKey : ShortcutKeyBase
 
     private static async ValueTask CloseAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (ITextViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
-        await r.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
+        await receiver.Messenger.RaiseAsync(
+            new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
     }
 
     private ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
     {
-        var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (ITextViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
-        return OpenFileByEditorAsync(index, r.TargetFilepath, r.LineIndex, r.Messenger);
+        return OpenFileByEditorAsync(index, receiver.TargetFilepath, receiver.LineIndex, receiver.Messenger);
     }
 
     private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (ITextViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
-        return StartAssociatedAppAsync(r.TargetFilepath, r.Messenger);
+        return StartAssociatedAppAsync(receiver.TargetFilepath, receiver.Messenger);
     }
 
     private static ValueTask ScrollAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)
     {
-        var r = shortcutKeyReceiver as ITextViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (ITextViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
-        var lineHeight = r.CalcLineHeight();
-        var pageHeight = TrimmingScrollY(r.TextEditor.TextArea.Bounds.Height);
+        var lineHeight = receiver.CalcLineHeight();
+        var pageHeight = TrimmingScrollY(receiver.TextEditor.TextArea.Bounds.Height);
 
-        r.ScrollViewer.Offset = dir switch
+        receiver.ScrollViewer.Offset = dir switch
         {
-            Directions.Up => new Vector(0, TrimmingScrollY(r.ScrollViewer.Offset.Y - lineHeight)),
-            Directions.Down => new Vector(0, TrimmingScrollY(r.ScrollViewer.Offset.Y + lineHeight)),
-            Directions.Left => new Vector(0, TrimmingScrollY(r.ScrollViewer.Offset.Y - pageHeight)),
-            Directions.Right => new Vector(0, TrimmingScrollY(r.ScrollViewer.Offset.Y + pageHeight)),
+            Directions.Up => new Vector(0, TrimmingScrollY(receiver.ScrollViewer.Offset.Y - lineHeight)),
+            Directions.Down => new Vector(0, TrimmingScrollY(receiver.ScrollViewer.Offset.Y + lineHeight)),
+            Directions.Left => new Vector(0, TrimmingScrollY(receiver.ScrollViewer.Offset.Y - pageHeight)),
+            Directions.Right => new Vector(0, TrimmingScrollY(receiver.ScrollViewer.Offset.Y + pageHeight)),
             _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
         };
 

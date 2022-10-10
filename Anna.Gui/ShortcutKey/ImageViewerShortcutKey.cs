@@ -28,22 +28,23 @@ public sealed class ImageViewerShortcutKey : ShortcutKeyBase
 
     private static async ValueTask CloseAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IImageViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IImageViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
-        await r.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
+        await receiver.Messenger.RaiseAsync(
+            new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
     }
 
     private ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
     {
-        var r = shortcutKeyReceiver as IImageViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IImageViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
-        return OpenFileByEditorAsync(index, r.TargetFilepath, 1, r.Messenger);
+        return OpenFileByEditorAsync(index, receiver.TargetFilepath, 1, receiver.Messenger);
     }
 
     private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IImageViewerShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IImageViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
-        return StartAssociatedAppAsync(r.TargetFilepath, r.Messenger);
+        return StartAssociatedAppAsync(receiver.TargetFilepath, receiver.Messenger);
     }
 }

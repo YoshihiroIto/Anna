@@ -39,119 +39,119 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
     private async ValueTask SelectSortModeAndOrderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        var result = await WindowOperator.SelectSortModeAndOrderAsync(Dic, r.Owner);
+        var result = await WindowOperator.SelectSortModeAndOrderAsync(Dic, receiver.Owner);
         if (result.IsCancel)
             return;
 
-        r.Folder.SetSortModeAndOrder(result.SortMode, result.SortOrder);
+        receiver.Folder.SetSortModeAndOrder(result.SortMode, result.SortOrder);
     }
 
     private async ValueTask JumpFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        var result = await WindowOperator.JumpFolderAsync(Dic, r.Owner);
+        var result = await WindowOperator.JumpFolderAsync(Dic, receiver.Owner);
         if (result.IsCancel)
             return;
 
         if (result.Path == "")
             return;
 
-        if (await CheckIsAccessibleAsync(result.Path, r.Messenger) == false)
+        if (await CheckIsAccessibleAsync(result.Path, receiver.Messenger) == false)
             return;
 
-        r.Folder.Path = result.Path;
+        receiver.Folder.Path = result.Path;
     }
 
     private static ValueTask MoveCursorAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        r.MoveCursor(dir);
+        receiver.MoveCursor(dir);
         return ValueTask.CompletedTask;
     }
 
     private static ValueTask ToggleSelectionCursorEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver, bool isMoveDown)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        r.ToggleSelectionCursorEntry(isMoveDown);
+        receiver.ToggleSelectionCursorEntry(isMoveDown);
         return ValueTask.CompletedTask;
     }
 
     private async ValueTask OpenEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        var target = r.CurrentEntry;
+        var target = receiver.CurrentEntry;
 
         if (target.IsFolder)
         {
-            if (await CheckIsAccessibleAsync(target.Path, r.Messenger) == false)
+            if (await CheckIsAccessibleAsync(target.Path, receiver.Messenger) == false)
                 return;
 
-            r.Folder.Path = target.Path;
+            receiver.Folder.Path = target.Path;
         }
         else
         {
-            if (await CheckIsAccessibleAsync(target.Path, r.Messenger) == false)
+            if (await CheckIsAccessibleAsync(target.Path, receiver.Messenger) == false)
                 return;
 
-            await WindowOperator.EntryDisplay(Dic, r.Owner, target);
+            await WindowOperator.EntryDisplay(Dic, receiver.Owner, target);
         }
     }
 
     private ValueTask OpenEntryByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        return r.CurrentEntry.IsFolder
+        return receiver.CurrentEntry.IsFolder
             ? ValueTask.CompletedTask
-            : OpenFileByEditorAsync(index, r.CurrentEntry.Path, 1, r.Messenger);
+            : OpenFileByEditorAsync(index, receiver.CurrentEntry.Path, 1, receiver.Messenger);
     }
 
     private ValueTask OpenEntryByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        return StartAssociatedAppAsync(r.CurrentEntry.Path, r.Messenger);
+        return StartAssociatedAppAsync(receiver.CurrentEntry.Path, receiver.Messenger);
     }
 
     private async ValueTask JumpToParentFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        var parentDir = new DirectoryInfo(r.Folder.Path).Parent?.FullName;
+        var parentDir = new DirectoryInfo(receiver.Folder.Path).Parent?.FullName;
         if (parentDir is null)
             return;
 
-        if (await CheckIsAccessibleAsync(r.Folder.Path, r.Messenger) == false)
+        if (await CheckIsAccessibleAsync(receiver.Folder.Path, receiver.Messenger) == false)
             return;
 
-        r.Folder.Path = parentDir;
+        receiver.Folder.Path = parentDir;
     }
 
     private async ValueTask JumpToRootFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        var rootDir = Path.GetPathRoot(r.Folder.Path);
+        var rootDir = Path.GetPathRoot(receiver.Folder.Path);
         if (rootDir is null)
             return;
 
-        if (await CheckIsAccessibleAsync(rootDir, r.Messenger) == false)
+        if (await CheckIsAccessibleAsync(rootDir, receiver.Messenger) == false)
             return;
 
-        r.Folder.Path = rootDir;
+        receiver.Folder.Path = rootDir;
     }
 
     private async ValueTask CopyEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        var r = shortcutKeyReceiver as IFolderPanelShortcutKeyReceiver ?? throw new InvalidOperationException();
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
-        var result = await WindowOperator.EntryCopyAsync(Dic, r.Owner);
+        var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner);
         if (result.IsCancel)
             return;
     }

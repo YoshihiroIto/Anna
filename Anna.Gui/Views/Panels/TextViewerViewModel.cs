@@ -29,7 +29,7 @@ public class TextViewerViewModel : HasModelRefViewModelBase<Entry>, ILocalizable
         return isText ? result : Resources.Message_BinaryFileCannotBePreviewed;
     }
 
-    public TextViewerViewModel(IServiceProviderContainer dic)
+    public TextViewerViewModel(IServiceProvider dic)
         : base(dic)
     {
         ShortcutKey = dic.GetInstance<TextViewerShortcutKey>().AddTo(Trash);

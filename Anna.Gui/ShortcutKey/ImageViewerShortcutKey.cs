@@ -1,16 +1,16 @@
 ﻿using Anna.DomainModel.Config;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows.Base;
-using Anna.UseCase;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.ShortcutKey;
 
 public class ImageViewerShortcutKey : ShortcutKeyBase
 {
-    public ImageViewerShortcutKey(IServiceProviderContainer dic)
+    public ImageViewerShortcutKey(IServiceProvider dic)
         : base(dic)
     {
     }

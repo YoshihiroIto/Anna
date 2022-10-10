@@ -2,7 +2,6 @@
 using Anna.DomainModel.Config;
 using Anna.DomainModel.FileSystem;
 using Anna.Gui;
-using Anna.Gui.ShortcutKey;
 using Anna.Gui.Views.Windows.Base;
 using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
@@ -11,11 +10,11 @@ using System.Runtime;
 
 namespace Anna.ServiceProvider;
 
-public class DefaultServiceProviderContainer : ServiceProviderContainerBase
+public class DefaultServiceProvider : ServiceProviderBase
 {
     private readonly ILoggerUseCase _logger;
     
-    private DefaultServiceProviderContainer(string logOutputDir, string appConfigFilePath)
+    private DefaultServiceProvider(string logOutputDir, string appConfigFilePath)
     {
         RegisterSingleton<IObjectLifetimeCheckerUseCase,
 #if DEBUG
@@ -76,7 +75,7 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
         _logger.Destroy();
     }
 
-    public static DefaultServiceProviderContainer Create(string[] args)
+    public static DefaultServiceProvider Create(string[] args)
     {
         var commandLine = CommandLine.Parse(args);
 
@@ -93,6 +92,6 @@ public class DefaultServiceProviderContainer : ServiceProviderContainerBase
             ProfileOptimization.StartProfile("Startup.Profile");
         }
 
-        return new DefaultServiceProviderContainer(configDir, appConfigFilePath);
+        return new DefaultServiceProvider(configDir, appConfigFilePath);
     }
 }

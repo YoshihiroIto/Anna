@@ -26,7 +26,7 @@ public class ImageViewerViewModel : HasModelRefViewModelBase<Entry>
 
     #endregion
 
-    public ImageViewerViewModel(IServiceProviderContainer dic)
+    public ImageViewerViewModel(IServiceProvider dic)
         : base(dic)
     {
         ShortcutKey = dic.GetInstance<ImageViewerShortcutKey>().AddTo(Trash);

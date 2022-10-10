@@ -10,7 +10,7 @@ public class ViewModelBase : DisposableNotificationObject
 
     private InteractionMessenger? _messenger;
 
-    protected ViewModelBase(IServiceProviderContainer dic)
+    protected ViewModelBase(IServiceProvider dic)
         : base(dic)
     {
     }

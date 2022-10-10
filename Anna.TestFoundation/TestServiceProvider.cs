@@ -5,9 +5,9 @@ using Anna.UseCase;
 
 namespace Anna.TestFoundation;
 
-public class TestServiceProviderContainer : ServiceProviderContainerBase
+public class TestServiceProvider : ServiceProviderBase
 {
-    public TestServiceProviderContainer()
+    public TestServiceProvider()
     {
         RegisterSingleton<IObjectLifetimeCheckerUseCase, NopObjectLifetimeChecker>();
         RegisterSingleton<ILoggerUseCase, NopLogger>();

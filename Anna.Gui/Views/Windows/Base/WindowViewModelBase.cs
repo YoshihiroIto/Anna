@@ -9,6 +9,7 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Linq;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Base;
 
@@ -37,7 +38,7 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
     private ReadOnlyReactiveProperty<FontFamily>? _ViewerFontFamily;
     private ReadOnlyReactiveProperty<double>? _ViewerFontSize;
 
-    protected WindowViewModelBase(IServiceProviderContainer dic)
+    protected WindowViewModelBase(IServiceProvider dic)
         : base(dic)
     {
         Observable

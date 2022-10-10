@@ -1,14 +1,15 @@
 ﻿using Anna.UseCase;
 using System;
 using System.Threading.Tasks;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.Messaging;
 
 public class InteractionMessenger : IHasServiceProviderContainer
 {
-    public IServiceProviderContainer Dic { get; }
+    public IServiceProvider Dic { get; }
 
-    public InteractionMessenger(IServiceProviderContainer dic)
+    public InteractionMessenger(IServiceProvider dic)
     {
         Dic = dic;
     }

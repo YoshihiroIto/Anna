@@ -1,11 +1,12 @@
 ﻿using Anna.UseCase;
 using System.Reactive.Disposables;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Foundation;
 
 public class DisposableNotificationObject : NotificationObject, IDisposable
 {
-    protected readonly IServiceProviderContainer Dic;
+    protected readonly IServiceProvider Dic;
     
     private CompositeDisposable? _trashes;
     private bool _disposed;
@@ -14,7 +15,7 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
         LazyInitializer.EnsureInitialized(ref _trashes, () => new CompositeDisposable()) ??
         throw new NullReferenceException();
 
-    public DisposableNotificationObject(IServiceProviderContainer dic)
+    public DisposableNotificationObject(IServiceProvider dic)
     {
         Dic = dic;
         

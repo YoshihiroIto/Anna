@@ -1,6 +1,6 @@
 ﻿using Anna.Foundation;
-using Anna.UseCase;
 using System.Collections.ObjectModel;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.DomainModel;
 
@@ -10,7 +10,7 @@ public class App : DisposableNotificationObject
 
     private readonly ObservableCollection<Folder> _folders = new();
 
-    public App(IServiceProviderContainer dic)
+    public App(IServiceProvider dic)
         : base(dic)
     {
         Folders = new ReadOnlyObservableCollection<Folder>(_folders);

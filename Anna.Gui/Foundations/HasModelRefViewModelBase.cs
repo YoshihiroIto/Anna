@@ -6,7 +6,7 @@ public class HasModelRefViewModelBase<TModel> : ViewModelBase, IHasArg<TModel>
 {
     public readonly TModel Model;
 
-    protected HasModelRefViewModelBase(IServiceProviderContainer dic)
+    protected HasModelRefViewModelBase(IServiceProvider dic)
         : base(dic)
     {
         dic.PopArg(out Model);

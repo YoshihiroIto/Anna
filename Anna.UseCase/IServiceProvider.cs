@@ -1,6 +1,6 @@
 ﻿namespace Anna.UseCase;
 
-public interface IServiceProviderContainer
+public interface IServiceProvider
 {
     TService GetInstance<TService>() where TService : class;
 
@@ -17,5 +17,5 @@ public interface IHasArg<TArg>
 
 public interface IHasServiceProviderContainer
 {
-    IServiceProviderContainer Dic { get; }
+    IServiceProvider Dic { get; }
 }

@@ -8,6 +8,7 @@ using Anna.UseCase;
 using Reactive.Bindings.Extensions;
 using System;
 using System.IO;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
@@ -18,7 +19,7 @@ public class EntryDisplayDialogViewModel
 
     public ViewModelBase? ContentViewModel { get; }
 
-    public EntryDisplayDialogViewModel(IServiceProviderContainer dic)
+    public EntryDisplayDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
         switch (Model.Format)

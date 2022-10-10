@@ -2,17 +2,17 @@
 using Anna.DomainModel.Config;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows.Base;
-using Anna.UseCase;
 using Avalonia;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.ShortcutKey;
 
 public class TextViewerShortcutKey : ShortcutKeyBase
 {
-    public TextViewerShortcutKey(IServiceProviderContainer dic)
+    public TextViewerShortcutKey(IServiceProvider dic)
         : base(dic)
     {
     }

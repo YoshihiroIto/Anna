@@ -22,7 +22,7 @@ public class JumpFolderDialogViewModel
 
     public string CurrentFolderPath => Model.CurrentFolderPath;
 
-    public JumpFolderDialogViewModel(IServiceProviderContainer dic)
+    public JumpFolderDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
         Paths = Model.Config.Paths
@@ -78,7 +78,7 @@ public class JumpFolderPathViewModel : HasModelRefViewModelBase<JumpFolderConfig
     public ReactivePropertySlim<string> Path { get; }
     public ReactivePropertySlim<bool> IsEditing { get; }
 
-    public JumpFolderPathViewModel(IServiceProviderContainer dic)
+    public JumpFolderPathViewModel(IServiceProvider dic)
         : base(dic)
     {
         var isNumber = Model.Key is >= Avalonia.Input.Key.D0 and <= Avalonia.Input.Key.D9;

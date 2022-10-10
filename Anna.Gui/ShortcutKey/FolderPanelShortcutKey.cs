@@ -1,17 +1,17 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.Config;
 using Anna.Gui.Views.Windows;
-using Anna.UseCase;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.ShortcutKey;
 
 public class FolderPanelShortcutKey : ShortcutKeyBase
 {
-    public FolderPanelShortcutKey(IServiceProviderContainer dic)
+    public FolderPanelShortcutKey(IServiceProvider dic)
         : base(dic)
     {
     }

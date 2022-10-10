@@ -9,7 +9,7 @@ public class SortModeAndOrderDialogViewModel : WindowViewModelBase
     public SortModes ResultSortMode { get; set; }
     public SortOrders ResultSortOrder { get; set; }
 
-    public SortModeAndOrderDialogViewModel(IServiceProviderContainer dic)
+    public SortModeAndOrderDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
     }

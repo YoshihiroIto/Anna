@@ -6,12 +6,12 @@ using Anna.Gui.Interfaces;
 using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
 using Anna.Strings;
-using Anna.UseCase;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -31,7 +31,7 @@ public class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizab
     private EntryViewModel? _oldEntry;
     private readonly bool _isBufferingUpdate = false;
 
-    public FolderPanelViewModel(IServiceProviderContainer dic)
+    public FolderPanelViewModel(IServiceProvider dic)
         : base(dic)
     {
         ShortcutKey = dic.GetInstance<FolderPanelShortcutKey>().AddTo(Trash);

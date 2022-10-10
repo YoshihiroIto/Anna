@@ -17,7 +17,7 @@ namespace Anna.Gui.Views.Windows;
 public static class WindowOperator
 {
     public static async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)>
-        SelectSortModeAndOrderAsync(IServiceProviderContainer dic, Window owner)
+        SelectSortModeAndOrderAsync(IServiceProvider dic, Window owner)
     {
         using var viewModel = dic.GetInstance<SortModeAndOrderDialogViewModel>();
 
@@ -31,7 +31,7 @@ public static class WindowOperator
     }
 
     public static async ValueTask<(bool IsCancel, string Path)>
-        JumpFolderAsync(IServiceProviderContainer dic, Window owner)
+        JumpFolderAsync(IServiceProvider dic, Window owner)
     {
         var currentFolderPath = ((owner as FolderWindow)?.DataContext as FolderWindowViewModel)?.Model.Path ?? "";
 
@@ -47,7 +47,7 @@ public static class WindowOperator
         return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
     }
 
-    public static async ValueTask EntryDisplay(IServiceProviderContainer dic, Window owner, Entry target)
+    public static async ValueTask EntryDisplay(IServiceProvider dic, Window owner, Entry target)
     {
         using var viewModel = dic.GetInstance<EntryDisplayDialogViewModel, Entry>(target);
 
@@ -58,7 +58,7 @@ public static class WindowOperator
     }
 
     public static async ValueTask<DialogResultTypes> DisplayInformationAsync(
-        IServiceProviderContainer dic,
+        IServiceProvider dic,
         Window owner,
         string title,
         string text)
@@ -74,7 +74,7 @@ public static class WindowOperator
     }
 
     public static async ValueTask<DialogResultTypes> DisplayConfirmationAsync(
-        IServiceProviderContainer dic,
+        IServiceProvider dic,
         Window owner,
         string title,
         string text,

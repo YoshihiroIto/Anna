@@ -5,11 +5,11 @@ using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
-using Anna.UseCase;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows;
 
@@ -23,7 +23,7 @@ public class FolderWindowViewModel : HasModelWindowViewModelBase<Folder>
 
     private bool _isDispose;
 
-    public FolderWindowViewModel(IServiceProviderContainer dic)
+    public FolderWindowViewModel(IServiceProvider dic)
         : base(dic)
     {
         Observable

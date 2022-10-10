@@ -2,12 +2,12 @@
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Strings;
-using Anna.UseCase;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
 using System;
 using System.Reactive.Linq;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -21,7 +21,7 @@ public class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizable
     public ReactiveProperty<long> TotalSize { get; }
     public ReactiveProperty<long> SelectedTotalSize { get; }
 
-    public InfoPanelViewModel(IServiceProviderContainer dic)
+    public InfoPanelViewModel(IServiceProvider dic)
         : base(dic)
     {
         var selectedEntries = Model.Entries

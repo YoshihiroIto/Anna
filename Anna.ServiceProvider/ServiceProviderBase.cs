@@ -1,16 +1,17 @@
 ﻿using Anna.UseCase;
 using SimpleInjector;
 using System.Diagnostics;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.ServiceProvider;
 
-public class ServiceProviderContainerBase : Container, IServiceProviderContainer
+public class ServiceProviderBase : Container, IServiceProvider
 {
     private readonly Stack<object> _args = new();
     
-    public ServiceProviderContainerBase()
+    public ServiceProviderBase()
     {
-        RegisterSingleton<IServiceProviderContainer>(() => this);
+        RegisterSingleton<IServiceProvider>(() => this);
 
 #if RELEASE
         Options.EnableAutoVerification = false;

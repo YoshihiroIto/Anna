@@ -6,7 +6,7 @@ namespace Anna.DomainModel.Tests;
 
 public class FileSystemFolderTests : IDisposable
 {
-    private readonly TestServiceProviderContainer _dic = new();
+    private readonly TestServiceProvider _dic = new();
     private readonly TempFolder _tempFolder = new();
 
     public void Dispose()

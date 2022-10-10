@@ -2,7 +2,6 @@ using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Views.Windows;
-using Anna.UseCase;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -11,12 +10,13 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Disposables;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui;
 
 public class GuiApp : Application
 {
-    private readonly IServiceProviderContainer? _dic;
+    private readonly IServiceProvider? _dic;
     private readonly Action? _onExit;
     private readonly CompositeDisposable _trash = new();
     
@@ -24,7 +24,7 @@ public class GuiApp : Application
     {
     }
 
-    public GuiApp(IServiceProviderContainer dic, Action? onExit)
+    public GuiApp(IServiceProvider dic, Action? onExit)
     {
         _dic = dic;
         _onExit = onExit;

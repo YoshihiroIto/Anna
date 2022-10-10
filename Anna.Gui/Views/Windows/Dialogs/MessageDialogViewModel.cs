@@ -8,7 +8,7 @@ public class MessageDialogViewModel : HasModelWindowViewModelBase<(string Title,
     public string Title => Model.Title;
     public string Text => Model.Text;
 
-    public MessageDialogViewModel(IServiceProviderContainer dic)
+    public MessageDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
     }

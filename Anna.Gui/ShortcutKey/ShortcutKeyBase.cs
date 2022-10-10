@@ -10,6 +10,7 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using IServiceProvider=Anna.UseCase.IServiceProvider;
 
 namespace Anna.Gui.ShortcutKey;
 
@@ -20,7 +21,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
     private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
     private readonly IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> _operators;
 
-    protected ShortcutKeyBase(IServiceProviderContainer dic)
+    protected ShortcutKeyBase(IServiceProvider dic)
         : base(dic)
     {
         // ReSharper disable once VirtualMemberCallInConstructor

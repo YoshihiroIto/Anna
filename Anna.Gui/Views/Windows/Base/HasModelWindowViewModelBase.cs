@@ -6,7 +6,7 @@ public class HasModelWindowViewModelBase<TModel> : WindowViewModelBase, IHasArg<
 {
     public readonly TModel Model;
 
-    protected HasModelWindowViewModelBase(IServiceProviderContainer dic)
+    protected HasModelWindowViewModelBase(IServiceProvider dic)
         : base(dic)
     {
         dic.PopArg(out Model);

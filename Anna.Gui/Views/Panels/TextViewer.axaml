@@ -1,4 +1,6 @@
-﻿<UserControl x:Class="Anna.Gui.Views.Panels.TextViewer"
+﻿<!--  ReSharper disable Xaml.PossibleNullReferenceException  -->
+<!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+<UserControl x:Class="Anna.Gui.Views.Panels.TextViewer"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
@@ -9,14 +11,19 @@
              d:DesignWidth="800"
              x:CompileBindings="True"
              x:DataType="panels:TextViewerViewModel"
+             FontFamily="{ReflectionBinding DataContext.ViewerFontFamily.Value,
+                                            RelativeSource={RelativeSource AncestorType=WindowBase}}"
+             FontSize="{ReflectionBinding DataContext.ViewerFontSize.Value,
+                                          RelativeSource={RelativeSource AncestorType=WindowBase}}"
              mc:Ignorable="d">
+    <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
+    <!--  ReSharper restore Xaml.PossibleNullReferenceException  -->
+    
     <UserControl.Styles>
         <StyleInclude Source="/Views/Resources/Styles.axaml" />
     </UserControl.Styles>
 
     <avaloniaEdit:TextEditor x:Name="ViewTextEditor"
-                             FontFamily="{Binding ViewerFontFamily.Value}"
-                             FontSize="{Binding ViewerFontSize.Value}"
                              HorizontalScrollBarVisibility="Disabled"
                              IsReadOnly="True"
                              ShowLineNumbers="True" />

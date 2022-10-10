@@ -25,17 +25,20 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
     public DelegateCommand YesCommand => _yesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
     public DelegateCommand NoCommand => _noCommand ??= CreateButtonCommand(DialogResultTypes.No);
 
-    public ReadOnlyReactiveProperty<FontFamily> ViewerFontFamily { get; }
-    public ReadOnlyReactiveProperty<double> ViewerFontSize { get; }
+    public ReadOnlyReactiveProperty<FontFamily> ViewerFontFamily => _ViewerFontFamily ??= CreateViewerFontFamily();
+    public ReadOnlyReactiveProperty<double> ViewerFontSize => _ViewerFontSize ??= CreateViewerFontSize();
 
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
     private readonly ResourcesHolder _resourcesHolder;
+    private readonly AppConfig _appConfig;
     private readonly ILoggerUseCase _logger;
     private DelegateCommand? _okCommand;
     private DelegateCommand? _cancelCommand;
     private DelegateCommand? _yesCommand;
     private DelegateCommand? _noCommand;
+    private ReadOnlyReactiveProperty<FontFamily>? _ViewerFontFamily;
+    private ReadOnlyReactiveProperty<double>? _ViewerFontSize;
 
     protected WindowViewModelBase(
         IServiceProviderContainer dic,
@@ -46,6 +49,7 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
         : base(dic, objectLifetimeChecker)
     {
         _resourcesHolder = resourcesHolder;
+        _appConfig = appConfig;
         _logger = logger;
 
         Observable
@@ -53,18 +57,6 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
                 h => _resourcesHolder.CultureChanged += h,
                 h => _resourcesHolder.CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
-            .AddTo(Trash);
-
- #pragma warning disable CS8619
-        ViewerFontFamily = appConfig.Data
-            .ObserveProperty(x => x.ViewerFontFamily)
-            .ToReadOnlyReactiveProperty()
-            .AddTo(Trash);
- #pragma warning restore CS8619
-
-        ViewerFontSize = appConfig.Data
-            .ObserveProperty(x => x.ViewerFontSize)
-            .ToReadOnlyReactiveProperty()
             .AddTo(Trash);
 
         _logger.Start(GetType().Name);
@@ -89,6 +81,22 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
             Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
  #pragma warning restore CS4014
         });
+    }
+
+    private ReadOnlyReactiveProperty<FontFamily> CreateViewerFontFamily()
+    {
+        return _appConfig.Data
+            .ObserveProperty(x => x.ViewerFontFamily)
+            .ToReadOnlyReactiveProperty()
+            .AddTo(Trash)!;
+    }
+
+    private ReadOnlyReactiveProperty<double> CreateViewerFontSize()
+    {
+        return _appConfig.Data
+            .ObserveProperty(x => x.ViewerFontSize)
+            .ToReadOnlyReactiveProperty()
+            .AddTo(Trash);
     }
 }
 

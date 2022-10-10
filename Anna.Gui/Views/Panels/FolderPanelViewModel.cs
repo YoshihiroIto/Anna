@@ -9,6 +9,7 @@ using Anna.Strings;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using IServiceProvider=Anna.Service.IServiceProvider;
@@ -108,12 +109,16 @@ public sealed class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILo
             .Select(x => x.Model)
             .ToArray();
 
-        if (selectedEntries.Length > 0)
+        if (selectedEntries.Any())
             return selectedEntries;
 
-        return CursorEntry.Value is not null
-            ? new[] { CursorEntry.Value.Model }
-            : Array.Empty<Entry>();
+        if (CursorEntry.Value is null)
+            return Array.Empty<Entry>();
+
+        if (CursorEntry.Value.Model.IsSelectable == false)
+            return Array.Empty<Entry>();
+
+        return new[] { CursorEntry.Value.Model };
     }
 
     public void MoveCursor(Directions dir)

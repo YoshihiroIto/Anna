@@ -96,6 +96,8 @@ public partial class FolderPanel : UserControl, IFolderPanelShortcutKeyReceiver
     InteractionMessenger IShortcutKeyReceiver.Messenger => ViewModel.Messenger;
     Folder IFolderPanelShortcutKeyReceiver.Folder => ViewModel.Model;
     Entry IFolderPanelShortcutKeyReceiver.CurrentEntry => ViewModel.CursorEntry.Value?.Model ?? throw new InvalidOperationException();
+    Entry[] IFolderPanelShortcutKeyReceiver.TargetEntries => ViewModel.CollectTargetEntries();
+    
     void IFolderPanelShortcutKeyReceiver.MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
     void IFolderPanelShortcutKeyReceiver.ToggleSelectionCursorEntry(bool isMoveDown) => ViewModel.ToggleSelectionCursorEntry(isMoveDown);
     

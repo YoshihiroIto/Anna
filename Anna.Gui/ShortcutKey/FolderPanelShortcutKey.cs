@@ -150,7 +150,9 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
     private async ValueTask CopyEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
-
+        if (receiver.TargetEntries.Length == 0)
+            return;
+            
         var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner);
         if (result.IsCancel)
             return;

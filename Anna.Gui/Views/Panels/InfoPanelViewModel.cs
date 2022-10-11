@@ -1,7 +1,9 @@
 ﻿using Anna.DomainModel;
+using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Strings;
+using Avalonia.Media;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using Reactive.Bindings.Helpers;
@@ -20,6 +22,9 @@ public sealed class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILoca
 
     public ReactiveProperty<long> TotalSize { get; }
     public ReactiveProperty<long> SelectedTotalSize { get; }
+
+    public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily { get; }
+    public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
 
     public InfoPanelViewModel(IServiceProvider dic)
         : base(dic)
@@ -47,6 +52,16 @@ public sealed class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILoca
 
         TotalSize = new ReactiveProperty<long>().AddTo(Trash);
         SelectedTotalSize = new ReactiveProperty<long>().AddTo(Trash);
+
+        ViewerFontFamily = Dic.GetInstance<AppConfig>().Data
+            .ObserveProperty(x => x.ViewerFontFamily)
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash)!;
+
+        ViewerFontSize = Dic.GetInstance<AppConfig>().Data
+            .ObserveProperty(x => x.ViewerFontSize)
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash);
 
         Observable
             .Merge(Observable.Return(0).ToUnit())

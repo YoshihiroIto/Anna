@@ -21,6 +21,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
-      <ProjectReference Include="..\Anna.Strings\Anna.Strings.csproj" />
+      <ProjectReference Include="..\Anna.Localization\Anna.Localization.csproj" />
     </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
-using Anna.Strings;
+using Anna.Localization;
 using Avalonia.Media;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;

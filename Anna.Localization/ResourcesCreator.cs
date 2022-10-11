@@ -1,4 +1,4 @@
-﻿namespace Anna.Strings;
+﻿namespace Anna.Localization;
 
 public static class ResourcesCreator
 {

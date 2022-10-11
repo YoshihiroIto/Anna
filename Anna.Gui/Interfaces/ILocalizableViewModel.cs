@@ -1,4 +1,4 @@
-﻿using Anna.Strings;
+﻿using Anna.Localization;
 
 namespace Anna.Gui.Interfaces;
 

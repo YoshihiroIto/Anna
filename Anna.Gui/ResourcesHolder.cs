@@ -1,5 +1,5 @@
 ﻿using Anna.Constants;
-using Anna.Strings;
+using Anna.Localization;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

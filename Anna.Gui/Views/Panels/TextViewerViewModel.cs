@@ -4,8 +4,8 @@ using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.ShortcutKey;
+using Anna.Localization;
 using Anna.Service;
-using Anna.Strings;
 using Reactive.Bindings.Extensions;
 using System.Threading.Tasks;
 

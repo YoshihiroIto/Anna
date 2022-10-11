@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Log", "Anna.Log\Anna.L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service", "Anna.Service\Anna.Service.csproj", "{93428CFB-5007-4AE9-ADD7-F04601080B16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Strings", "Anna.Strings\Anna.Strings.csproj", "{53FD7635-7A60-45FC-86AA-2F280BBC86EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Localization", "Anna.Localization\Anna.Localization.csproj", "{53FD7635-7A60-45FC-86AA-2F280BBC86EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Entry.Desktop.Tests", "Anna.Entry.Desktop.Tests\Anna.Entry.Desktop.Tests.csproj", "{C1231E38-7D9C-432E-95B0-6F5847C33551}"
 EndProject

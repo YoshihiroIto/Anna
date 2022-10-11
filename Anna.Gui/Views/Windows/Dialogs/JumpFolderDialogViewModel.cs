@@ -2,8 +2,8 @@
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Localization;
 using Anna.Service;
-using Anna.Strings;
 using Avalonia.Input;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;

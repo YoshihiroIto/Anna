@@ -31,7 +31,7 @@ public sealed class ImageViewerShortcutKey : ShortcutKeyBase
         var receiver = (IImageViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
         await receiver.Messenger.RaiseAsync(
-            new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
+            new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose));
     }
 
     private ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)

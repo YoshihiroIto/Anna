@@ -2,7 +2,7 @@
 
 namespace Anna.Gui.Views.Windows.Base;
 
-public class HasModelWindowViewModelBase<TModel> : WindowViewModelBase, IHasArg<TModel>
+public class HasModelWindowViewModelBase<TModel> : WindowBaseViewModel, IHasArg<TModel>
 {
     public readonly TModel Model;
 

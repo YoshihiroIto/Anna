@@ -84,7 +84,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
             new InformationMessage(
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),
-                WindowViewModelBase.MessageKeyInformation));
+                WindowBaseViewModel.MessageKeyInformation));
 
         return false;
     }
@@ -100,7 +100,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
             ProcessHelper.Execute(editor.Editor, arguments);
 
             await messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close,
-                WindowViewModelBase.MessageKeyClose));
+                WindowBaseViewModel.MessageKeyClose));
         }
         catch
         {
@@ -111,7 +111,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                 new InformationMessage(
                     Resources.AppName,
                     string.Format(Resources.Message_FailedToStartEditor, editor.Editor),
-                    WindowViewModelBase.MessageKeyInformation));
+                    WindowBaseViewModel.MessageKeyInformation));
         }
     }
 
@@ -130,7 +130,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                 new InformationMessage(
                     Resources.AppName,
                     Resources.Message_FailedToStartAssociatedApp,
-                    WindowViewModelBase.MessageKeyInformation));
+                    WindowBaseViewModel.MessageKeyInformation));
         }
     }
 }

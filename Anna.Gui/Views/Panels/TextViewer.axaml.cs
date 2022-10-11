@@ -106,7 +106,7 @@ public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
     {
         if (e.Key == Key.Escape)
         {
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose));
             e.Handled = true;
         }
         else

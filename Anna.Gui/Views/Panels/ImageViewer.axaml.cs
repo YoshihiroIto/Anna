@@ -48,7 +48,7 @@ public partial class ImageViewer : UserControl, IImageViewerShortcutKeyReceiver
     {
         if (e.Key == Key.Escape)
         {
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowViewModelBase.MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose));
             e.Handled = true;
         }
         else

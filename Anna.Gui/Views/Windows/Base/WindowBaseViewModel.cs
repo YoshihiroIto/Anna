@@ -13,7 +13,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Base;
 
-public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
+public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
 {
     public const string MessageKeyClose = nameof(MessageKeyClose);
     public const string MessageKeyInformation = nameof(MessageKeyInformation);
@@ -38,7 +38,7 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
     private ReadOnlyReactivePropertySlim<FontFamily>? _ViewerFontFamily;
     private ReadOnlyReactivePropertySlim<double>? _ViewerFontSize;
 
-    protected WindowViewModelBase(IServiceProvider dic)
+    protected WindowBaseViewModel(IServiceProvider dic)
         : base(dic)
     {
         Observable

@@ -29,7 +29,7 @@ public sealed class DialogBehavior : Behavior<Window>
 
         if (e.Key == Key.Escape)
         {
-            if (AssociatedObject.DataContext is not WindowViewModelBase viewModel)
+            if (AssociatedObject.DataContext is not WindowBaseViewModel viewModel)
                 return;
 
             viewModel.DialogResult = DialogResultTypes.Cancel;

@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 namespace Anna.Gui.Views.Windows.Base;
 
 public class WindowBase<T> : WindowBase
-    where T : WindowViewModelBase
+    where T : WindowBaseViewModel
 {
     protected T ViewModel => DataContext as T ?? throw new NullReferenceException();
 }

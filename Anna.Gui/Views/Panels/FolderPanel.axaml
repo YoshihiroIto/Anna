@@ -39,7 +39,7 @@
     <Interaction.Behaviors>
         <behaviors:FolderPanelInputBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowViewModelBase.MessageKeyInformation}" Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
             <behaviors1:InformationDialogInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>

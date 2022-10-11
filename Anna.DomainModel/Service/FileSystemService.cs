@@ -26,4 +26,9 @@ public sealed class FileSystemService : IFileSystemService
             stream?.Dispose();
         }
     }
+    
+    public void Copy(string currentPath, string destPath, IEnumerable<string> sourceEntries)
+    {
+        var targetFolderPath = Path.IsPathRooted(destPath) ? destPath : Path.Combine(currentPath, destPath);
+    }
 }

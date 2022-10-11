@@ -5,6 +5,7 @@ using Anna.Gui.Views.Windows.Base;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Service;
 using Avalonia.Controls;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using ConfirmationDialog=Anna.Gui.Views.Windows.Dialogs.ConfirmationDialog;
 using EntryDisplayDialog=Anna.Gui.Views.Windows.Dialogs.EntryDisplayDialog;
@@ -92,16 +93,17 @@ public static class WindowOperator
         return viewModel.DialogResult;
     }
 
-    public static async ValueTask<(bool IsCancel, int dummy)>
-        EntryCopyAsync(IServiceProvider dic, Window owner, Entry[] targetEntries)
+    public static async ValueTask<(bool IsCancel, string DestFolder)>
+        EntryCopyAsync(IServiceProvider dic, Window owner, Entry[] targets)
     {
-        using var viewModel = dic.GetInstance<CopyEntryDialogViewModel, Entry[]>(targetEntries);
+        using var viewModel = dic.GetInstance<CopyEntryDialogViewModel, (Entry[], ReadOnlyObservableCollection<string>)>
+            ((targets, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
 
         var view = dic.GetInstance<CopyEntryDialog>();
         view.DataContext = viewModel;
 
         await view.ShowDialog(owner);
 
-        return (viewModel.DialogResult == DialogResultTypes.Cancel, 0);
+        return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultDestFolder);
     }
 }

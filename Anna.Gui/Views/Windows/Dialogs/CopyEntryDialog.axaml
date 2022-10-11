@@ -11,9 +11,9 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   Title="{ReflectionBinding R.DialogTitle_CopyEntry,
                                             Mode=OneTime}"
+                  Width="500"
                   MinWidth="500"
                   MaxWidth="500"
-                  Width="500"
                   d:DesignHeight="450"
                   d:DesignWidth="800"
                   x:CompileBindings="True"
@@ -33,8 +33,7 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}"
-                                              Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
             <behaviors1:WindowInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
@@ -55,13 +54,40 @@
         </StackPanel>
 
         <StackPanel>
+            <StackPanel.Styles>
+                <Style Selector="TextBox">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="MinHeight" Value="0" />
+                </Style>
+
+                <Style Selector="ComboBox">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="MinHeight" Value="0" />
+                </Style>
+            </StackPanel.Styles>
+
+            <TextBox HorizontalAlignment="Stretch" Text="{Binding DestFolder.Value}">
+                <Interaction.Behaviors>
+                    <behaviors:KeyDownTriggerBehavior Key="Enter">
+                        <CallMethodAction MethodName="OnDecision" TargetObject="{Binding}" />
+                    </behaviors:KeyDownTriggerBehavior>
+
+                    <behaviors:InputElementFocusBehavior />
+                </Interaction.Behaviors>
+            </TextBox>
+
+            <ComboBox HorizontalAlignment="Stretch"
+                      Items="{Binding DestFoldersHistory}"
+                      SelectedIndex="{Binding SelectedDestFolderHistory.Value}" />
+
+            <Button Classes="dialog-no-margin" Content="Jump" />
+
             <TextBlock Text="{Binding IsSingleTarget.Value}" />
             <TextBlock Text="{Binding IsInMeasuring.Value}" />
             <TextBlock Text="{Binding LeaderName}" TextTrimming="CharacterEllipsis" />
             <TextBlock Text="{Binding FileCount.Value, StringFormat='{}{0:#,0}'}" />
             <TextBlock Text="{Binding FolderCount.Value, StringFormat='{}{0:#,0}'}" />
-            <TextBlock
-                Text="{Binding AllSize.Value, Converter={x:Static converters:BytesValueToHumanizedConverter.Default}}" />
+            <TextBlock Text="{Binding AllSize.Value, Converter={x:Static converters:BytesValueToHumanizedConverter.Default}}" />
         </StackPanel>
     </DockPanel>
 </base1:WindowBase>

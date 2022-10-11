@@ -61,6 +61,8 @@ public sealed class JumpFolderTests : IDisposable
 
             await w.PressKeyAsync(Key.J);
             await w.PressKeyAsync(Key.Enter);
+            
+            await Task.Delay(500);
 
             return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });
@@ -94,6 +96,8 @@ public sealed class JumpFolderTests : IDisposable
 
             await w.PressKeyAsync(Key.J);
             await w.PressKeyAsync(Key.A);
+            
+            await Task.Delay(500);
 
             return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
         });

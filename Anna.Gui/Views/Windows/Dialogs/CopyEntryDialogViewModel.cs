@@ -37,7 +37,7 @@ public sealed class CopyEntryDialogViewModel
     public CopyEntryDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
-        DestFolder = new ReactivePropertySlim<string>().AddTo(Trash);
+        DestFolder = new ReactivePropertySlim<string>("").AddTo(Trash);
         SelectedDestFolderHistory = new ReactivePropertySlim<int>(-1).AddTo(Trash);
 
         SelectedDestFolderHistory

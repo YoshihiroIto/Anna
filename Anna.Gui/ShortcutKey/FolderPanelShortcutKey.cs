@@ -1,9 +1,11 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.Config;
 using Anna.Gui.Views.Windows;
+using Anna.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -152,9 +154,17 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
         if (receiver.TargetEntries.Length == 0)
             return;
-            
+
         var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner, receiver.TargetEntries);
         if (result.IsCancel)
             return;
+
+        if (result.DestFolder == "")
+            return;
+
+        Dic.GetInstance<IFileSystemService>().Copy(
+            receiver.Folder.Path,
+            result.DestFolder,
+            receiver.TargetEntries.Select(x => x.Path));
     }
 }

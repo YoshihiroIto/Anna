@@ -26,8 +26,8 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
     public DelegateCommand YesCommand => _yesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
     public DelegateCommand NoCommand => _noCommand ??= CreateButtonCommand(DialogResultTypes.No);
 
-    public ReadOnlyReactiveProperty<FontFamily> ViewerFontFamily => _ViewerFontFamily ??= CreateViewerFontFamily();
-    public ReadOnlyReactiveProperty<double> ViewerFontSize => _ViewerFontSize ??= CreateViewerFontSize();
+    public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily => _ViewerFontFamily ??= CreateViewerFontFamily();
+    public ReadOnlyReactivePropertySlim<double> ViewerFontSize => _ViewerFontSize ??= CreateViewerFontSize();
 
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
@@ -35,8 +35,8 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
     private DelegateCommand? _cancelCommand;
     private DelegateCommand? _yesCommand;
     private DelegateCommand? _noCommand;
-    private ReadOnlyReactiveProperty<FontFamily>? _ViewerFontFamily;
-    private ReadOnlyReactiveProperty<double>? _ViewerFontSize;
+    private ReadOnlyReactivePropertySlim<FontFamily>? _ViewerFontFamily;
+    private ReadOnlyReactivePropertySlim<double>? _ViewerFontSize;
 
     protected WindowViewModelBase(IServiceProvider dic)
         : base(dic)
@@ -72,19 +72,19 @@ public class WindowViewModelBase : ViewModelBase, ILocalizableViewModel
         });
     }
 
-    private ReadOnlyReactiveProperty<FontFamily> CreateViewerFontFamily()
+    private ReadOnlyReactivePropertySlim<FontFamily> CreateViewerFontFamily()
     {
         return Dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.ViewerFontFamily)
-            .ToReadOnlyReactiveProperty()
+            .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash)!;
     }
 
-    private ReadOnlyReactiveProperty<double> CreateViewerFontSize()
+    private ReadOnlyReactivePropertySlim<double> CreateViewerFontSize()
     {
         return Dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.ViewerFontSize)
-            .ToReadOnlyReactiveProperty()
+            .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
     }
 }

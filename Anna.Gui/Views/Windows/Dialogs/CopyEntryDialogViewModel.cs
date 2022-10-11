@@ -10,7 +10,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class CopyEntryDialogViewModel : HasModelWindowViewModelBase<Entry[]>
+public sealed class CopyEntryDialogViewModel : HasModelWindowBaseViewModel<Entry[]>
 {
     public string LeaderName => Model[0].NameWithExtension;
 

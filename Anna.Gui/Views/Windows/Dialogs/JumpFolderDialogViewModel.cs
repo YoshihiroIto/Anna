@@ -12,7 +12,7 @@ using System.Linq;
 namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class JumpFolderDialogViewModel
-    : HasModelWindowViewModelBase<(string CurrentFolderPath, JumpFolderConfigData Config)>
+    : HasModelWindowBaseViewModel<(string CurrentFolderPath, JumpFolderConfigData Config)>
 {
     public string ResultPath { get; private set; } = "";
 

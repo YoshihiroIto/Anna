@@ -4,7 +4,7 @@ using Anna.Service;
 namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class ConfirmationDialogViewModel
-    : HasModelWindowViewModelBase<(string Title, string Text, ConfirmationTypes confirmationType)>
+    : HasModelWindowBaseViewModel<(string Title, string Text, ConfirmationTypes confirmationType)>
 {
     public string Title => Model.Title;
     public string Text => Model.Text;

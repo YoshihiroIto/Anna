@@ -1,6 +1,6 @@
 ﻿namespace Anna.Service;
 
-public interface IFolderService
+public interface IFileSystemService
 {
     bool IsAccessible(string path);
 }

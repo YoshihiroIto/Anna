@@ -37,7 +37,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
             new JumpFolderConfig(GetInstance<IObjectSerializerService>()) { FilePath = jumpFolderConfigFilePath });
         RegisterSingleton<ILoggerService>(() => new Log.DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
-        RegisterSingleton<IFolderService, FolderService>();
+        RegisterSingleton<IFileSystemService, FileSystemService>();
         RegisterSingleton<IFolderHistoryService, FolderHistoryService>();
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();

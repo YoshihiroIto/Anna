@@ -56,7 +56,7 @@ public sealed class EntriesStats : DisposableNotificationObject
 
     #endregion
 
-    private readonly IFolderService _folderService;
+    private readonly IFileSystemService _fileSystemService;
     private readonly ManualResetEventSlim _measuringMre = new();
 
     // for make minimum stats
@@ -65,7 +65,7 @@ public sealed class EntriesStats : DisposableNotificationObject
     public EntriesStats(IServiceProvider dic)
         : base(dic)
     {
-        _folderService = dic.GetInstance<IFolderService>();
+        _fileSystemService = dic.GetInstance<IFileSystemService>();
     }
 
     public override void Dispose()
@@ -132,7 +132,7 @@ public sealed class EntriesStats : DisposableNotificationObject
 
     private void MeasureFolder(string path, CancellationToken ct)
     {
-        if (_folderService.IsAccessible(path) == false)
+        if (_fileSystemService.IsAccessible(path) == false)
             return;
 
         var di = new DirectoryInfo(path);

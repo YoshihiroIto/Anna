@@ -2,7 +2,7 @@
 using Anna.TestFoundation;
 using Xunit;
 
-namespace Anna.DomainModel.Tests;
+namespace Anna.DomainModel.Tests.Service;
 
 public sealed class FileSystemFolderTests : IDisposable
 {
@@ -11,6 +11,7 @@ public sealed class FileSystemFolderTests : IDisposable
 
     public void Dispose()
     {
+        _tempFolder.Dispose();
         _dic.Dispose();
     }
 

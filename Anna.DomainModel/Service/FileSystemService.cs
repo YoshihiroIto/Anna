@@ -28,10 +28,8 @@ public sealed class FileSystemService : IFileSystemService
         }
     }
 
-    public void Copy(string currentPath, string destPath, IEnumerable<IEntry> sourceEntries)
+    public void Copy(string destPath, IEnumerable<IEntry> sourceEntries)
     {
-        var targetFolderPath = Path.IsPathRooted(destPath) ? destPath : Path.Combine(currentPath, destPath);
-
         foreach (var entry in sourceEntries)
         {
             var src = entry.Path;
@@ -39,13 +37,13 @@ public sealed class FileSystemService : IFileSystemService
             if (entry.IsFolder)
             {
                 var srcInfo = new DirectoryInfo(src);
-                CopyFolder(srcInfo, targetFolderPath);
+                CopyFolder(srcInfo, destPath);
             }
             else
             {
-                Directory.CreateDirectory(targetFolderPath);
+                Directory.CreateDirectory(destPath);
 
-                var dest = Path.Combine(targetFolderPath, Path.GetFileName(src));
+                var dest = Path.Combine(destPath, Path.GetFileName(src));
 
                 File.Copy(src, dest, true);
                 File.SetAttributes(dest, File.GetAttributes(src));

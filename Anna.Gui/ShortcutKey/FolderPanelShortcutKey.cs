@@ -160,8 +160,12 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         if (result.DestFolder == "")
             return;
+        
+        var destFolder = Path.IsPathRooted(result.DestFolder)
+            ? result.DestFolder
+            : Path.Combine(receiver.Folder.Path, result.DestFolder);
 
         Dic.GetInstance<IFileSystemService>()
-            .Copy(receiver.Folder.Path, result.DestFolder, receiver.TargetEntries);
+            .Copy(destFolder, receiver.TargetEntries);
     }
 }

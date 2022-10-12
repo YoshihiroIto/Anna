@@ -5,7 +5,6 @@ using Anna.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -162,9 +161,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         if (result.DestFolder == "")
             return;
 
-        Dic.GetInstance<IFileSystemService>().Copy(
-            receiver.Folder.Path,
-            result.DestFolder,
-            receiver.TargetEntries.Select(x => x.Path));
+        Dic.GetInstance<IFileSystemService>()
+            .Copy(receiver.Folder.Path, result.DestFolder, receiver.TargetEntries);
     }
 }

@@ -1,12 +1,13 @@
 ﻿using Anna.Constants;
 using Anna.Foundation;
+using Anna.Service.Interfaces;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 namespace Anna.DomainModel;
 
 [DebuggerDisplay("Name={Name}, Path={Path}")]
-public sealed class Entry : NotificationObject
+public sealed class Entry : NotificationObject, IEntry
 {
     #region NameWithExtension
 

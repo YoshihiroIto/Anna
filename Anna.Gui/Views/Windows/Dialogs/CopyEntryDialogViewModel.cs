@@ -1,5 +1,6 @@
 ﻿using Anna.DomainModel;
 using Anna.Foundation;
+using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows.Base;
 using Reactive.Bindings;
@@ -17,6 +18,8 @@ public sealed class CopyEntryDialogViewModel
 {
     public string ResultDestFolder { get; private set; } = "";
 
+    public new DelegateCommand OkCommand { get; }
+
     public string LeaderName => Model.Targets[0].NameWithExtension;
 
     public ReadOnlyReactivePropertySlim<bool> IsSingleTarget { get; }
@@ -30,7 +33,6 @@ public sealed class CopyEntryDialogViewModel
     public ReactivePropertySlim<int> SelectedDestFolderHistory { get; }
 
     private EntriesStats Stats { get; }
-
 
     private readonly CancellationTokenSource _cts = new();
 
@@ -46,6 +48,8 @@ public sealed class CopyEntryDialogViewModel
                 if (x != -1)
                     DestFolder.Value = Model.DestFoldersHistory[x];
             }).AddTo(Trash);
+
+        OkCommand = new DelegateCommand(OnDecision);
 
         ///////////////////////////////////////////////////////////////// 
         Trash.Add(() => _cts.Cancel());
@@ -91,7 +95,7 @@ public sealed class CopyEntryDialogViewModel
     {
         ResultDestFolder = DestFolder.Value;
         DialogResult = DialogResultTypes.Ok;
-        
+
         await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
     }
 }

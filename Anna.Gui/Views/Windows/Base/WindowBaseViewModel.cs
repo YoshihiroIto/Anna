@@ -21,20 +21,20 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
 
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
-    public DelegateCommand OkCommand => _okCommand ??= CreateButtonCommand(DialogResultTypes.Ok);
-    public DelegateCommand CancelCommand => _cancelCommand ??= CreateButtonCommand(DialogResultTypes.Cancel);
-    public DelegateCommand YesCommand => _yesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
-    public DelegateCommand NoCommand => _noCommand ??= CreateButtonCommand(DialogResultTypes.No);
+    public DelegateCommand OkCommand => _OkCommand ??= CreateButtonCommand(DialogResultTypes.Ok);
+    public DelegateCommand CancelCommand => _CancelCommand ??= CreateButtonCommand(DialogResultTypes.Cancel);
+    public DelegateCommand YesCommand => _YesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
+    public DelegateCommand NoCommand => _NoCommand ??= CreateButtonCommand(DialogResultTypes.No);
 
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily => _ViewerFontFamily ??= CreateViewerFontFamily();
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize => _ViewerFontSize ??= CreateViewerFontSize();
 
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
-    private DelegateCommand? _okCommand;
-    private DelegateCommand? _cancelCommand;
-    private DelegateCommand? _yesCommand;
-    private DelegateCommand? _noCommand;
+    protected DelegateCommand? _OkCommand;
+    protected DelegateCommand? _CancelCommand;
+    protected DelegateCommand? _YesCommand;
+    protected DelegateCommand? _NoCommand;
     private ReadOnlyReactivePropertySlim<FontFamily>? _ViewerFontFamily;
     private ReadOnlyReactivePropertySlim<double>? _ViewerFontSize;
 

@@ -18,8 +18,6 @@ public sealed class CopyEntryDialogViewModel
 {
     public string ResultDestFolder { get; private set; } = "";
 
-    public new DelegateCommand OkCommand { get; }
-
     public string LeaderName => Model.Targets[0].NameWithExtension;
 
     public ReadOnlyReactivePropertySlim<bool> IsSingleTarget { get; }
@@ -32,54 +30,48 @@ public sealed class CopyEntryDialogViewModel
     public ReadOnlyObservableCollection<string> DestFoldersHistory => Model.DestFoldersHistory;
     public ReactivePropertySlim<int> SelectedDestFolderHistory { get; }
 
-    private EntriesStats Stats { get; }
-
-    private readonly CancellationTokenSource _cts = new();
-
     public CopyEntryDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
         DestFolder = new ReactivePropertySlim<string>("").AddTo(Trash);
+        
         SelectedDestFolderHistory = new ReactivePropertySlim<int>(-1).AddTo(Trash);
-
         SelectedDestFolderHistory
-            .Subscribe(x =>
-            {
-                if (x != -1)
-                    DestFolder.Value = Model.DestFoldersHistory[x];
-            }).AddTo(Trash);
-
-        OkCommand = new DelegateCommand(OnDecision);
-
-        ///////////////////////////////////////////////////////////////// 
-        Trash.Add(() => _cts.Cancel());
-
-        ///////////////////////////////////////////////////////////////// 
-        Stats = dic.GetInstance<EntriesStats>()
-            .Measure(Model.Targets, _cts.Token)
+            .Where(x => x != -1)
+            .Subscribe(x => DestFolder.Value = Model.DestFoldersHistory[x])
             .AddTo(Trash);
 
-        IsInMeasuring = Stats.ObserveProperty(x => x.IsInMeasuring)
+        _OkCommand = new DelegateCommand(OnDecision);
+
+        /////////////////////////////////////////////////////////////////
+        var cts = new CancellationTokenSource();
+        Trash.Add(() => cts.Cancel());
+
+        var stats = dic.GetInstance<EntriesStats>()
+            .Measure(Model.Targets, cts.Token)
+            .AddTo(Trash);
+
+        IsInMeasuring = stats.ObserveProperty(x => x.IsInMeasuring)
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(Stats.IsInMeasuring)
+            .ToReadOnlyReactivePropertySlim(stats.IsInMeasuring)
             .AddTo(Trash);
 
-        FileCount = Stats.ObserveProperty(x => x.FileCount)
+        FileCount = stats.ObserveProperty(x => x.FileCount)
             .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(Stats.FileCount)
+            .ToReadOnlyReactivePropertySlim(stats.FileCount)
             .AddTo(Trash);
 
-        FolderCount = Stats.ObserveProperty(x => x.FolderCount)
+        FolderCount = stats.ObserveProperty(x => x.FolderCount)
             .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(Stats.FolderCount)
+            .ToReadOnlyReactivePropertySlim(stats.FolderCount)
             .AddTo(Trash);
 
-        AllSize = Stats.ObserveProperty(x => x.AllSize)
+        AllSize = stats.ObserveProperty(x => x.AllSize)
             .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(Stats.AllSize)
+            .ToReadOnlyReactivePropertySlim(stats.AllSize)
             .AddTo(Trash);
 
         IsSingleTarget = Observable

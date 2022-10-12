@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.Config;
+using Anna.Foundation;
 using Anna.Gui.Views.Windows;
 using Anna.Service;
 using System;
@@ -160,12 +161,14 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         if (result.DestFolder == "")
             return;
-        
+
         var destFolder = Path.IsPathRooted(result.DestFolder)
             ? result.DestFolder
             : Path.Combine(receiver.Folder.Path, result.DestFolder);
 
-        Dic.GetInstance<IFileSystemService>()
-            .Copy(destFolder, receiver.TargetEntries);
+        destFolder = PathStringHelper.Normalize(destFolder);
+
+        Dic.GetInstance<IFileSystemService>().Copy(destFolder, receiver.TargetEntries);
+        Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 }

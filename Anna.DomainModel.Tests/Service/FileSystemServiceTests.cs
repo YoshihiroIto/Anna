@@ -30,7 +30,7 @@ public sealed class FileSystemServiceTests : IDisposable
             _tempFolder.CreateFile(srcName);
 
             var srcPath = Path.Combine(_tempFolder.RootPath, srcName);
-            File.SetAttributes(srcPath, FileAttributes.System);
+            File.SetAttributes(srcPath, FileAttributes.Hidden);
 
             var srcEntry = new TestEntry(srcPath, false);
 
@@ -39,7 +39,7 @@ public sealed class FileSystemServiceTests : IDisposable
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
             Assert.True(File.Exists(dstPath));
-            Assert.Equal(FileAttributes.System, File.GetAttributes(dstPath));
+            Assert.Equal(FileAttributes.Hidden, File.GetAttributes(dstPath));
         }
     }
 
@@ -59,7 +59,7 @@ public sealed class FileSystemServiceTests : IDisposable
             _tempFolder.CreateFolder(srcName);
 
             var srcPath = Path.Combine(_tempFolder.RootPath, srcName);
-            File.SetAttributes(srcPath, FileAttributes.System);
+            File.SetAttributes(srcPath, FileAttributes.Hidden);
 
             var srcEntry = new TestEntry(srcPath, true);
 
@@ -68,7 +68,7 @@ public sealed class FileSystemServiceTests : IDisposable
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
             Assert.True(Directory.Exists(dstPath));
-            Assert.Equal(FileAttributes.System | FileAttributes.Directory, File.GetAttributes(dstPath));
+            Assert.Equal(FileAttributes.Hidden | FileAttributes.Directory, File.GetAttributes(dstPath));
         }
     }
 

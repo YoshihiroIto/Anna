@@ -80,6 +80,8 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
         Channel.Writer.TryComplete();
         _taskCompleted.Wait();
         _taskCompleted.Dispose();
+        
+        GC.SuppressFinalize(this);
     }
 
     public ValueTask CopyFileSystemEntryAsync(string destPath, IEnumerable<IEntry> sourceEntries)

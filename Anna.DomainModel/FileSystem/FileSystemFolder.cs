@@ -3,6 +3,7 @@ using Anna.Service;
 using Reactive.Bindings.Extensions;
 using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 [assembly: InternalsVisibleTo("Anna.DomainModel.Interactor")]
 
@@ -12,24 +13,19 @@ public sealed class FileSystemFolder : Folder
 {
     public override bool IsRoot => string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
 
-    private bool _isDispose;
-    private readonly IObjectLifetimeCheckerService _objectLifetimeChecker;
-    private readonly IDisposable _pathObserver;
     private readonly CompositeDisposable _watchTrash = new();
 
-    internal FileSystemFolder(
-        string path,
-        IBackgroundService backgroundService,
-        ILoggerService logger,
-        IObjectLifetimeCheckerService objectLifetimeChecker)
-        : base(path, backgroundService, logger)
+    internal FileSystemFolder(string path, IServiceProvider dic)
+        : base(path, dic)
     {
-        _objectLifetimeChecker = objectLifetimeChecker;
-        _objectLifetimeChecker.Add(this);
         UpdateWatcher(path);
 
-        _pathObserver = this.ObserveProperty(x => x.Path)
-            .Subscribe(UpdateWatcher);
+        this.ObserveProperty(x => x.Path)
+            .Subscribe(UpdateWatcher)
+            .AddTo(Trash);
+        
+        (BackgroundService as IDisposable)?.AddTo(Trash);
+        _watchTrash.AddTo(Trash);
     }
 
     protected override IEnumerable<Entry> EnumerateDirectories()
@@ -70,19 +66,6 @@ public sealed class FileSystemFolder : Folder
             if (entry is not null)
                 yield return entry;
         }
-    }
-
-    public override void Dispose()
-    {
-        if (_isDispose)
-            return;
-
-        _isDispose = true;
-
-        (BackgroundService as IDisposable)?.Dispose();
-        _pathObserver.Dispose();
-        _watchTrash.Dispose();
-        _objectLifetimeChecker.Remove(this);
     }
 
     public override Stream OpenRead(string path)
@@ -132,7 +115,7 @@ public sealed class FileSystemFolder : Folder
             .AddTo(_watchTrash);
 
         watcher.Errors
-            .Subscribe(x => _Logger.Error(x.GetException().ToString()))
+            .Subscribe(x => Dic.GetInstance<ILoggerService>().Error(x.GetException().ToString()))
             .AddTo(_watchTrash);
     }
 

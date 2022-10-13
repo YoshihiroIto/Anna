@@ -2,11 +2,12 @@
 using Anna.Foundation;
 using Anna.Service;
 using System.Diagnostics;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel;
 
 [DebuggerDisplay("Path={Path}")]
-public abstract class Folder : NotificationObject, IDisposable
+public abstract class Folder : DisposableNotificationObject
 {
     public ObservableCollectionEx<Entry> Entries { get; } = new();
     public readonly object EntriesUpdatingLockObj = new();
@@ -82,15 +83,14 @@ public abstract class Folder : NotificationObject, IDisposable
     private readonly Dictionary<string, DateTime> _removedSelectedEntries = new();
 
     public readonly IBackgroundService BackgroundService;
-    protected readonly ILoggerService _Logger;
 
     public abstract Stream OpenRead(string path);
     public abstract Task<byte[]> ReadAllAsync(string path);
 
-    protected Folder(string path, IBackgroundService backgroundService, ILoggerService logger)
+    protected Folder(string path, IServiceProvider dic)
+        : base(dic)
     {
-        BackgroundService = backgroundService;
-        _Logger = logger;
+        BackgroundService = dic.GetInstance<IBackgroundService>();// create new
         Path = PathStringHelper.Normalize(path);
     }
 
@@ -108,14 +108,14 @@ public abstract class Folder : NotificationObject, IDisposable
 
     protected void OnCreated(Entry newEntry)
     {
-        _Logger.Information($"OnCreated: {Path}, {newEntry.NameWithExtension}");
+        Dic.GetInstance<ILoggerService>().Information($"OnCreated: {Path}, {newEntry.NameWithExtension}");
 
         AddEntryInternal(newEntry);
     }
 
     protected void OnChanged(Entry entry)
     {
-        _Logger.Information($"OnChanged: {Path}, {entry.NameWithExtension}");
+        Dic.GetInstance<ILoggerService>().Information($"OnChanged: {Path}, {entry.NameWithExtension}");
 
         bool isSizeChanged;
 
@@ -135,7 +135,7 @@ public abstract class Folder : NotificationObject, IDisposable
 
     protected void OnDeleted(string name)
     {
-        _Logger.Information($"OnDeleted: {Path}, {name}");
+        Dic.GetInstance<ILoggerService>().Information($"OnDeleted: {Path}, {name}");
 
         lock (EntriesUpdatingLockObj)
         {
@@ -148,7 +148,7 @@ public abstract class Folder : NotificationObject, IDisposable
 
     protected void OnRenamed(string oldName, string newName)
     {
-        _Logger.Information($"OnRenamed: {Path}, {oldName}, {newName}");
+        Dic.GetInstance<ILoggerService>().Information($"OnRenamed: {Path}, {oldName}, {newName}");
 
         lock (EntriesUpdatingLockObj)
         {
@@ -297,9 +297,5 @@ public abstract class Folder : NotificationObject, IDisposable
                     _removedSelectedEntries.Remove(name);
             }
         }
-    }
-
-    public virtual void Dispose()
-    {
     }
 }

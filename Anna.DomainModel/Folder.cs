@@ -53,7 +53,6 @@ public abstract class Folder : NotificationObject, IDisposable
 
     #endregion
 
-
     #region SortMode
 
     private SortOrders _SortOrder = SortOrders.Ascending;
@@ -73,6 +72,28 @@ public abstract class Folder : NotificationObject, IDisposable
 
     #endregion
 
+    protected abstract IEnumerable<Entry> EnumerateDirectories();
+    protected abstract IEnumerable<Entry> EnumerateFiles();
+
+    private Comparison<Entry> _entryCompare = EntryComparison.FindEntryCompare(SortModes.Name, SortOrders.Ascending);
+    private int _foldersCount;
+    private int _filesCount;
+    private readonly Dictionary<string, Entry> _entriesDict = new();
+    private readonly Dictionary<string, DateTime> _removedSelectedEntries = new();
+
+    public readonly IBackgroundService BackgroundService;
+    protected readonly ILoggerService _Logger;
+
+    public abstract Stream OpenRead(string path);
+    public abstract Task<byte[]> ReadAllAsync(string path);
+
+    protected Folder(string path, IBackgroundService backgroundService, ILoggerService logger)
+    {
+        BackgroundService = backgroundService;
+        _Logger = logger;
+        Path = PathStringHelper.Normalize(path);
+    }
+
     public void SetSortModeAndOrder(SortModes mode, SortOrders order)
     {
         if (mode == _SortMode && order == _SortOrder)
@@ -83,12 +104,6 @@ public abstract class Folder : NotificationObject, IDisposable
 
         UpdateEntryCompare();
         SortEntries();
-    }
-
-    protected Folder(string path, ILoggerService logger)
-    {
-        _Logger = logger;
-        Path = PathStringHelper.Normalize(path);
     }
 
     protected void OnCreated(Entry newEntry)
@@ -103,7 +118,7 @@ public abstract class Folder : NotificationObject, IDisposable
         _Logger.Information($"OnChanged: {Path}, {entry.NameWithExtension}");
 
         bool isSizeChanged;
-        
+
         lock (EntriesUpdatingLockObj)
         {
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var target) == false)
@@ -283,20 +298,6 @@ public abstract class Folder : NotificationObject, IDisposable
             }
         }
     }
-
-    protected abstract IEnumerable<Entry> EnumerateDirectories();
-    protected abstract IEnumerable<Entry> EnumerateFiles();
-
-    private Comparison<Entry> _entryCompare = EntryComparison.FindEntryCompare(SortModes.Name, SortOrders.Ascending);
-    private int _foldersCount;
-    private int _filesCount;
-    private readonly Dictionary<string, Entry> _entriesDict = new();
-    private readonly Dictionary<string, DateTime> _removedSelectedEntries = new();
-
-    protected readonly ILoggerService _Logger;
-
-    public abstract Stream OpenRead(string path);
-    public abstract Task<byte[]> ReadAllAsync(string path);
 
     public virtual void Dispose()
     {

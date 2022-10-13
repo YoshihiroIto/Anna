@@ -1,12 +1,13 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Config;
-using Anna.DomainModel.FileSystem;
 using Anna.DomainModel.Service;
 using Anna.Gui;
 using Anna.Gui.Views.Windows.Base;
 using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
 using Anna.Service;
+using SimpleInjector;
+using SimpleInjector.Diagnostics;
 using System.Runtime;
 
 namespace Anna.ServiceProvider;
@@ -14,7 +15,7 @@ namespace Anna.ServiceProvider;
 public sealed class DefaultServiceProvider : ServiceProviderBase
 {
     private readonly ILoggerService _logger;
-    
+
     private DefaultServiceProvider(string logOutputDir, string appConfigFilePath)
     {
         RegisterSingleton<IObjectLifetimeCheckerService,
@@ -43,8 +44,14 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();
 
+        Register<IBackgroundService, BackgroundService>(Lifestyle.Transient);
+
         // property injection
         RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerService>());
+
+        GetRegistration(typeof(IBackgroundService))!.Registration
+            .SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,
+                "dispose manually.");
 
         Options.ResolveUnregisteredConcreteTypes = true;
 

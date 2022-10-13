@@ -19,12 +19,12 @@ public sealed class FileSystemFolder : Folder
 
     internal FileSystemFolder(
         string path,
+        IBackgroundService backgroundService,
         ILoggerService logger,
         IObjectLifetimeCheckerService objectLifetimeChecker)
-        : base(path, logger)
+        : base(path, backgroundService, logger)
     {
         _objectLifetimeChecker = objectLifetimeChecker;
-
         _objectLifetimeChecker.Add(this);
         UpdateWatcher(path);
 
@@ -79,6 +79,7 @@ public sealed class FileSystemFolder : Folder
 
         _isDispose = true;
 
+        (BackgroundService as IDisposable)?.Dispose();
         _pathObserver.Dispose();
         _watchTrash.Dispose();
         _objectLifetimeChecker.Remove(this);

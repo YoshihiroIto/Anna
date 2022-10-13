@@ -1,9 +1,9 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.Gui.Messaging;
+using Anna.Service;
 using Avalonia.Controls;
 using AvaloniaEdit;
-using System.Collections.Generic;
 using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.ShortcutKey;
@@ -19,6 +19,7 @@ public interface IFolderPanelShortcutKeyReceiver : IShortcutKeyReceiver
     Folder Folder { get; }
     Entry CurrentEntry { get; }
     Entry[] TargetEntries { get; }
+    IBackgroundService BackgroundService { get; }
     
     void MoveCursor(Directions dir);
     void ToggleSelectionCursorEntry(bool isMoveDown);

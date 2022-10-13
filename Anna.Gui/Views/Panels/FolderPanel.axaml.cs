@@ -5,6 +5,7 @@ using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
+using Anna.Service;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
@@ -97,6 +98,7 @@ public partial class FolderPanel : UserControl, IFolderPanelShortcutKeyReceiver
     Folder IFolderPanelShortcutKeyReceiver.Folder => ViewModel.Model;
     Entry IFolderPanelShortcutKeyReceiver.CurrentEntry => ViewModel.CursorEntry.Value?.Model ?? throw new InvalidOperationException();
     Entry[] IFolderPanelShortcutKeyReceiver.TargetEntries => ViewModel.CollectTargetEntries();
+    IBackgroundService IFolderPanelShortcutKeyReceiver.BackgroundService => ViewModel.Model.BackgroundService;
     
     void IFolderPanelShortcutKeyReceiver.MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
     void IFolderPanelShortcutKeyReceiver.ToggleSelectionCursorEntry(bool isMoveDown) => ViewModel.ToggleSelectionCursorEntry(isMoveDown);

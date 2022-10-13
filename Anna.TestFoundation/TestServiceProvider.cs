@@ -25,11 +25,14 @@ public sealed class TestServiceProvider : ServiceProviderBase
 
 internal class MockBackgroundService : IBackgroundService
 {
+#pragma warning disable 0067
     public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore 0067
+
     public bool IsInProcessing => false;
     public double Progress => 0;
     public string Message => "";
-    
+
     public ValueTask CopyFileSystemEntryAsync(string destPath, IEnumerable<IEntry> sourceEntries)
     {
         throw new NotImplementedException();

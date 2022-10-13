@@ -1,4 +1,4 @@
-﻿<!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
+﻿<!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
 <UserControl x:Class="Anna.Gui.Views.Panels.InfoPanel"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,7 +12,7 @@
              FontFamily="{Binding ViewerFontFamily.Value}"
              FontSize="{Binding ViewerFontSize.Value}"
              mc:Ignorable="d">
-    <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
+    <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->
         <panels:InfoPanelViewModel />
@@ -22,49 +22,55 @@
         <StyleInclude Source="/Views/Resources/Styles.axaml" />
     </UserControl.Styles>
 
-    <Grid ColumnDefinitions="Auto, Auto"
-          ColumnSpan=""
-          RowDefinitions="Auto,Auto,Auto,Auto">
-        <TextBlock Grid.Row="0"
-                   Grid.Column="0"
-                   HorizontalAlignment="Right"
-                   Text="SelectedEntriesCount" />
-        <TextBlock Grid.Row="0"
-                   Grid.Column="1"
-                   Margin="8,0,0,0"
-                   HorizontalAlignment="Right"
-                   Text="{Binding SelectedEntriesCount.Value}" />
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Right">
+            <TextBlock IsVisible="{Binding IsInProcessing.Value}" Text="IsInProcessing" />
+        </StackPanel>
 
-        <TextBlock Grid.Row="1"
-                   Grid.Column="0"
-                   HorizontalAlignment="Right"
-                   Text="SelectedTotalSize" />
-        <TextBlock Grid.Row="1"
-                   Grid.Column="1"
-                   Margin="8,0,0,0"
-                   HorizontalAlignment="Right"
-                   Text="{Binding SelectedTotalSize.Value,
-                                  StringFormat='{}{0:#,0}'}" />
+        <Grid ColumnDefinitions="Auto, Auto"
+              ColumnSpan=""
+              RowDefinitions="Auto,Auto,Auto,Auto">
+            <TextBlock Grid.Row="0"
+                       Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       Text="SelectedEntriesCount" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Margin="8,0,0,0"
+                       HorizontalAlignment="Right"
+                       Text="{Binding SelectedEntriesCount.Value}" />
 
-        <TextBlock Grid.Row="2"
-                   Grid.Column="0"
-                   HorizontalAlignment="Right"
-                   Text="EntriesCount" />
-        <TextBlock Grid.Row="2"
-                   Grid.Column="1"
-                   Margin="8,0,0,0"
-                   HorizontalAlignment="Right"
-                   Text="{Binding EntriesCount.Value}" />
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       Text="SelectedTotalSize" />
+            <TextBlock Grid.Row="1"
+                       Grid.Column="1"
+                       Margin="8,0,0,0"
+                       HorizontalAlignment="Right"
+                       Text="{Binding SelectedTotalSize.Value,
+                                      StringFormat='{}{0:#,0}'}" />
 
-        <TextBlock Grid.Row="3"
-                   Grid.Column="0"
-                   HorizontalAlignment="Right"
-                   Text="TotalSize" />
-        <TextBlock Grid.Row="3"
-                   Grid.Column="1"
-                   Margin="8,0,0,0"
-                   HorizontalAlignment="Right"
-                   Text="{Binding TotalSize.Value,
-                                  StringFormat='{}{0:#,0}'}" />
-    </Grid>
+            <TextBlock Grid.Row="2"
+                       Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       Text="EntriesCount" />
+            <TextBlock Grid.Row="2"
+                       Grid.Column="1"
+                       Margin="8,0,0,0"
+                       HorizontalAlignment="Right"
+                       Text="{Binding EntriesCount.Value}" />
+
+            <TextBlock Grid.Row="3"
+                       Grid.Column="0"
+                       HorizontalAlignment="Right"
+                       Text="TotalSize" />
+            <TextBlock Grid.Row="3"
+                       Grid.Column="1"
+                       Margin="8,0,0,0"
+                       HorizontalAlignment="Right"
+                       Text="{Binding TotalSize.Value,
+                                      StringFormat='{}{0:#,0}'}" />
+        </Grid>
+    </DockPanel>
 </UserControl>

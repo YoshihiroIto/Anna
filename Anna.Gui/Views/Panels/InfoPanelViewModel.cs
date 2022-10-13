@@ -1,8 +1,10 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Config;
+using Anna.DomainModel.Service;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Localization;
+using Anna.Service;
 using Avalonia.Media;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -22,6 +24,7 @@ public sealed class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILoca
 
     public ReactiveProperty<long> TotalSize { get; }
     public ReactiveProperty<long> SelectedTotalSize { get; }
+    public ReadOnlyReactivePropertySlim<bool> IsInProcessing { get; }
 
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily { get; }
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
@@ -53,6 +56,12 @@ public sealed class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILoca
         TotalSize = new ReactiveProperty<long>().AddTo(Trash);
         SelectedTotalSize = new ReactiveProperty<long>().AddTo(Trash);
 
+        IsInProcessing = Model.BackgroundService
+            .ObserveProperty(x => x.IsInProcessing)
+            .ObserveOnUIDispatcher()
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash);
+        
         ViewerFontFamily = Dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.ViewerFontFamily)
             .ToReadOnlyReactivePropertySlim()

@@ -53,6 +53,8 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
     private readonly ManualResetEventSlim _taskCompleted = new();
     private readonly IServiceProvider _dic;
 
+    private int _processCount;
+    
     public BackgroundService(IServiceProvider dic)
     {
         _dic = dic;
@@ -62,7 +64,11 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
             while (await Channel.Reader.WaitToReadAsync())
             {
                 if (Channel.Reader.TryRead(out var process))
+                {
                     await process.ExecuteAsync();
+                    
+                    IsInProcessing = Interlocked.Decrement(ref _processCount) > 0;
+                }
             }
 
             _taskCompleted.Set();
@@ -83,6 +89,8 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
             destPath,
             sourceEntries);
 
+        IsInProcessing = Interlocked.Increment(ref _processCount) > 0;
+        
         return Channel.Writer.WriteAsync(process);
     }
 }

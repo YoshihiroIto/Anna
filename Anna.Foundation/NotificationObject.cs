@@ -19,13 +19,17 @@ public class NotificationObject : INotifyPropertyChanged
 
         storage = value;
 
-        RaisePropertyChanged(propertyName);
+        if (PropertyChanged is not null)
+            RaisePropertyChanged(propertyName);
 
         return true;
     }
 
     protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
     {
+        if (PropertyChanged is null)
+            return;
+    
         // ReSharper disable once InconsistentlySynchronizedField
         var pc = (PropertyChangedEventArgs?)PropChanged[propertyName];
 
@@ -44,6 +48,6 @@ public class NotificationObject : INotifyPropertyChanged
             }
         }
 
-        PropertyChanged?.Invoke(this, pc);
+        PropertyChanged.Invoke(this, pc);
     }
 }

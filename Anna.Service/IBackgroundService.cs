@@ -6,8 +6,8 @@ namespace Anna.Service;
 public interface IBackgroundService : INotifyPropertyChanged
 {
     bool IsInProcessing { get; }
-    double ProgressRatio { get; }
+    double Progress { get; }
     string Message { get; }
 
-    void CopyFileSystemEntry(string destPath, IEnumerable<IEntry> sourceEntries);
+    ValueTask CopyFileSystemEntryAsync(string destPath, IEnumerable<IEntry> sourceEntries);
 }

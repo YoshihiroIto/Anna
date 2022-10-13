@@ -27,9 +27,10 @@ internal class MockBackgroundService : IBackgroundService
 {
     public event PropertyChangedEventHandler? PropertyChanged;
     public bool IsInProcessing => false;
-    public double ProgressRatio => 0;
+    public double Progress => 0;
     public string Message => "";
-    public void CopyFileSystemEntry(string destPath, IEnumerable<IEntry> sourceEntries)
+    
+    public ValueTask CopyFileSystemEntryAsync(string destPath, IEnumerable<IEntry> sourceEntries)
     {
         throw new NotImplementedException();
     }

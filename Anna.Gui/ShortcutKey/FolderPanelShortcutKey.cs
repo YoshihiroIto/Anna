@@ -168,7 +168,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        Dic.GetInstance<IFileSystemService>().Copy(destFolder, receiver.TargetEntries);
+        await Dic.GetInstance<IBackgroundService>().CopyFileSystemEntryAsync(destFolder, receiver.TargetEntries);
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 }

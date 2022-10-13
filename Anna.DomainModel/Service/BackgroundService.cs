@@ -2,6 +2,7 @@
 using Anna.Service;
 using Anna.Service.Interfaces;
 using System.Threading.Channels;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Service;
 
@@ -20,14 +21,14 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
     #endregion
 
 
-    #region ProgressRatio
+    #region Progress
 
-    private double _ProgressRatio;
+    private double _Progress;
 
-    public double ProgressRatio
+    public double Progress
     {
-        get => _ProgressRatio;
-        set => SetProperty(ref _ProgressRatio, value);
+        get => _Progress;
+        set => SetProperty(ref _Progress, value);
     }
 
     #endregion
@@ -44,15 +45,18 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
     }
 
     #endregion
-    
+
     private Channel<IBackgroundServiceProcess> Channel { get; } =
         System.Threading.Channels.Channel.CreateUnbounded<IBackgroundServiceProcess>(
             new UnboundedChannelOptions { SingleReader = true });
 
     private readonly ManualResetEventSlim _taskCompleted = new();
+    private readonly IServiceProvider _dic;
 
-    public BackgroundService()
+    public BackgroundService(IServiceProvider dic)
     {
+        _dic = dic;
+
         Task.Run(async () =>
         {
             while (await Channel.Reader.WaitToReadAsync())
@@ -72,13 +76,39 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
         _taskCompleted.Dispose();
     }
 
-    public void CopyFileSystemEntry(string destPath, IEnumerable<IEntry> sourceEntries)
+    public ValueTask CopyFileSystemEntryAsync(string destPath, IEnumerable<IEntry> sourceEntries)
     {
-        throw new NotImplementedException();
+        var process = new CopyFileSystemEntryProcess(
+            _dic.GetInstance<IFileSystemService>(),
+            destPath,
+            sourceEntries);
+
+        return Channel.Writer.WriteAsync(process);
     }
 }
 
-interface IBackgroundServiceProcess
+internal interface IBackgroundServiceProcess
 {
     ValueTask ExecuteAsync();
+}
+
+internal class CopyFileSystemEntryProcess : IBackgroundServiceProcess
+{
+    private readonly IFileSystemService _fileSystemService;
+    private readonly string _destPath;
+    private readonly IEntry[] _sourceEntries;
+
+    public CopyFileSystemEntryProcess(IFileSystemService fileSystemService, string destPath,
+        IEnumerable<IEntry> sourceEntries)
+    {
+        _fileSystemService = fileSystemService;
+        _destPath = destPath;
+        _sourceEntries = sourceEntries.ToArray();
+    }
+
+    public ValueTask ExecuteAsync()
+    {
+        _fileSystemService.Copy(_destPath, _sourceEntries);
+        return ValueTask.CompletedTask;
+    }
 }

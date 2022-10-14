@@ -30,11 +30,11 @@ public sealed class FileSystemServiceTests : IDisposable
             _tempFolder.CreateFile(srcName);
 
             var srcPath = Path.Combine(_tempFolder.RootPath, srcName);
-            File.SetAttributes(srcPath, FileAttributes.ReadOnly );
+            File.SetAttributes(srcPath, FileAttributes.ReadOnly);
 
             var srcEntry = new TestEntry(srcPath, false);
 
-            fss.Copy(dstFolderPath, new[] { srcEntry });
+            fss.Copy(new[] { srcEntry }, dstFolderPath);
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -63,7 +63,7 @@ public sealed class FileSystemServiceTests : IDisposable
 
             var srcEntry = new TestEntry(srcPath, true);
 
-            fss.Copy(dstFolderPath, new[] { srcEntry });
+            fss.Copy(new[] { srcEntry }, dstFolderPath);
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -88,12 +88,12 @@ public sealed class FileSystemServiceTests : IDisposable
         var srcEntry0 = new TestEntry(Path.Combine(_tempFolder.RootPath, "a"), false);
         var srcEntry1 = new TestEntry(Path.Combine(_tempFolder.RootPath, "x"), true);
 
-        fss.Copy(dstFolderPath, new[] { srcEntry0, srcEntry1 });
-        
+        fss.Copy(new[] { srcEntry0, srcEntry1 }, dstFolderPath);
+
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x")));
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x/y")));
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x/y/z")));
-        
+
         Assert.True(File.Exists(Path.Combine(dstFolderPath, "a")));
         Assert.True(File.Exists(Path.Combine(dstFolderPath, "x/b")));
         Assert.True(File.Exists(Path.Combine(dstFolderPath, "x/y/c")));

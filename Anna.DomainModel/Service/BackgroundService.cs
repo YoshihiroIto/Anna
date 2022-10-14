@@ -118,7 +118,7 @@ internal class CopyFileSystemEntryProcess : IBackgroundServiceProcess
 
     public ValueTask ExecuteAsync()
     {
-        _fileSystemService.Copy(_destPath, _sourceEntries);
+        _fileSystemService.Copy(_sourceEntries, _destPath);
         return ValueTask.CompletedTask;
     }
 }

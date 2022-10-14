@@ -28,7 +28,7 @@ public sealed class FileSystemService : IFileSystemService
         }
     }
 
-    public void Copy(string destPath, IEnumerable<IEntry> sourceEntries)
+    public void Copy(IEnumerable<IEntry> sourceEntries, string destPath)
     {
         Parallel.ForEach(sourceEntries,
             entry =>

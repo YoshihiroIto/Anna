@@ -48,7 +48,7 @@ public sealed class JumpFolderTests : IDisposable
         Assert.Equal(configFolder.WorkPath, model.Path);
     }
 
-    [Fact]
+    [Fact(Skip="Due to instability")]
     public async Task Select_empty()
     {
         var configFolder = _fixture.ConfigFolder;
@@ -72,7 +72,7 @@ public sealed class JumpFolderTests : IDisposable
         Assert.Equal(configFolder.WorkPath, model.Path);
     }
 
-    [Fact]
+    [Fact(Skip="Due to instability")]
     public async Task Select_folder()
     {
         var configFolder = _fixture.ConfigFolder;

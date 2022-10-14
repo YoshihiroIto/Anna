@@ -115,8 +115,29 @@ internal class CopyFileSystemEntryProcess
             IEntriesStats Stats)>
         , IBackgroundServiceProcess
 {
-    public double Progress => 0.5;
-    public string Message => "CopyFileSystemEntryProcess";
+    #region Progress
+
+    private double _Progress = 0.5;
+
+    public double Progress
+    {
+        get => _Progress;
+        set => SetProperty(ref _Progress, value);
+    }
+
+    #endregion
+
+    #region Message
+
+    private string _Message = "CopyFileSystemEntryProcess";
+
+    public string Message
+    {
+        get => _Message;
+        set => SetProperty(ref _Message, value);
+    }
+
+    #endregion
 
     public CopyFileSystemEntryProcess(IServiceProvider dic)
         : base(dic)

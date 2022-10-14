@@ -1,10 +1,8 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Config;
-using Anna.DomainModel.Service;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Localization;
-using Anna.Service;
 using Avalonia.Media;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;

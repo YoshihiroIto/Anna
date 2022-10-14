@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using System;
 
-namespace Anna.Gui.Views.TemplateSelector;
+namespace Anna.Gui.Views.TemplateSelectors;
 
 public sealed class EntryDataTemplateSelector : IDataTemplate
 {

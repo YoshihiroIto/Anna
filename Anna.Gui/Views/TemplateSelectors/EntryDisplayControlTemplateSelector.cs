@@ -5,7 +5,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Styling;
 using System;
 
-namespace Anna.Gui.Views.TemplateSelector;
+namespace Anna.Gui.Views.TemplateSelectors;
 
 public sealed class EntryDisplayControlTemplateSelector : IControlTemplate
 {

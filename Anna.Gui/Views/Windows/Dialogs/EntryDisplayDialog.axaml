@@ -9,7 +9,7 @@
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
-                  xmlns:templateSelector="clr-namespace:Anna.Gui.Views.TemplateSelector"
+                  xmlns:templateSelectors="clr-namespace:Anna.Gui.Views.TemplateSelectors"
                   Title="{Binding Title,
                                   Mode=OneTime}"
                   Width="800"
@@ -43,19 +43,19 @@
 
     <ContentControl Content="{Binding}">
         <ContentControl.Template>
-            <templateSelector:EntryDisplayControlTemplateSelector>
-                <templateSelector:EntryDisplayControlTemplateSelector.TextTemplate>
+            <templateSelectors:EntryDisplayControlTemplateSelector>
+                <templateSelectors:EntryDisplayControlTemplateSelector.TextTemplate>
                     <ControlTemplate>
                         <panels:TextViewer DataContext="{Binding ContentViewModel}" />
                     </ControlTemplate>
-                </templateSelector:EntryDisplayControlTemplateSelector.TextTemplate>
+                </templateSelectors:EntryDisplayControlTemplateSelector.TextTemplate>
 
-                <templateSelector:EntryDisplayControlTemplateSelector.ImageTemplate>
+                <templateSelectors:EntryDisplayControlTemplateSelector.ImageTemplate>
                     <ControlTemplate>
                         <panels:ImageViewer DataContext="{Binding ContentViewModel}" />
                     </ControlTemplate>
-                </templateSelector:EntryDisplayControlTemplateSelector.ImageTemplate>
-            </templateSelector:EntryDisplayControlTemplateSelector>
+                </templateSelectors:EntryDisplayControlTemplateSelector.ImageTemplate>
+            </templateSelectors:EntryDisplayControlTemplateSelector>
         </ContentControl.Template>
     </ContentControl>
 </base1:WindowBase>

@@ -7,7 +7,7 @@ namespace Anna.Foundation;
 public class DisposableNotificationObject : NotificationObject, IDisposable
 {
     protected readonly IServiceProvider Dic;
-    
+
     private CompositeDisposable? _trashes;
     private bool _disposed;
 
@@ -18,7 +18,7 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
     public DisposableNotificationObject(IServiceProvider dic)
     {
         Dic = dic;
-        
+
         Dic.GetInstance<IObjectLifetimeCheckerService>().Add(this);
     }
 
@@ -31,7 +31,7 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
             _trashes?.Dispose();
 
         Dic.GetInstance<IObjectLifetimeCheckerService>().Remove(this);
-        
+
         _disposed = true;
     }
 
@@ -39,5 +39,16 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
     {
         Dispose(true);
         GC.SuppressFinalize(this);
+    }
+}
+
+public class HasArgDisposableNotificationObject<TArg> : DisposableNotificationObject, IHasArg<TArg>
+{
+    protected readonly TArg Arg;
+
+    public HasArgDisposableNotificationObject(IServiceProvider dic)
+        : base(dic)
+    {
+        dic.PopArg(out Arg);
     }
 }

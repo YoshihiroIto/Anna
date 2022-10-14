@@ -1,10 +1,11 @@
 ﻿using Anna.Foundation;
 using Anna.Service;
+using Anna.Service.Interfaces;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel;
 
-public sealed class EntriesStats : DisposableNotificationObject
+public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
 {
     #region IsInMeasuring
 
@@ -18,6 +19,7 @@ public sealed class EntriesStats : DisposableNotificationObject
 
     #endregion
 
+    
     #region FileCount
 
     private int _FileCount;
@@ -29,7 +31,7 @@ public sealed class EntriesStats : DisposableNotificationObject
     }
 
     #endregion
-
+    
 
     #region FolderCount
 

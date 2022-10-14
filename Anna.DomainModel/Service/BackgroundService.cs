@@ -2,6 +2,7 @@
 using Anna.Service;
 using Anna.Service.Interfaces;
 using System.Threading.Channels;
+using IDisposable=System.IDisposable;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Service;
@@ -54,7 +55,7 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
     private readonly IServiceProvider _dic;
 
     private int _processCount;
-    
+
     public BackgroundService(IServiceProvider dic)
     {
         _dic = dic;
@@ -66,7 +67,8 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
                 if (Channel.Reader.TryRead(out var process))
                 {
                     await process.ExecuteAsync();
-                    
+                    process.Dispose();
+
                     IsInProcessing = Interlocked.Decrement(ref _processCount) > 0;
                 }
             }
@@ -80,45 +82,53 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
         Channel.Writer.TryComplete();
         _taskCompleted.Wait();
         _taskCompleted.Dispose();
-        
+
         GC.SuppressFinalize(this);
     }
 
-    public ValueTask CopyFileSystemEntryAsync(string destPath, IEnumerable<IEntry> sourceEntries)
+    public ValueTask CopyFileSystemEntryAsync(string destPath, IEnumerable<IEntry> sourceEntries, IEntriesStats stats)
     {
-        var process = new CopyFileSystemEntryProcess(
-            _dic.GetInstance<IFileSystemService>(),
-            destPath,
-            sourceEntries);
+        var process =
+            _dic.GetInstance<CopyFileSystemEntryProcess,
+                    (IFileSystemService, string, IEnumerable<IEntry>, IEntriesStats)>
+                ((_dic.GetInstance<IFileSystemService>(), destPath, sourceEntries, stats));
 
         IsInProcessing = Interlocked.Increment(ref _processCount) > 0;
-        
+
         return Channel.Writer.WriteAsync(process);
     }
 }
 
-internal interface IBackgroundServiceProcess
+internal interface IBackgroundServiceProcess : IDisposable
 {
+    double Progress { get; }
+    string Message { get; }
+
     ValueTask ExecuteAsync();
 }
 
-internal class CopyFileSystemEntryProcess : IBackgroundServiceProcess
+internal class CopyFileSystemEntryProcess
+    : HasArgDisposableNotificationObject<(
+            IFileSystemService FileSystemService,
+            string DestPath,
+            IEnumerable<IEntry> SourceEntries,
+            IEntriesStats Stats)>
+        , IBackgroundServiceProcess
 {
-    private readonly IFileSystemService _fileSystemService;
-    private readonly string _destPath;
-    private readonly IEntry[] _sourceEntries;
+    public double Progress => 0.5;
+    public string Message => "CopyFileSystemEntryProcess";
 
-    public CopyFileSystemEntryProcess(IFileSystemService fileSystemService, string destPath,
-        IEnumerable<IEntry> sourceEntries)
+    public CopyFileSystemEntryProcess(IServiceProvider dic)
+        : base(dic)
     {
-        _fileSystemService = fileSystemService;
-        _destPath = destPath;
-        _sourceEntries = sourceEntries.ToArray();
+        if (Arg.Stats is IDisposable disposable)
+            Trash.Add(disposable);
     }
 
     public ValueTask ExecuteAsync()
     {
-        _fileSystemService.Copy(_sourceEntries, _destPath);
+        Arg.FileSystemService.Copy(Arg.SourceEntries, Arg.DestPath);
+
         return ValueTask.CompletedTask;
     }
 }

@@ -14,7 +14,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class CopyEntryDialogViewModel
-    : HasModelWindowBaseViewModel<(Entry[] Targets, ReadOnlyObservableCollection<string> DestFoldersHistory)>
+    : HasModelWindowBaseViewModel<(Entry[] Targets, EntriesStats Stats, ReadOnlyObservableCollection<string> DestFoldersHistory)>
 {
     public string ResultDestFolder { get; private set; } = "";
 
@@ -44,34 +44,28 @@ public sealed class CopyEntryDialogViewModel
         _OkCommand = new DelegateCommand(OnDecision);
 
         /////////////////////////////////////////////////////////////////
-        var cts = new CancellationTokenSource();
-        Trash.Add(() => cts.Cancel());
 
-        var stats = dic.GetInstance<EntriesStats>()
-            .Measure(Model.Targets, cts.Token)
-            .AddTo(Trash);
-
-        IsInMeasuring = stats.ObserveProperty(x => x.IsInMeasuring)
+        IsInMeasuring = Model.Stats.ObserveProperty(x => x.IsInMeasuring)
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(stats.IsInMeasuring)
+            .ToReadOnlyReactivePropertySlim(Model.Stats.IsInMeasuring)
             .AddTo(Trash);
 
-        FileCount = stats.ObserveProperty(x => x.FileCount)
+        FileCount = Model.Stats.ObserveProperty(x => x.FileCount)
             .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(stats.FileCount)
+            .ToReadOnlyReactivePropertySlim(Model.Stats.FileCount)
             .AddTo(Trash);
 
-        FolderCount = stats.ObserveProperty(x => x.FolderCount)
+        FolderCount = Model.Stats.ObserveProperty(x => x.FolderCount)
             .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(stats.FolderCount)
+            .ToReadOnlyReactivePropertySlim(Model.Stats.FolderCount)
             .AddTo(Trash);
 
-        AllSize = stats.ObserveProperty(x => x.AllSize)
+        AllSize = Model.Stats.ObserveProperty(x => x.AllSize)
             .Sample(TimeSpan.FromMilliseconds(200))
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(stats.AllSize)
+            .ToReadOnlyReactivePropertySlim(Model.Stats.AllSize)
             .AddTo(Trash);
 
         IsSingleTarget = Observable

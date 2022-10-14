@@ -94,10 +94,10 @@ public static class WindowOperator
     }
 
     public static async ValueTask<(bool IsCancel, string DestFolder)>
-        EntryCopyAsync(IServiceProvider dic, Window owner, Entry[] targets)
+        EntryCopyAsync(IServiceProvider dic, Window owner, Entry[] targets, EntriesStats stats)
     {
-        using var viewModel = dic.GetInstance<CopyEntryDialogViewModel, (Entry[], ReadOnlyObservableCollection<string>)>
-            ((targets, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
+        using var viewModel = dic.GetInstance<CopyEntryDialogViewModel, (Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
+            ((targets, stats, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
 
         var view = dic.GetInstance<CopyEntryDialog>();
         view.DataContext = viewModel;

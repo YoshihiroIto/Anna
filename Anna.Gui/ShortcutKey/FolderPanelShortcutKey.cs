@@ -1,4 +1,5 @@
 ﻿using Anna.Constants;
+using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Views.Windows;
@@ -155,12 +156,15 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         if (receiver.TargetEntries.Length == 0)
             return;
 
-        var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner, receiver.TargetEntries);
-        if (result.IsCancel)
-            return;
+        var stats = Dic.GetInstance<EntriesStats>()
+            .Measure(receiver.TargetEntries, default);
 
-        if (result.DestFolder == "")
+        var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner, receiver.TargetEntries, stats);
+        if (result.IsCancel || result.DestFolder == "")
+        {
+            stats.Dispose();
             return;
+        }
 
         var destFolder = Path.IsPathRooted(result.DestFolder)
             ? result.DestFolder
@@ -168,7 +172,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        await receiver.BackgroundService.CopyFileSystemEntryAsync(destFolder, receiver.TargetEntries);
+        await receiver.BackgroundService.CopyFileSystemEntryAsync(destFolder, receiver.TargetEntries, stats);
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 }

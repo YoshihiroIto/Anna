@@ -6,5 +6,5 @@ public interface IFileSystemService
 {
     bool IsAccessible(string path);
 
-    void Copy(IEnumerable<IEntry> sourceEntries, string destPath);
+    void Copy(IEnumerable<IEntry> sourceEntries, string destPath, Action? fileCopied);
 }

@@ -24,7 +24,13 @@
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Right">
-            <TextBlock IsVisible="{Binding IsInProcessing.Value}" Text="IsInProcessing" />
+            <ProgressBar Width="100"
+                         IsVisible="{Binding IsInProcessing.Value}"
+                         Maximum="100"
+                         Minimum="0"
+                         ProgressTextFormat="{}{1:0}%"
+                         ShowProgressText="True"
+                         Value="{Binding Process.Value}" />
         </StackPanel>
 
         <Grid ColumnDefinitions="Auto, Auto"

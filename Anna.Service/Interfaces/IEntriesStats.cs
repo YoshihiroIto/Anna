@@ -1,6 +1,8 @@
-﻿namespace Anna.Service.Interfaces;
+﻿using System.ComponentModel;
 
-public interface IEntriesStats
+namespace Anna.Service.Interfaces;
+
+public interface IEntriesStats : INotifyPropertyChanged
 {
     bool IsInMeasuring { get; }
     int FileCount { get; }

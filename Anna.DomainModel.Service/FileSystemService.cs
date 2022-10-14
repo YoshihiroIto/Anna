@@ -28,7 +28,7 @@ public sealed class FileSystemService : IFileSystemService
         }
     }
 
-    public void Copy(IEnumerable<IEntry> sourceEntries, string destPath)
+    public void Copy(IEnumerable<IEntry> sourceEntries, string destPath, Action? fileCopied)
     {
         Parallel.ForEach(sourceEntries,
             entry =>
@@ -38,7 +38,7 @@ public sealed class FileSystemService : IFileSystemService
                 if (entry.IsFolder)
                 {
                     var srcInfo = new DirectoryInfo(src);
-                    CopyFolder(srcInfo, destPath);
+                    CopyFolder(srcInfo, destPath, fileCopied);
                 }
                 else
                 {
@@ -48,11 +48,12 @@ public sealed class FileSystemService : IFileSystemService
 
                     File.Copy(src, dest, true);
                     File.SetAttributes(dest, File.GetAttributes(src));
+                    fileCopied?.Invoke();
                 }
             });
     }
 
-    private static void CopyFolder(DirectoryInfo srcInfo, string dst)
+    private static void CopyFolder(DirectoryInfo srcInfo, string dst, Action? fileCopied)
     {
         var src = srcInfo.FullName;
 
@@ -69,12 +70,13 @@ public sealed class FileSystemService : IFileSystemService
 
                 File.Copy(file.FullName, dest, true);
                 File.SetAttributes(dest, file.Attributes);
+                fileCopied?.Invoke();
             });
 
         Parallel.ForEach(di.EnumerateDirectories(),
             dir =>
             {
-                CopyFolder(dir, targetFolderPath);
+                CopyFolder(dir, targetFolderPath, fileCopied);
             });
     }
 }

@@ -23,6 +23,7 @@ public sealed class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILoca
     public ReactiveProperty<long> TotalSize { get; }
     public ReactiveProperty<long> SelectedTotalSize { get; }
     public ReadOnlyReactivePropertySlim<bool> IsInProcessing { get; }
+    public ReadOnlyReactivePropertySlim<double> Process { get; }
 
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily { get; }
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
@@ -56,6 +57,13 @@ public sealed class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILoca
 
         IsInProcessing = Model.BackgroundService
             .ObserveProperty(x => x.IsInProcessing)
+            .ObserveOnUIDispatcher()
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash);
+        
+        Process = Model.BackgroundService
+            .ObserveProperty(x => x.Progress)
+            .Sample(TimeSpan.FromMilliseconds(100)) 
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);

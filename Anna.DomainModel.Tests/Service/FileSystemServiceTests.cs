@@ -34,7 +34,7 @@ public sealed class FileSystemServiceTests : IDisposable
 
             var srcEntry = new TestEntry(srcPath, false);
 
-            fss.Copy(new[] { srcEntry }, dstFolderPath);
+            fss.Copy(new[] { srcEntry }, dstFolderPath, null);
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -63,7 +63,7 @@ public sealed class FileSystemServiceTests : IDisposable
 
             var srcEntry = new TestEntry(srcPath, true);
 
-            fss.Copy(new[] { srcEntry }, dstFolderPath);
+            fss.Copy(new[] { srcEntry }, dstFolderPath, null);
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -88,7 +88,7 @@ public sealed class FileSystemServiceTests : IDisposable
         var srcEntry0 = new TestEntry(Path.Combine(_tempFolder.RootPath, "a"), false);
         var srcEntry1 = new TestEntry(Path.Combine(_tempFolder.RootPath, "x"), true);
 
-        fss.Copy(new[] { srcEntry0, srcEntry1 }, dstFolderPath);
+        fss.Copy(new[] { srcEntry0, srcEntry1 }, dstFolderPath, null);
 
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x")));
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x/y")));

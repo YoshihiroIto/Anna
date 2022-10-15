@@ -1,5 +1,4 @@
 ﻿using Anna.DomainModel;
-using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows.Base;
@@ -8,7 +7,6 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
-using System.Threading;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;

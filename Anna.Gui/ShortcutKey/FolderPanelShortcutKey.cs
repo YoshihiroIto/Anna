@@ -59,9 +59,6 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         if (result.IsCancel)
             return;
 
-        if (result.Path == "")
-            return;
-
         if (await CheckIsAccessibleAsync(result.Path, receiver.Messenger) == false)
             return;
 

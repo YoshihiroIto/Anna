@@ -94,9 +94,6 @@ public sealed class CopyEntryDialogViewModel
         if (message.Response.DialogResult != DialogResultTypes.Ok)
             return;
 
-        if (message.Response.Path == "")
-            return;
-
         DestFolder.Value = message.Response.Path;
     }
 }

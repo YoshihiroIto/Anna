@@ -8,6 +8,7 @@ using Avalonia.Input;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
@@ -37,9 +38,7 @@ public sealed class JumpFolderDialogViewModel
         switch (e.Key)
         {
             case Key.Enter:
-                ResultPath = SelectedPath.Value.Model.Path;
-                DialogResult = DialogResultTypes.Ok;
-                await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+                await CloseAsync(SelectedPath.Value.Model.Path);
                 return;
 
             case Key.Delete:
@@ -64,11 +63,17 @@ public sealed class JumpFolderDialogViewModel
             if (path.Key != e.Key)
                 continue;
 
-            ResultPath = path.Path;
-            DialogResult = string.IsNullOrWhiteSpace(path.Path) ? DialogResultTypes.Cancel : DialogResultTypes.Ok;
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            await CloseAsync(path.Path);
             return;
         }
+    }
+
+    private ValueTask<WindowActionMessage> CloseAsync(string path)
+    {
+        ResultPath = path;
+        DialogResult = string.IsNullOrWhiteSpace(ResultPath) ? DialogResultTypes.Cancel : DialogResultTypes.Ok;
+        
+        return Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
     }
 }
 

@@ -202,12 +202,11 @@ internal sealed class ConfirmedFileSystemOperator
     protected override async ValueTask<(bool IsSkip, string NewDestPath)> CopyStrategyWhenSamePathAsync(string destPath)
     {
         using var lockObj = await _mutex.LockAsync();
-        
-        var message = await Dispatcher.UIThread.InvokeAsync(async () =>
-            await _arg.Messenger.RaiseAsync(
-                new ChangeEntryNameMessage(
-                    destPath,
-                    WindowBaseViewModel.MessageKeyChangeEntryName)));
+
+        var message = await _arg.Messenger.RaiseAsync(
+            new ChangeEntryNameMessage(
+                destPath,
+                WindowBaseViewModel.MessageKeyChangeEntryName));
 
         return (true, destPath);
     }

@@ -1,20 +1,11 @@
-﻿using Avalonia;
+﻿namespace Anna.Gui.Messaging.Messages;
 
-namespace Anna.Gui.Messaging.Messages;
-
-public class InteractionMessage : AvaloniaObject
+public class InteractionMessage
 {
-    public static readonly StyledProperty<string> MessageKeyProperty =
-        AvaloniaProperty.Register<InteractionMessage, string>(nameof(MessageKey));
-
+    public string MessageKey { get; init; }
+    
     public InteractionMessage(string messageKey)
     {
         MessageKey = messageKey;
-    }
-
-    public string MessageKey
-    {
-        get => GetValue(MessageKeyProperty);
-        init => SetValue(MessageKeyProperty, value);
     }
 }

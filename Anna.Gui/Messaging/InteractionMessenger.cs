@@ -1,5 +1,6 @@
 ﻿using Anna.Gui.Messaging.Messages;
 using Anna.Service;
+using Avalonia.Threading;
 using System;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
@@ -23,13 +24,16 @@ public sealed class InteractionMessenger : IHasServiceProviderContainer
         if (Raised is null)
             return message;
 
-        foreach (var d in Raised.GetInvocationList())
+        await Dispatcher.UIThread.InvokeAsync(async () =>
         {
-            if (d is not InteractionMessageRaisedEventHandler eventHandler)
-                throw new InvalidOperationException();
+            foreach (var d in Raised.GetInvocationList())
+            {
+                if (d is not InteractionMessageRaisedEventHandler eventHandler)
+                    throw new InvalidOperationException();
 
-            await eventHandler.Invoke(this, message);
-        }
+                await eventHandler.Invoke(this, message);
+            }
+        });
 
         return message;
     }

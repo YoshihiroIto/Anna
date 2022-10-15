@@ -1,36 +1,14 @@
 ﻿using Anna.Gui.Views.Windows.Base;
-using Avalonia;
 
 namespace Anna.Gui.Messaging.Messages;
 
 public sealed class ConfirmationMessage : InteractionMessage
 {
-    public static readonly StyledProperty<string> TitleProperty =
-        AvaloniaProperty.Register<ConfirmationMessage, string>(nameof(Title));
+    public string Title { get; init; }
 
-    public static readonly StyledProperty<string> TextProperty =
-        AvaloniaProperty.Register<ConfirmationMessage, string>(nameof(Text));
+    public string Text { get; init; }
 
-    public static readonly StyledProperty<ConfirmationTypes> ConfirmationTypeProperty =
-        AvaloniaProperty.Register<ConfirmationMessage, ConfirmationTypes>(nameof(ConfirmationTypes));
-
-    public string Title
-    {
-        get => GetValue(TitleProperty);
-        init => SetValue(TitleProperty, value);
-    }
-
-    public string Text
-    {
-        get => GetValue(TextProperty);
-        init => SetValue(TextProperty, value);
-    }
-
-    public ConfirmationTypes ConfirmationType
-    {
-        get => GetValue(ConfirmationTypeProperty);
-        init => SetValue(ConfirmationTypeProperty, value);
-    }
+    public ConfirmationTypes ConfirmationType { get; init; }
 
     public DialogResultTypes Response { get; internal set; }
 

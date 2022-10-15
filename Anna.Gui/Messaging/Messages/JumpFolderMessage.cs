@@ -1,6 +1,6 @@
 ﻿using Anna.Gui.Views.Windows.Base;
 
-namespace Anna.Gui.Messaging;
+namespace Anna.Gui.Messaging.Messages;
 
 public sealed class JumpFolderMessage : InteractionMessage
 {

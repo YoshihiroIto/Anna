@@ -1,5 +1,6 @@
 ﻿using Anna.DomainModel.Config;
 using Anna.Gui.Messaging;
+using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
 using System;
 using System.Collections.Generic;

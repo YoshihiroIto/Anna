@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 
-namespace Anna.Gui.Messaging;
+namespace Anna.Gui.Messaging.Messages;
 
 public enum WindowAction
 {

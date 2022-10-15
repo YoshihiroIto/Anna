@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 
-namespace Anna.Gui.Messaging;
+namespace Anna.Gui.Messaging.Messages;
 
 public class InteractionMessage : AvaloniaObject
 {

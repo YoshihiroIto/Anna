@@ -1,6 +1,7 @@
 ﻿using Anna.DomainModel;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
+using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;

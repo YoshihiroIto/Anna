@@ -2,6 +2,7 @@
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
+using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Localization;
 using Anna.Service;

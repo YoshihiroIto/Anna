@@ -1,7 +1,7 @@
 ﻿using Anna.Gui.Views.Windows.Base;
 using Avalonia;
 
-namespace Anna.Gui.Messaging;
+namespace Anna.Gui.Messaging.Messages;
 
 public sealed class InformationMessage : InteractionMessage
 {

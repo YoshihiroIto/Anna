@@ -1,0 +1,73 @@
+﻿using Anna.Foundation;
+using Anna.Service;
+using Anna.Service.Interfaces;
+using Reactive.Bindings.Extensions;
+using IServiceProvider=Anna.Service.IServiceProvider;
+
+namespace Anna.DomainModel.Service.BackgroundProcess;
+
+internal class CopyFileSystemEntryProcess
+    : HasArgDisposableNotificationObject<(IFileSystemService FileSystemService, string DestPath, IEnumerable<IEntry> SourceEntries, IEntriesStats Stats)>
+        , IBackgroundProcess
+{
+    #region Progress
+
+    private double _Progress;
+
+    public double Progress
+    {
+        get => _Progress;
+        set => SetProperty(ref _Progress, value);
+    }
+
+    #endregion
+
+    #region Message
+
+    private string _Message = "CopyFileSystemEntryProcess";
+
+    public string Message
+    {
+        get => _Message;
+        set => SetProperty(ref _Message, value);
+    }
+
+    #endregion
+
+    private int _fileCopiedCount;
+    private int _fileCount;
+
+    public CopyFileSystemEntryProcess(IServiceProvider dic)
+        : base(dic)
+    {
+        if (Arg.Stats is IDisposable disposable)
+            Trash.Add(disposable);
+
+        _fileCount = Arg.Stats.FileCount;
+
+        Arg.Stats.ObserveProperty(x => x.FileCount)
+            .Subscribe(x =>
+            {
+                _fileCount = x;
+                UpdateProgress();
+            }).AddTo(Trash);
+    }
+
+    public ValueTask ExecuteAsync()
+    {
+        Arg.FileSystemService.Copy(Arg.SourceEntries,
+            Arg.DestPath,
+            () =>
+            {
+                Interlocked.Increment(ref _fileCopiedCount);
+                UpdateProgress();
+            });
+
+        return ValueTask.CompletedTask;
+    }
+
+    private void UpdateProgress()
+    {
+        Progress = Math.Min(0.999999, (double)_fileCopiedCount / _fileCount) * 100;
+    }
+}

@@ -22,12 +22,18 @@ public abstract class FileSystemOperator : IFileSystemOperator
                 {
                     Directory.CreateDirectory(destPath);
 
+                    var isSkip = false;
                     var dest = Path.Combine(destPath, Path.GetFileName(src));
 
-                    var isSame = string.CompareOrdinal(src, dest) == 0;
+                    if (string.CompareOrdinal(src, dest) == 0)
+                        (isSkip, dest) = CopyStrategyWhenSamePath(dest);
 
-                    File.Copy(src, dest, true);
-                    File.SetAttributes(dest, File.GetAttributes(src));
+                    if (isSkip == false)
+                    {
+                        File.Copy(src, dest, true);
+                        File.SetAttributes(dest, File.GetAttributes(src));
+                    }
+
                     FileCopied?.Invoke(this, EventArgs.Empty);
                 }
             });
@@ -46,10 +52,18 @@ public abstract class FileSystemOperator : IFileSystemOperator
         Parallel.ForEach(di.EnumerateFiles(),
             file =>
             {
+                var isSkip = false;
                 var dest = Path.Combine(targetFolderPath, file.Name);
 
-                File.Copy(file.FullName, dest, true);
-                File.SetAttributes(dest, file.Attributes);
+                if (string.CompareOrdinal(file.FullName, dest) == 0)
+                    (isSkip, dest) = CopyStrategyWhenSamePath(dest);
+
+                if (isSkip == false)
+                {
+                    File.Copy(file.FullName, dest, true);
+                    File.SetAttributes(dest, file.Attributes);
+                }
+
                 FileCopied?.Invoke(this, EventArgs.Empty);
             });
 
@@ -58,6 +72,11 @@ public abstract class FileSystemOperator : IFileSystemOperator
             {
                 CopyFolder(dir, targetFolderPath);
             });
+    }
+
+    protected virtual (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
+    {
+        return (true, destPath);
     }
 }
 

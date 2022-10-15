@@ -17,7 +17,7 @@ namespace Anna.Gui.Views.Windows;
 
 public static class WindowOperator
 {
-    public static async ValueTask<(bool IsCancel, SortModes SortMode, SortOrders SortOrder)>
+    public static async ValueTask<(DialogResultTypes Result, SortModes SortMode, SortOrders SortOrder)>
         SelectSortModeAndOrderAsync(IServiceProvider dic, Window owner)
     {
         using var viewModel = dic.GetInstance<SortModeAndOrderDialogViewModel>();
@@ -27,11 +27,10 @@ public static class WindowOperator
 
         await view.ShowDialog(owner);
 
-        return (viewModel.DialogResult == DialogResultTypes.Cancel,
-            viewModel.ResultSortMode, viewModel.ResultSortOrder);
+        return (viewModel.DialogResult, viewModel.ResultSortMode, viewModel.ResultSortOrder);
     }
 
-    public static async ValueTask<(bool IsCancel, string Path)>
+    public static async ValueTask<(DialogResultTypes Result, string Path)>
         JumpFolderAsync(IServiceProvider dic, Window owner)
     {
         var currentFolderPath = ((owner as FolderWindow)?.DataContext as FolderWindowViewModel)?.Model.Path ?? "";
@@ -44,10 +43,10 @@ public static class WindowOperator
 
         await view.ShowDialog(owner);
 
-        return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
+        return (viewModel.DialogResult, viewModel.ResultPath);
     }
 
-    public static async ValueTask<(bool IsCancel, string Path)>
+    public static async ValueTask<(DialogResultTypes Result, string Path)>
         SelectFolderAsync(IServiceProvider dic, Window owner)
     {
         var currentFolderPath = ((owner as FolderWindow)?.DataContext as FolderWindowViewModel)?.Model.Path ?? "";
@@ -59,7 +58,7 @@ public static class WindowOperator
 
         await view.ShowDialog(owner);
 
-        return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
+        return (viewModel.DialogResult, viewModel.ResultPath);
     }
 
     public static async ValueTask<(DialogResultTypes Result, string Name)>
@@ -120,7 +119,7 @@ public static class WindowOperator
         return viewModel.DialogResult;
     }
 
-    public static async ValueTask<(bool IsCancel, string DestFolder)>
+    public static async ValueTask<(DialogResultTypes Result, string DestFolder)>
         EntryCopyAsync(IServiceProvider dic, Window owner, Entry[] targets, EntriesStats stats)
     {
         using var viewModel =
@@ -132,6 +131,6 @@ public static class WindowOperator
 
         await view.ShowDialog(owner);
 
-        return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultDestFolder);
+        return (viewModel.DialogResult, viewModel.ResultDestFolder);
     }
 }

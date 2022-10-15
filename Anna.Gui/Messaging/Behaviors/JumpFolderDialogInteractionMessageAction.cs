@@ -1,6 +1,5 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Views.Windows;
-using Anna.Gui.Views.Windows.Base;
 using Anna.Service;
 using Avalonia;
 using Avalonia.Controls;
@@ -34,10 +33,6 @@ public sealed class JumpFolderDialogInteractionMessageAction : AvaloniaObject, I
             hasServiceProviderContainer.Dic,
             owner);
 
-        jumpFolderMessage.Response =
-        (
-            result.IsCancel ? DialogResultTypes.Cancel : DialogResultTypes.Ok,
-            result.Path
-        );
+        jumpFolderMessage.Response = result;
     }
 }

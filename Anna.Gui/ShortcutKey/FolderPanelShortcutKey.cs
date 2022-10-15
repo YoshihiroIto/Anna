@@ -6,7 +6,6 @@ using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Base;
-using Anna.Localization;
 using Anna.Service;
 using Avalonia.Threading;
 using Nito.AsyncEx;
@@ -51,7 +50,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
         var result = await WindowOperator.SelectSortModeAndOrderAsync(Dic, receiver.Owner);
-        if (result.IsCancel)
+        if (result.Result != DialogResultTypes.Ok)
             return;
 
         receiver.Folder.SetSortModeAndOrder(result.SortMode, result.SortOrder);
@@ -62,7 +61,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
 
         var result = await WindowOperator.JumpFolderAsync(Dic, receiver.Owner);
-        if (result.IsCancel)
+        if (result.Result != DialogResultTypes.Ok)
             return;
 
         if (await CheckIsAccessibleAsync(result.Path, receiver.Messenger) == false)
@@ -163,7 +162,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             .Measure(receiver.TargetEntries, default);
 
         var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner, receiver.TargetEntries, stats);
-        if (result.IsCancel)
+        if (result.Result != DialogResultTypes.Ok)
         {
             stats.Dispose();
             return;

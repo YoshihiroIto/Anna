@@ -2,5 +2,7 @@
 
 public interface IFileSystemOperator
 {
-    void Copy(IEnumerable<IEntry> sourceEntries, string destPath, Action? fileCopied);
+    event EventHandler FileCopied;
+    
+    void Copy(IEnumerable<IEntry> sourceEntries, string destPath);
 }

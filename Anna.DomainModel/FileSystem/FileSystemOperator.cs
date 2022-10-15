@@ -4,7 +4,9 @@ namespace Anna.DomainModel.FileSystem;
 
 public abstract class FileSystemOperator : IFileSystemOperator
 {
-    public void Copy(IEnumerable<IEntry> sourceEntries, string destPath, Action? fileCopied)
+    public event EventHandler? FileCopied;
+
+    public void Copy(IEnumerable<IEntry> sourceEntries, string destPath)
     {
         Parallel.ForEach(sourceEntries,
             entry =>
@@ -14,7 +16,7 @@ public abstract class FileSystemOperator : IFileSystemOperator
                 if (entry.IsFolder)
                 {
                     var srcInfo = new DirectoryInfo(src);
-                    CopyFolder(srcInfo, destPath, fileCopied);
+                    CopyFolder(srcInfo, destPath);
                 }
                 else
                 {
@@ -26,12 +28,12 @@ public abstract class FileSystemOperator : IFileSystemOperator
 
                     File.Copy(src, dest, true);
                     File.SetAttributes(dest, File.GetAttributes(src));
-                    fileCopied?.Invoke();
+                    FileCopied?.Invoke(this, EventArgs.Empty);
                 }
             });
     }
 
-    private static void CopyFolder(DirectoryInfo srcInfo, string dst, Action? fileCopied)
+    private void CopyFolder(DirectoryInfo srcInfo, string dst)
     {
         var src = srcInfo.FullName;
 
@@ -48,18 +50,17 @@ public abstract class FileSystemOperator : IFileSystemOperator
 
                 File.Copy(file.FullName, dest, true);
                 File.SetAttributes(dest, file.Attributes);
-                fileCopied?.Invoke();
+                FileCopied?.Invoke(this, EventArgs.Empty);
             });
 
         Parallel.ForEach(di.EnumerateDirectories(),
             dir =>
             {
-                CopyFolder(dir, targetFolderPath, fileCopied);
+                CopyFolder(dir, targetFolderPath);
             });
     }
 }
 
 public sealed class DefaultFileSystemOperator : FileSystemOperator
 {
-    
 }

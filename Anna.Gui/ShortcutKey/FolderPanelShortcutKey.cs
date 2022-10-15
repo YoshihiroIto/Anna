@@ -3,8 +3,13 @@ using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.DomainModel.FileSystem;
 using Anna.Foundation;
+using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows;
+using Anna.Gui.Views.Windows.Base;
+using Anna.Localization;
 using Anna.Service;
+using Avalonia.Threading;
+using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -170,15 +175,40 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        var fileSystemOperator = Dic.GetInstance<ConfirmedFileSystemOperator>();
-        
-        await receiver.BackgroundService.CopyFileSystemEntryAsync(fileSystemOperator, destFolder, receiver.TargetEntries, stats);
+        var fileSystemOperator =
+            Dic.GetInstance<ConfirmedFileSystemOperator, (InteractionMessenger, int)>((receiver.Messenger, 0));
+
+        await receiver.BackgroundService.CopyFileSystemEntryAsync(fileSystemOperator,
+            destFolder,
+            receiver.TargetEntries,
+            stats);
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 }
 
-internal sealed class ConfirmedFileSystemOperator : FileSystemOperator
+internal sealed class ConfirmedFileSystemOperator
+    : FileSystemOperator,
+        IHasArg<(InteractionMessenger Messenger, int Dummmy)>
 {
-    // todo:
-    
+    private readonly (InteractionMessenger Messenger, int Dummmy) _arg;
+
+    private readonly AsyncLock _mutex = new();
+
+    public ConfirmedFileSystemOperator(IServiceProvider dic)
+    {
+        dic.PopArg(out _arg);
+    }
+
+    protected override async ValueTask<(bool IsSkip, string NewDestPath)> CopyStrategyWhenSamePathAsync(string destPath)
+    {
+        using var lockObj = await _mutex.LockAsync();
+        
+        var message = await Dispatcher.UIThread.InvokeAsync(async () =>
+            await _arg.Messenger.RaiseAsync(
+                new ChangeEntryNameMessage(
+                    destPath,
+                    WindowBaseViewModel.MessageKeyChangeEntryName)));
+
+        return (true, destPath);
+    }
 }

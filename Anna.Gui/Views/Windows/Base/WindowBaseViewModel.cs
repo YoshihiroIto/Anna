@@ -20,6 +20,7 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
     public const string MessageKeyYesNoConfirmation = nameof(MessageKeyYesNoConfirmation);
     public const string MessageKeyJumpFolder = nameof(MessageKeyJumpFolder);
     public const string MessageKeySelectFolder = nameof(MessageKeySelectFolder);
+    public const string MessageKeyChangeEntryName = nameof(MessageKeyChangeEntryName);
 
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 

@@ -36,9 +36,8 @@ public static class WindowOperator
     {
         var currentFolderPath = ((owner as FolderWindow)?.DataContext as FolderWindowViewModel)?.Model.Path ?? "";
 
-        using var viewModel =
-            dic.GetInstance<JumpFolderDialogViewModel, (string CurrentFolderPath, JumpFolderConfigData Config)>((
-                currentFolderPath, dic.GetInstance<JumpFolderConfig>().Data));
+        using var viewModel = dic.GetInstance<JumpFolderDialogViewModel, (string, JumpFolderConfigData)>((
+            currentFolderPath, dic.GetInstance<JumpFolderConfig>().Data));
 
         var view = dic.GetInstance<JumpFolderDialog>();
         view.DataContext = viewModel;
@@ -47,15 +46,13 @@ public static class WindowOperator
 
         return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
     }
-    
+
     public static async ValueTask<(bool IsCancel, string Path)>
         SelectFolderAsync(IServiceProvider dic, Window owner)
     {
         var currentFolderPath = ((owner as FolderWindow)?.DataContext as FolderWindowViewModel)?.Model.Path ?? "";
 
-        using var viewModel =
-            dic.GetInstance<SelectFolderDialogViewModel, (string CurrentFolderPath, int Dummy)>((
-                currentFolderPath, 0));
+        using var viewModel = dic.GetInstance<SelectFolderDialogViewModel, (string, int)>((currentFolderPath, 0));
 
         var view = dic.GetInstance<SelectFolderDialog>();
         view.DataContext = viewModel;
@@ -63,6 +60,19 @@ public static class WindowOperator
         await view.ShowDialog(owner);
 
         return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
+    }
+
+    public static async ValueTask<(DialogResultTypes Result, string Name)>
+        ChangeEntryNameAsync(IServiceProvider dic, Window owner, string currentName)
+    {
+        using var viewModel = dic.GetInstance<ChangeEntryNameDialogViewModel, (string, int)>((currentName, 0));
+
+        var view = dic.GetInstance<ChangeEntryNameDialog>();
+        view.DataContext = viewModel;
+
+        await view.ShowDialog(owner);
+
+        return (viewModel.DialogResult, viewModel.ResultName);
     }
 
     public static async ValueTask EntryDisplay(IServiceProvider dic, Window owner, Entry target)
@@ -98,9 +108,9 @@ public static class WindowOperator
         string text,
         ConfirmationTypes confirmationType)
     {
-        using var viewModel =
-            dic.GetInstance<ConfirmationDialogViewModel, (string Title, string Text, ConfirmationTypes confirmationType
-                )>((title, text, confirmationType));
+        using var viewModel = dic.GetInstance<ConfirmationDialogViewModel, (string, string, ConfirmationTypes)>((title,
+            text,
+            confirmationType));
 
         var view = dic.GetInstance<ConfirmationDialog>();
         view.DataContext = viewModel;
@@ -113,8 +123,9 @@ public static class WindowOperator
     public static async ValueTask<(bool IsCancel, string DestFolder)>
         EntryCopyAsync(IServiceProvider dic, Window owner, Entry[] targets, EntriesStats stats)
     {
-        using var viewModel = dic.GetInstance<CopyEntryDialogViewModel, (Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
-            ((targets, stats, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
+        using var viewModel =
+            dic.GetInstance<CopyEntryDialogViewModel, (Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
+                ((targets, stats, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
 
         var view = dic.GetInstance<CopyEntryDialog>();
         view.DataContext = viewModel;

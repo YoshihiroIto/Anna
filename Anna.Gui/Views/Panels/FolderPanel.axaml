@@ -42,6 +42,10 @@
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
             <behaviors1:InformationDialogInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
+        
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyChangeEntryName}" Messenger="{Binding Messenger}">
+            <behaviors1:ChangeEntryNameDialogInteractionMessageAction />
+        </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <UserControl.Styles>

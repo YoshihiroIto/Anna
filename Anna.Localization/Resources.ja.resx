@@ -114,4 +114,7 @@
     <data name="DialogTitle_SelectFolder" xml:space="preserve">
         <value>フォルダー選択</value>
     </data>
+    <data name="DialogTitle_ChangeEntryName" xml:space="preserve">
+        <value>エントリーの名前変更</value>
+    </data>
 </root>

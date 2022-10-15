@@ -108,4 +108,7 @@
     <data name="DialogTitle_CopyEntry" xml:space="preserve">
         <value>エントリーのコピー</value>
     </data>
+    <data name="UI_JumpFolderDialog" xml:space="preserve">
+        <value>フォルダー(_F)...</value>
+    </data>
 </root>

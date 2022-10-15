@@ -335,5 +335,14 @@ namespace Anna.Localization {
                 return ResourceManager.GetString("UI_Edit", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Folder....
+        /// </summary>
+        public static string UI_JumpFolderDialog {
+            get {
+                return ResourceManager.GetString("UI_JumpFolderDialog", resourceCulture);
+            }
+        }
     }
 }

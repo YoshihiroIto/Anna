@@ -214,4 +214,7 @@ The editor is not registered or does not exist.</value>
   <data name="DialogTitle_CopyEntry" xml:space="preserve">
     <value>Copy entry</value>
   </data>
+  <data name="UI_JumpFolderDialog" xml:space="preserve">
+    <value>_Folder...</value>
+  </data>
 </root>

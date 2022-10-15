@@ -36,6 +36,10 @@
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
             <behaviors1:WindowInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
+
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyJumpFolder}" Messenger="{Binding Messenger}">
+            <behaviors1:JumpFolderDialogInteractionMessageAction />
+        </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -80,7 +84,9 @@
                       Items="{Binding DestFoldersHistory}"
                       SelectedIndex="{Binding SelectedDestFolderHistory.Value}" />
 
-            <Button Classes="dialog-no-margin" Content="Jump" />
+            <Button Classes="dialog-no-margin"
+                    Command="{Binding OpenJumpFolderDialogCommand}"
+                    Content="{ReflectionBinding R.UI_JumpFolderDialog}" />
 
             <TextBlock Text="{Binding IsSingleTarget.Value}" />
             <TextBlock Text="{Binding IsInMeasuring.Value}" />

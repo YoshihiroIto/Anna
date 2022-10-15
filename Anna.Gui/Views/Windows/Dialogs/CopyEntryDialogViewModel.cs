@@ -12,7 +12,8 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class CopyEntryDialogViewModel
-    : HasModelWindowBaseViewModel<(Entry[] Targets, EntriesStats Stats, ReadOnlyObservableCollection<string> DestFoldersHistory)>
+    : HasModelWindowBaseViewModel<
+        (Entry[] Targets, EntriesStats Stats, ReadOnlyObservableCollection<string> DestFoldersHistory)>
 {
     public string ResultDestFolder { get; private set; } = "";
 
@@ -28,17 +29,20 @@ public sealed class CopyEntryDialogViewModel
     public ReadOnlyObservableCollection<string> DestFoldersHistory => Model.DestFoldersHistory;
     public ReactivePropertySlim<int> SelectedDestFolderHistory { get; }
 
+    public DelegateCommand OpenJumpFolderDialogCommand { get; }
+
     public CopyEntryDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
         DestFolder = new ReactivePropertySlim<string>("").AddTo(Trash);
-        
+
         SelectedDestFolderHistory = new ReactivePropertySlim<int>(-1).AddTo(Trash);
         SelectedDestFolderHistory
             .Where(x => x != -1)
             .Subscribe(x => DestFolder.Value = Model.DestFoldersHistory[x])
             .AddTo(Trash);
 
+        OpenJumpFolderDialogCommand = new DelegateCommand(OnJumpFolderDialog);
         _OkCommand = new DelegateCommand(OnDecision);
 
         /////////////////////////////////////////////////////////////////
@@ -81,5 +85,18 @@ public sealed class CopyEntryDialogViewModel
         DialogResult = DialogResultTypes.Ok;
 
         await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+    }
+
+    public async void OnJumpFolderDialog()
+    {
+        var message = await Messenger.RaiseAsync(new JumpFolderMessage(MessageKeyJumpFolder));
+
+        if (message.Response.DialogResult != DialogResultTypes.Ok)
+            return;
+
+        if (message.Response.Path == "")
+            return;
+
+        DestFolder.Value = message.Response.Path;
     }
 }

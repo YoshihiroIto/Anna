@@ -22,7 +22,7 @@ public sealed class JumpFolderDialogInteractionMessageAction : AvaloniaObject, I
         InteractionMessage message,
         IHasServiceProviderContainer hasServiceProviderContainer)
     {
-        if (message is not JumpFolderMessage confirmationMessage)
+        if (message is not JumpFolderMessage jumpFolderMessage)
             return;
 
         if (sender is not { AssociatedObject: IControl control })
@@ -34,7 +34,7 @@ public sealed class JumpFolderDialogInteractionMessageAction : AvaloniaObject, I
             hasServiceProviderContainer.Dic,
             owner);
 
-        confirmationMessage.Response =
+        jumpFolderMessage.Response =
         (
             result.IsCancel ? DialogResultTypes.Cancel : DialogResultTypes.Ok,
             result.Path

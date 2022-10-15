@@ -5,7 +5,7 @@ using System.Globalization;
 
 namespace Anna.Gui.Views.Converters;
 
-public class BytesValueToHumanizedConverter : IValueConverter
+public sealed class BytesValueToHumanizedConverter : IValueConverter
 {
     public static readonly BytesValueToHumanizedConverter Default = new();
 

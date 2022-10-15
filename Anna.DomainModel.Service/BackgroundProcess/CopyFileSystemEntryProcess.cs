@@ -1,5 +1,4 @@
 ﻿using Anna.Foundation;
-using Anna.Service;
 using Anna.Service.Interfaces;
 using Reactive.Bindings.Extensions;
 using IServiceProvider=Anna.Service.IServiceProvider;
@@ -7,7 +6,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 namespace Anna.DomainModel.Service.BackgroundProcess;
 
 internal class CopyFileSystemEntryProcess
-    : HasArgDisposableNotificationObject<(IFileSystemService FileSystemService, string DestPath, IEnumerable<IEntry> SourceEntries, IEntriesStats Stats)>
+    : HasArgDisposableNotificationObject<(IFileSystemOperator FileSystemOperator, string DestPath, IEnumerable<IEntry> SourceEntries, IEntriesStats Stats)>
         , IBackgroundProcess
 {
     #region Progress
@@ -55,7 +54,7 @@ internal class CopyFileSystemEntryProcess
 
     public ValueTask ExecuteAsync()
     {
-        Arg.FileSystemService.Copy(Arg.SourceEntries,
+        Arg.FileSystemOperator.Copy(Arg.SourceEntries,
             Arg.DestPath,
             () =>
             {

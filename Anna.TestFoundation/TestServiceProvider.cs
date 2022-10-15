@@ -32,7 +32,8 @@ internal class MockBackgroundService : IBackgroundService
     public bool IsInProcessing => false;
     public double Progress => 0;
     public string Message => "";
-    public ValueTask CopyFileSystemEntryAsync(string destPath, IEnumerable<IEntry> sourceEntries, IEntriesStats stats)
+    public ValueTask CopyFileSystemEntryAsync(IFileSystemOperator fileSystemOperator, string destPath, IEnumerable<IEntry> sourceEntries,
+        IEntriesStats stats)
     {
         throw new NotImplementedException();
     }

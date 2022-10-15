@@ -77,7 +77,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
 
     protected async ValueTask<bool> CheckIsAccessibleAsync(string path, InteractionMessenger messenger)
     {
-        if (Dic.GetInstance<IFileSystemService>().IsAccessible(path))
+        if (Dic.GetInstance<IFileSystemIsAccessibleService>().IsAccessible(path))
             return true;
 
         await messenger.RaiseAsync(

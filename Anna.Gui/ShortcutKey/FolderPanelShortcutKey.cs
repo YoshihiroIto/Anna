@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
+using Anna.DomainModel.FileSystem;
 using Anna.Foundation;
 using Anna.Gui.Views.Windows;
 using Anna.Service;
@@ -169,7 +170,9 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        await receiver.BackgroundService.CopyFileSystemEntryAsync(destFolder, receiver.TargetEntries, stats);
+        var fileSystemOperator = Dic.GetInstance<DefaultFileSystemOperator>();
+        
+        await receiver.BackgroundService.CopyFileSystemEntryAsync(fileSystemOperator, destFolder, receiver.TargetEntries, stats);
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 }

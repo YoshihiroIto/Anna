@@ -1,33 +1,9 @@
-﻿using Anna.Service;
-using Anna.Service.Interfaces;
+﻿using Anna.Service.Interfaces;
 
-namespace Anna.DomainModel.Service;
+namespace Anna.DomainModel.FileSystem;
 
-public abstract class FileSystemService : IFileSystemService
+public abstract class FileSystemOperator : IFileSystemOperator
 {
-    public bool IsAccessible(string path)
-    {
-        FileStream? stream = null;
-
-        try
-        {
-            if (File.Exists(path))
-                stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.None);
-            else
-                _ = Directory.EnumerateDirectories(path).FirstOrDefault();
-
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-        finally
-        {
-            stream?.Dispose();
-        }
-    }
-
     public void Copy(IEnumerable<IEntry> sourceEntries, string destPath, Action? fileCopied)
     {
         Parallel.ForEach(sourceEntries,
@@ -83,7 +59,7 @@ public abstract class FileSystemService : IFileSystemService
     }
 }
 
-public sealed class DefaultFileSystemService : FileSystemService
+public sealed class DefaultFileSystemOperator : FileSystemOperator
 {
     
 }

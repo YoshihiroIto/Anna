@@ -9,7 +9,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Service;
 
-public class BackgroundService : NotificationObject, IBackgroundService, IDisposable
+public sealed class BackgroundService : NotificationObject, IBackgroundService, IDisposable
 {
     #region IsInProcessing
 
@@ -105,12 +105,12 @@ public class BackgroundService : NotificationObject, IBackgroundService, IDispos
         return Channel.Writer.WriteAsync(process);
     }
 
-    public ValueTask CopyFileSystemEntryAsync(string destPath, IEnumerable<IEntry> sourceEntries, IEntriesStats stats)
+    public ValueTask CopyFileSystemEntryAsync(IFileSystemOperator fileSystemOperator, string destPath, IEnumerable<IEntry> sourceEntries, IEntriesStats stats)
     {
         return
             PushProcess(
-                _dic.GetInstance<CopyFileSystemEntryProcess, (IFileSystemService, string, IEnumerable<IEntry>, IEntriesStats)>
-                    ((_dic.GetInstance<IFileSystemService>(), destPath, sourceEntries, stats))
+                _dic.GetInstance<CopyFileSystemEntryProcess, (IFileSystemOperator, string, IEnumerable<IEntry>, IEntriesStats)>
+                    ((fileSystemOperator, destPath, sourceEntries, stats))
             );
     }
 }

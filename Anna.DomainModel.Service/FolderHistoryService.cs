@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace Anna.DomainModel.Service;
 
-public class FolderHistoryService : IFolderHistoryService
+public sealed class FolderHistoryService : IFolderHistoryService
 {
     public ReadOnlyObservableCollection<string> DestinationFolders => new(_appConfig.Data.DestinationFolders);
     

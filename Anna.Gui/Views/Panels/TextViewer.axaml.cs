@@ -18,7 +18,7 @@ using WindowBase=Anna.Gui.Views.Windows.Base.WindowBase;
 
 namespace Anna.Gui.Views.Panels;
 
-public partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
+public sealed partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
 {
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
 

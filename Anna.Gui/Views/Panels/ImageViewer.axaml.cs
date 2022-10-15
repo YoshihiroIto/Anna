@@ -12,7 +12,7 @@ using WindowBase=Anna.Gui.Views.Windows.Base.WindowBase;
 
 namespace Anna.Gui.Views.Panels;
 
-public partial class ImageViewer : UserControl, IImageViewerShortcutKeyReceiver
+public sealed partial class ImageViewer : UserControl, IImageViewerShortcutKeyReceiver
 {
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
     public string TargetFilepath => ViewModel.Model.Path;

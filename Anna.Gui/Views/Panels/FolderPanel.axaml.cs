@@ -19,7 +19,7 @@ using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Views.Panels;
 
-public partial class FolderPanel : UserControl, IFolderPanelShortcutKeyReceiver
+public sealed partial class FolderPanel : UserControl, IFolderPanelShortcutKeyReceiver
 {
     public static readonly StyledProperty<IDataTemplate?> ItemTemplateProperty =
         AvaloniaProperty.Register<FolderPanel, IDataTemplate?>(nameof(ItemTemplate));

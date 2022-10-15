@@ -123,6 +123,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select folder.
+        /// </summary>
+        public static string DialogTitle_SelectFolder {
+            get {
+                return ResourceManager.GetString("DialogTitle_SelectFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sort entry.
         /// </summary>
         public static string DialogTitle_SortEntry {

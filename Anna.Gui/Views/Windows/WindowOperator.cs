@@ -47,6 +47,23 @@ public static class WindowOperator
 
         return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
     }
+    
+    public static async ValueTask<(bool IsCancel, string Path)>
+        SelectFolderAsync(IServiceProvider dic, Window owner)
+    {
+        var currentFolderPath = ((owner as FolderWindow)?.DataContext as FolderWindowViewModel)?.Model.Path ?? "";
+
+        using var viewModel =
+            dic.GetInstance<SelectFolderDialogViewModel, (string CurrentFolderPath, int Dummy)>((
+                currentFolderPath, 0));
+
+        var view = dic.GetInstance<SelectFolderDialog>();
+        view.DataContext = viewModel;
+
+        await view.ShowDialog(owner);
+
+        return (viewModel.DialogResult == DialogResultTypes.Cancel, viewModel.ResultPath);
+    }
 
     public static async ValueTask EntryDisplay(IServiceProvider dic, Window owner, Entry target)
     {

@@ -40,6 +40,10 @@
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyJumpFolder}" Messenger="{Binding Messenger}">
             <behaviors1:JumpFolderDialogInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
+
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeySelectFolder}" Messenger="{Binding Messenger}">
+            <behaviors1:SelectFolderDialogInteractionMessageAction />
+        </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

@@ -157,7 +157,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             .Measure(receiver.TargetEntries, default);
 
         var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner, receiver.TargetEntries, stats);
-        if (result.IsCancel || result.DestFolder == "")
+        if (result.IsCancel)
         {
             stats.Dispose();
             return;

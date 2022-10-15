@@ -111,4 +111,7 @@
     <data name="UI_JumpFolderDialog" xml:space="preserve">
         <value>フォルダー(_F)...</value>
     </data>
+    <data name="DialogTitle_SelectFolder" xml:space="preserve">
+        <value>フォルダー選択</value>
+    </data>
 </root>

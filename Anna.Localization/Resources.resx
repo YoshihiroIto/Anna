@@ -217,4 +217,7 @@ The editor is not registered or does not exist.</value>
   <data name="UI_JumpFolderDialog" xml:space="preserve">
     <value>_Folder...</value>
   </data>
+  <data name="DialogTitle_SelectFolder" xml:space="preserve">
+    <value>Select folder</value>
+  </data>
 </root>

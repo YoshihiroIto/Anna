@@ -81,10 +81,21 @@ public sealed class CopyEntryDialogViewModel
 
     public async void OnDecision()
     {
-        ResultDestFolder = DestFolder.Value;
-        DialogResult = DialogResultTypes.Ok;
+        if (DestFolder.Value == "")
+        {
+            var message = await Messenger.RaiseAsync(new SelectFolderMessage(MessageKeySelectFolder));
+            if (message.Response.DialogResult != DialogResultTypes.Ok)
+                return;
 
-        await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            DestFolder.Value = message.Response.Path;
+        }
+        else
+        {
+            ResultDestFolder = DestFolder.Value;
+            DialogResult = DialogResultTypes.Ok;
+
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+        }
     }
 
     public async void OnJumpFolderDialog()

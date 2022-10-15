@@ -8,7 +8,6 @@ using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Service;
-using Avalonia.Threading;
 using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
@@ -199,15 +198,22 @@ internal sealed class ConfirmedFileSystemOperator
         dic.PopArg(out _arg);
     }
 
-    protected override async ValueTask<(bool IsSkip, string NewDestPath)> CopyStrategyWhenSamePathAsync(string destPath)
+    protected override async ValueTask<(bool IsSkip, bool IsCancel, string NewDestPath)> CopyStrategyWhenSamePathAsync(string destPath)
     {
         using var lockObj = await _mutex.LockAsync();
 
+        var folder = Path.GetDirectoryName(destPath) ?? "";
+        var filename = Path.GetFileName(destPath);
+
         var message = await _arg.Messenger.RaiseAsync(
             new ChangeEntryNameMessage(
-                destPath,
+                folder,
+                filename,
                 WindowBaseViewModel.MessageKeyChangeEntryName));
 
-        return (true, destPath);
+        return (
+            message.Response.DialogResult == DialogResultTypes.Skip,
+            message.Response.DialogResult == DialogResultTypes.Cancel,
+            message.Response.FilePath);
     }
 }

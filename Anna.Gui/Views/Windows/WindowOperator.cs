@@ -61,17 +61,18 @@ public static class WindowOperator
         return (viewModel.DialogResult, viewModel.ResultPath);
     }
 
-    public static async ValueTask<(DialogResultTypes Result, string Name)>
-        ChangeEntryNameAsync(IServiceProvider dic, Window owner, string currentName)
+    public static async ValueTask<(DialogResultTypes Result, string FilePath)> ChangeEntryNameAsync(
+        IServiceProvider dic, Window owner, string currentFolderPath, string currentFilename)
     {
-        using var viewModel = dic.GetInstance<ChangeEntryNameDialogViewModel, (string, int)>((currentName, 0));
+        using var viewModel =
+            dic.GetInstance<ChangeEntryNameDialogViewModel, (string, string)>((currentFolderPath, currentFilename));
 
         var view = dic.GetInstance<ChangeEntryNameDialog>();
         view.DataContext = viewModel;
 
         await view.ShowDialog(owner);
 
-        return (viewModel.DialogResult, viewModel.ResultName);
+        return (viewModel.DialogResult, viewModel.ResultFilePath);
     }
 
     public static async ValueTask EntryDisplay(IServiceProvider dic, Window owner, Entry target)

@@ -1,7 +1,6 @@
 ﻿using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
-using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Localization;
 using Anna.Service;
@@ -10,6 +9,7 @@ using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Linq;
+using System.Windows.Input;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Base;
@@ -25,20 +25,21 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
 
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
-    public DelegateCommand OkCommand => _OkCommand ??= CreateButtonCommand(DialogResultTypes.Ok);
-    public DelegateCommand CancelCommand => _CancelCommand ??= CreateButtonCommand(DialogResultTypes.Cancel);
-    public DelegateCommand YesCommand => _YesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
-    public DelegateCommand NoCommand => _NoCommand ??= CreateButtonCommand(DialogResultTypes.No);
+    public ICommand OkCommand => _OkCommand ??= CreateButtonCommand(DialogResultTypes.Ok);
+    public ICommand CancelCommand => _CancelCommand ??= CreateButtonCommand(DialogResultTypes.Cancel);
+    public ICommand YesCommand => _YesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
+    public ICommand NoCommand => _NoCommand ??= CreateButtonCommand(DialogResultTypes.No);
+    public ICommand SkipCommand => _NoCommand ??= CreateButtonCommand(DialogResultTypes.Skip);
 
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily => _ViewerFontFamily ??= CreateViewerFontFamily();
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize => _ViewerFontSize ??= CreateViewerFontSize();
 
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
-    protected DelegateCommand? _OkCommand;
-    protected DelegateCommand? _CancelCommand;
-    protected DelegateCommand? _YesCommand;
-    protected DelegateCommand? _NoCommand;
+    protected ICommand? _OkCommand;
+    protected ICommand? _CancelCommand;
+    protected ICommand? _YesCommand;
+    protected ICommand? _NoCommand;
     private ReadOnlyReactivePropertySlim<FontFamily>? _ViewerFontFamily;
     private ReadOnlyReactivePropertySlim<double>? _ViewerFontSize;
 
@@ -64,15 +65,13 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
         GC.SuppressFinalize(this);
     }
 
-    private DelegateCommand CreateButtonCommand(DialogResultTypes result)
+    private ICommand CreateButtonCommand(DialogResultTypes result)
     {
         return new DelegateCommand(() =>
         {
             DialogResult = result;
 
- #pragma warning disable CS4014
-            Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
- #pragma warning restore CS4014
+            _ = Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
         });
     }
 
@@ -103,5 +102,6 @@ public enum DialogResultTypes
     Ok,
     Cancel,
     Yes,
-    No
+    No,
+    Skip
 }

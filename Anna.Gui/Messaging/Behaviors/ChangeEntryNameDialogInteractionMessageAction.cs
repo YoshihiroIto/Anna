@@ -34,12 +34,9 @@ public sealed class ChangeEntryNameDialogInteractionMessageAction : AvaloniaObje
         var result = await WindowOperator.ChangeEntryNameAsync(
             hasServiceProviderContainer.Dic,
             owner,
-            changeEntryNameMessage.Name);
+            changeEntryNameMessage.CurrentFolderPath,
+            changeEntryNameMessage.CurrentFilename);
 
-        changeEntryNameMessage.Response =
-        (
-            result.Result,
-            result.Name
-        );
+        changeEntryNameMessage.Response = result;
     }
 }

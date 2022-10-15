@@ -9,8 +9,7 @@
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  Title="{ReflectionBinding R.DialogTitle_CopyEntry,
-                                            Mode=OneTime}"
+                  Title="{ReflectionBinding R.DialogTitle_CopyEntry}"
                   Width="500"
                   MinWidth="500"
                   MaxWidth="500"

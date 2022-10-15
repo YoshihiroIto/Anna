@@ -117,4 +117,25 @@
     <data name="DialogTitle_ChangeEntryName" xml:space="preserve">
         <value>エントリーの名前変更</value>
     </data>
+    <data name="Dialog_Skip" xml:space="preserve">
+        <value>スキップ(_S)</value>
+    </data>
+    <data name="Message_InputNewName" xml:space="preserve">
+        <value>新しい名前を入力してください。</value>
+    </data>
+    <data name="UI_Name" xml:space="preserve">
+        <value>名前</value>
+    </data>
+    <data name="UI_Path" xml:space="preserve">
+        <value>パス</value>
+    </data>
+    <data name="Validation_SameName" xml:space="preserve">
+        <value>同じ名前が入力されています。</value>
+    </data>
+    <data name="Validation_NameContainsCharacterCannotBeUsed" xml:space="preserve">
+        <value>名前に使用できない文字が含まれています。</value>
+    </data>
+    <data name="Validation_ExistsEntry" xml:space="preserve">
+        <value>既に存在します。</value>
+    </data>
 </root>

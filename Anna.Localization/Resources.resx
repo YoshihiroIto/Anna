@@ -206,7 +206,7 @@ Failed to start editor.
 The editor is not registered or does not exist.</value>
   </data>
   <data name="Message_FailedToStartAssociatedApp" xml:space="preserve">
-    <value>Failed to start associated app</value>
+    <value>Failed to start associated app.</value>
   </data>
   <data name="Message_BinaryFileCannotBePreviewed" xml:space="preserve">
     <value>Binary files cannot be previewed.</value>
@@ -221,6 +221,27 @@ The editor is not registered or does not exist.</value>
     <value>Select folder</value>
   </data>
   <data name="DialogTitle_ChangeEntryName" xml:space="preserve">
-    <value>Change Entry name</value>
+    <value>Change entry name</value>
+  </data>
+  <data name="Dialog_Skip" xml:space="preserve">
+    <value>_Skip</value>
+  </data>
+  <data name="Message_InputNewName" xml:space="preserve">
+    <value>Input new name.</value>
+  </data>
+  <data name="UI_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UI_Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="Validation_SameName" xml:space="preserve">
+    <value>Same name is entered.</value>
+  </data>
+  <data name="Validation_NameContainsCharacterCannotBeUsed" xml:space="preserve">
+    <value>Name contains characters cannot be used.</value>
+  </data>
+  <data name="Validation_ExistsEntry" xml:space="preserve">
+    <value>Already exists.</value>
   </data>
 </root>

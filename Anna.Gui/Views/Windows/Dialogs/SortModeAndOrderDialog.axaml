@@ -50,7 +50,7 @@
                     TabIndex="1"
                     Tag="{x:Static constants:SortModes.Extension}" />
             <Button Click="ModeButton_OnClick"
-                    Content="{ReflectionBinding R.SortEntry_Mode_Timestamp}"
+                    Content="{ReflectionBinding R.UI_Name}"
                     TabIndex="2"
                     Tag="{x:Static constants:SortModes.Timestamp}" />
             <Button Click="ModeButton_OnClick"

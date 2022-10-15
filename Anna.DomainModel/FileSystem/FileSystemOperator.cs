@@ -23,10 +23,14 @@ public abstract class FileSystemOperator : IFileSystemOperator
                     Directory.CreateDirectory(destPath);
 
                     var isSkip = false;
+                    var isCancel = false;
                     var dest = Path.Combine(destPath, Path.GetFileName(src));
 
                     if (string.CompareOrdinal(src, dest) == 0)
-                        (isSkip, dest) = await CopyStrategyWhenSamePathAsync(dest);
+                        (isSkip, isCancel, dest) = await CopyStrategyWhenSamePathAsync(dest);
+
+                    if (isCancel)
+                        return;
 
                     if (isSkip == false)
                     {
@@ -53,10 +57,14 @@ public abstract class FileSystemOperator : IFileSystemOperator
             async (file, _) =>
             {
                 var isSkip = false;
+                var isCancel = false;
                 var dest = Path.Combine(targetFolderPath, file.Name);
 
                 if (string.CompareOrdinal(file.FullName, dest) == 0)
-                    (isSkip, dest) = await CopyStrategyWhenSamePathAsync(dest);
+                    (isSkip, isCancel, dest) = await CopyStrategyWhenSamePathAsync(dest);
+
+                if (isCancel)
+                    return;
 
                 if (isSkip == false)
                 {
@@ -68,12 +76,13 @@ public abstract class FileSystemOperator : IFileSystemOperator
             });
 
         await Parallel.ForEachAsync(di.EnumerateDirectories(),
-             (dir, _) => CopyFolderAsync(dir, targetFolderPath));
+            (dir, _) => CopyFolderAsync(dir, targetFolderPath));
     }
 
-    protected virtual ValueTask<(bool IsSkip, string NewDestPath)> CopyStrategyWhenSamePathAsync(string destPath)
+    protected virtual ValueTask<(bool IsSkip, bool IsCancel, string NewDestPath)> CopyStrategyWhenSamePathAsync(
+        string destPath)
     {
-        return ValueTask.FromResult((true, destPath));
+        return ValueTask.FromResult((true, false, destPath));
     }
 }
 

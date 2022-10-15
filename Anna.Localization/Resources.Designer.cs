@@ -96,6 +96,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Skip.
+        /// </summary>
+        public static string Dialog_Skip {
+            get {
+                return ResourceManager.GetString("Dialog_Skip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Yes.
         /// </summary>
         public static string Dialog_Yes {
@@ -105,7 +114,7 @@ namespace Anna.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change Entry name.
+        ///   Looks up a localized string similar to Change entry name.
         /// </summary>
         public static string DialogTitle_ChangeEntryName {
             get {
@@ -253,7 +262,7 @@ namespace Anna.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed to start associated app.
+        ///   Looks up a localized string similar to Failed to start associated app..
         /// </summary>
         public static string Message_FailedToStartAssociatedApp {
             get {
@@ -270,6 +279,15 @@ namespace Anna.Localization {
         public static string Message_FailedToStartEditor {
             get {
                 return ResourceManager.GetString("Message_FailedToStartEditor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input new name..
+        /// </summary>
+        public static string Message_InputNewName {
+            get {
+                return ResourceManager.GetString("Message_InputNewName", resourceCulture);
             }
         }
         
@@ -360,6 +378,51 @@ namespace Anna.Localization {
         public static string UI_JumpFolderDialog {
             get {
                 return ResourceManager.GetString("UI_JumpFolderDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string UI_Name {
+            get {
+                return ResourceManager.GetString("UI_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path.
+        /// </summary>
+        public static string UI_Path {
+            get {
+                return ResourceManager.GetString("UI_Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already exists..
+        /// </summary>
+        public static string Validation_ExistsEntry {
+            get {
+                return ResourceManager.GetString("Validation_ExistsEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name contains characters cannot be used..
+        /// </summary>
+        public static string Validation_NameContainsCharacterCannotBeUsed {
+            get {
+                return ResourceManager.GetString("Validation_NameContainsCharacterCannotBeUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same name is entered..
+        /// </summary>
+        public static string Validation_SameName {
+            get {
+                return ResourceManager.GetString("Validation_SameName", resourceCulture);
             }
         }
     }

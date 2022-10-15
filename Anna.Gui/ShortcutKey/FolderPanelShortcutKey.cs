@@ -170,9 +170,15 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        var fileSystemOperator = Dic.GetInstance<DefaultFileSystemOperator>();
+        var fileSystemOperator = Dic.GetInstance<ConfirmedFileSystemOperator>();
         
         await receiver.BackgroundService.CopyFileSystemEntryAsync(fileSystemOperator, destFolder, receiver.TargetEntries, stats);
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
+}
+
+internal sealed class ConfirmedFileSystemOperator : FileSystemOperator
+{
+    // todo:
+    
 }

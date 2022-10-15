@@ -53,19 +53,17 @@ internal sealed class CopyFileSystemEntryProcess
             }).AddTo(Trash);
     }
 
-    public ValueTask ExecuteAsync()
+    public async ValueTask ExecuteAsync()
     {
         try
         {
             Arg.FileSystemOperator.FileCopied += OnFileCopied;
-            Arg.FileSystemOperator.Copy(Arg.SourceEntries, Arg.DestPath);
+            await Arg.FileSystemOperator.CopyAsync(Arg.SourceEntries, Arg.DestPath);
         }
         finally
         {
             Arg.FileSystemOperator.FileCopied -= OnFileCopied;
         }
-
-        return ValueTask.CompletedTask;
     }
 
     private void OnFileCopied(object? sender, EventArgs e)

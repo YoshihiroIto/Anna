@@ -3,6 +3,6 @@
 public interface IFileSystemOperator
 {
     event EventHandler FileCopied;
-    
-    void Copy(IEnumerable<IEntry> sourceEntries, string destPath);
+
+    Task CopyAsync(IEnumerable<IEntry> sourceEntries, string destPath);
 }

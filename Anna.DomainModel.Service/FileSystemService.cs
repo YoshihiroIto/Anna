@@ -3,7 +3,7 @@ using Anna.Service.Interfaces;
 
 namespace Anna.DomainModel.Service;
 
-public sealed class FileSystemService : IFileSystemService
+public abstract class FileSystemService : IFileSystemService
 {
     public bool IsAccessible(string path)
     {
@@ -46,6 +46,8 @@ public sealed class FileSystemService : IFileSystemService
 
                     var dest = Path.Combine(destPath, Path.GetFileName(src));
 
+                    var isSame = string.CompareOrdinal(src, dest) == 0;
+
                     File.Copy(src, dest, true);
                     File.SetAttributes(dest, File.GetAttributes(src));
                     fileCopied?.Invoke();
@@ -79,4 +81,9 @@ public sealed class FileSystemService : IFileSystemService
                 CopyFolder(dir, targetFolderPath, fileCopied);
             });
     }
+}
+
+public sealed class DefaultFileSystemService : FileSystemService
+{
+    
 }

@@ -5,7 +5,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Service.BackgroundProcess;
 
-internal class CopyFileSystemEntryProcess
+internal sealed class CopyFileSystemEntryProcess
     : HasArgDisposableNotificationObject<(IFileSystemOperator FileSystemOperator, string DestPath, IEnumerable<IEntry>
             SourceEntries, IEntriesStats Stats)>
         , IBackgroundProcess

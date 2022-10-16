@@ -8,6 +8,7 @@
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
                   Title="{ReflectionBinding R.DialogTitle_DeleteEntry}"
                   MinWidth="300"
                   MinHeight="150"
@@ -58,5 +59,7 @@
                                       Mode=OneTime}"
                     Content="{ReflectionBinding R.Dialog_No}" />
         </StackPanel>
+
+        <panels:EntriesStatsPanel DataContext="{Binding EntriesStatsPanelViewModel}" />
     </DockPanel>
 </base1:WindowBase>

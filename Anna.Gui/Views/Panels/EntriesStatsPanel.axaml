@@ -1,0 +1,31 @@
+﻿<!--  ReSharper disable Xaml.BindingWithContextNotResolved  -->
+<UserControl x:Class="Anna.Gui.Views.Panels.EntriesStatsPanel"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:Anna.Gui.Views.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             x:CompileBindings="True"
+             x:DataType="panels:EntriesStatsPanelViewModel"
+             mc:Ignorable="d">
+    <!--  ReSharper restore Xaml.BindingWithContextNotResolved  -->
+    <Design.DataContext>
+        <!--  ReSharper disable once Xaml.ConstructorWarning  -->
+        <panels:EntriesStatsPanelViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <StyleInclude Source="/Views/Resources/Styles.axaml" />
+    </UserControl.Styles>
+
+    <StackPanel>
+        <TextBlock Text="{Binding IsSingleTarget.Value}" />
+        <TextBlock Text="{Binding IsInMeasuring.Value}" />
+        <TextBlock Text="{Binding FileCount.Value, StringFormat='{}{0:#,0}'}" />
+        <TextBlock Text="{Binding FolderCount.Value, StringFormat='{}{0:#,0}'}" />
+        <TextBlock Text="{Binding AllSize.Value, Converter={x:Static converters:BytesValueToHumanizedConverter.Default}}" />
+    </StackPanel>
+</UserControl>

@@ -36,5 +36,9 @@
         <DependentUpon>DeleteEntryDialog.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Panels\EntriesStatsPanel.axaml.cs">
+        <DependentUpon>EntriesStatsPanel.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

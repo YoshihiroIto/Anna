@@ -5,10 +5,10 @@
                   xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
                   xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                   xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
-                  xmlns:converters="clr-namespace:Anna.Gui.Views.Converters"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
                   Title="{ReflectionBinding R.DialogTitle_CopyEntry}"
                   Width="500"
                   MinWidth="500"
@@ -91,12 +91,9 @@
                     Command="{Binding OpenJumpFolderDialogCommand}"
                     Content="{ReflectionBinding R.UI_JumpFolderDialog}" />
 
-            <TextBlock Text="{Binding IsSingleTarget.Value}" />
-            <TextBlock Text="{Binding IsInMeasuring.Value}" />
             <TextBlock Text="{Binding LeaderName}" TextTrimming="CharacterEllipsis" />
-            <TextBlock Text="{Binding FileCount.Value, StringFormat='{}{0:#,0}'}" />
-            <TextBlock Text="{Binding FolderCount.Value, StringFormat='{}{0:#,0}'}" />
-            <TextBlock Text="{Binding AllSize.Value, Converter={x:Static converters:BytesValueToHumanizedConverter.Default}}" />
+            
+            <panels:EntriesStatsPanel DataContext="{Binding EntriesStatsPanelViewModel}"/>
         </StackPanel>
     </DockPanel>
 </base1:WindowBase>

@@ -61,8 +61,8 @@ public static class WindowOperator
         return (viewModel.DialogResult, viewModel.ResultPath);
     }
 
-    public static async ValueTask<(DialogResultTypes Result, string FilePath)> ChangeEntryNameAsync(
-        IServiceProvider dic, Window owner, string currentFolderPath, string currentFilename)
+    public static async ValueTask<(DialogResultTypes Result, string FilePath)>
+        ChangeEntryNameAsync(IServiceProvider dic, Window owner, string currentFolderPath, string currentFilename)
     {
         using var viewModel =
             dic.GetInstance<ChangeEntryNameDialogViewModel, (string, string)>((currentFolderPath, currentFilename));
@@ -75,7 +75,8 @@ public static class WindowOperator
         return (viewModel.DialogResult, viewModel.ResultFilePath);
     }
 
-    public static async ValueTask EntryDisplay(IServiceProvider dic, Window owner, Entry target)
+    public static async ValueTask
+        EntryDisplay(IServiceProvider dic, Window owner, Entry target)
     {
         using var viewModel = dic.GetInstance<EntryDisplayDialogViewModel, Entry>(target);
 
@@ -85,11 +86,8 @@ public static class WindowOperator
         await view.ShowDialog(owner);
     }
 
-    public static async ValueTask<DialogResultTypes> DisplayInformationAsync(
-        IServiceProvider dic,
-        Window owner,
-        string title,
-        string text)
+    public static async ValueTask<DialogResultTypes>
+        DisplayInformationAsync(IServiceProvider dic, Window owner, string title, string text)
     {
         using var viewModel = dic.GetInstance<MessageDialogViewModel, (string Title, string Text)>((title, text));
 
@@ -101,12 +99,9 @@ public static class WindowOperator
         return viewModel.DialogResult;
     }
 
-    public static async ValueTask<DialogResultTypes> DisplayConfirmationAsync(
-        IServiceProvider dic,
-        Window owner,
-        string title,
-        string text,
-        ConfirmationTypes confirmationType)
+    public static async ValueTask<DialogResultTypes>
+        DisplayConfirmationAsync(IServiceProvider dic, Window owner, string title, string text,
+            ConfirmationTypes confirmationType)
     {
         using var viewModel = dic.GetInstance<ConfirmationDialogViewModel, (string, string, ConfirmationTypes)>((title,
             text,

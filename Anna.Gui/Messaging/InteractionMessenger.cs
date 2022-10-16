@@ -2,7 +2,6 @@
 using Anna.Service;
 using Avalonia.Threading;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 

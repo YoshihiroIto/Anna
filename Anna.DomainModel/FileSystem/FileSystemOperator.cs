@@ -1,4 +1,7 @@
-﻿using Anna.Service.Interfaces;
+﻿using Anna.Service;
+using Anna.Service.Interfaces;
+using System.Diagnostics;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.FileSystem;
 
@@ -6,65 +9,113 @@ public abstract class FileSystemOperator : IFileSystemOperator
 {
     public event EventHandler? FileCopied;
 
-    public void Copy(IEnumerable<IEntry> sourceEntries, string destPath)
+    protected CancellationTokenSource? CopyCancellationTokenSource { get; private set; }
+    private readonly IServiceProvider _dic;
+
+    protected FileSystemOperator(IServiceProvider dic)
     {
-        Parallel.ForEach(sourceEntries,
-            entry =>
-            {
-                var src = entry.Path;
-
-                if (entry.IsFolder)
-                {
-                    var srcInfo = new DirectoryInfo(src);
-                    CopyFolder(srcInfo, destPath);
-                }
-                else
-                {
-                    Directory.CreateDirectory(destPath);
-
-                    var isSkip = false;
-                    var isCancel = false;
-                    var dest = Path.Combine(destPath, Path.GetFileName(src));
-
-                    if (string.CompareOrdinal(src, dest) == 0)
-                        (isSkip, isCancel, dest) = CopyStrategyWhenSamePath(dest);
-
-                    if (isCancel)
-                        return;
-
-                    if (isSkip == false)
-                    {
-                        File.Copy(src, dest, true);
-                        File.SetAttributes(dest, File.GetAttributes(src));
-                    }
-
-                    FileCopied?.Invoke(this, EventArgs.Empty);
-                }
-            });
+        _dic = dic;
     }
 
-    private void CopyFolder(DirectoryInfo srcInfo, string dst)
+    public void Copy(IEnumerable<IEntry> sourceEntries, string destPath)
     {
+        CopyCancellationTokenSource = new CancellationTokenSource();
+
+        try
+        {
+            var po = new ParallelOptions { CancellationToken = CopyCancellationTokenSource.Token };
+
+            Parallel.ForEach(sourceEntries,
+                po,
+                entry =>
+                {
+                    var src = entry.Path;
+
+                    if (entry.IsFolder)
+                    {
+                        CopyFolder(new DirectoryInfo(src), destPath, po);
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(destPath);
+
+                        var isSkip = false;
+                        var dest = Path.Combine(destPath, Path.GetFileName(src));
+
+                        if (string.CompareOrdinal(src, dest) == 0)
+                        {
+                            (isSkip, dest) = CopyStrategyWhenSamePath(dest);
+
+                            if (CopyCancellationTokenSource is not null &&
+                                CopyCancellationTokenSource.IsCancellationRequested)
+                                return;
+                        }
+
+                        if (isSkip == false)
+                        {
+                            File.Copy(src, dest, true);
+                            File.SetAttributes(dest, File.GetAttributes(src));
+                        }
+
+                        FileCopied?.Invoke(this, EventArgs.Empty);
+                    }
+                });
+        }
+        catch (OperationCanceledException)
+        {
+            _dic.GetInstance<ILoggerService>().Information("FileSystemOperator.Copy() -- Canceled");
+        }
+        finally
+        {
+            var d = CopyCancellationTokenSource;
+            CopyCancellationTokenSource = null;
+            d.Dispose();
+        }
+    }
+
+    private void CopyFolder(DirectoryInfo srcInfo, string dst, ParallelOptions po)
+    {
+        Debug.Assert(CopyCancellationTokenSource is not null);
+
         var src = srcInfo.FullName;
 
         var targetFolderPath = Path.Combine(dst, Path.GetFileName(src));
+        {
+            var isSkip = false;
+
+            if (string.CompareOrdinal(srcInfo.FullName, targetFolderPath) == 0)
+            {
+                (isSkip, targetFolderPath) = CopyStrategyWhenSamePath(targetFolderPath);
+
+                if (CopyCancellationTokenSource.IsCancellationRequested)
+                    return;
+            }
+
+            if (isSkip)
+                return;
+        }
+
         Directory.CreateDirectory(targetFolderPath);
         File.SetAttributes(targetFolderPath, srcInfo.Attributes);
 
         var di = new DirectoryInfo(src);
 
         Parallel.ForEach(di.EnumerateFiles(),
+            po,
             file =>
             {
+                Debug.Assert(CopyCancellationTokenSource is not null);
+
                 var isSkip = false;
-                var isCancel = false;
                 var dest = Path.Combine(targetFolderPath, file.Name);
 
                 if (string.CompareOrdinal(file.FullName, dest) == 0)
-                    (isSkip, isCancel, dest) = CopyStrategyWhenSamePath(dest);
+                {
+                    (isSkip, dest) = CopyStrategyWhenSamePath(dest);
 
-                if (isCancel)
-                    return;
+                    if (CopyCancellationTokenSource.IsCancellationRequested)
+                        return;
+                }
 
                 if (isSkip == false)
                 {
@@ -76,16 +127,20 @@ public abstract class FileSystemOperator : IFileSystemOperator
             });
 
         Parallel.ForEach(di.EnumerateDirectories(),
-            dir => CopyFolder(dir, targetFolderPath));
+            po,
+            dir => CopyFolder(dir, targetFolderPath, po));
     }
 
-    protected virtual (bool IsSkip, bool IsCancel, string NewDestPath) CopyStrategyWhenSamePath(
-        string destPath)
+    protected virtual (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
     {
-        return (true, false, destPath);
+        return (true, destPath);
     }
 }
 
 public sealed class DefaultFileSystemOperator : FileSystemOperator
 {
+    public DefaultFileSystemOperator(IServiceProvider dic)
+        : base(dic)
+    {
+    }
 }

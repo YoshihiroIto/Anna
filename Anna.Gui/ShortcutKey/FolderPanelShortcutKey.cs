@@ -11,6 +11,7 @@ using Anna.Service;
 using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -194,14 +195,20 @@ internal sealed class ConfirmedFileSystemOperator
     private readonly object _lockObj = new();
 
     public ConfirmedFileSystemOperator(IServiceProvider dic)
+        : base(dic)
     {
         dic.PopArg(out _arg);
     }
 
-    protected override (bool IsSkip, bool IsCancel, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
+    protected override (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
     {
         lock (_lockObj)
         {
+            Debug.Assert(CopyCancellationTokenSource is not null);
+            
+            if (CopyCancellationTokenSource.IsCancellationRequested)
+                return (true, "");
+            
             var resultDialogResult = DialogResultTypes.Cancel;
             var resultFilePath = "";
 
@@ -226,10 +233,12 @@ internal sealed class ConfirmedFileSystemOperator
             });
 
             m.Wait();
+            
+            if (resultDialogResult == DialogResultTypes.Cancel)
+                CopyCancellationTokenSource.Cancel();
 
             return (
-                resultDialogResult == DialogResultTypes.Skip,
-                resultDialogResult == DialogResultTypes.Cancel,
+                resultDialogResult != DialogResultTypes.Ok,
                 resultFilePath);
         }
     }

@@ -44,6 +44,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             { Operations.JumpToParentFolder, JumpToParentFolderAsync },
             { Operations.JumpToRootFolder, JumpToRootFolderAsync },
             { Operations.CopyEntry, CopyEntryAsync },
+            { Operations.DeleteEntry, DeleteEntryAsync },
         };
     }
 
@@ -185,6 +186,37 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             stats);
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
+    
+    private async ValueTask DeleteEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
+        if (receiver.TargetEntries.Length == 0)
+            return;
+
+        var stats = Dic.GetInstance<EntriesStats>()
+            .Measure(receiver.TargetEntries, default);
+
+        var result = await WindowOperator.EntryDeleteAsync(Dic, receiver.Owner, receiver.TargetEntries, stats);
+        if (result.Result != DialogResultTypes.Ok)
+        {
+            stats.Dispose();
+            return;
+        }
+
+        throw new NotImplementedException();
+
+#if false
+        var fileSystemOperator =
+            Dic.GetInstance<ConfirmedFileSystemOperator, (InteractionMessenger, int)>((receiver.Messenger, 0));
+
+        await receiver.BackgroundService.CopyFileSystemEntryAsync(fileSystemOperator,
+            destFolder,
+            receiver.TargetEntries,
+            stats);
+        Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
+#endif
+    }
+    
 }
 
 internal sealed class ConfirmedFileSystemOperator

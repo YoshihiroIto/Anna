@@ -32,5 +32,9 @@
         <DependentUpon>ChangeEntryNameDialog.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Windows\Dialogs\DeleteEntryDialog.axaml.cs">
+        <DependentUpon>DeleteEntryDialog.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 </Project>

@@ -47,6 +47,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.Enter, KeyModifiers.Shift, Operations.OpenEntryByEditor1),
             new(Key.Enter, metaKey, Operations.OpenEntryByApp),
             new(Key.C, KeyModifiers.None, Operations.CopyEntry),
+            new(Key.D, KeyModifiers.None, Operations.DeleteEntry),
         };
     }
 
@@ -70,4 +71,5 @@ public enum Operations
     JumpToParentFolder,
     JumpToRootFolder,
     CopyEntry,
+    DeleteEntry,
 }

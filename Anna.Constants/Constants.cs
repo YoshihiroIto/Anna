@@ -45,6 +45,12 @@ public enum FileEntryFormat
     Text
 }
 
+public enum EntryDeleteModes
+{
+    Delete,
+    TrashCan
+}
+
 public static class Constants
 {
     // todo: ReadOnlyHashSet
@@ -67,3 +73,4 @@ public static class Constants
         ".arw"
     };
 }
+

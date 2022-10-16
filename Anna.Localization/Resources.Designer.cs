@@ -132,6 +132,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete entry.
+        /// </summary>
+        public static string DialogTitle_DeleteEntry {
+            get {
+                return ResourceManager.GetString("DialogTitle_DeleteEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Jump folder.
         /// </summary>
         public static string DialogTitle_JumpFolder {
@@ -396,6 +405,15 @@ namespace Anna.Localization {
         public static string UI_Path {
             get {
                 return ResourceManager.GetString("UI_Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To _Trash can.
+        /// </summary>
+        public static string UI_ToTrashCan {
+            get {
+                return ResourceManager.GetString("UI_ToTrashCan", resourceCulture);
             }
         }
         

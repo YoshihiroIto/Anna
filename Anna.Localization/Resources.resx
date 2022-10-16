@@ -244,4 +244,10 @@ The editor is not registered or does not exist.</value>
   <data name="Validation_ExistsEntry" xml:space="preserve">
     <value>Already exists.</value>
   </data>
+  <data name="DialogTitle_DeleteEntry" xml:space="preserve">
+    <value>Delete entry</value>
+  </data>
+  <data name="UI_ToTrashCan" xml:space="preserve">
+    <value>To _Trash can</value>
+  </data>
 </root>

@@ -129,4 +129,20 @@ public static class WindowOperator
 
         return (viewModel.DialogResult, viewModel.ResultDestFolder);
     }
+    
+    public static async ValueTask<(DialogResultTypes Result, EntryDeleteModes Mode)>
+        EntryDeleteAsync(IServiceProvider dic, Window owner, Entry[] targets, EntriesStats stats)
+    {
+        using var viewModel =
+            dic.GetInstance<DeleteEntryDialogViewModel, (Entry[], EntriesStats)>
+                ((targets, stats));
+
+        var view = dic.GetInstance<DeleteEntryDialog>();
+        view.DataContext = viewModel;
+
+        await view.ShowDialog(owner);
+
+        return (viewModel.DialogResult, viewModel.ResultMode);
+    }
+    
 }

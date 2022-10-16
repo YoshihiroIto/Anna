@@ -138,4 +138,10 @@
     <data name="Validation_ExistsEntry" xml:space="preserve">
         <value>既に存在します。</value>
     </data>
+    <data name="DialogTitle_DeleteEntry" xml:space="preserve">
+        <value>エントリーの削除</value>
+    </data>
+    <data name="UI_ToTrashCan" xml:space="preserve">
+        <value>ごみ箱へ(_T)</value>
+    </data>
 </root>

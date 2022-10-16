@@ -6,17 +6,17 @@ public abstract class FileSystemOperator : IFileSystemOperator
 {
     public event EventHandler? FileCopied;
 
-    public Task CopyAsync(IEnumerable<IEntry> sourceEntries, string destPath)
+    public void Copy(IEnumerable<IEntry> sourceEntries, string destPath)
     {
-        return Parallel.ForEachAsync(sourceEntries,
-            async (entry, _) =>
+        Parallel.ForEach(sourceEntries,
+            entry =>
             {
                 var src = entry.Path;
 
                 if (entry.IsFolder)
                 {
                     var srcInfo = new DirectoryInfo(src);
-                    await CopyFolderAsync(srcInfo, destPath);
+                    CopyFolder(srcInfo, destPath);
                 }
                 else
                 {
@@ -27,7 +27,7 @@ public abstract class FileSystemOperator : IFileSystemOperator
                     var dest = Path.Combine(destPath, Path.GetFileName(src));
 
                     if (string.CompareOrdinal(src, dest) == 0)
-                        (isSkip, isCancel, dest) = await CopyStrategyWhenSamePathAsync(dest);
+                        (isSkip, isCancel, dest) = CopyStrategyWhenSamePath(dest);
 
                     if (isCancel)
                         return;
@@ -43,7 +43,7 @@ public abstract class FileSystemOperator : IFileSystemOperator
             });
     }
 
-    private async ValueTask CopyFolderAsync(DirectoryInfo srcInfo, string dst)
+    private void CopyFolder(DirectoryInfo srcInfo, string dst)
     {
         var src = srcInfo.FullName;
 
@@ -53,15 +53,15 @@ public abstract class FileSystemOperator : IFileSystemOperator
 
         var di = new DirectoryInfo(src);
 
-        await Parallel.ForEachAsync(di.EnumerateFiles(),
-            async (file, _) =>
+        Parallel.ForEach(di.EnumerateFiles(),
+            file =>
             {
                 var isSkip = false;
                 var isCancel = false;
                 var dest = Path.Combine(targetFolderPath, file.Name);
 
                 if (string.CompareOrdinal(file.FullName, dest) == 0)
-                    (isSkip, isCancel, dest) = await CopyStrategyWhenSamePathAsync(dest);
+                    (isSkip, isCancel, dest) = CopyStrategyWhenSamePath(dest);
 
                 if (isCancel)
                     return;
@@ -75,14 +75,14 @@ public abstract class FileSystemOperator : IFileSystemOperator
                 FileCopied?.Invoke(this, EventArgs.Empty);
             });
 
-        await Parallel.ForEachAsync(di.EnumerateDirectories(),
-            (dir, _) => CopyFolderAsync(dir, targetFolderPath));
+        Parallel.ForEach(di.EnumerateDirectories(),
+            dir => CopyFolder(dir, targetFolderPath));
     }
 
-    protected virtual ValueTask<(bool IsSkip, bool IsCancel, string NewDestPath)> CopyStrategyWhenSamePathAsync(
+    protected virtual (bool IsSkip, bool IsCancel, string NewDestPath) CopyStrategyWhenSamePath(
         string destPath)
     {
-        return ValueTask.FromResult((true, false, destPath));
+        return (true, false, destPath);
     }
 }
 

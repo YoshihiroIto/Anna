@@ -18,7 +18,7 @@ public sealed class FileSystemServiceTests : IDisposable
     [InlineData("a")]
     [InlineData("a", "b")]
     [InlineData("a", "b", "c")]
-    public async Task File_copy(params string[] srcNames)
+    public void File_copy(params string[] srcNames)
     {
         var fso = new DefaultFileSystemOperator();
 
@@ -34,7 +34,7 @@ public sealed class FileSystemServiceTests : IDisposable
 
             var srcEntry = new TestEntry(srcPath, false);
 
-            await fso.CopyAsync(new[] { srcEntry }, dstFolderPath);
+            fso.Copy(new[] { srcEntry }, dstFolderPath);
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -47,7 +47,7 @@ public sealed class FileSystemServiceTests : IDisposable
     [InlineData("a")]
     [InlineData("a", "b")]
     [InlineData("a", "b", "c")]
-    public async Task Folder_copy(params string[] srcNames)
+    public void Folder_copy(params string[] srcNames)
     {
         var fso = new DefaultFileSystemOperator();
 
@@ -63,7 +63,7 @@ public sealed class FileSystemServiceTests : IDisposable
 
             var srcEntry = new TestEntry(srcPath, true);
 
-            await fso.CopyAsync(new[] { srcEntry }, dstFolderPath);
+            fso.Copy(new[] { srcEntry }, dstFolderPath);
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -73,7 +73,7 @@ public sealed class FileSystemServiceTests : IDisposable
     }
 
     [Fact]
-    public async Task SubFolder_copy()
+    public void SubFolder_copy()
     {
         var fso = new DefaultFileSystemOperator();
 
@@ -88,7 +88,7 @@ public sealed class FileSystemServiceTests : IDisposable
         var srcEntry0 = new TestEntry(Path.Combine(_tempFolder.RootPath, "a"), false);
         var srcEntry1 = new TestEntry(Path.Combine(_tempFolder.RootPath, "x"), true);
 
-        await fso.CopyAsync(new[] { srcEntry0, srcEntry1 }, dstFolderPath);
+        fso.Copy(new[] { srcEntry0, srcEntry1 }, dstFolderPath);
 
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x")));
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x/y")));

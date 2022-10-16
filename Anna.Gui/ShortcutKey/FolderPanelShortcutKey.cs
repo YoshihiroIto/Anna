@@ -8,7 +8,6 @@ using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Service;
-using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -191,29 +190,30 @@ internal sealed class ConfirmedFileSystemOperator
 {
     private readonly (InteractionMessenger Messenger, int Dummmy) _arg;
 
-    private readonly AsyncLock _mutex = new();
-
     public ConfirmedFileSystemOperator(IServiceProvider dic)
     {
         dic.PopArg(out _arg);
     }
+    
+    private readonly object _lockObj = new();
 
-    protected override async ValueTask<(bool IsSkip, bool IsCancel, string NewDestPath)> CopyStrategyWhenSamePathAsync(string destPath)
+    protected override (bool IsSkip, bool IsCancel, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
     {
-        using var lockObj = await _mutex.LockAsync();
+        lock (_lockObj)
+        {
+            var folder = Path.GetDirectoryName(destPath) ?? "";
+            var filename = Path.GetFileName(destPath);
 
-        var folder = Path.GetDirectoryName(destPath) ?? "";
-        var filename = Path.GetFileName(destPath);
+            var message = _arg.Messenger.Raise(
+                new ChangeEntryNameMessage(
+                    folder,
+                    filename,
+                    WindowBaseViewModel.MessageKeyChangeEntryName));
 
-        var message = await _arg.Messenger.RaiseAsync(
-            new ChangeEntryNameMessage(
-                folder,
-                filename,
-                WindowBaseViewModel.MessageKeyChangeEntryName));
-
-        return (
-            message.Response.DialogResult == DialogResultTypes.Skip,
-            message.Response.DialogResult == DialogResultTypes.Cancel,
-            message.Response.FilePath);
+            return (
+                message.Response.DialogResult == DialogResultTypes.Skip,
+                message.Response.DialogResult == DialogResultTypes.Cancel,
+                message.Response.FilePath);
+        }
     }
 }

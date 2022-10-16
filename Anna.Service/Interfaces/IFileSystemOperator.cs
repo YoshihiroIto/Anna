@@ -4,5 +4,5 @@ public interface IFileSystemOperator
 {
     event EventHandler FileCopied;
 
-    Task CopyAsync(IEnumerable<IEntry> sourceEntries, string destPath);
+    void Copy(IEnumerable<IEntry> sourceEntries, string destPath);
 }

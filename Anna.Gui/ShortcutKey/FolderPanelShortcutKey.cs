@@ -8,9 +8,11 @@ using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Service;
+using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -189,31 +191,46 @@ internal sealed class ConfirmedFileSystemOperator
         IHasArg<(InteractionMessenger Messenger, int Dummmy)>
 {
     private readonly (InteractionMessenger Messenger, int Dummmy) _arg;
+    private readonly object _lockObj = new();
 
     public ConfirmedFileSystemOperator(IServiceProvider dic)
     {
         dic.PopArg(out _arg);
     }
-    
-    private readonly object _lockObj = new();
 
     protected override (bool IsSkip, bool IsCancel, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
     {
         lock (_lockObj)
         {
-            var folder = Path.GetDirectoryName(destPath) ?? "";
-            var filename = Path.GetFileName(destPath);
+            var resultDialogResult = DialogResultTypes.Cancel;
+            var resultFilePath = "";
 
-            var message = _arg.Messenger.Raise(
-                new ChangeEntryNameMessage(
-                    folder,
-                    filename,
-                    WindowBaseViewModel.MessageKeyChangeEntryName));
+            using var m = new ManualResetEventSlim();
+
+            Dispatcher.UIThread.InvokeAsync(async () =>
+            {
+                var folder = Path.GetDirectoryName(destPath) ?? "";
+                var filename = Path.GetFileName(destPath);
+            
+                var message = await _arg.Messenger.RaiseAsync(
+                    new ChangeEntryNameMessage(
+                        folder,
+                        filename,
+                        WindowBaseViewModel.MessageKeyChangeEntryName));
+
+                resultDialogResult = message.Response.DialogResult;
+                resultFilePath = message.Response.FilePath;
+
+                // ReSharper disable once AccessToDisposedClosure
+                m.Set();
+            });
+
+            m.Wait();
 
             return (
-                message.Response.DialogResult == DialogResultTypes.Skip,
-                message.Response.DialogResult == DialogResultTypes.Cancel,
-                message.Response.FilePath);
+                resultDialogResult == DialogResultTypes.Skip,
+                resultDialogResult == DialogResultTypes.Cancel,
+                resultFilePath);
         }
     }
 }

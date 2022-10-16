@@ -61,6 +61,8 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
     private readonly IFileSystemIsAccessibleService _fileSystemIsAccessibleService;
     private readonly ManualResetEventSlim _measuringMre = new();
 
+    private readonly CancellationTokenSource _cts = new();
+    
     // for make minimum stats
     private readonly ManualResetEventSlim _mre = new();
 
@@ -72,14 +74,18 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
 
     public override void Dispose()
     {
+        _cts.Cancel();
+        
         _measuringMre.Wait();
         _measuringMre.Dispose();
+        
+        _cts.Dispose();
 
         _mre.Dispose();
         base.Dispose();
     }
 
-    public EntriesStats Measure(Entry[] targets, CancellationToken ct)
+    public EntriesStats Measure(Entry[] targets)
     {
         Task.Run(() =>
             {
@@ -88,7 +94,7 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
                     IsInMeasuring = true;
 
                     // ReSharper disable once AccessToDisposedClosure
-                    MeasureInternal(targets, ct);
+                    MeasureInternal(targets);
                 }
                 finally
                 {
@@ -96,14 +102,14 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
                     _measuringMre.Set();
                 }
             },
-            ct);
+            _cts.Token);
 
-        _mre.Wait(ct);
+        _mre.Wait(_cts.Token);
 
         return this;
     }
 
-    private void MeasureInternal(Entry[] targets, CancellationToken ct)
+    private void MeasureInternal(Entry[] targets)
     {
         foreach (var target in targets)
         {
@@ -113,7 +119,7 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
             if (target.IsFolder)
             {
                 ++FolderCount;
-                MeasureFolder(target.Path, ct);
+                MeasureFolder(target.Path);
             }
             else
             {
@@ -124,7 +130,7 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
                     _mre.Set();
             }
 
-            if (ct.IsCancellationRequested)
+            if (_cts.Token.IsCancellationRequested)
                 break;
         }
 
@@ -132,7 +138,7 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
             _mre.Set();
     }
 
-    private void MeasureFolder(string path, CancellationToken ct)
+    private void MeasureFolder(string path)
     {
         if (_fileSystemIsAccessibleService.IsAccessible(path) == false)
             return;
@@ -142,9 +148,9 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
         foreach (var d in di.EnumerateDirectories())
         {
             ++FolderCount;
-            MeasureFolder(d.FullName, ct);
+            MeasureFolder(d.FullName);
 
-            if (ct.IsCancellationRequested)
+            if (_cts.Token.IsCancellationRequested)
                 break;
         }
 
@@ -156,7 +162,7 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
             if (_mre.IsSet == false)
                 _mre.Set();
 
-            if (ct.IsCancellationRequested)
+            if (_cts.Token.IsCancellationRequested)
                 break;
         }
     }

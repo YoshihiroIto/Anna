@@ -21,7 +21,7 @@ public sealed class FileSystemServiceTests : IDisposable
     [InlineData("a", "b", "c")]
     public void File_copy(params string[] srcNames)
     {
-        var fso = new DefaultFileSystemOperator(_dic);
+        var fso = new DefaultFileSystemCopyOperator(_dic);
 
         _tempFolder.CreateFolder("x");
         var dstFolderPath = Path.Combine(_tempFolder.RootPath, "x");
@@ -35,7 +35,7 @@ public sealed class FileSystemServiceTests : IDisposable
 
             var srcEntry = new TestEntry(srcPath, false);
 
-            fso.Copy(new[] { srcEntry }, dstFolderPath);
+            fso.Invoke(new[] { srcEntry }, dstFolderPath);
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -50,7 +50,7 @@ public sealed class FileSystemServiceTests : IDisposable
     [InlineData("a", "b", "c")]
     public void Folder_copy(params string[] srcNames)
     {
-        var fso = new DefaultFileSystemOperator(_dic);
+        var fso = new DefaultFileSystemCopyOperator(_dic);
 
         _tempFolder.CreateFolder("x");
         var dstFolderPath = Path.Combine(_tempFolder.RootPath, "x");
@@ -64,7 +64,7 @@ public sealed class FileSystemServiceTests : IDisposable
 
             var srcEntry = new TestEntry(srcPath, true);
 
-            fso.Copy(new[] { srcEntry }, dstFolderPath);
+            fso.Invoke(new[] { srcEntry }, dstFolderPath);
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -76,7 +76,7 @@ public sealed class FileSystemServiceTests : IDisposable
     [Fact]
     public void SubFolder_copy()
     {
-        var fso = new DefaultFileSystemOperator(_dic);
+        var fso = new DefaultFileSystemCopyOperator(_dic);
 
         _tempFolder.CreateFolder("x/y/z");
         _tempFolder.CreateFile("a");
@@ -89,7 +89,7 @@ public sealed class FileSystemServiceTests : IDisposable
         var srcEntry0 = new TestEntry(Path.Combine(_tempFolder.RootPath, "a"), false);
         var srcEntry1 = new TestEntry(Path.Combine(_tempFolder.RootPath, "x"), true);
 
-        fso.Copy(new[] { srcEntry0, srcEntry1 }, dstFolderPath);
+        fso.Invoke(new[] { srcEntry0, srcEntry1 }, dstFolderPath);
 
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x")));
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x/y")));

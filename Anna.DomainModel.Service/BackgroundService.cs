@@ -105,12 +105,12 @@ public sealed class BackgroundService : NotificationObject, IBackgroundService, 
         return Channel.Writer.WriteAsync(process);
     }
 
-    public ValueTask CopyFileSystemEntryAsync(IFileSystemOperator fileSystemOperator, string destPath, IEnumerable<IEntry> sourceEntries, IEntriesStats stats)
+    public ValueTask CopyFileSystemEntryAsync(IFileSystemCopyOperator fileSystemCopyOperator, string destPath, IEnumerable<IEntry> sourceEntries, IEntriesStats stats)
     {
         return
             PushProcess(
-                _dic.GetInstance<CopyFileSystemEntryProcess, (IFileSystemOperator, string, IEnumerable<IEntry>, IEntriesStats)>
-                    ((fileSystemOperator, destPath, sourceEntries, stats))
+                _dic.GetInstance<CopyFileSystemEntryProcess, (IFileSystemCopyOperator, string, IEnumerable<IEntry>, IEntriesStats)>
+                    ((fileSystemCopyOperator, destPath, sourceEntries, stats))
             );
     }
 }

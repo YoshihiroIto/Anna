@@ -5,19 +5,19 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.FileSystem;
 
-public abstract class FileSystemOperator : IFileSystemOperator
+public abstract class FileSystemCopyOperator : IFileSystemCopyOperator
 {
     public event EventHandler? FileCopied;
 
     protected CancellationTokenSource? CopyCancellationTokenSource { get; private set; }
     private readonly IServiceProvider _dic;
 
-    protected FileSystemOperator(IServiceProvider dic)
+    protected FileSystemCopyOperator(IServiceProvider dic)
     {
         _dic = dic;
     }
 
-    public void Copy(IEnumerable<IEntry> sourceEntries, string destPath)
+    public void Invoke(IEnumerable<IEntry> sourceEntries, string destPath)
     {
         CopyCancellationTokenSource = new CancellationTokenSource();
 
@@ -137,9 +137,9 @@ public abstract class FileSystemOperator : IFileSystemOperator
     }
 }
 
-public sealed class DefaultFileSystemOperator : FileSystemOperator
+public sealed class DefaultFileSystemCopyOperator : FileSystemCopyOperator
 {
-    public DefaultFileSystemOperator(IServiceProvider dic)
+    public DefaultFileSystemCopyOperator(IServiceProvider dic)
         : base(dic)
     {
     }

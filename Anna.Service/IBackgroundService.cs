@@ -9,6 +9,6 @@ public interface IBackgroundService : INotifyPropertyChanged
     double Progress { get; }
     string Message { get; }
 
-    ValueTask CopyFileSystemEntryAsync(IFileSystemOperator fileSystemOperator, string destPath,
+    ValueTask CopyFileSystemEntryAsync(IFileSystemCopyOperator fileSystemCopyOperator, string destPath,
         IEnumerable<IEntry> sourceEntries, IEntriesStats stats);
 }

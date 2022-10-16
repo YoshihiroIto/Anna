@@ -178,7 +178,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         destFolder = PathStringHelper.Normalize(destFolder);
 
         var fileSystemOperator =
-            Dic.GetInstance<ConfirmedFileSystemOperator, (InteractionMessenger, int)>((receiver.Messenger, 0));
+            Dic.GetInstance<ConfirmedFileSystemCopyOperator, (InteractionMessenger, int)>((receiver.Messenger, 0));
 
         await receiver.BackgroundService.CopyFileSystemEntryAsync(fileSystemOperator,
             destFolder,
@@ -219,14 +219,14 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
     
 }
 
-internal sealed class ConfirmedFileSystemOperator
-    : FileSystemOperator,
+internal sealed class ConfirmedFileSystemCopyOperator
+    : FileSystemCopyOperator,
         IHasArg<(InteractionMessenger Messenger, int Dummmy)>
 {
     private readonly (InteractionMessenger Messenger, int Dummmy) _arg;
     private readonly object _lockObj = new();
 
-    public ConfirmedFileSystemOperator(IServiceProvider dic)
+    public ConfirmedFileSystemCopyOperator(IServiceProvider dic)
         : base(dic)
     {
         dic.PopArg(out _arg);

@@ -24,12 +24,6 @@ public sealed partial class ImageViewer : UserControl, IImageViewerShortcutKeyRe
     public ImageViewer()
     {
         InitializeComponent();
-
-        PropertyChanged += async (_, e) =>
-        {
-            if (e.Property == DataContextProperty)
-                await SetupAsync();
-        };
     }
 
     private void InitializeComponent()
@@ -39,11 +33,6 @@ public sealed partial class ImageViewer : UserControl, IImageViewerShortcutKeyRe
 
     private ImageViewerViewModel ViewModel =>
         DataContext as ImageViewerViewModel ?? throw new NotSupportedException();
-
-    private Task SetupAsync()
-    {
-        return Task.CompletedTask;
-    }
 
     private async void OnKeyDown(object? sender, KeyEventArgs e)
     {

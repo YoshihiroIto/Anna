@@ -19,7 +19,7 @@ public interface IFolderPanelShortcutKeyReceiver : IShortcutKeyReceiver
     Folder Folder { get; }
     Entry CurrentEntry { get; }
     Entry[] TargetEntries { get; }
-    IBackgroundService BackgroundService { get; }
+    IBackgroundWorker BackgroundWorker { get; }
     
     void MoveCursor(Directions dir);
     void ToggleSelectionCursorEntry(bool isMoveDown);

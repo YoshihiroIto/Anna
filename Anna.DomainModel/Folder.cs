@@ -82,7 +82,7 @@ public abstract class Folder : DisposableNotificationObject
     private readonly Dictionary<string, Entry> _entriesDict = new();
     private readonly Dictionary<string, DateTime> _removedSelectedEntries = new();
 
-    public readonly IBackgroundService BackgroundService;
+    public readonly IBackgroundWorker BackgroundWorker;
 
     public abstract Stream OpenRead(string path);
     public abstract Task<byte[]> ReadAllAsync(string path);
@@ -90,7 +90,7 @@ public abstract class Folder : DisposableNotificationObject
     protected Folder(string path, IServiceProvider dic)
         : base(dic)
     {
-        BackgroundService = dic.GetInstance<IBackgroundService>();// create new
+        BackgroundWorker = dic.GetInstance<IBackgroundWorker>();// create new
         Path = PathStringHelper.Normalize(path);
     }
 

@@ -9,7 +9,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Service;
 
-public sealed class BackgroundService : NotificationObject, IBackgroundService, IDisposable
+public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, IDisposable
 {
     #region IsInProcessing
 
@@ -58,7 +58,7 @@ public sealed class BackgroundService : NotificationObject, IBackgroundService, 
 
     private int _processCount;
 
-    public BackgroundService(IServiceProvider dic)
+    public BackgroundWorker(IServiceProvider dic)
     {
         _dic = dic;
 

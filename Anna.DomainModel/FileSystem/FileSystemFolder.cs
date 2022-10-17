@@ -24,7 +24,7 @@ public sealed class FileSystemFolder : Folder
             .Subscribe(UpdateWatcher)
             .AddTo(Trash);
         
-        (BackgroundService as IDisposable)?.AddTo(Trash);
+        (BackgroundWorker as IDisposable)?.AddTo(Trash);
         _watchTrash.AddTo(Trash);
     }
 

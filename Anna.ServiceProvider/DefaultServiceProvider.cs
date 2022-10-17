@@ -44,12 +44,12 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();
 
-        Register<IBackgroundService, BackgroundService>(Lifestyle.Transient);
+        Register<IBackgroundWorker, BackgroundWorker>(Lifestyle.Transient);
 
         // property injection
         RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerService>());
 
-        GetRegistration(typeof(IBackgroundService))!.Registration
+        GetRegistration(typeof(IBackgroundWorker))!.Registration
             .SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,
                 "dispose manually.");
 

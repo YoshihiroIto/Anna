@@ -55,13 +55,13 @@ public sealed class InfoPanelViewModel : HasModelRefViewModelBase<Folder>, ILoca
         TotalSize = new ReactiveProperty<long>().AddTo(Trash);
         SelectedTotalSize = new ReactiveProperty<long>().AddTo(Trash);
 
-        IsInProcessing = Model.BackgroundService
+        IsInProcessing = Model.BackgroundWorker
             .ObserveProperty(x => x.IsInProcessing)
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
         
-        Process = Model.BackgroundService
+        Process = Model.BackgroundWorker
             .ObserveProperty(x => x.Progress)
             .Sample(TimeSpan.FromMilliseconds(100)) 
             .ObserveOnUIDispatcher()

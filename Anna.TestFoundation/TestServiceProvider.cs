@@ -13,7 +13,7 @@ public sealed class TestServiceProvider : ServiceProviderBase
     {
         RegisterSingleton<IObjectLifetimeCheckerService, NopObjectLifetimeChecker>();
         RegisterSingleton<ILoggerService, NopLogger>();
-        RegisterSingleton<IBackgroundService, MockBackgroundService>();
+        RegisterSingleton<IBackgroundWorker, MockBackgroundWorker>();
 
         Options.ResolveUnregisteredConcreteTypes = true;
 
@@ -23,7 +23,7 @@ public sealed class TestServiceProvider : ServiceProviderBase
     }
 }
 
-internal sealed class MockBackgroundService : IBackgroundService
+internal sealed class MockBackgroundWorker : IBackgroundWorker
 {
 #pragma warning disable 0067
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -180,7 +180,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         var fileSystemOperator =
             Dic.GetInstance<ConfirmedFileSystemCopyOperator, (InteractionMessenger, int)>((receiver.Messenger, 0));
 
-        await receiver.BackgroundService.CopyFileSystemEntryAsync(fileSystemOperator,
+        await receiver.BackgroundWorker.CopyFileSystemEntryAsync(fileSystemOperator,
             destFolder,
             receiver.TargetEntries,
             stats);

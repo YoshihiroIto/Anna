@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.Gui.Messaging;
+using Anna.Gui.Views.Windows;
 using Anna.Service.Workers;
 using Avalonia.Controls;
 using AvaloniaEdit;
@@ -16,6 +17,7 @@ public interface IShortcutKeyReceiver
 
 public interface IFolderPanelShortcutKeyReceiver : IShortcutKeyReceiver
 {
+    new FolderWindow Owner { get; }
     Folder Folder { get; }
     Entry CurrentEntry { get; }
     Entry[] TargetEntries { get; }

@@ -5,6 +5,7 @@ using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
+using Anna.Gui.Views.Windows;
 using Anna.Service.Workers;
 using Avalonia;
 using Avalonia.Controls;
@@ -102,6 +103,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelShortcutKeyRe
         };
     }
 
+    FolderWindow IFolderPanelShortcutKeyReceiver.Owner => ControlHelper.FindParent<FolderWindow>(this) ?? throw new NullReferenceException();
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
     InteractionMessenger IShortcutKeyReceiver.Messenger => ViewModel.Messenger;
     Folder IFolderPanelShortcutKeyReceiver.Folder => ViewModel.Model;

@@ -7,17 +7,23 @@ public static class ControlHelper
 {
     public static Window FindOwnerWindow(IControl control)
     {
+        return FindParent<Window>(control) ?? throw new InvalidOperationException();
+    }
+
+    public static T? FindParent<T>(IControl control)
+        where T : class
+    {
         var parent = control;
 
         while (true)
         {
             switch (parent)
             {
-                case Window window:
-                    return window;
-                    
+                case T p:
+                    return p;
+
                 case null:
-                    throw new InvalidOperationException();
+                    return null;
 
                 default:
                     parent = parent.Parent;

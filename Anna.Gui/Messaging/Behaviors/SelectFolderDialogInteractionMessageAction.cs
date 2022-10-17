@@ -28,11 +28,12 @@ public sealed class SelectFolderDialogInteractionMessageAction : AvaloniaObject,
         if (sender is not { AssociatedObject: IControl control })
             return;
 
-        var owner = ControlHelper.FindOwnerWindow(control);
+        var owner = ControlHelper.FindParent<FolderWindow>(control) ?? throw new NullReferenceException();
 
         var result = await WindowOperator.SelectFolderAsync(
             hasServiceProviderContainer.Dic,
-            owner);
+            owner,
+            owner.ViewModel.Model.Path);
 
         selectFolderMessage.Response = result;
     }

@@ -61,8 +61,9 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
     private async ValueTask JumpFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
-
-        var result = await WindowOperator.JumpFolderAsync(Dic, receiver.Owner);
+        var currentFolderPath = receiver.Owner.ViewModel.Model.Path;
+        
+        var result = await WindowOperator.JumpFolderAsync(Dic, receiver.Owner, currentFolderPath);
         if (result.Result != DialogResultTypes.Ok)
             return;
 

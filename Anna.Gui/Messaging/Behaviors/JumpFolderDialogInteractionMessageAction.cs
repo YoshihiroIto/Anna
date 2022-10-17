@@ -28,11 +28,12 @@ public sealed class JumpFolderDialogInteractionMessageAction : AvaloniaObject, I
         if (sender is not { AssociatedObject: IControl control })
             return;
 
-        var owner = ControlHelper.FindOwnerWindow(control);
+        var owner = ControlHelper.FindParent<FolderWindow>(control) ?? throw new NullReferenceException();
 
         var result = await WindowOperator.JumpFolderAsync(
             hasServiceProviderContainer.Dic,
-            owner);
+            owner,
+            owner.ViewModel.Model.Path);
 
         jumpFolderMessage.Response = result;
     }

@@ -7,7 +7,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System;
-using System.Threading.Tasks;
 using WindowBase=Anna.Gui.Views.Windows.Base.WindowBase;
 
 namespace Anna.Gui.Views.Panels;

@@ -1,7 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.Gui.Messaging;
-using Anna.Service;
 using Anna.Service.Workers;
 using Avalonia.Controls;
 using AvaloniaEdit;

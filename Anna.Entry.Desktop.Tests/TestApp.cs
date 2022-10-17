@@ -54,8 +54,6 @@ public sealed class TestApp : IAsyncDisposable
 
         Dispatcher.UIThread.Post(() => App.Shutdown());
         (App as IDisposable)?.Dispose();
-
-        GC.SuppressFinalize(this);
     }
 
     private async Task StartAsync(string[] args, bool isHeadless)

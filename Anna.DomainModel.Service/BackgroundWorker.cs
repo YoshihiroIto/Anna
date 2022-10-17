@@ -35,7 +35,7 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
 
     #endregion
 
-    private readonly Channel<IBackgroundOperator> _channel  =
+    private readonly Channel<IBackgroundOperator> _channel =
         Channel.CreateUnbounded<IBackgroundOperator>(
             new UnboundedChannelOptions { SingleReader = true });
 
@@ -48,13 +48,12 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
     {
         Task.Run(ChannelLoop);
 
-        Disposable.Create(this,
-            t =>
-            {
-                t._channel.Writer.TryComplete();
-                t._taskCompleted.Wait();
-                t._taskCompleted.Dispose();
-            }).AddTo(Trash);
+        Trash.Add(() =>
+        {
+            _channel.Writer.TryComplete();
+            _taskCompleted.Wait();
+            _taskCompleted.Dispose();
+        });
     }
 
     private async Task ChannelLoop()

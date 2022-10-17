@@ -5,10 +5,10 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Service.BackgroundProcess;
 
-internal sealed class CopyFileSystemEntryProcess
+internal sealed class CopyFileSystemEntryOperator
     : HasArgDisposableNotificationObject<(IFileSystemCopyOperator FileSystemOperator, string DestPath, IEnumerable<IEntry>
             SourceEntries, IEntriesStats Stats)>
-        , IBackgroundProcess
+        , IBackgroundOperator
 {
     #region Progress
 
@@ -37,7 +37,7 @@ internal sealed class CopyFileSystemEntryProcess
     private int _fileCopiedCount;
     private int _fileCount;
 
-    public CopyFileSystemEntryProcess(IServiceProvider dic)
+    public CopyFileSystemEntryOperator(IServiceProvider dic)
         : base(dic)
     {
         if (Arg.Stats is IDisposable disposable)

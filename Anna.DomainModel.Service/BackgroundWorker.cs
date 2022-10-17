@@ -49,8 +49,8 @@ public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, ID
 
     #endregion
 
-    private Channel<IBackgroundProcess> Channel { get; } =
-        System.Threading.Channels.Channel.CreateUnbounded<IBackgroundProcess>(
+    private Channel<IBackgroundOperator> Channel { get; } =
+        System.Threading.Channels.Channel.CreateUnbounded<IBackgroundOperator>(
             new UnboundedChannelOptions { SingleReader = true });
 
     private readonly ManualResetEventSlim _taskCompleted = new();
@@ -96,18 +96,18 @@ public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, ID
         _taskCompleted.Dispose();
     }
 
-    private ValueTask PushProcess(IBackgroundProcess process)
+    private ValueTask PushOperator(IBackgroundOperator @operator)
     {
         IsInProcessing = Interlocked.Increment(ref _processCount) > 0;
 
-        return Channel.Writer.WriteAsync(process);
+        return Channel.Writer.WriteAsync(@operator);
     }
 
     public ValueTask CopyFileSystemEntryAsync(IFileSystemCopyOperator fileSystemCopyOperator, string destPath, IEnumerable<IEntry> sourceEntries, IEntriesStats stats)
     {
         return
-            PushProcess(
-                _dic.GetInstance<CopyFileSystemEntryProcess, (IFileSystemCopyOperator, string, IEnumerable<IEntry>, IEntriesStats)>
+            PushOperator(
+                _dic.GetInstance<CopyFileSystemEntryOperator, (IFileSystemCopyOperator, string, IEnumerable<IEntry>, IEntriesStats)>
                     ((fileSystemCopyOperator, destPath, sourceEntries, stats))
             );
     }

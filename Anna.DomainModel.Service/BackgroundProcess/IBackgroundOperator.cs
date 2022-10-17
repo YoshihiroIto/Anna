@@ -2,7 +2,7 @@
 
 namespace Anna.DomainModel.Service.BackgroundProcess;
 
-internal interface IBackgroundProcess : IDisposable, INotifyPropertyChanged
+internal interface IBackgroundOperator : IDisposable, INotifyPropertyChanged
 {
     double Progress { get; }
     

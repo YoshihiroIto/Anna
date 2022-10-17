@@ -7,8 +7,8 @@ namespace Anna.ServiceProvider;
 
 public class ServiceProviderBase : Container, IServiceProvider
 {
-    private readonly Stack<object> _args = new();
-    
+    private object? _argBox;
+
     public ServiceProviderBase()
     {
         RegisterSingleton<IServiceProvider>(() => this);
@@ -24,18 +24,22 @@ public class ServiceProviderBase : Container, IServiceProvider
         if (arg is null)
             throw new ArgumentNullException(nameof(arg));
 
-        var count = _args.Count;
-        _args.Push(arg);
+        Debug.Assert(_argBox is null);
+
+        _argBox = arg;
 
         var instance = GetInstance<THasArgService>();
 
-        Debug.Assert(_args.Count == count);
+        Debug.Assert(_argBox is null);
 
         return instance;
     }
 
     public void PopArg<TArg>(out TArg arg)
     {
-        arg = (TArg)_args.Pop();
+        Debug.Assert(_argBox is not null);
+
+        arg = (TArg)_argBox;
+        _argBox = null;
     }
 }

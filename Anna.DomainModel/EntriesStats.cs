@@ -70,19 +70,18 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
         : base(dic)
     {
         _fileSystemIsAccessibleService = dic.GetInstance<IFileSystemIsAccessibleService>();
-    }
 
-    public override void Dispose()
-    {
-        _cts.Cancel();
-        
-        _measuringMre.Wait();
-        _measuringMre.Dispose();
-        
-        _cts.Dispose();
+        Trash.Add(() =>
+        {
+            _cts.Cancel();
 
-        _mre.Dispose();
-        base.Dispose();
+            _measuringMre.Wait();
+            _measuringMre.Dispose();
+
+            _cts.Dispose();
+
+            _mre.Dispose();
+        });
     }
 
     public EntriesStats Measure(Entry[] targets)

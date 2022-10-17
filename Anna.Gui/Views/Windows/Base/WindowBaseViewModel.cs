@@ -1,4 +1,5 @@
 ﻿using Anna.DomainModel.Config;
+using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
 using Anna.Gui.Messaging.Messages;
@@ -54,15 +55,11 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
             .AddTo(Trash);
 
         Dic.GetInstance<ILoggerService>().Start(GetType().Name);
-    }
 
-    public override void Dispose()
-    {
-        Dic.GetInstance<ILoggerService>().End(GetType().Name);
-
-        base.Dispose();
-
-        GC.SuppressFinalize(this);
+        Trash.Add(() =>
+        {
+            Dic.GetInstance<ILoggerService>().End(GetType().Name);
+        });
     }
 
     private ICommand CreateButtonCommand(DialogResultTypes result)

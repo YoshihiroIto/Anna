@@ -23,7 +23,7 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
         Dic.GetInstance<IObjectLifetimeCheckerService>().Add(this);
     }
 
-    protected virtual void Dispose(bool disposing)
+    protected void Dispose(bool disposing)
     {
         if (_disposed)
             return;
@@ -36,7 +36,7 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
         _disposed = true;
     }
 
-    public virtual void Dispose()
+    public void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);

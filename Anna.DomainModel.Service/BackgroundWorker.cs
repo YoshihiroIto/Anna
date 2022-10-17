@@ -2,7 +2,6 @@
 using Anna.Service.Interfaces;
 using Anna.Service.Workers;
 using Reactive.Bindings.Extensions;
-using System.Reactive.Disposables;
 using System.Threading.Channels;
 using IServiceProvider=Anna.Service.IServiceProvider;
 

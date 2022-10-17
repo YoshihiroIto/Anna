@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
+using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Panels;
@@ -21,8 +22,6 @@ public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<Folder>
     public ICommand ToEnglishCommand { get; }
     public ICommand ToJapaneseCommand { get; }
 
-    private bool _isDispose;
-
     public FolderWindowViewModel(IServiceProvider dic)
         : base(dic)
     {
@@ -41,26 +40,20 @@ public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<Folder>
 
         FolderPanelViewModel = dic.GetInstance<FolderPanelViewModel, Folder>(Model)
             .AddTo(Trash);
-        
+
         dic.GetInstance<App>().Folders.CollectionChangedAsObservable()
             .Subscribe(_ =>
             {
                 if (dic.GetInstance<App>().Folders.IndexOf(Model) == -1)
  #pragma warning disable CS4014
-                    Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose));
+                    Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close,
+                        WindowBaseViewModel.MessageKeyClose));
  #pragma warning restore CS4014
             }).AddTo(Trash);
-    }
 
-    public override void Dispose()
-    {
-        if (_isDispose)
-            return;
-
-        _isDispose = true;
-
-        Dic.GetInstance<App>().RemoveFolder(Model);
-
-        base.Dispose();
+        Trash.Add(() =>
+        {
+            Dic.GetInstance<App>().RemoveFolder(Model);
+        });
     }
 }

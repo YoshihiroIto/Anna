@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 
-namespace Anna.Gui.Operators.Internals;
+namespace Anna.Gui.BackgroundOperators.Internals;
 
 internal sealed class ConfirmedFileSystemCopier
     : FileSystemCopier

@@ -1,7 +1,7 @@
 ﻿using Anna.DomainModel;
 using Anna.Foundation;
+using Anna.Gui.BackgroundOperators.Internals;
 using Anna.Gui.Messaging;
-using Anna.Gui.Operators.Internals;
 using Anna.Service.Interfaces;
 using Reactive.Bindings.Extensions;
 using System;

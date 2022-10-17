@@ -1,8 +1,10 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
+using Anna.DomainModel.FileSystem;
 using Anna.Foundation;
 using Anna.Gui.BackgroundOperators;
+using Anna.Gui.BackgroundOperators.Internals;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Base;
@@ -137,7 +139,6 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         receiver.Folder.Path = parentDir;
     }
-
     private async ValueTask JumpToRootFolderAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
@@ -174,10 +175,17 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        var op = Dic.GetInstance<EntryCopyBackgroundOperator, (InteractionMessenger, Entry[], string, IEntriesStats)>
-            ((receiver.Messenger, receiver.TargetEntries, destFolder, stats));
+        var worker = Dic.GetInstance<ConfirmedFileSystemCopier, (InteractionMessenger, int)>((receiver.Messenger, 0));
+        var targetEntries = receiver.TargetEntries;
 
-        await receiver.BackgroundWorker.PushOperatorAsync(op);
+        var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
+        ((
+            stats,
+            worker,
+            () => worker.Invoke(targetEntries, destFolder)
+        ));
+
+        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
 
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
@@ -198,11 +206,16 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             return;
         }
 
-        var op = Dic
-            .GetInstance
-                <EntryDeleteBackgroundOperator, (Entry[], EntryDeleteModes, IEntriesStats)>
-                ((receiver.TargetEntries, result.Mode, stats));
+        var worker = Dic.GetInstance<DefaultFileSystemDeleter>();
+        var targetEntries = receiver.TargetEntries;
 
-        await receiver.BackgroundWorker.PushOperatorAsync(op);
+        var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
+        ((
+            stats,
+            worker,
+            () => worker.Invoke(targetEntries, result.Mode)
+        ));
+
+        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
     }
 }

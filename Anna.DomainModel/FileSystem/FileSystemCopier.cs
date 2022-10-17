@@ -5,9 +5,9 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.FileSystem;
 
-public abstract class FileSystemCopier
+public abstract class FileSystemCopier : IFileProcessable
 {
-    public event EventHandler? FileCopied;
+    public event EventHandler? FileProcessed;
 
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     private readonly IServiceProvider _dic;
@@ -57,7 +57,7 @@ public abstract class FileSystemCopier
                             File.SetAttributes(dest, File.GetAttributes(src));
                         }
 
-                        FileCopied?.Invoke(this, EventArgs.Empty);
+                        FileProcessed?.Invoke(this, EventArgs.Empty);
                     }
                 });
         }
@@ -123,7 +123,7 @@ public abstract class FileSystemCopier
                     File.SetAttributes(dest, file.Attributes);
                 }
 
-                FileCopied?.Invoke(this, EventArgs.Empty);
+                FileProcessed?.Invoke(this, EventArgs.Empty);
             });
 
         Parallel.ForEach(di.EnumerateDirectories(),

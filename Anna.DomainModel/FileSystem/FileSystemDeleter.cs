@@ -5,9 +5,9 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.FileSystem;
 
-public abstract class FileSystemDeleter
+public abstract class FileSystemDeleter : IFileProcessable
 {
-    public event EventHandler? FileDeleted;
+    public event EventHandler? FileProcessed;
 
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     private readonly IServiceProvider _dic;

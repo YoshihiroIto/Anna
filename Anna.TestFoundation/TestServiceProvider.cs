@@ -32,7 +32,6 @@ internal sealed class MockBackgroundWorker : IBackgroundWorker
 
     public bool IsInProcessing => false;
     public double Progress => 0;
-    public string Message => "";
     public ValueTask PushOperatorAsync(IBackgroundOperator @operator)
     {
         throw new NotImplementedException();

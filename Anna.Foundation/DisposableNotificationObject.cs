@@ -5,7 +5,9 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Foundation;
 
-public class DisposableNotificationObject : NotificationObject, IDisposable
+public class DisposableNotificationObject
+    : NotificationObject
+        , IDisposable
 {
     protected readonly IServiceProvider Dic;
 
@@ -43,7 +45,9 @@ public class DisposableNotificationObject : NotificationObject, IDisposable
     }
 }
 
-public class HasArgDisposableNotificationObject<TArg> : DisposableNotificationObject, IHasArg<TArg>
+public class HasArgDisposableNotificationObject<TArg>
+    : DisposableNotificationObject,
+        IHasArg<TArg>
 {
     protected readonly TArg Arg;
 

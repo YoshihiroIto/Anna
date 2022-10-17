@@ -2,7 +2,9 @@
 
 namespace Anna.Gui.Foundations;
 
-public class HasModelRefViewModelBase<TModel> : ViewModelBase, IHasArg<TModel>
+public class HasModelRefViewModelBase<TModel>
+    : ViewModelBase,
+        IHasArg<TModel>
 {
     public readonly TModel Model;
 

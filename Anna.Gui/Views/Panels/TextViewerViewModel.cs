@@ -6,6 +6,8 @@ using Anna.Gui.Interfaces;
 using Anna.Gui.ShortcutKey;
 using Anna.Localization;
 using Anna.Service;
+using Avalonia.Media;
+using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Threading.Tasks;
 
@@ -16,6 +18,9 @@ public sealed class TextViewerViewModel : HasModelRefViewModelBase<Entry>, ILoca
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
     public readonly TextViewerShortcutKey ShortcutKey;
+    
+    public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily { get; }
+    public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
 
     public async ValueTask<string> ReadText()
     {
@@ -33,5 +38,15 @@ public sealed class TextViewerViewModel : HasModelRefViewModelBase<Entry>, ILoca
         : base(dic)
     {
         ShortcutKey = dic.GetInstance<TextViewerShortcutKey>().AddTo(Trash);
+        
+        ViewerFontFamily = Dic.GetInstance<AppConfig>().Data
+            .ObserveProperty(x => x.ViewerFontFamily)
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash)!;
+
+        ViewerFontSize = Dic.GetInstance<AppConfig>().Data
+            .ObserveProperty(x => x.ViewerFontSize)
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Anna.DomainModel.Config;
-using Anna.Gui.Views.Windows;
 using Anna.Repository;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -40,7 +39,7 @@ public sealed class JumpFolderTests : IDisposable
             await w.PressKeyAsync(Key.J);
             await w.PressKeyAsync(Key.Escape);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -64,7 +63,7 @@ public sealed class JumpFolderTests : IDisposable
             
             await Task.Delay(500);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -99,7 +98,7 @@ public sealed class JumpFolderTests : IDisposable
             
             await Task.Delay(500);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);

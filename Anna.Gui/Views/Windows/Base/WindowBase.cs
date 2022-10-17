@@ -11,17 +11,26 @@ namespace Anna.Gui.Views.Windows.Base;
 public class WindowBase<T> : WindowBase
     where T : WindowBaseViewModel
 {
-    protected T ViewModel => DataContext as T ?? throw new NullReferenceException();
+    public new T ViewModel => (T)_ViewModel! ?? throw new InvalidOperationException();
 }
 
 public class WindowBase : Window
 {
+    public WindowBaseViewModel ViewModel => _ViewModel ?? throw new InvalidOperationException();
+    protected WindowBaseViewModel? _ViewModel;
+    
     protected internal ILoggerService Logger { get; set; } = null!;
 
     public WindowBase()
     {
         Loaded += (_, _) => Logger.Start(GetType().Name);
         Closed += (_, _) => Logger.End(GetType().Name);
+        
+        PropertyChanged += (_, e) =>
+        {
+            if (e.Property == DataContextProperty)
+                _ViewModel = DataContext as WindowBaseViewModel ?? throw new NotSupportedException();
+        };
     }
 
     protected static bool DoMoveFocus(KeyEventArgs e)

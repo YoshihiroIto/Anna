@@ -1,5 +1,4 @@
-﻿using Anna.Gui.Views.Windows;
-using Avalonia.Input;
+﻿using Avalonia.Input;
 using Avalonia.Threading;
 using Xunit;
 
@@ -44,7 +43,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -82,7 +81,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -117,7 +116,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -150,7 +149,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -185,7 +184,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -221,7 +220,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -255,7 +254,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -290,7 +289,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -324,7 +323,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Enter);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);
@@ -358,7 +357,7 @@ public sealed class SortEntryTests : IDisposable
             await w.PressKeyAsync(Key.Right);
             await w.PressKeyAsync(Key.Enter);
 
-            return (w.DataContext as FolderWindowViewModel)?.Model ?? throw new NullReferenceException();
+            return w.ViewModel.Model;
         });
 
         await Task.Delay(100);

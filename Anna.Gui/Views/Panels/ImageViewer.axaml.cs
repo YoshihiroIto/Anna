@@ -15,9 +15,12 @@ public sealed partial class ImageViewer : UserControl, IImageViewerShortcutKeyRe
 {
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
     public string TargetFilepath => ViewModel.Model.Path;
+    
+    private ImageViewerViewModel ViewModel => _viewModel ?? throw new NullReferenceException();
+    private ImageViewerViewModel? _viewModel;
 
     public InteractionMessenger Messenger =>
-        ((ControlHelper.FindOwnerWindow(this) as WindowBase)?.DataContext as ViewModelBase)?.Messenger ??
+        (ControlHelper.FindOwnerWindow(this) as WindowBase)?.ViewModel.Messenger ??
         throw new NullReferenceException();
 
     public ImageViewer()
@@ -28,10 +31,13 @@ public sealed partial class ImageViewer : UserControl, IImageViewerShortcutKeyRe
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
+        
+        PropertyChanged += (_, e) =>
+        {
+            if (e.Property == DataContextProperty)
+                _viewModel = DataContext as ImageViewerViewModel ?? throw new NotSupportedException();
+        };
     }
-
-    private ImageViewerViewModel ViewModel =>
-        DataContext as ImageViewerViewModel ?? throw new NotSupportedException();
 
     private async void OnKeyDown(object? sender, KeyEventArgs e)
     {

@@ -21,9 +21,12 @@ namespace Anna.Gui.Views.Panels;
 public sealed partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
 {
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
+    
+    private TextViewerViewModel ViewModel => _viewModel ?? throw new NullReferenceException();
+    private TextViewerViewModel? _viewModel;
 
     public InteractionMessenger Messenger =>
-        ((ControlHelper.FindOwnerWindow(this) as WindowBase)?.DataContext as ViewModelBase)?.Messenger ??
+        (ControlHelper.FindOwnerWindow(this) as WindowBase)?.ViewModel.Messenger ??
         throw new NullReferenceException();
 
     public string TargetFilepath => ViewModel.Model.Path;
@@ -74,7 +77,10 @@ public sealed partial class TextViewer : UserControl, ITextViewerShortcutKeyRece
         PropertyChanged += async (_, e) =>
         {
             if (e.Property == DataContextProperty)
+            {
+                _viewModel = DataContext as TextViewerViewModel ?? throw new NotSupportedException();
                 await SetupAsync();
+            }
         };
     }
 
@@ -82,9 +88,6 @@ public sealed partial class TextViewer : UserControl, ITextViewerShortcutKeyRece
     {
         AvaloniaXamlLoader.Load(this);
     }
-
-    private TextViewerViewModel ViewModel =>
-        DataContext as TextViewerViewModel ?? throw new NotSupportedException();
 
     private async Task SetupAsync()
     {

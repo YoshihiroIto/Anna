@@ -57,7 +57,7 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
         if (FocusManager.Instance?.Current is MenuItem)
             return;
 
-        var viewModel = AssociatedObject?.DataContext as FolderPanelViewModel;
+        var viewModel = AssociatedObject?.ViewModel;
 
         if (viewModel is not null)
         {

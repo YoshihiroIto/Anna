@@ -67,6 +67,9 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelShortcutKeyRe
     }
 
     private IntSize _ItemCellSize;
+    
+    public FolderPanelViewModel ViewModel => _viewModel ?? throw new InvalidOperationException();
+    private FolderPanelViewModel? _viewModel;
 
     static FolderPanel()
     {
@@ -76,9 +79,9 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelShortcutKeyRe
     public FolderPanel()
     {
         InitializeComponent();
-        
+
         LayoutUpdated += (_, _) => UpdateItemCellSize();
-        
+
         PropertyChanged += (_, e) =>
         {
             if (e.Property == FontFamilyProperty)
@@ -91,20 +94,27 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelShortcutKeyRe
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
+
+        PropertyChanged += (_, e) =>
+        {
+            if (e.Property == DataContextProperty)
+                _viewModel = DataContext as FolderPanelViewModel ?? throw new NotSupportedException();
+        };
     }
 
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
     InteractionMessenger IShortcutKeyReceiver.Messenger => ViewModel.Messenger;
     Folder IFolderPanelShortcutKeyReceiver.Folder => ViewModel.Model;
-    Entry IFolderPanelShortcutKeyReceiver.CurrentEntry => ViewModel.CursorEntry.Value?.Model ?? throw new InvalidOperationException();
+
+    Entry IFolderPanelShortcutKeyReceiver.CurrentEntry =>
+        ViewModel.CursorEntry.Value?.Model ?? throw new InvalidOperationException();
+
     Entry[] IFolderPanelShortcutKeyReceiver.TargetEntries => ViewModel.CollectTargetEntries();
     IBackgroundWorker IFolderPanelShortcutKeyReceiver.BackgroundWorker => ViewModel.Model.BackgroundWorker;
-    
+
     void IFolderPanelShortcutKeyReceiver.MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
-    void IFolderPanelShortcutKeyReceiver.ToggleSelectionCursorEntry(bool isMoveDown) => ViewModel.ToggleSelectionCursorEntry(isMoveDown);
-    
-    private FolderPanelViewModel ViewModel =>
-        DataContext as FolderPanelViewModel ?? throw new NotSupportedException();
+    void IFolderPanelShortcutKeyReceiver.ToggleSelectionCursorEntry(bool isMoveDown) =>
+        ViewModel.ToggleSelectionCursorEntry(isMoveDown);
 
     private void UpdateItemCellSize()
     {

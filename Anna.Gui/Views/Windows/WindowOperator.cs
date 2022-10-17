@@ -34,7 +34,7 @@ public static class WindowOperator
     public static async ValueTask<(DialogResultTypes Result, string Path)>
         JumpFolderAsync(IServiceProvider dic, Window owner)
     {
-        var currentFolderPath = ((owner as FolderWindow)?.DataContext as FolderWindowViewModel)?.Model.Path ?? "";
+        var currentFolderPath = (owner as FolderWindow)?.ViewModel.Model.Path ?? "";
 
         using var viewModel = dic.GetInstance<JumpFolderDialogViewModel, (string, JumpFolderConfigData)>((
             currentFolderPath, dic.GetInstance<JumpFolderConfig>().Data));
@@ -50,7 +50,7 @@ public static class WindowOperator
     public static async ValueTask<(DialogResultTypes Result, string Path)>
         SelectFolderAsync(IServiceProvider dic, Window owner)
     {
-        var currentFolderPath = ((owner as FolderWindow)?.DataContext as FolderWindowViewModel)?.Model.Path ?? "";
+        var currentFolderPath = (owner as FolderWindow)?.ViewModel.Model.Path ?? "";
 
         using var viewModel = dic.GetInstance<SelectFolderDialogViewModel, (string, int)>((currentFolderPath, 0));
 

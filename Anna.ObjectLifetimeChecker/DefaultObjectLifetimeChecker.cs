@@ -1,4 +1,5 @@
 ﻿#if DEBUG
+using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using System.Collections.Concurrent;
 using System.Text;
@@ -17,6 +18,8 @@ public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeCheckerService
     
     public void Start(Action<string> showError)
     {
+        Fixup();
+        
         var old = Interlocked.Exchange(ref _nestCount, 1);
         if (old != 0)
             throw new NestingException();
@@ -59,6 +62,18 @@ public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeCheckerService
             _showError?.Invoke($"Found multiple removing.    -- {disposable.GetType()}");
 
         Disposables.TryRemove(disposable, out _);
+    }
+
+    private void Fixup()
+    {
+        foreach (var transientObject in Disposables.Keys.OfType<IIsTransient>())
+        {
+            var d = (IDisposable)transientObject;
+            
+            Disposables.TryRemove(d, out _);
+            
+            d.Dispose();
+        }
     }
 }
 

@@ -192,7 +192,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             .Measure(receiver.TargetEntries);
 
         var result = await WindowOperator.EntryDeleteAsync(Dic, receiver.Owner, receiver.TargetEntries, stats);
-        if (result.Result != DialogResultTypes.Ok)
+        if (result.Result != DialogResultTypes.Yes)
         {
             stats.Dispose();
             return;

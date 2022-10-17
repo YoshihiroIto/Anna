@@ -4,8 +4,8 @@ public interface IServiceProvider
 {
     TService GetInstance<TService>() where TService : class;
 
-    THasArgService GetInstance<THasArgService, TArg>(TArg arg)
-        where THasArgService : class, IHasArg<TArg>;
+    THasArg GetInstance<THasArg, TArg>(TArg arg)
+        where THasArg : class, IHasArg<TArg>;
 
     void PopArg<TArg>(out TArg arg);
 }

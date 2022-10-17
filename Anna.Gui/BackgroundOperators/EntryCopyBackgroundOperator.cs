@@ -9,9 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
-namespace Anna.Gui.Operators;
+namespace Anna.Gui.BackgroundOperators;
 
-public class EntryCopyOperator
+public class EntryCopyBackgroundOperator
     : HasArgDisposableNotificationObject
         <(InteractionMessenger Messenger, Entry[] SourceEntries, string DestPath, IEntriesStats Stats)>
         , IBackgroundOperator
@@ -31,7 +31,7 @@ public class EntryCopyOperator
     private int _fileCopiedCount;
     private int _fileCount;
 
-    public EntryCopyOperator(IServiceProvider dic)
+    public EntryCopyBackgroundOperator(IServiceProvider dic)
         : base(dic)
     {
         if (Arg.Stats is IDisposable disposable)

@@ -2,8 +2,8 @@
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Foundation;
+using Anna.Gui.BackgroundOperators;
 using Anna.Gui.Messaging;
-using Anna.Gui.Operators;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Service.Interfaces;
@@ -11,7 +11,6 @@ using Anna.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -175,11 +174,10 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        var copyOperator =
-             Dic.GetInstance<EntryCopyOperator, (InteractionMessenger, Entry[], string, IEntriesStats)>
-                ((receiver.Messenger, receiver.TargetEntries, destFolder, stats));
+        var op = Dic.GetInstance<EntryCopyBackgroundOperator, (InteractionMessenger, Entry[], string, IEntriesStats)>
+            ((receiver.Messenger, receiver.TargetEntries, destFolder, stats));
 
-        await receiver.BackgroundWorker.PushOperator(copyOperator);
+        await receiver.BackgroundWorker.PushOperator(op);
 
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }

@@ -1,8 +1,10 @@
-﻿using System.Reactive.Linq;
+﻿using Reactive.Bindings.Extensions;
+using System.Reactive.Linq;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Foundation;
 
-public sealed class ObservableFileSystemWatcher : IDisposable
+public sealed class ObservableFileSystemWatcher : HasArgDisposableNotificationObject<string>
 {
     public readonly IObservable<FileSystemEventArgs> Created;
     public readonly IObservable<FileSystemEventArgs> Changed;
@@ -10,11 +12,10 @@ public sealed class ObservableFileSystemWatcher : IDisposable
     public readonly IObservable<RenamedEventArgs> Renamed;
     public readonly IObservable<ErrorEventArgs> Errors;
 
-    private readonly FileSystemWatcher _watcher;
-
-    public ObservableFileSystemWatcher(string path)
+    public ObservableFileSystemWatcher(IServiceProvider dic)
+        : base(dic)
     {
-        _watcher = new FileSystemWatcher(path)
+        var watcher = new FileSystemWatcher(Arg)
         {
             NotifyFilter =
                 NotifyFilters.FileName |
@@ -29,39 +30,35 @@ public sealed class ObservableFileSystemWatcher : IDisposable
 
         Created = Observable
             .FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
-                h => _watcher.Created += h,
-                h => _watcher.Created -= h)
+                h => watcher.Created += h,
+                h => watcher.Created -= h)
             .Select(x => x.EventArgs);
 
         Changed = Observable
             .FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
-                h => _watcher.Changed += h,
-                h => _watcher.Changed -= h)
+                h => watcher.Changed += h,
+                h => watcher.Changed -= h)
             .Select(x => x.EventArgs);
 
         Deleted = Observable
             .FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
-                h => _watcher.Deleted += h,
-                h => _watcher.Deleted -= h)
+                h => watcher.Deleted += h,
+                h => watcher.Deleted -= h)
             .Select(x => x.EventArgs);
 
         Renamed = Observable
             .FromEventPattern<RenamedEventHandler, RenamedEventArgs>(
-                h => _watcher.Renamed += h,
-                h => _watcher.Renamed -= h)
+                h => watcher.Renamed += h,
+                h => watcher.Renamed -= h)
             .Select(x => x.EventArgs);
 
         Errors = Observable
             .FromEventPattern<ErrorEventHandler, ErrorEventArgs>(
-                h => _watcher.Error += h,
-                h => _watcher.Error -= h)
+                h => watcher.Error += h,
+                h => watcher.Error -= h)
             .Select(x => x.EventArgs);
 
-        _watcher.EnableRaisingEvents = true;
-    }
-
-    public void Dispose()
-    {
-        _watcher.Dispose();
+        watcher.EnableRaisingEvents = true;
+        watcher.AddTo(Trash);
     }
 }

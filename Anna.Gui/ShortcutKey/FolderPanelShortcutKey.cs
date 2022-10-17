@@ -177,7 +177,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         var op = Dic.GetInstance<EntryCopyBackgroundOperator, (InteractionMessenger, Entry[], string, IEntriesStats)>
             ((receiver.Messenger, receiver.TargetEntries, destFolder, stats));
 
-        await receiver.BackgroundWorker.PushOperator(op);
+        await receiver.BackgroundWorker.PushOperatorAsync(op);
 
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }

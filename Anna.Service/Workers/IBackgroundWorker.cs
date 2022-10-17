@@ -8,5 +8,5 @@ public interface IBackgroundWorker : INotifyPropertyChanged, IIsTransient
     bool IsInProcessing { get; }
     double Progress { get; }
 
-    ValueTask PushOperator(IBackgroundOperator @operator);
+    ValueTask PushOperatorAsync(IBackgroundOperator @operator);
 }

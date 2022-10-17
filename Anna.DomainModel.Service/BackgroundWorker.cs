@@ -45,7 +45,7 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
     public BackgroundWorker(IServiceProvider dic)
         : base(dic)
     {
-        Task.Run(ChannelLoop);
+        Task.Run(ChannelLoopAsync);
 
         Trash.Add(() =>
         {
@@ -55,7 +55,7 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
         });
     }
 
-    private async Task ChannelLoop()
+    private async Task ChannelLoopAsync()
     {
         while (await _channel.Reader.WaitToReadAsync())
         {
@@ -79,7 +79,7 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
         _taskCompleted.Set();
     }
 
-    public ValueTask PushOperator(IBackgroundOperator @operator)
+    public ValueTask PushOperatorAsync(IBackgroundOperator @operator)
     {
         IsInProcessing = Interlocked.Increment(ref _operatorCount) > 0;
 

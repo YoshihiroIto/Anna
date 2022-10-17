@@ -33,8 +33,7 @@ internal sealed class MockBackgroundWorker : IBackgroundWorker
     public bool IsInProcessing => false;
     public double Progress => 0;
     public string Message => "";
-    public ValueTask CopyFileSystemEntryAsync(IFileSystemCopyOperator fileSystemCopyOperator, string destPath, IEnumerable<IEntry> sourceEntries,
-        IEntriesStats stats)
+    public ValueTask PushOperator(IBackgroundOperator @operator)
     {
         throw new NotImplementedException();
     }

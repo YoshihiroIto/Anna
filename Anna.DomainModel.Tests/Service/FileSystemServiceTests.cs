@@ -21,7 +21,7 @@ public sealed class FileSystemServiceTests : IDisposable
     [InlineData("a", "b", "c")]
     public void File_copy(params string[] srcNames)
     {
-        var fso = new DefaultFileSystemCopyOperator(_dic);
+        var fso = new DefaultFileSystemCopier(_dic);
 
         _tempFolder.CreateFolder("x");
         var dstFolderPath = Path.Combine(_tempFolder.RootPath, "x");
@@ -50,7 +50,7 @@ public sealed class FileSystemServiceTests : IDisposable
     [InlineData("a", "b", "c")]
     public void Folder_copy(params string[] srcNames)
     {
-        var fso = new DefaultFileSystemCopyOperator(_dic);
+        var fso = new DefaultFileSystemCopier(_dic);
 
         _tempFolder.CreateFolder("x");
         var dstFolderPath = Path.Combine(_tempFolder.RootPath, "x");
@@ -76,7 +76,7 @@ public sealed class FileSystemServiceTests : IDisposable
     [Fact]
     public void SubFolder_copy()
     {
-        var fso = new DefaultFileSystemCopyOperator(_dic);
+        var fso = new DefaultFileSystemCopier(_dic);
 
         _tempFolder.CreateFolder("x/y/z");
         _tempFolder.CreateFile("a");

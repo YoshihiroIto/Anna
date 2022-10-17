@@ -1,11 +1,9 @@
-﻿using Anna.DomainModel.Service.BackgroundProcess;
-using Anna.Foundation;
+﻿using Anna.Foundation;
 using Anna.Service.Interfaces;
 using Anna.Service.Workers;
 using Reactive.Bindings.Extensions;
 using System.Threading.Channels;
 using IDisposable=System.IDisposable;
-using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Service;
 
@@ -54,14 +52,11 @@ public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, ID
             new UnboundedChannelOptions { SingleReader = true });
 
     private readonly ManualResetEventSlim _taskCompleted = new();
-    private readonly IServiceProvider _dic;
 
-    private int _processCount;
+    private int _operatorCount;
 
-    public BackgroundWorker(IServiceProvider dic)
+    public BackgroundWorker()
     {
-        _dic = dic;
-
         Task.Run(ChannelLoop);
     }
 
@@ -69,19 +64,19 @@ public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, ID
     {
         while (await Channel.Reader.WaitToReadAsync())
         {
-            if (Channel.Reader.TryRead(out var process) == false)
+            if (Channel.Reader.TryRead(out var @operator) == false)
                 continue;
 
-            using (process.ObserveProperty(x => x.Progress)
+            using (@operator.ObserveProperty(x => x.Progress)
                        .Subscribe(x => Progress = x))
             {
-                await process.ExecuteAsync();
+                await @operator.ExecuteAsync();
 
                 Progress = 100;
             }
 
-            process.Dispose();
-            IsInProcessing = Interlocked.Decrement(ref _processCount) > 0;
+            @operator.Dispose();
+            IsInProcessing = Interlocked.Decrement(ref _operatorCount) > 0;
 
             Progress = 0;
         }
@@ -96,19 +91,10 @@ public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, ID
         _taskCompleted.Dispose();
     }
 
-    private ValueTask PushOperator(IBackgroundOperator @operator)
+    public ValueTask PushOperator(IBackgroundOperator @operator)
     {
-        IsInProcessing = Interlocked.Increment(ref _processCount) > 0;
+        IsInProcessing = Interlocked.Increment(ref _operatorCount) > 0;
 
         return Channel.Writer.WriteAsync(@operator);
-    }
-
-    public ValueTask CopyFileSystemEntryAsync(IFileSystemCopyOperator fileSystemCopyOperator, string destPath, IEnumerable<IEntry> sourceEntries, IEntriesStats stats)
-    {
-        return
-            PushOperator(
-                _dic.GetInstance<CopyFileSystemEntryOperator, (IFileSystemCopyOperator, string, IEnumerable<IEntry>, IEntriesStats)>
-                    ((fileSystemCopyOperator, destPath, sourceEntries, stats))
-            );
     }
 }

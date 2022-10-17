@@ -1,19 +1,18 @@
-﻿using Anna.Service;
-using Anna.Service.Interfaces;
+﻿using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using System.Diagnostics;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.FileSystem;
 
-public abstract class FileSystemCopyOperator : IFileSystemCopyOperator
+public abstract class FileSystemCopier
 {
     public event EventHandler? FileCopied;
 
     protected CancellationTokenSource? CopyCancellationTokenSource { get; private set; }
     private readonly IServiceProvider _dic;
 
-    protected FileSystemCopyOperator(IServiceProvider dic)
+    protected FileSystemCopier(IServiceProvider dic)
     {
         _dic = dic;
     }
@@ -138,9 +137,9 @@ public abstract class FileSystemCopyOperator : IFileSystemCopyOperator
     }
 }
 
-public sealed class DefaultFileSystemCopyOperator : FileSystemCopyOperator
+public sealed class DefaultFileSystemCopier : FileSystemCopier
 {
-    public DefaultFileSystemCopyOperator(IServiceProvider dic)
+    public DefaultFileSystemCopier(IServiceProvider dic)
         : base(dic)
     {
     }

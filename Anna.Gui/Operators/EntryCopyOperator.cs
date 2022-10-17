@@ -1,13 +1,19 @@
-﻿using Anna.Foundation;
+﻿using Anna.DomainModel;
+using Anna.Foundation;
+using Anna.Gui.Messaging;
+using Anna.Gui.Operators.Internals;
 using Anna.Service.Interfaces;
 using Reactive.Bindings.Extensions;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
-namespace Anna.DomainModel.Service.BackgroundProcess;
+namespace Anna.Gui.Operators;
 
-internal sealed class CopyFileSystemEntryOperator
-    : HasArgDisposableNotificationObject<(IFileSystemCopyOperator FileSystemOperator, string DestPath, IEnumerable<IEntry>
-            SourceEntries, IEntriesStats Stats)>
+public class EntryCopyOperator
+    : HasArgDisposableNotificationObject
+        <(InteractionMessenger Messenger, Entry[] SourceEntries, string DestPath, IEntriesStats Stats)>
         , IBackgroundOperator
 {
     #region Progress
@@ -22,22 +28,10 @@ internal sealed class CopyFileSystemEntryOperator
 
     #endregion
 
-    #region Message
-
-    private string _Message = "CopyFileSystemEntryProcess";
-
-    public string Message
-    {
-        get => _Message;
-        set => SetProperty(ref _Message, value);
-    }
-
-    #endregion
-
     private int _fileCopiedCount;
     private int _fileCount;
 
-    public CopyFileSystemEntryOperator(IServiceProvider dic)
+    public EntryCopyOperator(IServiceProvider dic)
         : base(dic)
     {
         if (Arg.Stats is IDisposable disposable)
@@ -55,14 +49,16 @@ internal sealed class CopyFileSystemEntryOperator
 
     public ValueTask ExecuteAsync()
     {
+        var worker = Dic.GetInstance<ConfirmedFileSystemCopier, (InteractionMessenger, int)>((Arg.Messenger, 0));
+
         try
         {
-            Arg.FileSystemOperator.FileCopied += OnFileCopied;
-            Arg.FileSystemOperator.Invoke(Arg.SourceEntries, Arg.DestPath);
+            worker.FileCopied += OnFileCopied;
+            worker.Invoke(Arg.SourceEntries, Arg.DestPath);
         }
         finally
         {
-            Arg.FileSystemOperator.FileCopied -= OnFileCopied;
+            worker.FileCopied -= OnFileCopied;
         }
 
         return ValueTask.CompletedTask;
@@ -79,3 +75,4 @@ internal sealed class CopyFileSystemEntryOperator
         Progress = Math.Min(0.999999, (double)_fileCopiedCount / _fileCount) * 100;
     }
 }
+

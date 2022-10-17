@@ -1,20 +1,17 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
-using Anna.DomainModel.FileSystem;
 using Anna.Foundation;
 using Anna.Gui.Messaging;
-using Anna.Gui.Messaging.Messages;
+using Anna.Gui.Operators;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Base;
-using Anna.Service;
+using Anna.Service.Interfaces;
 using Anna.Service.Services;
-using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
+using System.Linq;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -178,16 +175,15 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        var fileSystemOperator =
-            Dic.GetInstance<ConfirmedFileSystemCopyOperator, (InteractionMessenger, int)>((receiver.Messenger, 0));
+        var copyOperator =
+             Dic.GetInstance<EntryCopyOperator, (InteractionMessenger, Entry[], string, IEntriesStats)>
+                ((receiver.Messenger, receiver.TargetEntries, destFolder, stats));
 
-        await receiver.BackgroundWorker.CopyFileSystemEntryAsync(fileSystemOperator,
-            destFolder,
-            receiver.TargetEntries,
-            stats);
+        await receiver.BackgroundWorker.PushOperator(copyOperator);
+
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
-    
+
     private async ValueTask DeleteEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
@@ -216,63 +212,5 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             stats);
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
 #endif
-    }
-    
-}
-
-internal sealed class ConfirmedFileSystemCopyOperator
-    : FileSystemCopyOperator,
-        IHasArg<(InteractionMessenger Messenger, int Dummmy)>
-{
-    private readonly (InteractionMessenger Messenger, int Dummmy) _arg;
-    private readonly object _lockObj = new();
-
-    public ConfirmedFileSystemCopyOperator(IServiceProvider dic)
-        : base(dic)
-    {
-        dic.PopArg(out _arg);
-    }
-
-    protected override (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
-    {
-        lock (_lockObj)
-        {
-            Debug.Assert(CopyCancellationTokenSource is not null);
-            
-            if (CopyCancellationTokenSource.IsCancellationRequested)
-                return (true, "");
-            
-            var resultDialogResult = DialogResultTypes.Cancel;
-            var resultFilePath = "";
-
-            using var m = new ManualResetEventSlim();
-
-            Dispatcher.UIThread.InvokeAsync(async () =>
-            {
-                var folder = Path.GetDirectoryName(destPath) ?? "";
-                var filename = Path.GetFileName(destPath);
-            
-                var message = await _arg.Messenger.RaiseAsync(
-                    new ChangeEntryNameMessage(
-                        folder,
-                        filename,
-                        WindowBaseViewModel.MessageKeyChangeEntryName));
-
-                resultDialogResult = message.Response.DialogResult;
-                resultFilePath = message.Response.FilePath;
-
-                // ReSharper disable once AccessToDisposedClosure
-                m.Set();
-            });
-
-            m.Wait();
-            
-            if (resultDialogResult == DialogResultTypes.Cancel)
-                CopyCancellationTokenSource.Cancel();
-
-            return (
-                resultDialogResult != DialogResultTypes.Ok,
-                resultFilePath);
-        }
     }
 }

@@ -20,25 +20,8 @@
         <PackageReference Include="XamlNameReferenceGenerator" Version="1.3.4" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\Anna.DomainModel.Service\Anna.DomainModel.Service.csproj" />
       <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
       <ProjectReference Include="..\Anna.Localization\Anna.Localization.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-      <Compile Update="Views\Windows\Dialogs\SelectFolderDialog.axaml.cs">
-        <DependentUpon>PickFolderDialog.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Windows\Dialogs\ChangeEntryNameDialog.axaml.cs">
-        <DependentUpon>ChangeEntryNameDialog.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Windows\Dialogs\DeleteEntryDialog.axaml.cs">
-        <DependentUpon>DeleteEntryDialog.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="Views\Panels\EntriesStatsPanel.axaml.cs">
-        <DependentUpon>EntriesStatsPanel.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
     </ItemGroup>
 </Project>

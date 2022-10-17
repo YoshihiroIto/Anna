@@ -19,49 +19,9 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
 
     private DefaultServiceProvider(string logOutputDir, string appConfigFilePath)
     {
-        RegisterSingleton<IObjectLifetimeCheckerService,
-#if DEBUG
-            DefaultObjectLifetimeChecker
-#else
-            NopObjectLifetimeChecker
-#endif
-        >();
-
-        var configFolder = Path.GetDirectoryName(appConfigFilePath) ?? "";
-        var keyConfigFilePath = Path.Combine(configFolder, KeyConfig.Filename);
-        var jumpFolderConfigFilePath = Path.Combine(configFolder, JumpFolderConfig.Filename);
-
-        RegisterSingleton(() =>
-            new AppConfig(GetInstance<IObjectSerializerService>()) { FilePath = appConfigFilePath });
-        RegisterSingleton(() =>
-            new KeyConfig(GetInstance<IObjectSerializerService>()) { FilePath = keyConfigFilePath });
-        RegisterSingleton(() =>
-            new JumpFolderConfig(GetInstance<IObjectSerializerService>()) { FilePath = jumpFolderConfigFilePath });
-        RegisterSingleton<ILoggerService>(() => new Log.DefaultLogger(logOutputDir));
-        RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
-        RegisterSingleton<IFileSystemIsAccessibleService, FileSystemIsAccessibleService>();
-        RegisterSingleton<IFolderHistoryService, FolderHistoryService>();
-        RegisterSingleton<App>();
-        RegisterSingleton<ResourcesHolder>();
-        RegisterSingleton<DomainModelOperator>();
-
-        Register<IBackgroundWorker, BackgroundWorker>(Lifestyle.Transient);
-
-        // property injection
-        RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerService>());
-
-        GetRegistration(typeof(IBackgroundWorker))!.Registration
-            .SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,
-                "dispose manually.");
-
-        Options.ResolveUnregisteredConcreteTypes = true;
-
-#if DEBUG
-        Verify();
-#endif
+        Register(logOutputDir, appConfigFilePath);
 
         _logger = GetInstance<ILoggerService>();
-
         _logger.Start("Application");
 
         GetInstance<IObjectLifetimeCheckerService>().Start(s => _logger.Error(s));
@@ -103,5 +63,49 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         }
 
         return new DefaultServiceProvider(configDir, appConfigFilePath);
+    }
+    
+    private void Register(string logOutputDir, string appConfigFilePath)
+    {
+        RegisterSingleton<IObjectLifetimeCheckerService,
+#if DEBUG
+            DefaultObjectLifetimeChecker
+#else
+            NopObjectLifetimeChecker
+#endif
+        >();
+
+        var configFolder = Path.GetDirectoryName(appConfigFilePath) ?? "";
+        var keyConfigFilePath = Path.Combine(configFolder, KeyConfig.Filename);
+        var jumpFolderConfigFilePath = Path.Combine(configFolder, JumpFolderConfig.Filename);
+
+        RegisterSingleton(() =>
+            new AppConfig(GetInstance<IObjectSerializerService>()) { FilePath = appConfigFilePath });
+        RegisterSingleton(() =>
+            new KeyConfig(GetInstance<IObjectSerializerService>()) { FilePath = keyConfigFilePath });
+        RegisterSingleton(() =>
+            new JumpFolderConfig(GetInstance<IObjectSerializerService>()) { FilePath = jumpFolderConfigFilePath });
+        RegisterSingleton<ILoggerService>(() => new Log.DefaultLogger(logOutputDir));
+        RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
+        RegisterSingleton<IFileSystemIsAccessibleService, FileSystemIsAccessibleService>();
+        RegisterSingleton<IFolderHistoryService, FolderHistoryService>();
+        RegisterSingleton<App>();
+        RegisterSingleton<ResourcesHolder>();
+        RegisterSingleton<DomainModelOperator>();
+
+        Register<IBackgroundWorker, BackgroundWorker>(Lifestyle.Transient);
+
+        // property injection
+        RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerService>());
+
+        GetRegistration(typeof(IBackgroundWorker))!.Registration
+            .SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,
+                "dispose manually.");
+
+        Options.ResolveUnregisteredConcreteTypes = true;
+
+#if DEBUG
+        Verify();
+#endif
     }
 }

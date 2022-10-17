@@ -5,7 +5,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel;
 
-public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
+public sealed class EntriesStats : HasArgDisposableNotificationObject<Entry[]>, IEntriesStats
 {
     #region IsInMeasuring
 
@@ -82,9 +82,11 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
 
             _mre.Dispose();
         });
+        
+        DoMeasure();
     }
 
-    public EntriesStats Measure(Entry[] targets)
+    private void DoMeasure()
     {
         Task.Run(() =>
             {
@@ -92,8 +94,7 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
                 {
                     IsInMeasuring = true;
 
-                    // ReSharper disable once AccessToDisposedClosure
-                    MeasureInternal(targets);
+                    MeasureInternal(Arg);
                 }
                 finally
                 {
@@ -104,8 +105,6 @@ public sealed class EntriesStats : DisposableNotificationObject, IEntriesStats
             _cts.Token);
 
         _mre.Wait(_cts.Token);
-
-        return this;
     }
 
     private void MeasureInternal(Entry[] targets)

@@ -159,8 +159,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         if (receiver.TargetEntries.Length == 0)
             return;
 
-        var stats = Dic.GetInstance<EntriesStats>()
-            .Measure(receiver.TargetEntries);
+        var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
 
         var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner, receiver.TargetEntries, stats);
         if (result.Result != DialogResultTypes.Ok)
@@ -196,8 +195,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         if (receiver.TargetEntries.Length == 0)
             return;
 
-        var stats = Dic.GetInstance<EntriesStats>()
-            .Measure(receiver.TargetEntries);
+        var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
 
         var result = await WindowOperator.EntryDeleteAsync(Dic, receiver.Owner, receiver.TargetEntries, stats);
         if (result.Result != DialogResultTypes.Yes)

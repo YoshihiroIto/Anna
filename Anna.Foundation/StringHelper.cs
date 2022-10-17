@@ -12,7 +12,7 @@ public static class StringHelper
 
         try
         {
-            var readLength = await source.ReadAsync(buf);
+            var readLength = await source.ReadAsync(buf).ConfigureAwait(false);
             if (readLength == 0)
                 return ("", true);
             

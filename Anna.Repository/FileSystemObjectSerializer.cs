@@ -25,7 +25,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         {
             if (File.Exists(path))
             {
-                var json = await File.ReadAllTextAsync(path);
+                var json = await File.ReadAllTextAsync(path).ConfigureAwait(false);
 
                 var obj = JsonSerializer.Deserialize<T>(json, Options);
 
@@ -72,7 +72,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         {
             var json = JsonSerializer.Serialize(obj, Options);
 
-            await File.WriteAllTextAsync(path, json);
+            await File.WriteAllTextAsync(path, json).ConfigureAwait(false);
 
             return ResultCode.Ok;
         }

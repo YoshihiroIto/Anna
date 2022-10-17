@@ -57,7 +57,7 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
 
     private async Task ChannelLoopAsync()
     {
-        while (await _channel.Reader.WaitToReadAsync())
+        while (await _channel.Reader.WaitToReadAsync().ConfigureAwait(false))
         {
             if (_channel.Reader.TryRead(out var @operator) == false)
                 continue;
@@ -65,7 +65,7 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
             using (@operator.ObserveProperty(x => x.Progress)
                        .Subscribe(x => Progress = x))
             {
-                await @operator.ExecuteAsync();
+                await @operator.ExecuteAsync().ConfigureAwait(false);
 
                 Progress = 100;
             }

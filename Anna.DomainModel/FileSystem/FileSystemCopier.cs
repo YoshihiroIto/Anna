@@ -9,7 +9,7 @@ public abstract class FileSystemCopier
 {
     public event EventHandler? FileCopied;
 
-    protected CancellationTokenSource? CopyCancellationTokenSource { get; private set; }
+    protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     private readonly IServiceProvider _dic;
 
     protected FileSystemCopier(IServiceProvider dic)
@@ -19,11 +19,11 @@ public abstract class FileSystemCopier
 
     public void Invoke(IEnumerable<IEntry> sourceEntries, string destPath)
     {
-        CopyCancellationTokenSource = new CancellationTokenSource();
+        CancellationTokenSource = new CancellationTokenSource();
 
         try
         {
-            var po = new ParallelOptions { CancellationToken = CopyCancellationTokenSource.Token };
+            var po = new ParallelOptions { CancellationToken = CancellationTokenSource.Token };
 
             Parallel.ForEach(sourceEntries,
                 po,
@@ -46,8 +46,8 @@ public abstract class FileSystemCopier
                         {
                             (isSkip, dest) = CopyStrategyWhenSamePath(dest);
 
-                            if (CopyCancellationTokenSource is not null &&
-                                CopyCancellationTokenSource.IsCancellationRequested)
+                            if (CancellationTokenSource is not null &&
+                                CancellationTokenSource.IsCancellationRequested)
                                 return;
                         }
 
@@ -63,19 +63,19 @@ public abstract class FileSystemCopier
         }
         catch (OperationCanceledException)
         {
-            _dic.GetInstance<ILoggerService>().Information("FileSystemOperator.Copy() -- Canceled");
+            _dic.GetInstance<ILoggerService>().Information("FileSystemCopier.Invoke() -- Canceled");
         }
         finally
         {
-            var d = CopyCancellationTokenSource;
-            CopyCancellationTokenSource = null;
+            var d = CancellationTokenSource;
+            CancellationTokenSource = null;
             d.Dispose();
         }
     }
 
     private void CopyFolder(DirectoryInfo srcInfo, string dst, ParallelOptions po)
     {
-        Debug.Assert(CopyCancellationTokenSource is not null);
+        Debug.Assert(CancellationTokenSource is not null);
 
         var src = srcInfo.FullName;
 
@@ -87,7 +87,7 @@ public abstract class FileSystemCopier
             {
                 (isSkip, targetFolderPath) = CopyStrategyWhenSamePath(targetFolderPath);
 
-                if (CopyCancellationTokenSource.IsCancellationRequested)
+                if (CancellationTokenSource.IsCancellationRequested)
                     return;
             }
 
@@ -104,7 +104,7 @@ public abstract class FileSystemCopier
             po,
             file =>
             {
-                Debug.Assert(CopyCancellationTokenSource is not null);
+                Debug.Assert(CancellationTokenSource is not null);
 
                 var isSkip = false;
                 var dest = Path.Combine(targetFolderPath, file.Name);
@@ -113,7 +113,7 @@ public abstract class FileSystemCopier
                 {
                     (isSkip, dest) = CopyStrategyWhenSamePath(dest);
 
-                    if (CopyCancellationTokenSource.IsCancellationRequested)
+                    if (CancellationTokenSource.IsCancellationRequested)
                         return;
                 }
 

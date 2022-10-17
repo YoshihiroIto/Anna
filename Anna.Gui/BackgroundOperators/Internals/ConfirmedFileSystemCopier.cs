@@ -27,9 +27,9 @@ internal sealed class ConfirmedFileSystemCopier
     {
         lock (_lockObj)
         {
-            Debug.Assert(CopyCancellationTokenSource is not null);
+            Debug.Assert(CancellationTokenSource is not null);
 
-            if (CopyCancellationTokenSource.IsCancellationRequested)
+            if (CancellationTokenSource.IsCancellationRequested)
                 return (true, "");
 
             var resultDialogResult = DialogResultTypes.Cancel;
@@ -58,7 +58,7 @@ internal sealed class ConfirmedFileSystemCopier
             m.Wait();
 
             if (resultDialogResult == DialogResultTypes.Cancel)
-                CopyCancellationTokenSource.Cancel();
+                CancellationTokenSource.Cancel();
 
             return (
                 resultDialogResult != DialogResultTypes.Ok,

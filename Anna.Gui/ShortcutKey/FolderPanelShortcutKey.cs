@@ -198,17 +198,11 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             return;
         }
 
-        throw new NotImplementedException();
+        var op = Dic
+            .GetInstance
+                <EntryDeleteBackgroundOperator, (Entry[], EntryDeleteModes, IEntriesStats)>
+                ((receiver.TargetEntries, result.Mode, stats));
 
-#if false
-        var fileSystemOperator =
-            Dic.GetInstance<ConfirmedFileSystemOperator, (InteractionMessenger, int)>((receiver.Messenger, 0));
-
-        await receiver.BackgroundService.CopyFileSystemEntryAsync(fileSystemOperator,
-            destFolder,
-            receiver.TargetEntries,
-            stats);
-        Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
-#endif
+        await receiver.BackgroundWorker.PushOperatorAsync(op);
     }
 }

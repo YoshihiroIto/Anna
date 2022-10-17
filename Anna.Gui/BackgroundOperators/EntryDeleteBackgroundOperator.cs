@@ -1,7 +1,7 @@
-﻿using Anna.DomainModel;
+﻿using Anna.Constants;
+using Anna.DomainModel;
+using Anna.DomainModel.FileSystem;
 using Anna.Foundation;
-using Anna.Gui.BackgroundOperators.Internals;
-using Anna.Gui.Messaging;
 using Anna.Service.Interfaces;
 using Reactive.Bindings.Extensions;
 using System;
@@ -11,9 +11,9 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.BackgroundOperators;
 
-public class EntryCopyBackgroundOperator
+public class EntryDeleteBackgroundOperator
     : HasArgDisposableNotificationObject
-        <(InteractionMessenger Messenger, Entry[] SourceEntries, string DestPath, IEntriesStats Stats)>
+        <(Entry[] SourceEntries, EntryDeleteModes Mode, IEntriesStats Stats)>
         , IBackgroundOperator
 {
     #region Progress
@@ -28,10 +28,10 @@ public class EntryCopyBackgroundOperator
 
     #endregion
 
-    private int _fileCopiedCount;
+    private int _fileDeletedCount;
     private int _fileCount;
 
-    public EntryCopyBackgroundOperator(IServiceProvider dic)
+    public EntryDeleteBackgroundOperator(IServiceProvider dic)
         : base(dic)
     {
         if (Arg.Stats is IDisposable disposable)
@@ -49,29 +49,29 @@ public class EntryCopyBackgroundOperator
 
     public ValueTask ExecuteAsync()
     {
-        var worker = Dic.GetInstance<ConfirmedFileSystemCopier, (InteractionMessenger, int)>((Arg.Messenger, 0));
+        var worker = Dic.GetInstance<DefaultFileSystemDeleter>();
 
         try
         {
-            worker.FileCopied += OnFileCopied;
-            worker.Invoke(Arg.SourceEntries, Arg.DestPath);
+            worker.FileDeleted += OnFileDeleted;
+            worker.Invoke(Arg.SourceEntries, Arg.Mode);
         }
         finally
         {
-            worker.FileCopied -= OnFileCopied;
+            worker.FileDeleted -= OnFileDeleted;
         }
 
         return ValueTask.CompletedTask;
     }
 
-    private void OnFileCopied(object? sender, EventArgs e)
+    private void OnFileDeleted(object? sender, EventArgs e)
     {
-        Interlocked.Increment(ref _fileCopiedCount);
+        Interlocked.Increment(ref _fileDeletedCount);
         UpdateProgress();
     }
 
     private void UpdateProgress()
     {
-        Progress = Math.Min(0.999999, (double)_fileCopiedCount / _fileCount) * 100;
+        Progress = Math.Min(0.999999, (double)_fileDeletedCount / _fileCount) * 100;
     }
 }

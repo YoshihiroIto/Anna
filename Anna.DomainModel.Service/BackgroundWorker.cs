@@ -1,6 +1,5 @@
 ﻿using Anna.DomainModel.Service.BackgroundProcess;
 using Anna.Foundation;
-using Anna.Service;
 using Anna.Service.Interfaces;
 using Anna.Service.Workers;
 using Reactive.Bindings.Extensions;
@@ -95,8 +94,6 @@ public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, ID
         Channel.Writer.TryComplete();
         _taskCompleted.Wait();
         _taskCompleted.Dispose();
-
-        GC.SuppressFinalize(this);
     }
 
     private ValueTask PushProcess(IBackgroundProcess process)

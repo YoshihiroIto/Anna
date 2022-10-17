@@ -1,5 +1,5 @@
 ﻿using Anna.Foundation;
-using Anna.Service;
+using Anna.Service.Services;
 
 namespace Anna.DomainModel.Config;
 

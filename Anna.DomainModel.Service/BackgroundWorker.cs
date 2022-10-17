@@ -2,6 +2,7 @@
 using Anna.Foundation;
 using Anna.Service;
 using Anna.Service.Interfaces;
+using Anna.Service.Workers;
 using Reactive.Bindings.Extensions;
 using System.Threading.Channels;
 using IDisposable=System.IDisposable;

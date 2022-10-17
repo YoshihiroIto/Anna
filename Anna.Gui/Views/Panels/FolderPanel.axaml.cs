@@ -6,6 +6,7 @@ using Anna.Gui.Messaging;
 using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
 using Anna.Service;
+using Anna.Service.Workers;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;

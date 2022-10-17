@@ -1,7 +1,7 @@
 ﻿using Anna.Service.Interfaces;
 using System.ComponentModel;
 
-namespace Anna.Service;
+namespace Anna.Service.Workers;
 
 public interface IBackgroundWorker : INotifyPropertyChanged
 {

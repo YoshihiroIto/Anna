@@ -1,4 +1,4 @@
-﻿using Anna.Service;
+﻿using Anna.Service.Services;
 
 namespace Anna.ObjectLifetimeChecker;
 

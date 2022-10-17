@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.Foundation;
-using Anna.Service;
+using Anna.Service.Services;
+using Anna.Service.Workers;
 using System.Diagnostics;
 using IServiceProvider=Anna.Service.IServiceProvider;
 

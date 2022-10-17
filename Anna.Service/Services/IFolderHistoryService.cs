@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Anna.Service;
+namespace Anna.Service.Services;
 
 public interface IFolderHistoryService
 {

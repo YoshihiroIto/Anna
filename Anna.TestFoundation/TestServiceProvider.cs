@@ -1,7 +1,8 @@
 ﻿using Anna.Log;
 using Anna.ObjectLifetimeChecker;
-using Anna.Service;
 using Anna.Service.Interfaces;
+using Anna.Service.Services;
+using Anna.Service.Workers;
 using Anna.ServiceProvider;
 using System.ComponentModel;
 

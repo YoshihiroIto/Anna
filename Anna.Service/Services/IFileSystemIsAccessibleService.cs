@@ -1,4 +1,4 @@
-﻿namespace Anna.Service;
+﻿namespace Anna.Service.Services;
 
 public interface IFileSystemIsAccessibleService
 {

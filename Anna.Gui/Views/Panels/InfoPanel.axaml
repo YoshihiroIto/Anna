@@ -30,7 +30,7 @@
                          Minimum="0"
                          ProgressTextFormat="{}{1:0}%"
                          ShowProgressText="True"
-                         Value="{Binding Process.Value}" />
+                         Value="{Binding Progress.Value}" />
         </StackPanel>
 
         <Grid ColumnDefinitions="Auto, Auto"

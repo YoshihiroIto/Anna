@@ -2,6 +2,7 @@
 using Anna.Foundation;
 using Anna.Service.Services;
 using Anna.Service.Workers;
+using Reactive.Bindings.Extensions;
 using System.Diagnostics;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -92,6 +93,8 @@ public abstract class Folder : DisposableNotificationObject
         : base(dic)
     {
         BackgroundWorker = dic.GetInstance<IBackgroundWorker>();// create new
+        (BackgroundWorker as IDisposable)?.AddTo(Trash);
+        
         Path = PathStringHelper.Normalize(path);
     }
 

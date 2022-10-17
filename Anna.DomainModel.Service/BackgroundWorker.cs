@@ -2,12 +2,13 @@
 using Anna.Service.Interfaces;
 using Anna.Service.Workers;
 using Reactive.Bindings.Extensions;
+using System.Reactive.Disposables;
 using System.Threading.Channels;
-using IDisposable=System.IDisposable;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Service;
 
-public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, IDisposable
+public sealed class BackgroundWorker : DisposableNotificationObject, IBackgroundWorker
 {
     #region IsInProcessing
 
@@ -34,37 +35,33 @@ public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, ID
 
     #endregion
 
-
-    #region Message
-
-    private string _Message = "";
-
-    public string Message
-    {
-        get => _Message;
-        set => SetProperty(ref _Message, value);
-    }
-
-    #endregion
-
-    private Channel<IBackgroundOperator> Channel { get; } =
-        System.Threading.Channels.Channel.CreateUnbounded<IBackgroundOperator>(
+    private readonly Channel<IBackgroundOperator> _channel  =
+        Channel.CreateUnbounded<IBackgroundOperator>(
             new UnboundedChannelOptions { SingleReader = true });
 
     private readonly ManualResetEventSlim _taskCompleted = new();
 
     private int _operatorCount;
 
-    public BackgroundWorker()
+    public BackgroundWorker(IServiceProvider dic)
+        : base(dic)
     {
         Task.Run(ChannelLoop);
+
+        Disposable.Create(this,
+            t =>
+            {
+                t._channel.Writer.TryComplete();
+                t._taskCompleted.Wait();
+                t._taskCompleted.Dispose();
+            }).AddTo(Trash);
     }
 
     private async Task ChannelLoop()
     {
-        while (await Channel.Reader.WaitToReadAsync())
+        while (await _channel.Reader.WaitToReadAsync())
         {
-            if (Channel.Reader.TryRead(out var @operator) == false)
+            if (_channel.Reader.TryRead(out var @operator) == false)
                 continue;
 
             using (@operator.ObserveProperty(x => x.Progress)
@@ -84,17 +81,10 @@ public sealed class BackgroundWorker : NotificationObject, IBackgroundWorker, ID
         _taskCompleted.Set();
     }
 
-    public void Dispose()
-    {
-        Channel.Writer.TryComplete();
-        _taskCompleted.Wait();
-        _taskCompleted.Dispose();
-    }
-
     public ValueTask PushOperator(IBackgroundOperator @operator)
     {
         IsInProcessing = Interlocked.Increment(ref _operatorCount) > 0;
 
-        return Channel.Writer.WriteAsync(@operator);
+        return _channel.Writer.WriteAsync(@operator);
     }
 }

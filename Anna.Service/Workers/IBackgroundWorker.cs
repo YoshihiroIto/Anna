@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace Anna.Service.Workers;
 
-public interface IBackgroundWorker : INotifyPropertyChanged
+public interface IBackgroundWorker : INotifyPropertyChanged, IIsTransient
 {
     bool IsInProcessing { get; }
     double Progress { get; }

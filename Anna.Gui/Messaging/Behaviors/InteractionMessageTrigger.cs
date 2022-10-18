@@ -45,7 +45,7 @@ public sealed class InteractionMessageTrigger : Trigger<Control>
     
     private async ValueTask MessengerOnRaised(object? sender, InteractionMessage message)
     {
-        if (string.CompareOrdinal(message.MessageKey, MessageKey) != 0)
+        if (message.MessageKey != MessageKey)
             return;
 
         foreach (var avaloniaObject in Actions)

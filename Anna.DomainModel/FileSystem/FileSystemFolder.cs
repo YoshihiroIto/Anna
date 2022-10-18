@@ -11,7 +11,7 @@ namespace Anna.DomainModel.FileSystem;
 
 public sealed class FileSystemFolder : Folder
 {
-    public override bool IsRoot => string.CompareOrdinal(System.IO.Path.GetPathRoot(Path), Path) == 0;
+    public override bool IsRoot => System.IO.Path.GetPathRoot(Path) ==  Path;
 
     private readonly CompositeDisposable _watchTrash = new();
 
@@ -137,7 +137,7 @@ public sealed class FileSystemFolder : Folder
             Timestamp = fsInfo.LastWriteTime,
             Size = isFolder ? 0 : (fsInfo as FileInfo)!.Length,
             Attributes = fsInfo.Attributes,
-            IsParentFolder = string.CompareOrdinal(nameWithExtension, "..") == 0,
+            IsParentFolder = nameWithExtension == "..",
             Path = path
         };
 

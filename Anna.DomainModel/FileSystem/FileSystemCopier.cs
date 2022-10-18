@@ -42,7 +42,7 @@ public abstract class FileSystemCopier : IFileProcessable
                         var isSkip = false;
                         var dest = Path.Combine(destPath, Path.GetFileName(src));
 
-                        if (string.CompareOrdinal(src, dest) == 0)
+                        if (src == dest)
                         {
                             (isSkip, dest) = CopyStrategyWhenSamePath(dest);
 
@@ -83,7 +83,7 @@ public abstract class FileSystemCopier : IFileProcessable
         {
             var isSkip = false;
 
-            if (string.CompareOrdinal(srcInfo.FullName, targetFolderPath) == 0)
+            if (srcInfo.FullName == targetFolderPath)
             {
                 (isSkip, targetFolderPath) = CopyStrategyWhenSamePath(targetFolderPath);
 
@@ -109,7 +109,7 @@ public abstract class FileSystemCopier : IFileProcessable
                 var isSkip = false;
                 var dest = Path.Combine(targetFolderPath, file.Name);
 
-                if (string.CompareOrdinal(file.FullName, dest) == 0)
+                if (file.FullName == dest)
                 {
                     (isSkip, dest) = CopyStrategyWhenSamePath(dest);
 

@@ -83,7 +83,7 @@ public sealed class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILo
                 .Subscribe(_ =>
                     {
                         // If it is not a folder move, do nothing.
-                        if (string.CompareOrdinal(oldPath, Model.Path) != 0)
+                        if (oldPath !=  Model.Path)
                         {
                             SetCurrentIndex(oldPath);
                             oldPath = Model.Path;
@@ -194,7 +194,7 @@ public sealed class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILo
     {
         for (var i = 0; i != Entries.Count; ++i)
         {
-            if (string.CompareOrdinal(Entries[i].Model.Path, targetPath) != 0)
+            if (Entries[i].Model.Path != targetPath)
                 continue;
 
             CursorIndex.Value = i;

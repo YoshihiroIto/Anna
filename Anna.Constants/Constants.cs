@@ -51,6 +51,13 @@ public enum EntryDeleteModes
     TrashCan
 }
 
+public enum DeleteStrategies
+{
+    Skip,
+    Delete,
+    AllDelete,
+}
+
 public static class Constants
 {
     // todo: ReadOnlyHashSet

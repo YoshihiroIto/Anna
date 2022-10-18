@@ -141,27 +141,34 @@ public sealed class EntriesStats : HasArgDisposableNotificationObject<Entry[]>, 
         if (_fileSystemIsAccessibleService.IsAccessible(path) == false)
             return;
 
-        var di = new DirectoryInfo(path);
-
-        foreach (var d in di.EnumerateDirectories())
+        try
         {
-            ++FolderCount;
-            MeasureFolder(d.FullName);
+            var di = new DirectoryInfo(path);
 
-            if (_cts.Token.IsCancellationRequested)
-                break;
+            foreach (var d in di.EnumerateDirectories())
+            {
+                ++FolderCount;
+                MeasureFolder(d.FullName);
+
+                if (_cts.Token.IsCancellationRequested)
+                    break;
+            }
+
+            foreach (var f in di.EnumerateFiles())
+            {
+                ++FileCount;
+                AllSize += f.Length;
+
+                if (_mre.IsSet == false)
+                    _mre.Set();
+
+                if (_cts.Token.IsCancellationRequested)
+                    break;
+            }
         }
-
-        foreach (var f in di.EnumerateFiles())
+        catch
         {
-            ++FileCount;
-            AllSize += f.Length;
-
-            if (_mre.IsSet == false)
-                _mre.Set();
-
-            if (_cts.Token.IsCancellationRequested)
-                break;
+            // ignored
         }
     }
 }

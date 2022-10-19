@@ -30,13 +30,12 @@ public enum ResultCode
     Error
 }
 
-[Flags]
 public enum Directions
 {
-    Up = 1 << 0,
-    Down = 1 << 1,
-    Left = 1 << 2,
-    Right = 1 << 3
+    Up,
+    Down,
+    Left,
+    Right
 }
 
 public enum FileEntryFormat

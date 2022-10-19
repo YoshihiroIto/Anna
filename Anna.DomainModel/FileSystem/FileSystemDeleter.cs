@@ -142,7 +142,7 @@ public abstract class FileSystemDeleter : IFileProcessable
                 if (isReadonly)
                     srcInfo.Attributes &= ~FileAttributes.ReadOnly;
 
-                srcInfo.Delete();
+                DeleteDirectoryInternal(srcInfo);
             }
             else
                 isSkipped = 1;
@@ -150,6 +150,30 @@ public abstract class FileSystemDeleter : IFileProcessable
 
         return isSkipped != 0;
     }
+    
+    private static void DeleteDirectoryInternal(DirectoryInfo di)
+    {
+        try
+        {
+            di.Delete();
+        }
+        catch (IOException e)
+        {
+            
+            // todo:Dialog   retry or cancel
+            
+            
+            Debug.WriteLine(e);
+            
+            Debugger.Break();
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+            Debugger.Break();
+        }
+    }
+    
 
     protected virtual DeleteStrategies DeleteStrategyWhenReadonly(FileSystemInfo info)
     {

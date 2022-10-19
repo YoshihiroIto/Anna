@@ -96,6 +96,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Retry.
+        /// </summary>
+        public static string Dialog_Retry {
+            get {
+                return ResourceManager.GetString("Dialog_Retry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Skip.
         /// </summary>
         public static string Dialog_Skip {

@@ -70,7 +70,8 @@ public enum DialogResultTypes
     Cancel = 1<<1,
     Yes = 1<<2,
     No = 1<<3,
-    Skip = 1<<4
+    Skip = 1<<4,
+    Retry = 1<<5,
 }
 
 public static class Constants

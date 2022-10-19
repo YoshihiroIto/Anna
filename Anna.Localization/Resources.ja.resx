@@ -144,4 +144,7 @@
     <data name="UI_ToTrashCan" xml:space="preserve">
         <value>ごみ箱へ(_T)</value>
     </data>
+    <data name="Dialog_Retry" xml:space="preserve">
+        <value>再試行(_R)</value>
+    </data>
 </root>

@@ -8,7 +8,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed class EntriesStatsPanelViewModel : HasModelRefViewModelBase<EntriesStats>
+public sealed class EntriesStatsPanelViewModel : HasModelViewModelBase<EntriesStats>
 {
     public ReadOnlyReactivePropertySlim<bool> IsSingleTarget { get; }
     public ReadOnlyReactivePropertySlim<bool> IsInMeasuring { get; }

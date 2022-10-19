@@ -2,13 +2,13 @@
 
 namespace Anna.Gui.Foundations;
 
-public class HasModelRefViewModelBase<TModel>
+public class HasModelViewModelBase<TModel>
     : ViewModelBase,
         IHasArg<TModel>
 {
     public readonly TModel Model;
 
-    protected HasModelRefViewModelBase(IServiceProvider dic)
+    protected HasModelViewModelBase(IServiceProvider dic)
         : base(dic)
     {
         dic.PopArg(out Model);

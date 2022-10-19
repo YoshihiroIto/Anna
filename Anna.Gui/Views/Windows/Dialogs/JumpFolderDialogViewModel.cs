@@ -78,7 +78,7 @@ public sealed class JumpFolderDialogViewModel
     }
 }
 
-public sealed class JumpFolderPathViewModel : HasModelRefViewModelBase<JumpFolderConfigData.PathData>
+public sealed class JumpFolderPathViewModel : HasModelViewModelBase<JumpFolderConfigData.PathData>
 {
     public string Key { get; }
     public ReactivePropertySlim<string> Path { get; }

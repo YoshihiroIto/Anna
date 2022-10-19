@@ -15,7 +15,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed class FolderPanelViewModel : HasModelRefViewModelBase<Folder>, ILocalizableViewModel
+public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocalizableViewModel
 {
     public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; }
     public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; }

@@ -1,4 +1,4 @@
-﻿using Anna.Gui.Views.Windows.Base;
+﻿using Anna.Constants;
 
 namespace Anna.Gui.Messaging.Messages;
 

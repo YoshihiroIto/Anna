@@ -1,4 +1,5 @@
-﻿using Anna.DomainModel.Config;
+﻿using Anna.Constants;
+using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
@@ -87,18 +88,4 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
     }
-}
-
-public enum ConfirmationTypes
-{
-    YesNo
-}
-
-public enum DialogResultTypes
-{
-    Ok,
-    Cancel,
-    Yes,
-    No,
-    Skip
 }

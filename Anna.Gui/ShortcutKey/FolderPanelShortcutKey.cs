@@ -7,7 +7,6 @@ using Anna.Gui.BackgroundOperators;
 using Anna.Gui.BackgroundOperators.Internals;
 using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows;
-using Anna.Gui.Views.Windows.Base;
 using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using System;

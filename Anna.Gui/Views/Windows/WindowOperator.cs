@@ -1,7 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
-using Anna.Gui.Views.Windows.Base;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Service;
 using Anna.Service.Services;

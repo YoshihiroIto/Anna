@@ -59,7 +59,8 @@ public enum DeleteStrategies
 
 public enum ConfirmationTypes
 {
-    YesNo
+    YesNo,
+    RetryCancel,
 }
 
 [EnumExtensions]

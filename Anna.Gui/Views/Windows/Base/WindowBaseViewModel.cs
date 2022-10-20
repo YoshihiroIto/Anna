@@ -31,7 +31,8 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
     public ICommand CancelCommand => _CancelCommand ??= CreateButtonCommand(DialogResultTypes.Cancel);
     public ICommand YesCommand => _YesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
     public ICommand NoCommand => _NoCommand ??= CreateButtonCommand(DialogResultTypes.No);
-    public ICommand SkipCommand => _NoCommand ??= CreateButtonCommand(DialogResultTypes.Skip);
+    public ICommand SkipCommand => _SkipCommand ??= CreateButtonCommand(DialogResultTypes.Skip);
+    public ICommand RetryCommand => _RetryCommand ??= CreateButtonCommand(DialogResultTypes.Retry);
 
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily => _ViewerFontFamily ??= CreateViewerFontFamily();
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize => _ViewerFontSize ??= CreateViewerFontSize();
@@ -42,6 +43,8 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
     protected ICommand? _CancelCommand;
     protected ICommand? _YesCommand;
     protected ICommand? _NoCommand;
+    protected ICommand? _SkipCommand;
+    protected ICommand? _RetryCommand;
     private ReadOnlyReactivePropertySlim<FontFamily>? _ViewerFontFamily;
     private ReadOnlyReactivePropertySlim<double>? _ViewerFontSize;
 

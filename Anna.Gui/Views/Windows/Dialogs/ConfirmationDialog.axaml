@@ -56,6 +56,25 @@
                                       Mode=OneTime}"
                     Content="{ReflectionBinding R.Dialog_No}" />
         </StackPanel>
+        <StackPanel HorizontalAlignment="Center"
+                    DockPanel.Dock="Bottom"
+                    IsVisible="{Binding IsRetryCancel,
+                                        Mode=OneTime}"
+                    Orientation="Horizontal">
+            <Button Classes="dialog"
+                    Command="{Binding RetryCommand,
+                                      Mode=OneTime}"
+                    Content="{ReflectionBinding R.Dialog_Retry}">
+                <Interaction.Behaviors>
+                    <behaviors:InputElementFocusBehavior />
+                </Interaction.Behaviors>
+            </Button>
+
+            <Button Classes="dialog"
+                    Command="{Binding CancelCommand,
+                                      Mode=OneTime}"
+                    Content="{ReflectionBinding R.Dialog_Cancel}" />
+        </StackPanel>
 
         <TextBlock Text="{Binding Text, Mode=OneTime}" TextTrimming="CharacterEllipsis" />
     </DockPanel>

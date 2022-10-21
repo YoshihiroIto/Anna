@@ -234,15 +234,8 @@ public abstract class FileSystemDeleter : IFileProcessable
         }
     }
 
-    protected virtual ReadOnlyDeleteStrategies DeleteStrategyWhenReadonly(FileSystemInfo info)
-    {
-        return ReadOnlyDeleteStrategies.Skip;
-    }
-
-    protected virtual AccessFailureDeleteStrategies DeleteStrategyWhenAccessFailure(FileSystemInfo info)
-    {
-        return AccessFailureDeleteStrategies.Skip;
-    }
+    protected abstract ReadOnlyDeleteStrategies DeleteStrategyWhenReadonly(FileSystemInfo info);
+    protected abstract AccessFailureDeleteStrategies DeleteStrategyWhenAccessFailure(FileSystemInfo info);
 }
 
 public class DefaultFileSystemDeleter : FileSystemDeleter
@@ -250,5 +243,15 @@ public class DefaultFileSystemDeleter : FileSystemDeleter
     public DefaultFileSystemDeleter(IServiceProvider dic)
         : base(dic)
     {
+    }
+    
+    protected override ReadOnlyDeleteStrategies DeleteStrategyWhenReadonly(FileSystemInfo info)
+    {
+        return ReadOnlyDeleteStrategies.Skip;
+    }
+
+    protected override AccessFailureDeleteStrategies DeleteStrategyWhenAccessFailure(FileSystemInfo info)
+    {
+        return AccessFailureDeleteStrategies.Skip;
     }
 }

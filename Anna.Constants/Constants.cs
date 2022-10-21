@@ -50,6 +50,14 @@ public enum EntryDeleteModes
     TrashCan
 }
 
+public enum SameNameCopyFileStrategies
+{
+    Skip,
+    NewerTimestamp,
+    Override,
+    ChangeName,
+}
+
 public enum ReadOnlyDeleteStrategies
 {
     Skip,

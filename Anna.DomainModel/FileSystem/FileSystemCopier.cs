@@ -1,4 +1,5 @@
-﻿using Anna.Service.Interfaces;
+﻿using Anna.Constants;
+using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using System.Diagnostics;
 using IServiceProvider=Anna.Service.IServiceProvider;
@@ -52,10 +53,7 @@ public abstract class FileSystemCopier : IFileProcessable
                         }
 
                         if (isSkip == false)
-                        {
-                            File.Copy(src, dest, true);
-                            File.SetAttributes(dest, File.GetAttributes(src));
-                        }
+                            CopyFileInternal(src, dest);
 
                         FileProcessed?.Invoke(this, EventArgs.Empty);
                     }
@@ -118,10 +116,7 @@ public abstract class FileSystemCopier : IFileProcessable
                 }
 
                 if (isSkip == false)
-                {
-                    File.Copy(file.FullName, dest, true);
-                    File.SetAttributes(dest, file.Attributes);
-                }
+                    CopyFileInternal(file.FullName, dest, file.Attributes);
 
                 FileProcessed?.Invoke(this, EventArgs.Empty);
             });
@@ -129,6 +124,35 @@ public abstract class FileSystemCopier : IFileProcessable
         Parallel.ForEach(di.EnumerateDirectories(),
             po,
             dir => CopyFolder(dir, targetFolderPath, po));
+    }
+
+    private void CopyFileInternal(string srcPath, string destPath)
+    {
+        CopyFileInternal(srcPath, destPath, File.GetAttributes(srcPath));
+    }
+
+    private void CopyFileInternal(string srcPath, string destPath, FileAttributes srcAttr)
+    {
+        var srcFilename = Path.GetFileName(srcPath);
+        var destFilename = Path.GetFileName(destPath);
+
+        if (srcFilename == destFilename)
+        {
+            var result = CopyStrategyWhenSameName(destPath);
+
+            // todo:
+            
+            throw new NotImplementedException();
+        }
+
+        File.Copy(srcPath, destPath, true);
+        File.SetAttributes(destPath, srcAttr);
+    }
+
+    protected virtual (SameNameCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSameName(
+        string destPath)
+    {
+        return (SameNameCopyFileStrategies.Override, destPath);
     }
 
     protected virtual (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath)

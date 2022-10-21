@@ -47,17 +47,17 @@ public class EntryBackgroundOperator
 
     public ValueTask ExecuteAsync()
     {
-         try
-         {
-             Arg.FileProcessable.FileProcessed += OnFileProcessed;
-             Arg.FileOperationPrim.Invoke();
-         }
-         finally
-         {
-             Arg.FileProcessable.FileProcessed -= OnFileProcessed;
-         }
+        try
+        {
+            Arg.FileProcessable.FileProcessed += OnFileProcessed;
+            Arg.FileOperationPrim.Invoke();
+        }
+        finally
+        {
+            Arg.FileProcessable.FileProcessed -= OnFileProcessed;
+        }
 
-         return ValueTask.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 
     private void OnFileProcessed(object? sender, EventArgs e)
@@ -68,6 +68,8 @@ public class EntryBackgroundOperator
 
     private void UpdateProgress()
     {
-        Progress = Math.Min(0.999999, (double)_fileProcessedCount / _fileCount) * 100;
+        Progress = _fileCount == 0
+            ? 0
+            : Math.Min(0.999999, (double)_fileProcessedCount / _fileCount) * 100;
     }
 }

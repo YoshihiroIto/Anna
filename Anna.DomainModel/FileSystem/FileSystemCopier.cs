@@ -140,8 +140,6 @@ public abstract class FileSystemCopier : IFileProcessable
         {
             var result = CopyStrategyWhenSameName(destPath);
 
-            // todo:
-            
             throw new NotImplementedException();
         }
 
@@ -149,16 +147,9 @@ public abstract class FileSystemCopier : IFileProcessable
         File.SetAttributes(destPath, srcAttr);
     }
 
-    protected virtual (SameNameCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSameName(
-        string destPath)
-    {
-        return (SameNameCopyFileStrategies.Override, destPath);
-    }
-
-    protected virtual (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
-    {
-        return (true, destPath);
-    }
+    protected abstract (SameNameCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSameName(
+        string destPath);
+    protected abstract (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath);
 }
 
 public sealed class DefaultFileSystemCopier : FileSystemCopier
@@ -166,5 +157,16 @@ public sealed class DefaultFileSystemCopier : FileSystemCopier
     public DefaultFileSystemCopier(IServiceProvider dic)
         : base(dic)
     {
+    }
+
+    protected override (SameNameCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSameName(
+        string destPath)
+    {
+        return (SameNameCopyFileStrategies.Override, destPath);
+    }
+
+    protected override (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
+    {
+        return (true, destPath);
     }
 }

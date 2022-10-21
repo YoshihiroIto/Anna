@@ -24,6 +24,11 @@ internal sealed class ConfirmedFileSystemCopier
         dic.PopArg(out _arg);
     }
 
+    protected override (SameNameCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSameName(string destPath)
+    {
+        throw new System.NotImplementedException();
+    }
+    
     protected override (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
     {
         lock (_lockObj)

@@ -2,6 +2,7 @@
 using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using System.Diagnostics;
+using ArgumentOutOfRangeException=System.ArgumentOutOfRangeException;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.FileSystem;
@@ -12,6 +13,31 @@ public abstract class FileSystemDeleter : IFileProcessable
 
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     private readonly IServiceProvider _dic;
+
+    private sealed class State : IDisposable
+    {
+        public readonly ParallelOptions ParallelOptions;
+
+        public bool IsAllDelete
+        {
+            get => _IsAllDelete != 0;
+            set => Interlocked.Exchange(ref _IsAllDelete, value ? 1 : 0);
+        }
+
+        private int _IsAllDelete;
+        private readonly CancellationTokenSource _cts;
+
+        public State(CancellationTokenSource cts)
+        {
+            _cts = cts;
+            ParallelOptions = new ParallelOptions { CancellationToken = _cts.Token };
+        }
+
+        public void Dispose()
+        {
+            _cts.Dispose();
+        }
+    }
 
     protected FileSystemDeleter(IServiceProvider dic)
     {
@@ -27,25 +53,19 @@ public abstract class FileSystemDeleter : IFileProcessable
 
         try
         {
-            var po = new ParallelOptions { CancellationToken = CancellationTokenSource.Token };
+            using var state = new State(CancellationTokenSource);
 
+            // ReSharper disable AccessToDisposedClosure
             Parallel.ForEach(sourceEntries,
-                po,
+                state.ParallelOptions,
                 entry =>
                 {
-                    var src = entry.Path;
-
                     if (entry.IsFolder)
-                    {
-                        DeleteFolder(new DirectoryInfo(src), po);
-                    }
+                        DeleteFolder(new DirectoryInfo(entry.Path), state);
                     else
-                    {
-                        var file = new FileInfo(entry.Path);
-
-                        DeleteFile(file);
-                    }
+                        DeleteFile(new FileInfo(entry.Path), state);
                 });
+            // ReSharper restore AccessToDisposedClosure
         }
         catch (OperationCanceledException)
         {
@@ -59,16 +79,28 @@ public abstract class FileSystemDeleter : IFileProcessable
         }
     }
 
-    private bool DeleteFile(FileInfo file)
+    private bool DeleteFile(FileInfo file, State state)
     {
         Debug.Assert(CancellationTokenSource is not null);
 
         var isSkip = false;
         var isReadonly = (file.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
 
-        if (isReadonly)
+        if (isReadonly && state.IsAllDelete == false)
         {
-            isSkip = DeleteStrategyWhenReadonly(file) == ReadOnlyDeleteStrategies.Skip;
+            switch (DeleteStrategyWhenReadonly(file))
+            {
+                case ReadOnlyDeleteStrategies.Skip:
+                    isSkip = true;
+                    break;
+
+                case ReadOnlyDeleteStrategies.AllDelete:
+                    state.IsAllDelete = true;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             if (CancellationTokenSource.IsCancellationRequested)
                 return true;
@@ -86,60 +118,46 @@ public abstract class FileSystemDeleter : IFileProcessable
         return isSkip;
     }
 
-    private bool DeleteFolder(DirectoryInfo srcInfo, ParallelOptions po)
+    private bool DeleteFolder(DirectoryInfo srcInfo, State state)
     {
         Debug.Assert(CancellationTokenSource is not null);
 
         var isSkipped = 0;
 
         {
-            var isSkip = false;
-            var isReadonly = (srcInfo.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
-
-            if (isReadonly)
-            {
-                isSkip = DeleteStrategyWhenReadonly(srcInfo) == ReadOnlyDeleteStrategies.Skip;
-
-                if (CancellationTokenSource.IsCancellationRequested)
-                    return true;
-            }
+            var (isSkip, _) = CheckDeleteStrategyWhenReadonly();
+            if (CancellationTokenSource.IsCancellationRequested)
+                return true;
 
             if (isSkip)
                 return true;
         }
 
         Parallel.ForEach(srcInfo.EnumerateDirectories(),
-            po,
+            state.ParallelOptions,
             dir =>
             {
-                if (DeleteFolder(dir, po))
+                if (DeleteFolder(dir, state))
                     // ReSharper disable once AccessToModifiedClosure
                     Interlocked.Exchange(ref isSkipped, 1);
             });
 
         Parallel.ForEach(srcInfo.EnumerateFiles(),
-            po,
+            state.ParallelOptions,
             file =>
             {
-                if (DeleteFile(file))
+                if (DeleteFile(file, state))
                     Interlocked.Exchange(ref isSkipped, 1);
             });
 
         {
-            var isSkip = false;
-            var isReadonly = (srcInfo.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
-
-            if (isReadonly)
-            {
-                isSkip = DeleteStrategyWhenReadonly(srcInfo) == ReadOnlyDeleteStrategies.Skip;
-
-                if (CancellationTokenSource.IsCancellationRequested)
-                    return true;
-            }
+            var (isSkip, isReadOnly) = CheckDeleteStrategyWhenReadonly();
+            if (CancellationTokenSource.IsCancellationRequested)
+                return true;
 
             if (isSkipped == 0 & isSkip == false)
             {
-                if (isReadonly)
+                if (isReadOnly)
                     srcInfo.Attributes &= ~FileAttributes.ReadOnly;
 
                 DeleteEntryInternal(srcInfo);
@@ -149,6 +167,34 @@ public abstract class FileSystemDeleter : IFileProcessable
         }
 
         return isSkipped != 0;
+
+        //-----------------------------------------------------------------------------------
+        (bool IsSkip, bool IsReadonly) CheckDeleteStrategyWhenReadonly()
+        {
+            Debug.Assert(CancellationTokenSource is not null);
+
+            var isSkip = false;
+            var isReadonly = (srcInfo.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly;
+
+            if (isReadonly && state.IsAllDelete == false)
+            {
+                switch (DeleteStrategyWhenReadonly(srcInfo))
+                {
+                    case ReadOnlyDeleteStrategies.Skip:
+                        isSkip = true;
+                        break;
+
+                    case ReadOnlyDeleteStrategies.AllDelete:
+                        state.IsAllDelete = true;
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            return (isSkip, isReadonly);
+        }
     }
 
     private void DeleteEntryInternal(FileSystemInfo di)

@@ -53,7 +53,6 @@ public enum EntryDeleteModes
 public enum ReadOnlyDeleteStrategies
 {
     Skip,
-    Delete,
     AllDelete,
 }
 

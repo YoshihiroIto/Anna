@@ -253,4 +253,10 @@ The editor is not registered or does not exist.</value>
   <data name="Dialog_Retry" xml:space="preserve">
     <value>_Retry</value>
   </data>
+  <data name="Message_AccessFailureOnDelete" xml:space="preserve">
+    <value>The operation cannot be completed because the folder or file may be open in another program.
+Please close the folder or file and retry the operation.
+
+{0}</value>
+  </data>
 </root>

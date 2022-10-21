@@ -204,7 +204,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             return;
         }
 
-        var worker = Dic.GetInstance<DefaultFileSystemDeleter>();
+        var worker = Dic.GetInstance<ConfirmedFileSystemDeleter, (InteractionMessenger, int)>((receiver.Messenger, 0));
         var targetEntries = receiver.TargetEntries;
 
         var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>

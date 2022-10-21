@@ -147,4 +147,10 @@
     <data name="Dialog_Retry" xml:space="preserve">
         <value>再試行(_R)</value>
     </data>
+    <data name="Message_AccessFailureOnDelete" xml:space="preserve">
+        <value>別のプログラムで開かれている可能性があり、操作を完了できません。
+フォルダ―またはファイルを閉じてから再実行してください。
+
+{0}</value>
+    </data>
 </root>

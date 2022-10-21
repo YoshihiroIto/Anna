@@ -50,11 +50,18 @@ public enum EntryDeleteModes
     TrashCan
 }
 
-public enum DeleteStrategies
+public enum ReadOnlyDeleteStrategies
 {
     Skip,
     Delete,
     AllDelete,
+}
+
+public enum AccessFailureDeleteStrategies
+{
+    Skip,
+    Cancel,
+    Retry
 }
 
 public enum ConfirmationTypes

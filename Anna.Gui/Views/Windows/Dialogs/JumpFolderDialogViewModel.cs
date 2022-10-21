@@ -51,7 +51,7 @@ public sealed class JumpFolderDialogViewModel
                         Resources.AppName,
                         string.Format(Resources.Message_ConfirmDelete, SelectedPath.Value.Model.Path),
                         ConfirmationTypes.YesNo,
-                        MessageKeyYesNoConfirmation));
+                        MessageKeyConfirmation));
 
                 if (mes.Response == DialogResultTypes.Yes)
                     SelectedPath.Value.Model.Path = "";

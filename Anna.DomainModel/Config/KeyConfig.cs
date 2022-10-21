@@ -48,6 +48,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.Enter, metaKey, Operations.OpenEntryByApp),
             new(Key.C, KeyModifiers.None, Operations.CopyEntry),
             new(Key.D, KeyModifiers.None, Operations.DeleteEntry),
+            new(Key.Delete, KeyModifiers.None, Operations.DeleteEntry),
         };
     }
 

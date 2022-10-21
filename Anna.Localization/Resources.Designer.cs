@@ -260,6 +260,18 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The operation cannot be completed because the folder or file may be open in another program.
+        ///Please close the folder or file and retry the operation.
+        ///
+        ///{0}.
+        /// </summary>
+        public static string Message_AccessFailureOnDelete {
+            get {
+                return ResourceManager.GetString("Message_AccessFailureOnDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Binary files cannot be previewed..
         /// </summary>
         public static string Message_BinaryFileCannotBePreviewed {

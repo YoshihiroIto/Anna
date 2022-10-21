@@ -68,7 +68,7 @@ public abstract class FileSystemDeleter : IFileProcessable
 
         if (isReadonly)
         {
-            isSkip = DeleteStrategyWhenReadonly(file) == DeleteStrategies.Skip;
+            isSkip = DeleteStrategyWhenReadonly(file) == ReadOnlyDeleteStrategies.Skip;
 
             if (CancellationTokenSource.IsCancellationRequested)
                 return true;
@@ -79,7 +79,7 @@ public abstract class FileSystemDeleter : IFileProcessable
             if (isReadonly)
                 file.Attributes &= ~FileAttributes.ReadOnly;
 
-            file.Delete();
+            DeleteEntryInternal(file);
             FileProcessed?.Invoke(this, EventArgs.Empty);
         }
 
@@ -98,7 +98,7 @@ public abstract class FileSystemDeleter : IFileProcessable
 
             if (isReadonly)
             {
-                isSkip = DeleteStrategyWhenReadonly(srcInfo) == DeleteStrategies.Skip;
+                isSkip = DeleteStrategyWhenReadonly(srcInfo) == ReadOnlyDeleteStrategies.Skip;
 
                 if (CancellationTokenSource.IsCancellationRequested)
                     return true;
@@ -131,7 +131,7 @@ public abstract class FileSystemDeleter : IFileProcessable
 
             if (isReadonly)
             {
-                isSkip = DeleteStrategyWhenReadonly(srcInfo) == DeleteStrategies.Skip;
+                isSkip = DeleteStrategyWhenReadonly(srcInfo) == ReadOnlyDeleteStrategies.Skip;
 
                 if (CancellationTokenSource.IsCancellationRequested)
                     return true;
@@ -142,7 +142,7 @@ public abstract class FileSystemDeleter : IFileProcessable
                 if (isReadonly)
                     srcInfo.Attributes &= ~FileAttributes.ReadOnly;
 
-                DeleteDirectoryInternal(srcInfo);
+                DeleteEntryInternal(srcInfo);
             }
             else
                 isSkipped = 1;
@@ -150,34 +150,52 @@ public abstract class FileSystemDeleter : IFileProcessable
 
         return isSkipped != 0;
     }
-    
-    private static void DeleteDirectoryInternal(DirectoryInfo di)
+
+    private void DeleteEntryInternal(FileSystemInfo di)
     {
-        try
+        Debug.Assert(CancellationTokenSource is not null);
+
+        for (var isSkip = false; isSkip == false;)
         {
-            di.Delete();
-        }
-        catch (IOException e)
-        {
-            
-            // todo:Dialog   retry or cancel
-            
-            
-            Debug.WriteLine(e);
-            
-            Debugger.Break();
-        }
-        catch (Exception e)
-        {
-            Debug.WriteLine(e);
-            Debugger.Break();
+            if (CancellationTokenSource.IsCancellationRequested)
+                return;
+
+            try
+            {
+                di.Delete();
+                break;
+            }
+            catch (IOException)
+            {
+                switch (DeleteStrategyWhenAccessFailure(di))
+                {
+                    case AccessFailureDeleteStrategies.Skip:
+                        isSkip = true;
+                        break;
+
+                    case AccessFailureDeleteStrategies.Cancel:
+                        CancellationTokenSource.Cancel();
+                        break;
+
+                    case AccessFailureDeleteStrategies.Retry:
+                        // do nothing
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
         }
     }
-    
 
-    protected virtual DeleteStrategies DeleteStrategyWhenReadonly(FileSystemInfo info)
+    protected virtual ReadOnlyDeleteStrategies DeleteStrategyWhenReadonly(FileSystemInfo info)
     {
-        return DeleteStrategies.Skip;
+        return ReadOnlyDeleteStrategies.Skip;
+    }
+
+    protected virtual AccessFailureDeleteStrategies DeleteStrategyWhenAccessFailure(FileSystemInfo info)
+    {
+        return AccessFailureDeleteStrategies.Skip;
     }
 }
 

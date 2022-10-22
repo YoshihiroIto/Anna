@@ -1,4 +1,4 @@
-﻿using Anna.DomainModel.FileSystem;
+﻿using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Service.Interfaces;
 using Reactive.Bindings.Extensions;

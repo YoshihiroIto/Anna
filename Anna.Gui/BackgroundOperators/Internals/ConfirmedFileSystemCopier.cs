@@ -1,5 +1,5 @@
 ﻿using Anna.Constants;
-using Anna.DomainModel.FileSystem;
+using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;

@@ -4,7 +4,7 @@ using Anna.Service.Services;
 using System.Diagnostics;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
-namespace Anna.DomainModel.FileSystem;
+namespace Anna.DomainModel.FileSystem.FileProcessable;
 
 public abstract class FileSystemCopier : IFileProcessable
 {

@@ -1,7 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
-using Anna.DomainModel.FileSystem;
+using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Service;
 using Anna.Service.Services;

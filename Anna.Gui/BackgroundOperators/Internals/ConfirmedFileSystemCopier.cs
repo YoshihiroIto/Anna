@@ -24,19 +24,24 @@ internal sealed class ConfirmedFileSystemCopier
         dic.PopArg(out _arg);
     }
 
-    protected override CopyActionWhenExistsResult CopyActionWhenExists(string srcPath, string destPath)
+    protected override void CopyActionWhenExists(string srcPath, string destPath, ref CopyActionWhenExistsResult result)
     {
         lock (_lockObj)
         {
+            if (result.IsSameActionThereafter)
+                return;
+
             Debug.Assert(CancellationTokenSource is not null);
 
             var resultDialogResult = DialogResultTypes.Cancel;
-            var result = new CopyActionWhenExistsResult(ExistsCopyFileActions.Skip, "", false);
+            result = new CopyActionWhenExistsResult(ExistsCopyFileActions.Skip, "", false);
 
             if (CancellationTokenSource.IsCancellationRequested)
-                return result;
+                return;
 
             using var m = new ManualResetEventSlim();
+
+            var tempResult = new CopyActionWhenExistsResult(ExistsCopyFileActions.Skip, "", false);
 
             Dispatcher.UIThread.InvokeAsync(async () =>
             {
@@ -47,7 +52,7 @@ internal sealed class ConfirmedFileSystemCopier
                         WindowBaseViewModel.MessageKeySelectFileCopyAction));
 
                 resultDialogResult = resultDialogResult = message.Response.DialogResult;
-                result = message.Response.Result;
+                tempResult = message.Response.Result;
 
                 // ReSharper disable once AccessToDisposedClosure
                 m.Set();
@@ -55,10 +60,10 @@ internal sealed class ConfirmedFileSystemCopier
 
             m.Wait();
 
+            result = tempResult;
+
             if (resultDialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();
-
-            return result;
         }
     }
 

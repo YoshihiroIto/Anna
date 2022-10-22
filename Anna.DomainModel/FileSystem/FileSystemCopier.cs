@@ -13,6 +13,26 @@ public abstract class FileSystemCopier : IFileProcessable
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     private readonly IServiceProvider _dic;
 
+    private sealed class State : IDisposable
+    {
+        public readonly ParallelOptions ParallelOptions;
+        private readonly CancellationTokenSource _cts;
+
+        public CopyActionWhenExistsResult CopyActionWhenExistsResult =
+            new(ExistsCopyFileActions.Skip, "", false);
+
+        public State(CancellationTokenSource cts)
+        {
+            _cts = cts;
+            ParallelOptions = new ParallelOptions { CancellationToken = _cts.Token };
+        }
+
+        public void Dispose()
+        {
+            _cts.Dispose();
+        }
+    }
+
     protected FileSystemCopier(IServiceProvider dic)
     {
         _dic = dic;
@@ -24,17 +44,18 @@ public abstract class FileSystemCopier : IFileProcessable
 
         try
         {
-            var po = new ParallelOptions { CancellationToken = CancellationTokenSource.Token };
+            using var state = new State(CancellationTokenSource);
 
             Parallel.ForEach(sourceEntries,
-                po,
+                state.ParallelOptions,
                 entry =>
                 {
                     var src = entry.Path;
 
                     if (entry.IsFolder)
                     {
-                        CopyFolder(new DirectoryInfo(src), destPath, po);
+                        // ReSharper disable once AccessToDisposedClosure
+                        CopyFolder(new DirectoryInfo(src), destPath, state);
                     }
                     else
                     {
@@ -53,7 +74,8 @@ public abstract class FileSystemCopier : IFileProcessable
                         }
 
                         if (action == SamePathCopyFileActions.Override)
-                            CopyFileInternal(new FileInfo(src), new FileInfo(dest));
+                            // ReSharper disable once AccessToDisposedClosure
+                            CopyFileInternal(new FileInfo(src), new FileInfo(dest), state);
 
                         FileProcessed?.Invoke(this, EventArgs.Empty);
                     }
@@ -71,7 +93,7 @@ public abstract class FileSystemCopier : IFileProcessable
         }
     }
 
-    private void CopyFolder(DirectoryInfo srcInfo, string dst, ParallelOptions po)
+    private void CopyFolder(DirectoryInfo srcInfo, string dst, State state)
     {
         Debug.Assert(CancellationTokenSource is not null);
 
@@ -99,7 +121,7 @@ public abstract class FileSystemCopier : IFileProcessable
         var di = new DirectoryInfo(src);
 
         Parallel.ForEach(di.EnumerateFiles(),
-            po,
+            state.ParallelOptions,
             file =>
             {
                 Debug.Assert(CancellationTokenSource is not null);
@@ -116,17 +138,17 @@ public abstract class FileSystemCopier : IFileProcessable
                 }
 
                 if (action == SamePathCopyFileActions.Override)
-                    CopyFileInternal(file, new FileInfo(dest));
+                    CopyFileInternal(file, new FileInfo(dest), state);
 
                 FileProcessed?.Invoke(this, EventArgs.Empty);
             });
 
         Parallel.ForEach(di.EnumerateDirectories(),
-            po,
-            dir => CopyFolder(dir, targetFolderPath, po));
+            state.ParallelOptions,
+            dir => CopyFolder(dir, targetFolderPath, state));
     }
 
-    private void CopyFileInternal(FileInfo srcFile, FileInfo destFile)
+    private void CopyFileInternal(FileInfo srcFile, FileInfo destFile, State state)
     {
         Debug.Assert(CancellationTokenSource is not null);
 
@@ -135,9 +157,9 @@ public abstract class FileSystemCopier : IFileProcessable
 
         if (destFile.Exists)
         {
-            var result = CopyActionWhenExists(srcFile.FullName, destFile.FullName);
+            CopyActionWhenExists(srcFile.FullName, destFile.FullName, ref state.CopyActionWhenExistsResult);
 
-            switch (result.Action)
+            switch (state.CopyActionWhenExistsResult.Action)
             {
                 case ExistsCopyFileActions.Skip:
                     isSkip = true;
@@ -152,7 +174,7 @@ public abstract class FileSystemCopier : IFileProcessable
                     break;
 
                 case ExistsCopyFileActions.Rename:
-                    destPath = result.NewDestPath;
+                    destPath = state.CopyActionWhenExistsResult.NewDestPath;
                     break;
 
                 default:
@@ -175,7 +197,8 @@ public abstract class FileSystemCopier : IFileProcessable
         }
     }
 
-    protected abstract CopyActionWhenExistsResult CopyActionWhenExists(string srcPath, string destPath);
+    protected abstract void CopyActionWhenExists(string srcPath, string destPath, ref CopyActionWhenExistsResult result);
+    
     protected abstract CopyActionWhenSamePathResult CopyActionWhenSamePath(string destPath);
 
     public record struct CopyActionWhenExistsResult(ExistsCopyFileActions Action, string NewDestPath,
@@ -191,9 +214,10 @@ public sealed class DefaultFileSystemCopier : FileSystemCopier
     {
     }
 
-    protected override CopyActionWhenExistsResult CopyActionWhenExists(string srcPath, string destPath)
+    // ReSharper disable once RedundantAssignment
+    protected override void CopyActionWhenExists(string srcPath, string destPath, ref CopyActionWhenExistsResult result)
     {
-        return new CopyActionWhenExistsResult(ExistsCopyFileActions.Override, destPath, true);
+        result = new CopyActionWhenExistsResult(ExistsCopyFileActions.Override, destPath, true);
     }
 
     protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(

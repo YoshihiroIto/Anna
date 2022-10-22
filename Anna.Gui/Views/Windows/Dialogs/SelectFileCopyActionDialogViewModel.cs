@@ -49,11 +49,13 @@ public sealed class SelectFileCopyActionDialogViewModel
         DestTimeStamp = destInfo.LastWriteTime;
         DestSize = StringHelper.MakeSizeString(destInfo.Length);
 
-        IsSameActionThereafter = new ReactivePropertySlim<bool>().AddTo(Trash);
+        IsSameActionThereafter = new ReactivePropertySlim<bool>(true).AddTo(Trash);
 
         CopyWhenTimestampIsNewestCommand =
             CreateButtonCommand(ExistsCopyFileActions.NewerTimestamp, DialogResultTypes.Ok);
         CopyOverrideCommand = CreateButtonCommand(ExistsCopyFileActions.Override, DialogResultTypes.Ok);
+
+        _SkipCommand = CreatSkipCommand();
         RenameAndCopyCommand = CreateRenameAndCopyCommand();
     }
 
@@ -68,9 +70,23 @@ public sealed class SelectFileCopyActionDialogViewModel
         });
     }
 
+    private ICommand CreatSkipCommand()
+    {
+        return IsSameActionThereafter
+            .Inverse()
+            .ToAsyncReactiveCommand()
+            .WithSubscribe(async () =>
+            {
+                DialogResult = DialogResultTypes.Skip;
+                await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            });
+    }
+
     private ICommand CreateRenameAndCopyCommand()
     {
-        return new AsyncReactiveCommand()
+        return IsSameActionThereafter
+            .Inverse()
+            .ToAsyncReactiveCommand()
             .WithSubscribe(async () =>
             {
                 var changeNameMessage = await Messenger.RaiseAsync(
@@ -86,7 +102,7 @@ public sealed class SelectFileCopyActionDialogViewModel
                         Result = new FileSystemCopier.CopyActionWhenExistsResult(
                             ExistsCopyFileActions.Rename,
                             changeNameMessage.Response.FilePath,
-                            false);
+                            IsSameActionThereafter.Value);
 
                         await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
 
@@ -100,7 +116,7 @@ public sealed class SelectFileCopyActionDialogViewModel
                         DialogResult = DialogResultTypes.Skip;
                         Result = new FileSystemCopier.CopyActionWhenExistsResult(ExistsCopyFileActions.Skip,
                             "",
-                            false);
+                            IsSameActionThereafter.Value);
 
                         await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
 

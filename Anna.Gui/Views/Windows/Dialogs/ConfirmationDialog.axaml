@@ -2,13 +2,14 @@
                   Classes="dialog"
                   xmlns="https://github.com/avaloniaui"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
                   xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
                   xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                   xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
+                  xmlns:templateSelectors="clr-namespace:Anna.Gui.Views.TemplateSelectors"
                   Title="{Binding Title,
                                   Mode=OneTime}"
                   MinWidth="300"
@@ -38,44 +39,51 @@
     </Interaction.Behaviors>
 
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <StackPanel HorizontalAlignment="Center"
-                    DockPanel.Dock="Bottom"
-                    IsVisible="{Binding IsYesNo,
-                                        Mode=OneTime}"
-                    Orientation="Horizontal">
-            <Button Classes="dialog"
-                    Command="{Binding YesCommand,
-                                      Mode=OneTime}"
-                    Content="{ReflectionBinding R.Dialog_Yes}">
-                <Interaction.Behaviors>
-                    <behaviors:InputElementFocusBehavior />
-                </Interaction.Behaviors>
-            </Button>
+        <ContentControl Content="{Binding}" DockPanel.Dock="Bottom">
+            <ContentControl.Template>
+                <templateSelectors:ConfirmationDialogDataTemplateSelector>
+                    <templateSelectors:ConfirmationDialogDataTemplateSelector.YesNoDataTemplate>
+                        <ControlTemplate>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Button Classes="dialog"
+                                        Command="{Binding YesCommand,
+                                                          Mode=OneTime}"
+                                        Content="{ReflectionBinding R.Dialog_Yes}">
+                                    <Interaction.Behaviors>
+                                        <behaviors:InputElementFocusBehavior />
+                                    </Interaction.Behaviors>
+                                </Button>
 
-            <Button Classes="dialog"
-                    Command="{Binding NoCommand,
-                                      Mode=OneTime}"
-                    Content="{ReflectionBinding R.Dialog_No}" />
-        </StackPanel>
-        <StackPanel HorizontalAlignment="Center"
-                    DockPanel.Dock="Bottom"
-                    IsVisible="{Binding IsRetryCancel,
-                                        Mode=OneTime}"
-                    Orientation="Horizontal">
-            <Button Classes="dialog"
-                    Command="{Binding RetryCommand,
-                                      Mode=OneTime}"
-                    Content="{ReflectionBinding R.Dialog_Retry}">
-                <Interaction.Behaviors>
-                    <behaviors:InputElementFocusBehavior />
-                </Interaction.Behaviors>
-            </Button>
+                                <Button Classes="dialog"
+                                        Command="{Binding NoCommand,
+                                                          Mode=OneTime}"
+                                        Content="{ReflectionBinding R.Dialog_No}" />
+                            </StackPanel>
+                        </ControlTemplate>
+                    </templateSelectors:ConfirmationDialogDataTemplateSelector.YesNoDataTemplate>
 
-            <Button Classes="dialog"
-                    Command="{Binding CancelCommand,
-                                      Mode=OneTime}"
-                    Content="{ReflectionBinding R.Dialog_Cancel}" />
-        </StackPanel>
+                    <templateSelectors:ConfirmationDialogDataTemplateSelector.RetryCancelDataTemplate>
+                        <ControlTemplate>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Button Classes="dialog"
+                                        Command="{Binding RetryCommand,
+                                                          Mode=OneTime}"
+                                        Content="{ReflectionBinding R.Dialog_Retry}">
+                                    <Interaction.Behaviors>
+                                        <behaviors:InputElementFocusBehavior />
+                                    </Interaction.Behaviors>
+                                </Button>
+
+                                <Button Classes="dialog"
+                                        Command="{Binding CancelCommand,
+                                                          Mode=OneTime}"
+                                        Content="{ReflectionBinding R.Dialog_Cancel}" />
+                            </StackPanel>
+                        </ControlTemplate>
+                    </templateSelectors:ConfirmationDialogDataTemplateSelector.RetryCancelDataTemplate>
+                </templateSelectors:ConfirmationDialogDataTemplateSelector>
+            </ContentControl.Template>
+        </ContentControl>
 
         <TextBlock Text="{Binding Text, Mode=OneTime}" TextTrimming="CharacterEllipsis" />
     </DockPanel>

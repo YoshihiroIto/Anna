@@ -9,8 +9,7 @@ public sealed class ConfirmationDialogViewModel
 {
     public string Title => Model.Title;
     public string Text => Model.Text;
-    public bool IsYesNo => Model.confirmationType == ConfirmationTypes.YesNo;
-    public bool IsRetryCancel => Model.confirmationType == ConfirmationTypes.RetryCancel;
+    public ConfirmationTypes ConfirmationType => Model.confirmationType;
 
     public ConfirmationDialogViewModel(IServiceProvider dic)
         : base(dic)

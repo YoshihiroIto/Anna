@@ -9,13 +9,15 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class CopyEntryDialogViewModel
     : HasModelWindowBaseViewModel<
-        (Entry[] Targets, EntriesStats Stats, ReadOnlyObservableCollection<string> DestFoldersHistory)>
+        (string CurrentFolderPath, Entry[] Targets, EntriesStats Stats, ReadOnlyObservableCollection<string>
+        DestFoldersHistory)>
 {
     public string ResultDestFolder { get; private set; } = "";
 
@@ -41,17 +43,20 @@ public sealed class CopyEntryDialogViewModel
             .AddTo(Trash);
 
         OpenJumpFolderDialogCommand = new DelegateCommand(OnJumpFolderDialog);
-        _OkCommand = new DelegateCommand(OnDecision);
+        _OkCommand = new AsyncReactiveCommand()
+            .WithSubscribe(async x => await OnDecisionAsync())
+            .AddTo(Trash);
 
         EntriesStatsPanelViewModel =
             dic.GetInstance<EntriesStatsPanelViewModel, EntriesStats>(Model.Stats).AddTo(Trash);
     }
 
-    public async void OnDecision()
+    private async Task OnDecisionAsync()
     {
         if (DestFolder.Value == "")
         {
-            var message = await Messenger.RaiseAsync(new SelectFolderMessage(MessageKeySelectFolder));
+            var message =
+                await Messenger.RaiseAsync(new SelectFolderMessage(Model.CurrentFolderPath, MessageKeySelectFolder));
             if (message.Response.DialogResult != DialogResultTypes.Ok)
                 return;
 

@@ -113,11 +113,13 @@ public static class WindowOperator
     }
 
     public static async ValueTask<(DialogResultTypes Result, string DestFolder)>
-        EntryCopyAsync(IServiceProvider dic, Window owner, Entry[] targets, EntriesStats stats)
+        EntryCopyAsync(IServiceProvider dic, Window owner, string currentFolderPath, Entry[] targets,
+            EntriesStats stats)
     {
         using var viewModel =
-            dic.GetInstance<CopyEntryDialogViewModel, (Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
-                ((targets, stats, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
+            dic.GetInstance<CopyEntryDialogViewModel, (string, Entry[], EntriesStats,
+                    ReadOnlyObservableCollection<string>)>
+                ((currentFolderPath, targets, stats, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
 
         var view = dic.GetInstance<CopyEntryDialog>();
         view.DataContext = viewModel;
@@ -142,7 +144,9 @@ public static class WindowOperator
         return (viewModel.DialogResult, viewModel.ResultMode);
     }
 
-    public static async ValueTask<(DialogResultTypes Result, FileSystemCopier.CopyActionWhenExistsResult CopyActionWhenExistsResult)> SelectFileCopyAction(IServiceProvider dic, Window owner, string srcFilepath, string destFilepath)
+    public static async
+        ValueTask<(DialogResultTypes Result, FileSystemCopier.CopyActionWhenExistsResult CopyActionWhenExistsResult)>
+        SelectFileCopyAction(IServiceProvider dic, Window owner, string srcFilepath, string destFilepath)
     {
         using var viewModel =
             dic.GetInstance<SelectFileCopyActionDialogViewModel, (string, string)>((srcFilepath, destFilepath));

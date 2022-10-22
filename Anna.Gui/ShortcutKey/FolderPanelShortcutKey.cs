@@ -61,7 +61,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
     {
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
         var currentFolderPath = receiver.Owner.ViewModel.Model.Path;
-        
+
         var result = await WindowOperator.JumpFolderAsync(Dic, receiver.Owner, currentFolderPath);
         if (result.Result != DialogResultTypes.Ok)
             return;
@@ -161,7 +161,13 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
 
-        var result = await WindowOperator.EntryCopyAsync(Dic, receiver.Owner, receiver.TargetEntries, stats);
+        var result = await WindowOperator.EntryCopyAsync(
+            Dic,
+            receiver.Owner,
+            receiver.Folder.Path,
+            receiver.TargetEntries,
+            stats);
+        
         if (result.Result != DialogResultTypes.Ok)
         {
             stats.Dispose();

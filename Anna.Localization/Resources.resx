@@ -259,4 +259,7 @@ Please close the folder or file and retry the operation.
 
 {0}</value>
   </data>
+  <data name="DialogTitle_SelectFileCopyAction" xml:space="preserve">
+    <value>Select copy action</value>
+  </data>
 </root>

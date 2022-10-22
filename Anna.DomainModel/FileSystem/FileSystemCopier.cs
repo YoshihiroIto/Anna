@@ -53,7 +53,7 @@ public abstract class FileSystemCopier : IFileProcessable
                         }
 
                         if (strategy == SamePathCopyFileActions.Override)
-                            CopyFileInternal(src, dest);
+                            CopyFileInternal(new FileInfo(src), new FileInfo(dest));
 
                         FileProcessed?.Invoke(this, EventArgs.Empty);
                     }
@@ -116,7 +116,7 @@ public abstract class FileSystemCopier : IFileProcessable
                 }
 
                 if (strategy == SamePathCopyFileActions.Override)
-                    CopyFileInternal(file.FullName, dest, file.Attributes);
+                    CopyFileInternal(file, new FileInfo(dest));
 
                 FileProcessed?.Invoke(this, EventArgs.Empty);
             });
@@ -126,29 +126,61 @@ public abstract class FileSystemCopier : IFileProcessable
             dir => CopyFolder(dir, targetFolderPath, po));
     }
 
-    private void CopyFileInternal(string srcPath, string destPath)
+    private void CopyFileInternal(FileInfo srcFile, FileInfo destFile)
     {
-        CopyFileInternal(srcPath, destPath, File.GetAttributes(srcPath));
-    }
+        Debug.Assert(CancellationTokenSource is not null);
 
-    private void CopyFileInternal(string srcPath, string destPath, FileAttributes srcAttr)
-    {
-        if (File.Exists(destPath))
+        var isSkip = false;
+        string? destPath = null;
+
+        if (destFile.Exists)
         {
-            var result = CopyStrategyWhenExists(destPath);
+            var result = CopyStrategyWhenExists(srcFile.FullName, destFile.FullName);
 
-            throw new NotImplementedException();
+            switch (result.Action)
+            {
+                case ExistsCopyFileActions.Skip:
+                    isSkip = true;
+                    break;
+
+                case ExistsCopyFileActions.NewerTimestamp:
+                    isSkip = srcFile.LastWriteTime < destFile.LastWriteTime;
+                    break;
+
+                case ExistsCopyFileActions.Override:
+                    // do nothing
+                    break;
+
+                case ExistsCopyFileActions.ChangeName:
+                    destPath = result.NewDestPath;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
-        File.Copy(srcPath, destPath, true);
-        File.SetAttributes(destPath, srcAttr);
+        if (isSkip == false)
+        {
+            if (destPath == null && destFile.Exists)
+            {
+                if ((destFile.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                    destFile.Attributes &= ~FileAttributes.ReadOnly;
+            }
+
+            destPath ??= destFile.FullName;
+
+            File.Copy(srcFile.FullName, destPath, true);
+            File.SetAttributes(destPath, srcFile.Attributes);
+        }
     }
 
-    protected abstract CopyStrategyWhenExistsResult CopyStrategyWhenExists(string destPath);
+    protected abstract CopyStrategyWhenExistsResult CopyStrategyWhenExists(string srcPath, string destPath);
     protected abstract CopyStrategyWhenSamePathResult CopyStrategyWhenSamePath(string destPath);
 
     public record struct CopyStrategyWhenExistsResult(ExistsCopyFileActions Action, string NewDestPath,
         bool IsSameStrategyThereafter);
+
     public record struct CopyStrategyWhenSamePathResult(SamePathCopyFileActions Action, string NewDestPath);
 }
 
@@ -159,7 +191,7 @@ public sealed class DefaultFileSystemCopier : FileSystemCopier
     {
     }
 
-    protected override CopyStrategyWhenExistsResult CopyStrategyWhenExists(string destPath)
+    protected override CopyStrategyWhenExistsResult CopyStrategyWhenExists(string srcPath, string destPath)
     {
         return new CopyStrategyWhenExistsResult(ExistsCopyFileActions.Override, destPath, true);
     }

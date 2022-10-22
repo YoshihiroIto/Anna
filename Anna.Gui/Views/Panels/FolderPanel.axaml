@@ -50,6 +50,10 @@
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyConfirmation}" Messenger="{Binding Messenger}">
             <behaviors1:ConfirmationDialogInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
+        
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeySelectFileCopyAction}" Messenger="{Binding Messenger}">
+            <behaviors1:SelectFileCopyActionDialogInteractionMessageAction />
+        </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <UserControl.Styles>

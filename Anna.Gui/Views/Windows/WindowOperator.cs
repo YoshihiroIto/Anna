@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
+using Anna.DomainModel.FileSystem;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Service;
 using Anna.Service.Services;
@@ -125,7 +126,7 @@ public static class WindowOperator
 
         return (viewModel.DialogResult, viewModel.ResultDestFolder);
     }
-    
+
     public static async ValueTask<(DialogResultTypes Result, EntryDeleteModes Mode)>
         EntryDeleteAsync(IServiceProvider dic, Window owner, Entry[] targets, EntriesStats stats)
     {
@@ -140,5 +141,18 @@ public static class WindowOperator
 
         return (viewModel.DialogResult, viewModel.ResultMode);
     }
-    
+
+    public static async ValueTask<(DialogResultTypes Result, FileSystemCopier.CopyStrategyWhenExistsResult CopyStrategyWhenExistsResult)>
+        SelectFileCopyAction(IServiceProvider dic, Window owner, string srcFilepath, string destFilepath)
+    {
+        using var viewModel =
+            dic.GetInstance<SelectFileCopyActionDialogViewModel, (string, string)>((srcFilepath, destFilepath));
+
+        var view = dic.GetInstance<SelectFileCopyActionDialog>();
+        view.DataContext = viewModel;
+
+        await view.ShowDialog(owner);
+
+        return (viewModel.DialogResult, viewModel.Result);
+    }
 }

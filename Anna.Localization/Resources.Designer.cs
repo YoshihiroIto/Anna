@@ -159,6 +159,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select copy action.
+        /// </summary>
+        public static string DialogTitle_SelectFileCopyAction {
+            get {
+                return ResourceManager.GetString("DialogTitle_SelectFileCopyAction", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select folder.
         /// </summary>
         public static string DialogTitle_SelectFolder {

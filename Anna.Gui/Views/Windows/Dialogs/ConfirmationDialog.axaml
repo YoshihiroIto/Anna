@@ -45,19 +45,17 @@
                     <templateSelectors:ConfirmationDialogDataTemplateSelector.YesNoDataTemplate>
                         <ControlTemplate>
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Button Classes="dialog"
-                                        Command="{Binding YesCommand,
-                                                          Mode=OneTime}"
-                                        Content="{ReflectionBinding R.Dialog_Yes}">
+                                <Button Classes="dialog" Command="{Binding YesCommand, Mode=OneTime}">
                                     <Interaction.Behaviors>
                                         <behaviors:InputElementFocusBehavior />
                                     </Interaction.Behaviors>
+
+                                    <AccessText Text="{ReflectionBinding R.Dialog_Yes}" />
                                 </Button>
 
-                                <Button Classes="dialog"
-                                        Command="{Binding NoCommand,
-                                                          Mode=OneTime}"
-                                        Content="{ReflectionBinding R.Dialog_No}" />
+                                <Button Classes="dialog" Command="{Binding NoCommand, Mode=OneTime}">
+                                    <AccessText Text="{ReflectionBinding R.Dialog_No}" />
+                                </Button>
                             </StackPanel>
                         </ControlTemplate>
                     </templateSelectors:ConfirmationDialogDataTemplateSelector.YesNoDataTemplate>
@@ -65,19 +63,17 @@
                     <templateSelectors:ConfirmationDialogDataTemplateSelector.RetryCancelDataTemplate>
                         <ControlTemplate>
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Button Classes="dialog"
-                                        Command="{Binding RetryCommand,
-                                                          Mode=OneTime}"
-                                        Content="{ReflectionBinding R.Dialog_Retry}">
+                                <Button Classes="dialog" Command="{Binding RetryCommand, Mode=OneTime}">
                                     <Interaction.Behaviors>
                                         <behaviors:InputElementFocusBehavior />
                                     </Interaction.Behaviors>
+
+                                    <AccessText Text="{ReflectionBinding R.Dialog_Retry}" />
                                 </Button>
 
-                                <Button Classes="dialog"
-                                        Command="{Binding CancelCommand,
-                                                          Mode=OneTime}"
-                                        Content="{ReflectionBinding R.Dialog_Cancel}" />
+                                <Button Classes="dialog" Command="{Binding CancelCommand, Mode=OneTime}">
+                                    <AccessText Text="{ReflectionBinding R.Dialog_Cancel}" />
+                                </Button>
                             </StackPanel>
                         </ControlTemplate>
                     </templateSelectors:ConfirmationDialogDataTemplateSelector.RetryCancelDataTemplate>

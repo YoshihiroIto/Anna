@@ -77,40 +77,34 @@ public sealed class SelectFileCopyActionDialogViewModel
                     new ChangeEntryNameMessage(
                         DestFolder,
                         Path.GetFileName(Model.DestFilepath),
-                        WindowBaseViewModel.MessageKeyChangeEntryName));
+                        MessageKeyChangeEntryName));
 
                 switch (changeNameMessage.Response.DialogResult)
                 {
                     case DialogResultTypes.Ok:
-                        {
-                            DialogResult = DialogResultTypes.Ok;
-                            Result = new FileSystemCopier.CopyActionWhenExistsResult(
-                                ExistsCopyFileActions.Rename,
-                                changeNameMessage.Response.FilePath,
-                                false);
+                        DialogResult = DialogResultTypes.Ok;
+                        Result = new FileSystemCopier.CopyActionWhenExistsResult(
+                            ExistsCopyFileActions.Rename,
+                            changeNameMessage.Response.FilePath,
+                            false);
 
-                            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+                        await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
 
-                            break;
-                        }
+                        break;
 
                     case DialogResultTypes.Cancel:
-                        {
-                            // do nothing
-                            break;
-                        }
+                        // do nothing
+                        break;
 
                     case DialogResultTypes.Skip:
-                        {
-                            DialogResult = DialogResultTypes.Skip;
-                            Result = new FileSystemCopier.CopyActionWhenExistsResult(ExistsCopyFileActions.Skip,
-                                "",
-                                false);
+                        DialogResult = DialogResultTypes.Skip;
+                        Result = new FileSystemCopier.CopyActionWhenExistsResult(ExistsCopyFileActions.Skip,
+                            "",
+                            false);
 
-                            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+                        await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
 
-                            break;
-                        }
+                        break;
 
                     default:
                         throw new ArgumentOutOfRangeException();

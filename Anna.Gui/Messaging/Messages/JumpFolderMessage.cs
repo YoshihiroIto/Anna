@@ -6,8 +6,11 @@ public sealed class JumpFolderMessage : InteractionMessage
 {
     public (DialogResultTypes DialogResult, string Path) Response { get; internal set; }
 
-    public JumpFolderMessage(string messageKey)
+    public readonly string CurrentFolderPath;
+
+    public JumpFolderMessage(string currentFolderPath, string messageKey)
         : base(messageKey)
     {
+        CurrentFolderPath = currentFolderPath;
     }
 }

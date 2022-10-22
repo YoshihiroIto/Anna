@@ -27,7 +27,7 @@ public sealed class CopyEntryDialogViewModel
     public ReadOnlyObservableCollection<string> DestFoldersHistory => Model.DestFoldersHistory;
     public ReactivePropertySlim<int> SelectedDestFolderHistory { get; }
 
-    public DelegateCommand OpenJumpFolderDialogCommand { get; }
+    public AsyncReactiveCommand OpenJumpFolderDialogCommand { get; }
 
     public EntriesStatsPanelViewModel EntriesStatsPanelViewModel { get; }
 
@@ -42,9 +42,12 @@ public sealed class CopyEntryDialogViewModel
             .Subscribe(x => DestFolder.Value = Model.DestFoldersHistory[x])
             .AddTo(Trash);
 
-        OpenJumpFolderDialogCommand = new DelegateCommand(OnJumpFolderDialog);
+        OpenJumpFolderDialogCommand = new AsyncReactiveCommand()
+            .WithSubscribe(OnJumpFolderDialogSync)
+            .AddTo(Trash);
+        
         _OkCommand = new AsyncReactiveCommand()
-            .WithSubscribe(async x => await OnDecisionAsync())
+            .WithSubscribe(OnDecisionAsync)
             .AddTo(Trash);
 
         EntriesStatsPanelViewModel =
@@ -71,9 +74,9 @@ public sealed class CopyEntryDialogViewModel
         }
     }
 
-    public async void OnJumpFolderDialog()
+    public async Task OnJumpFolderDialogSync()
     {
-        var message = await Messenger.RaiseAsync(new JumpFolderMessage(MessageKeyJumpFolder));
+        var message = await Messenger.RaiseAsync(new JumpFolderMessage(Model.CurrentFolderPath, MessageKeyJumpFolder));
 
         if (message.Response.DialogResult != DialogResultTypes.Ok)
             return;

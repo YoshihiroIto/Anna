@@ -8,6 +8,7 @@
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
                   Title="{ReflectionBinding R.DialogTitle_SelectFileCopyAction}"
                   MinWidth="300"
                   MinHeight="150"
@@ -31,11 +32,11 @@
         <behaviors:DialogBehavior />
 
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
-            <behaviors1:WindowInteractionMessageAction />
+            <actions:WindowInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
         
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyChangeEntryName}" Messenger="{Binding Messenger}">
-            <behaviors1:ChangeEntryNameDialogInteractionMessageAction />
+            <actions:ChangeEntryNameDialogInteractionMessageAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 

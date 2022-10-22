@@ -8,9 +8,9 @@ using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
 
-namespace Anna.Gui.Messaging.Behaviors;
+namespace Anna.Gui.Messaging.Behaviors.Actions;
 
-public sealed class InformationDialogInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
+public sealed class JumpFolderDialogInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
 {
     public object Execute(object? sender, object? parameter)
     {
@@ -22,7 +22,7 @@ public sealed class InformationDialogInteractionMessageAction : AvaloniaObject, 
         InteractionMessage message,
         IHasServiceProviderContainer hasServiceProviderContainer)
     {
-        if (message is not InformationMessage informationMessage)
+        if (message is not JumpFolderMessage jumpFolderMessage)
             return;
 
         if (sender is not { AssociatedObject: IControl control })
@@ -30,10 +30,11 @@ public sealed class InformationDialogInteractionMessageAction : AvaloniaObject, 
 
         var owner = ControlHelper.FindOwnerWindow(control);
 
-        informationMessage.Response = await WindowOperator.DisplayInformationAsync(
+        var result = await WindowOperator.JumpFolderAsync(
             hasServiceProviderContainer.Dic,
             owner,
-            informationMessage.Title,
-            informationMessage.Text);
+            jumpFolderMessage.CurrentFolderPath);
+
+        jumpFolderMessage.Response = result;
     }
 }

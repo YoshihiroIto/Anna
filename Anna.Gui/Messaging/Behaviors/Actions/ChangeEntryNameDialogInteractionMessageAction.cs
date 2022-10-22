@@ -8,9 +8,9 @@ using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
 
-namespace Anna.Gui.Messaging.Behaviors;
+namespace Anna.Gui.Messaging.Behaviors.Actions;
 
-public sealed class ConfirmationDialogInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
+public sealed class ChangeEntryNameDialogInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
 {
     public object Execute(object? sender, object? parameter)
     {
@@ -22,7 +22,7 @@ public sealed class ConfirmationDialogInteractionMessageAction : AvaloniaObject,
         InteractionMessage message,
         IHasServiceProviderContainer hasServiceProviderContainer)
     {
-        if (message is not ConfirmationMessage confirmationMessage)
+        if (message is not ChangeEntryNameMessage changeEntryNameMessage)
             return;
 
         if (sender is not { AssociatedObject: IControl control })
@@ -30,11 +30,12 @@ public sealed class ConfirmationDialogInteractionMessageAction : AvaloniaObject,
 
         var owner = ControlHelper.FindOwnerWindow(control);
 
-        confirmationMessage.Response = await WindowOperator.DisplayConfirmationAsync(
+        var result = await WindowOperator.ChangeEntryNameAsync(
             hasServiceProviderContainer.Dic,
             owner,
-            confirmationMessage.Title,
-            confirmationMessage.Text,
-            confirmationMessage.ConfirmationType);
+            changeEntryNameMessage.CurrentFolderPath,
+            changeEntryNameMessage.CurrentFilename);
+
+        changeEntryNameMessage.Response = result;
     }
 }

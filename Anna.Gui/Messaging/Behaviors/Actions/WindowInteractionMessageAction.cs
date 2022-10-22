@@ -5,7 +5,7 @@ using Avalonia.Xaml.Interactivity;
 using System;
 using System.Threading.Tasks;
 
-namespace Anna.Gui.Messaging.Behaviors;
+namespace Anna.Gui.Messaging.Behaviors.Actions;
 
 public sealed class WindowInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
 {

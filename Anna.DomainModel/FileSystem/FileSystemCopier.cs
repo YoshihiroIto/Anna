@@ -40,19 +40,19 @@ public abstract class FileSystemCopier : IFileProcessable
                     {
                         Directory.CreateDirectory(destPath);
 
-                        var isSkip = false;
+                        var strategy = SamePathCopyFileStrategies.Override;
                         var dest = Path.Combine(destPath, Path.GetFileName(src));
 
                         if (src == dest)
                         {
-                            (isSkip, dest) = CopyStrategyWhenSamePath(dest);
+                            (strategy, dest) = CopyStrategyWhenSamePath(dest);
 
                             if (CancellationTokenSource is not null &&
                                 CancellationTokenSource.IsCancellationRequested)
                                 return;
                         }
 
-                        if (isSkip == false)
+                        if (strategy == SamePathCopyFileStrategies.Override)
                             CopyFileInternal(src, dest);
 
                         FileProcessed?.Invoke(this, EventArgs.Empty);
@@ -79,17 +79,17 @@ public abstract class FileSystemCopier : IFileProcessable
 
         var targetFolderPath = Path.Combine(dst, Path.GetFileName(src));
         {
-            var isSkip = false;
+            var strategy = SamePathCopyFileStrategies.Override;
 
             if (srcInfo.FullName == targetFolderPath)
             {
-                (isSkip, targetFolderPath) = CopyStrategyWhenSamePath(targetFolderPath);
+                (strategy, targetFolderPath) = CopyStrategyWhenSamePath(targetFolderPath);
 
                 if (CancellationTokenSource.IsCancellationRequested)
                     return;
             }
 
-            if (isSkip)
+            if (strategy == SamePathCopyFileStrategies.Skip)
                 return;
         }
 
@@ -104,18 +104,18 @@ public abstract class FileSystemCopier : IFileProcessable
             {
                 Debug.Assert(CancellationTokenSource is not null);
 
-                var isSkip = false;
+                var strategy = SamePathCopyFileStrategies.Override;
                 var dest = Path.Combine(targetFolderPath, file.Name);
 
                 if (file.FullName == dest)
                 {
-                    (isSkip, dest) = CopyStrategyWhenSamePath(dest);
+                    (strategy, dest) = CopyStrategyWhenSamePath(dest);
 
                     if (CancellationTokenSource.IsCancellationRequested)
                         return;
                 }
-
-                if (isSkip == false)
+                
+                if (strategy == SamePathCopyFileStrategies.Override)
                     CopyFileInternal(file.FullName, dest, file.Attributes);
 
                 FileProcessed?.Invoke(this, EventArgs.Empty);
@@ -133,12 +133,9 @@ public abstract class FileSystemCopier : IFileProcessable
 
     private void CopyFileInternal(string srcPath, string destPath, FileAttributes srcAttr)
     {
-        var srcFilename = Path.GetFileName(srcPath);
-        var destFilename = Path.GetFileName(destPath);
-
-        if (srcFilename == destFilename)
+        if (File.Exists(destPath))
         {
-            var result = CopyStrategyWhenSameName(destPath);
+            var result = CopyStrategyWhenExists(destPath);
 
             throw new NotImplementedException();
         }
@@ -147,9 +144,10 @@ public abstract class FileSystemCopier : IFileProcessable
         File.SetAttributes(destPath, srcAttr);
     }
 
-    protected abstract (SameNameCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSameName(
+    protected abstract (ExistsCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenExists(
         string destPath);
-    protected abstract (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath);
+    protected abstract (SamePathCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSamePath(
+        string destPath);
 }
 
 public sealed class DefaultFileSystemCopier : FileSystemCopier
@@ -159,14 +157,15 @@ public sealed class DefaultFileSystemCopier : FileSystemCopier
     {
     }
 
-    protected override (SameNameCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSameName(
+    protected override (ExistsCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenExists(
         string destPath)
     {
-        return (SameNameCopyFileStrategies.Override, destPath);
+        return (ExistsCopyFileStrategies.Override, destPath);
     }
 
-    protected override (bool IsSkip, string NewDestPath) CopyStrategyWhenSamePath(string destPath)
+    protected override (SamePathCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSamePath(
+        string destPath)
     {
-        return (true, destPath);
+        return (SamePathCopyFileStrategies.Skip, destPath);
     }
 }

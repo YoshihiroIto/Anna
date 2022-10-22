@@ -2,7 +2,7 @@
 
 public class InteractionMessage
 {
-    public string MessageKey { get; init; }
+    public readonly string MessageKey;
     
     public InteractionMessage(string messageKey)
     {

@@ -4,10 +4,10 @@ namespace Anna.Gui.Messaging.Messages;
 
 public sealed class ChangeEntryNameMessage : InteractionMessage
 {
-    public string CurrentFolderPath { get; init; }
-    public string CurrentFilename { get; init; }
-
     public (DialogResultTypes DialogResult, string FilePath) Response { get; internal set; }
+
+    public readonly string CurrentFolderPath;
+    public readonly string CurrentFilename;
 
     public ChangeEntryNameMessage(string currentFolderPath, string currentFilename, string messageKey)
         : base(messageKey)

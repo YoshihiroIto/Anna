@@ -5,8 +5,8 @@ namespace Anna.Gui.Messaging.Messages;
 
 public sealed class SelectFileCopyActionMessage : InteractionMessage
 {
-    public string SrcPath { get; }
-    public string DestPath { get; }
+    public readonly string SrcPath;
+    public readonly string DestPath;
 
     public (DialogResultTypes DialogResult, FileSystemCopier.CopyActionWhenExistsResult Result) Response
     {

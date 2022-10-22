@@ -4,11 +4,10 @@ namespace Anna.Gui.Messaging.Messages;
 
 public sealed class InformationMessage : InteractionMessage
 {
-    public string Title { get; init; }
-    
-    public string Text { get; init; }
-    
     public DialogResultTypes Response { get; internal set; }
+
+    public readonly string Title;
+    public readonly string Text;
 
     public InformationMessage(
         string title,

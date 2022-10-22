@@ -11,7 +11,7 @@ public enum WindowAction
 
 public sealed class WindowActionMessage : InteractionMessage
 {
-    public WindowAction Action { get; init; }
+    public readonly WindowAction Action;
 
     public WindowActionMessage(WindowAction action, string messageKey)
         : base(messageKey)

@@ -4,13 +4,11 @@ namespace Anna.Gui.Messaging.Messages;
 
 public sealed class ConfirmationMessage : InteractionMessage
 {
-    public string Title { get; init; }
-
-    public string Text { get; init; }
-
-    public ConfirmationTypes ConfirmationType { get; init; }
-
     public DialogResultTypes Response { get; internal set; }
+
+    public readonly string Title;
+    public readonly string Text;
+    public readonly ConfirmationTypes ConfirmationType;
 
     public ConfirmationMessage(
         string title,

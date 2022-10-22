@@ -156,4 +156,19 @@
     <data name="DialogTitle_SelectFileCopyAction" xml:space="preserve">
         <value>コピー方法の選択</value>
     </data>
+    <data name="Message_FolderAlreadyContainsSameName" xml:space="preserve">
+        <value>コピー先フォルダーには、すでに同名ファイルが存在しています。</value>
+    </data>
+    <data name="UI_SameActionThereafter" xml:space="preserve">
+        <value>以降同じ設定(_A)</value>
+    </data>
+    <data name="UI_CopyWhenTimestampIsNewest" xml:space="preserve">
+        <value>タイムスタンプが新しいときにコピーする(_N)</value>
+    </data>
+    <data name="UI_CopyOverride" xml:space="preserve">
+        <value>上書きでコピーする(_O)</value>
+    </data>
+    <data name="UI_RenameAndCopy" xml:space="preserve">
+        <value>名前を変えてコピーする(_R)</value>
+    </data>
 </root>

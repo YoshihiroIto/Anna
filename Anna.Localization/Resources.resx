@@ -262,4 +262,19 @@ Please close the folder or file and retry the operation.
   <data name="DialogTitle_SelectFileCopyAction" xml:space="preserve">
     <value>Select copy action</value>
   </data>
+  <data name="Message_FolderAlreadyContainsSameName" xml:space="preserve">
+    <value>The destination folder already contains a file with the same name.</value>
+  </data>
+  <data name="UI_SameActionThereafter" xml:space="preserve">
+    <value>Same _action thereafter</value>
+  </data>
+  <data name="UI_CopyWhenTimestampIsNewest" xml:space="preserve">
+    <value>Copy when timestamp is _newest</value>
+  </data>
+  <data name="UI_CopyOverride" xml:space="preserve">
+    <value>Copy _overwrite</value>
+  </data>
+  <data name="UI_RenameAndCopy" xml:space="preserve">
+    <value>_Rename and copy</value>
+  </data>
 </root>

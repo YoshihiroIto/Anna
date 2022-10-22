@@ -2,13 +2,13 @@
                   Classes="dialog"
                   xmlns="https://github.com/avaloniaui"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
                   xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
                   xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                   xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
                   Title="{ReflectionBinding R.DialogTitle_SelectFileCopyAction}"
                   MinWidth="300"
                   MinHeight="150"
@@ -34,11 +34,57 @@
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
             <actions:WindowActionAction />
         </behaviors1:InteractionMessageTrigger>
-        
+
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyChangeEntryName}" Messenger="{Binding Messenger}">
             <actions:ChangeEntryNameAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
-   SelectFileCopyActionDialog 
+    <StackPanel>
+        <StackPanel.Styles>
+            <Style Selector="Button">
+                <Setter Property="Margin" Value="0,6,0,0" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="Padding" Value="12,6" />
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+        </StackPanel.Styles>
+
+        <TextBlock Text="{ReflectionBinding R.Message_FolderAlreadyContainsSameName}" />
+        <TextBlock Text="{Binding Filename, Mode=OneTime}" />
+
+        <Border Margin="0,12,0,0"
+                BorderBrush="#444444"
+                BorderThickness="1">
+            <StackPanel Margin="12">
+                <TextBlock Text="{Binding DestFolder, Mode=OneTime}" />
+                <TextBlock Text="{Binding DestTimeStamp, Mode=OneTime}" />
+                <TextBlock Text="{Binding DestSize, Mode=OneTime}" />
+            </StackPanel>
+        </Border>
+
+        <Border Margin="0,12,0,0"
+                BorderBrush="#444444"
+                BorderThickness="1">
+            <StackPanel Margin="12">
+                <TextBlock Text="{Binding SrcFolder, Mode=OneTime}" />
+                <TextBlock Text="{Binding SrcTimeStamp, Mode=OneTime}" />
+                <TextBlock Text="{Binding SrcSize, Mode=OneTime}" />
+            </StackPanel>
+        </Border>
+
+        <CheckBox Content="{ReflectionBinding R.UI_SameActionThereafter}" IsChecked="{Binding IsSameActionThereafter.Value}" />
+
+        <Button Command="{Binding CopyWhenTimestampIsNewestCommand, Mode=OneTime}" Content="{ReflectionBinding R.UI_CopyWhenTimestampIsNewest}">
+            <Interaction.Behaviors>
+                <behaviors:InputElementFocusBehavior />
+            </Interaction.Behaviors>
+        </Button>
+
+        <Button Command="{Binding CopyOverrideCommand, Mode=OneTime}" Content="{ReflectionBinding R.UI_CopyOverride}" />
+        <Button Command="{Binding RenameAndCopyCommand, Mode=OneTime}" Content="{ReflectionBinding R.UI_RenameAndCopy}" />
+        <Button Command="{Binding SkipCommand, Mode=OneTime}" Content="{ReflectionBinding R.Dialog_Skip}" />
+        <Button Command="{Binding CancelCommand, Mode=OneTime}" Content="{ReflectionBinding R.Dialog_Cancel}" />
+    </StackPanel>
 </base1:WindowBase>

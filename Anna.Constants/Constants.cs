@@ -55,7 +55,7 @@ public enum ExistsCopyFileActions
     Skip,
     NewerTimestamp,
     Override,
-    ChangeName,
+    Rename,
 }
 
 public enum SamePathCopyFileActions

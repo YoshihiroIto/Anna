@@ -322,6 +322,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The destination folder already contains a file with the same name..
+        /// </summary>
+        public static string Message_FolderAlreadyContainsSameName {
+            get {
+                return ResourceManager.GetString("Message_FolderAlreadyContainsSameName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input new name..
         /// </summary>
         public static string Message_InputNewName {
@@ -403,6 +412,24 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy _overwrite.
+        /// </summary>
+        public static string UI_CopyOverride {
+            get {
+                return ResourceManager.GetString("UI_CopyOverride", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy when timestamp is _newest.
+        /// </summary>
+        public static string UI_CopyWhenTimestampIsNewest {
+            get {
+                return ResourceManager.GetString("UI_CopyWhenTimestampIsNewest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         public static string UI_Edit {
@@ -435,6 +462,24 @@ namespace Anna.Localization {
         public static string UI_Path {
             get {
                 return ResourceManager.GetString("UI_Path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Rename and copy.
+        /// </summary>
+        public static string UI_RenameAndCopy {
+            get {
+                return ResourceManager.GetString("UI_RenameAndCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Same _action thereafter.
+        /// </summary>
+        public static string UI_SameActionThereafter {
+            get {
+                return ResourceManager.GetString("UI_SameActionThereafter", resourceCulture);
             }
         }
         

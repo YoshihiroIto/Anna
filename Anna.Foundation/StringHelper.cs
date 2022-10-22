@@ -1,4 +1,5 @@
-﻿using System.Buffers;
+﻿using Humanizer;
+using System.Buffers;
 using UtfUnknown;
 
 namespace Anna.Foundation;
@@ -28,5 +29,13 @@ public static class StringHelper
         {
             ArrayPool<byte>.Shared.Return(buf);
         }
+    }
+    
+    public static string MakeSizeString(long size)
+    {
+        var h = size.Bytes().Humanize("#.##");
+        var b = $"{size:#,0} B";
+        
+        return b == h ? b : $"{h} ({b})";
     }
 }

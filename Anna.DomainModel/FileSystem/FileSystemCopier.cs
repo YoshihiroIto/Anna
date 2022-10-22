@@ -151,7 +151,7 @@ public abstract class FileSystemCopier : IFileProcessable
                     // do nothing
                     break;
 
-                case ExistsCopyFileActions.ChangeName:
+                case ExistsCopyFileActions.Rename:
                     destPath = result.NewDestPath;
                     break;
 

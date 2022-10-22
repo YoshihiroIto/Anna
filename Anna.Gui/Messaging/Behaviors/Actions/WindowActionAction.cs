@@ -32,13 +32,13 @@ public sealed class WindowActionAction : AvaloniaObject, IAction, IAsyncAction
                 break;
 
             case WindowAction.Maximize:
-                break;
+                throw new NotImplementedException();
 
             case WindowAction.Minimize:
-                break;
+                throw new NotImplementedException();
 
             case WindowAction.Normal:
-                break;
+                throw new NotImplementedException();
 
             case WindowAction.Active:
                 window.Activate();

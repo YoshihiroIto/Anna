@@ -76,9 +76,9 @@
 
             <TextBox HorizontalAlignment="Stretch" Text="{Binding DestFolder.Value}">
                 <Interaction.Behaviors>
-                    <behaviors:KeyDownTriggerBehavior Key="Enter">
+                    <behaviors:ControlKeyDownTriggerBehavior Key="Enter">
                         <InvokeCommandAction Command="{Binding OkCommand, Mode=OneTime}"  />
-                    </behaviors:KeyDownTriggerBehavior>
+                    </behaviors:ControlKeyDownTriggerBehavior>
 
                     <behaviors:InputElementFocusBehavior />
                 </Interaction.Behaviors>

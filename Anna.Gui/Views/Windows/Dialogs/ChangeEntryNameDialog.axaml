@@ -79,9 +79,9 @@
             <TextBlock Margin="0,12,0,0" Text="{ReflectionBinding R.Message_InputNewName}" />
             <TextBox HorizontalAlignment="Stretch" Text="{Binding Filename.Value}">
                 <Interaction.Behaviors>
-                    <behaviors:KeyDownTriggerBehavior Key="Enter">
+                    <behaviors:ControlKeyDownTriggerBehavior Key="Enter">
                         <CallMethodAction MethodName="OnDecision" TargetObject="{Binding}" />
-                    </behaviors:KeyDownTriggerBehavior>
+                    </behaviors:ControlKeyDownTriggerBehavior>
 
                     <behaviors:InputElementFocusBehavior />
                     <behaviors:TextBoxSelectAllBehavior />

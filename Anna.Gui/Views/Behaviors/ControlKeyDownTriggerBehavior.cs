@@ -7,13 +7,13 @@ using IAction=Avalonia.Xaml.Interactivity.IAction;
 
 namespace Anna.Gui.Views.Behaviors;
 
-public sealed class KeyDownTriggerBehavior : Trigger<Control>
+public sealed class ControlKeyDownTriggerBehavior : Trigger<Control>
 {
     public static readonly StyledProperty<Key> KeyProperty =
-        AvaloniaProperty.Register<KeyDownTriggerBehavior, Key>(nameof(Key));
+        AvaloniaProperty.Register<ControlKeyDownTriggerBehavior, Key>(nameof(Key));
 
     public static readonly StyledProperty<KeyModifiers> KeyModifiersProperty =
-        AvaloniaProperty.Register<KeyDownTriggerBehavior, KeyModifiers>(nameof(KeyModifiers));
+        AvaloniaProperty.Register<ControlKeyDownTriggerBehavior, KeyModifiers>(nameof(KeyModifiers));
 
     public Key Key
     {

@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.FileSystem.FileProcessable;
+using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
@@ -14,7 +15,7 @@ internal sealed class ConfirmedFileSystemCopier
         , IHasArg<(InteractionMessenger Messenger, int Dummy)>
 {
     private readonly (InteractionMessenger Messenger, int Dummy) _arg;
-    private readonly object _lockObj = new();
+    private FastSpinLock _lockObj;
 
     public ConfirmedFileSystemCopier(IServiceProvider dic)
         : base(dic)
@@ -26,8 +27,10 @@ internal sealed class ConfirmedFileSystemCopier
     {
         Debug.Assert(CancellationTokenSource is not null);
         
-        lock (_lockObj)
+        try
         {
+            _lockObj.Enter();
+            
             if (result.IsSameActionThereafter)
                 return;
 
@@ -45,14 +48,20 @@ internal sealed class ConfirmedFileSystemCopier
             if (message.Response.DialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();
         }
+        finally
+        {
+            _lockObj.Exit();
+        }
     }
 
     protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(string destPath)
     {
         Debug.Assert(CancellationTokenSource is not null);
         
-        lock (_lockObj)
+        try
         {
+            _lockObj.Enter();
+            
             if (CancellationTokenSource.IsCancellationRequested)
                 return new CopyActionWhenSamePathResult(SamePathCopyFileActions.Skip, "");
 
@@ -73,6 +82,10 @@ internal sealed class ConfirmedFileSystemCopier
                     ? SamePathCopyFileActions.Override
                     : SamePathCopyFileActions.Skip,
                 message.Response.FilePath);
+        }
+        finally
+        {
+            _lockObj.Exit();
         }
     }
 }

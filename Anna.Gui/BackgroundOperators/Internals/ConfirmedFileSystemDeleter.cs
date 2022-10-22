@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.FileSystem.FileProcessable;
+using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
@@ -17,7 +18,7 @@ internal sealed class ConfirmedFileSystemDeleter
         , IHasArg<(InteractionMessenger Messenger, int Dummy)>
 {
     private readonly (InteractionMessenger Messenger, int Dummy) _arg;
-    private readonly object _lockObj = new();
+    private FastSpinLock _lockObj;
 
     public ConfirmedFileSystemDeleter(IServiceProvider dic)
         : base(dic)
@@ -34,8 +35,10 @@ internal sealed class ConfirmedFileSystemDeleter
     {
         Debug.Assert(CancellationTokenSource is not null);
 
-        lock (_lockObj)
+        try
         {
+            _lockObj.Enter();
+
             if (CancellationTokenSource.IsCancellationRequested)
                 return AccessFailureDeleteActions.Cancel;
 
@@ -58,6 +61,10 @@ internal sealed class ConfirmedFileSystemDeleter
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+        finally
+        {
+            _lockObj.Exit();
         }
     }
 }

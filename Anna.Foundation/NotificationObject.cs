@@ -10,7 +10,7 @@ public class NotificationObject : INotifyPropertyChanged
 
     // use Hashtable to get free lockless reading
     private static readonly Hashtable PropChanged = new();
-    private static readonly object PropChangedLockObj = new();
+    private static FastSpinLock _lockObj;
 
     protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
     {
@@ -29,15 +29,16 @@ public class NotificationObject : INotifyPropertyChanged
     {
         if (PropertyChanged is null)
             return;
-    
+
         // ReSharper disable once InconsistentlySynchronizedField
         var pc = (PropertyChangedEventArgs?)PropChanged[propertyName];
 
         if (pc is null)
         {
-            // double-checked;
-            lock (PropChangedLockObj)
+            try
             {
+                _lockObj.Enter();
+
                 pc = (PropertyChangedEventArgs?)PropChanged[propertyName];
 
                 if (pc is null)
@@ -45,6 +46,10 @@ public class NotificationObject : INotifyPropertyChanged
                     pc = new PropertyChangedEventArgs(propertyName);
                     PropChanged[propertyName] = pc;
                 }
+            }
+            finally
+            {
+                _lockObj.Exit();
             }
         }
 

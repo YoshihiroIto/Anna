@@ -40,7 +40,7 @@ public abstract class FileSystemCopier : IFileProcessable
                     {
                         Directory.CreateDirectory(destPath);
 
-                        var strategy = SamePathCopyFileStrategies.Override;
+                        var strategy = SamePathCopyFileActions.Override;
                         var dest = Path.Combine(destPath, Path.GetFileName(src));
 
                         if (src == dest)
@@ -52,7 +52,7 @@ public abstract class FileSystemCopier : IFileProcessable
                                 return;
                         }
 
-                        if (strategy == SamePathCopyFileStrategies.Override)
+                        if (strategy == SamePathCopyFileActions.Override)
                             CopyFileInternal(src, dest);
 
                         FileProcessed?.Invoke(this, EventArgs.Empty);
@@ -79,7 +79,7 @@ public abstract class FileSystemCopier : IFileProcessable
 
         var targetFolderPath = Path.Combine(dst, Path.GetFileName(src));
         {
-            var strategy = SamePathCopyFileStrategies.Override;
+            var strategy = SamePathCopyFileActions.Override;
 
             if (srcInfo.FullName == targetFolderPath)
             {
@@ -89,7 +89,7 @@ public abstract class FileSystemCopier : IFileProcessable
                     return;
             }
 
-            if (strategy == SamePathCopyFileStrategies.Skip)
+            if (strategy == SamePathCopyFileActions.Skip)
                 return;
         }
 
@@ -104,7 +104,7 @@ public abstract class FileSystemCopier : IFileProcessable
             {
                 Debug.Assert(CancellationTokenSource is not null);
 
-                var strategy = SamePathCopyFileStrategies.Override;
+                var strategy = SamePathCopyFileActions.Override;
                 var dest = Path.Combine(targetFolderPath, file.Name);
 
                 if (file.FullName == dest)
@@ -114,8 +114,8 @@ public abstract class FileSystemCopier : IFileProcessable
                     if (CancellationTokenSource.IsCancellationRequested)
                         return;
                 }
-                
-                if (strategy == SamePathCopyFileStrategies.Override)
+
+                if (strategy == SamePathCopyFileActions.Override)
                     CopyFileInternal(file.FullName, dest, file.Attributes);
 
                 FileProcessed?.Invoke(this, EventArgs.Empty);
@@ -144,10 +144,12 @@ public abstract class FileSystemCopier : IFileProcessable
         File.SetAttributes(destPath, srcAttr);
     }
 
-    protected abstract (ExistsCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenExists(
-        string destPath);
-    protected abstract (SamePathCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSamePath(
-        string destPath);
+    protected abstract CopyStrategyWhenExistsResult CopyStrategyWhenExists(string destPath);
+    protected abstract CopyStrategyWhenSamePathResult CopyStrategyWhenSamePath(string destPath);
+
+    public record struct CopyStrategyWhenExistsResult(ExistsCopyFileActions Action, string NewDestPath,
+        bool IsSameStrategyThereafter);
+    public record struct CopyStrategyWhenSamePathResult(SamePathCopyFileActions Action, string NewDestPath);
 }
 
 public sealed class DefaultFileSystemCopier : FileSystemCopier
@@ -157,15 +159,14 @@ public sealed class DefaultFileSystemCopier : FileSystemCopier
     {
     }
 
-    protected override (ExistsCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenExists(
-        string destPath)
+    protected override CopyStrategyWhenExistsResult CopyStrategyWhenExists(string destPath)
     {
-        return (ExistsCopyFileStrategies.Override, destPath);
+        return new CopyStrategyWhenExistsResult(ExistsCopyFileActions.Override, destPath, true);
     }
 
-    protected override (SamePathCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSamePath(
+    protected override CopyStrategyWhenSamePathResult CopyStrategyWhenSamePath(
         string destPath)
     {
-        return (SamePathCopyFileStrategies.Skip, destPath);
+        return new CopyStrategyWhenSamePathResult(SamePathCopyFileActions.Skip, destPath);
     }
 }

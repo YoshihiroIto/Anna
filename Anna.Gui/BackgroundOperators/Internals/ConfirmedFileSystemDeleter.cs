@@ -27,19 +27,19 @@ internal sealed class ConfirmedFileSystemDeleter
         dic.PopArg(out _arg);
     }
 
-    protected override ReadOnlyDeleteStrategies DeleteStrategyWhenReadonly(FileSystemInfo info)
+    protected override ReadOnlyDeleteActions DeleteStrategyWhenReadonly(FileSystemInfo info)
     {
-        return ReadOnlyDeleteStrategies.Skip;
+        return ReadOnlyDeleteActions.Skip;
     }
 
-    protected override AccessFailureDeleteStrategies DeleteStrategyWhenAccessFailure(FileSystemInfo info)
+    protected override AccessFailureDeleteActions DeleteStrategyWhenAccessFailure(FileSystemInfo info)
     {
         lock (_lockObj)
         {
             Debug.Assert(CancellationTokenSource is not null);
 
             if (CancellationTokenSource.IsCancellationRequested)
-                return AccessFailureDeleteStrategies.Cancel;
+                return AccessFailureDeleteActions.Cancel;
 
             var resultDialogResult = DialogResultTypes.Cancel;
 
@@ -65,11 +65,11 @@ internal sealed class ConfirmedFileSystemDeleter
             switch (resultDialogResult)
             {
                 case DialogResultTypes.Retry:
-                    return AccessFailureDeleteStrategies.Retry;
+                    return AccessFailureDeleteActions.Retry;
                 
                 case DialogResultTypes.Cancel:
                     CancellationTokenSource.Cancel();
-                    return AccessFailureDeleteStrategies.Cancel;
+                    return AccessFailureDeleteActions.Cancel;
 
                 default:
                     throw new ArgumentOutOfRangeException();

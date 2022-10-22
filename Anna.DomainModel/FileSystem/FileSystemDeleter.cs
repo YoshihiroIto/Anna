@@ -90,11 +90,11 @@ public abstract class FileSystemDeleter : IFileProcessable
         {
             switch (DeleteStrategyWhenReadonly(file))
             {
-                case ReadOnlyDeleteStrategies.Skip:
+                case ReadOnlyDeleteActions.Skip:
                     isSkip = true;
                     break;
 
-                case ReadOnlyDeleteStrategies.AllDelete:
+                case ReadOnlyDeleteActions.AllDelete:
                     state.IsAllDelete = true;
                     break;
 
@@ -180,11 +180,11 @@ public abstract class FileSystemDeleter : IFileProcessable
             {
                 switch (DeleteStrategyWhenReadonly(srcInfo))
                 {
-                    case ReadOnlyDeleteStrategies.Skip:
+                    case ReadOnlyDeleteActions.Skip:
                         isSkip = true;
                         break;
 
-                    case ReadOnlyDeleteStrategies.AllDelete:
+                    case ReadOnlyDeleteActions.AllDelete:
                         state.IsAllDelete = true;
                         break;
 
@@ -215,15 +215,15 @@ public abstract class FileSystemDeleter : IFileProcessable
             {
                 switch (DeleteStrategyWhenAccessFailure(di))
                 {
-                    case AccessFailureDeleteStrategies.Skip:
+                    case AccessFailureDeleteActions.Skip:
                         isSkip = true;
                         break;
 
-                    case AccessFailureDeleteStrategies.Cancel:
+                    case AccessFailureDeleteActions.Cancel:
                         CancellationTokenSource.Cancel();
                         break;
 
-                    case AccessFailureDeleteStrategies.Retry:
+                    case AccessFailureDeleteActions.Retry:
                         // do nothing
                         break;
 
@@ -234,8 +234,8 @@ public abstract class FileSystemDeleter : IFileProcessable
         }
     }
 
-    protected abstract ReadOnlyDeleteStrategies DeleteStrategyWhenReadonly(FileSystemInfo info);
-    protected abstract AccessFailureDeleteStrategies DeleteStrategyWhenAccessFailure(FileSystemInfo info);
+    protected abstract ReadOnlyDeleteActions DeleteStrategyWhenReadonly(FileSystemInfo info);
+    protected abstract AccessFailureDeleteActions DeleteStrategyWhenAccessFailure(FileSystemInfo info);
 }
 
 public class DefaultFileSystemDeleter : FileSystemDeleter
@@ -245,13 +245,13 @@ public class DefaultFileSystemDeleter : FileSystemDeleter
     {
     }
     
-    protected override ReadOnlyDeleteStrategies DeleteStrategyWhenReadonly(FileSystemInfo info)
+    protected override ReadOnlyDeleteActions DeleteStrategyWhenReadonly(FileSystemInfo info)
     {
-        return ReadOnlyDeleteStrategies.Skip;
+        return ReadOnlyDeleteActions.Skip;
     }
 
-    protected override AccessFailureDeleteStrategies DeleteStrategyWhenAccessFailure(FileSystemInfo info)
+    protected override AccessFailureDeleteActions DeleteStrategyWhenAccessFailure(FileSystemInfo info)
     {
-        return AccessFailureDeleteStrategies.Skip;
+        return AccessFailureDeleteActions.Skip;
     }
 }

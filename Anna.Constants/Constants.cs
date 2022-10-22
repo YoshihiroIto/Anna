@@ -50,7 +50,7 @@ public enum EntryDeleteModes
     TrashCan
 }
 
-public enum ExistsCopyFileStrategies
+public enum ExistsCopyFileActions
 {
     Skip,
     NewerTimestamp,
@@ -58,19 +58,19 @@ public enum ExistsCopyFileStrategies
     ChangeName,
 }
 
-public enum SamePathCopyFileStrategies
+public enum SamePathCopyFileActions
 {
     Skip,
     Override,
 }
 
-public enum ReadOnlyDeleteStrategies
+public enum ReadOnlyDeleteActions
 {
     Skip,
     AllDelete,
 }
 
-public enum AccessFailureDeleteStrategies
+public enum AccessFailureDeleteActions
 {
     Skip,
     Cancel,

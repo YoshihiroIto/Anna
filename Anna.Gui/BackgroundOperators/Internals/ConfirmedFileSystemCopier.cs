@@ -24,13 +24,12 @@ internal sealed class ConfirmedFileSystemCopier
         dic.PopArg(out _arg);
     }
 
-    protected override (ExistsCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenExists(
-        string destPath)
+    protected override CopyStrategyWhenExistsResult CopyStrategyWhenExists(string destPath)
     {
         throw new System.NotImplementedException();
     }
 
-    protected override (SamePathCopyFileStrategies strategy, string NewDestPath) CopyStrategyWhenSamePath(
+    protected override CopyStrategyWhenSamePathResult CopyStrategyWhenSamePath(
         string destPath)
     {
         lock (_lockObj)
@@ -38,7 +37,7 @@ internal sealed class ConfirmedFileSystemCopier
             Debug.Assert(CancellationTokenSource is not null);
 
             if (CancellationTokenSource.IsCancellationRequested)
-                return (SamePathCopyFileStrategies.Skip, "");
+                return new CopyStrategyWhenSamePathResult(SamePathCopyFileActions.Skip, "");
 
             var resultDialogResult = DialogResultTypes.Cancel;
             var resultFilePath = "";
@@ -68,10 +67,10 @@ internal sealed class ConfirmedFileSystemCopier
             if (resultDialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();
 
-            return (
+            return new CopyStrategyWhenSamePathResult(
                 resultDialogResult == DialogResultTypes.Ok
-                    ? SamePathCopyFileStrategies.Override
-                    : SamePathCopyFileStrategies.Skip,
+                    ? SamePathCopyFileActions.Override
+                    : SamePathCopyFileActions.Skip,
                 resultFilePath);
         }
     }

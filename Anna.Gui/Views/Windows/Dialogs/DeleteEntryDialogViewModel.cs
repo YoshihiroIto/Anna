@@ -14,19 +14,19 @@ public sealed class DeleteEntryDialogViewModel
 {
     public EntryDeleteModes ResultMode { get; private set; } = EntryDeleteModes.Delete;
 
-    public DelegateCommand ToTrashCanCommand { get; }
+    public AsyncDelegateCommand ToTrashCanCommand { get; }
 
     public EntriesStatsPanelViewModel EntriesStatsPanelViewModel { get; }
 
     public DeleteEntryDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
-        ToTrashCanCommand = new DelegateCommand(() =>
+        ToTrashCanCommand = new AsyncDelegateCommand(async () =>
         {
             DialogResult = DialogResultTypes.Yes;
             ResultMode = EntryDeleteModes.TrashCan;
 
-            _ = Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
         });
 
         EntriesStatsPanelViewModel =

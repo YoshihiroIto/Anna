@@ -59,12 +59,12 @@ public sealed class SelectFileCopyActionDialogViewModel
 
     private ICommand CreateButtonCommand(ExistsCopyFileActions action, DialogResultTypes result)
     {
-        return new DelegateCommand(() =>
+        return new AsyncDelegateCommand(async () =>
         {
             DialogResult = result;
             Result = new FileSystemCopier.CopyActionWhenExistsResult(action, "", IsSameActionThereafter.Value);
 
-            _ = Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
         });
     }
 

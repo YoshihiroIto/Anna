@@ -69,11 +69,11 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
 
     private ICommand CreateButtonCommand(DialogResultTypes result)
     {
-        return new DelegateCommand(() =>
+        return new AsyncDelegateCommand(async () =>
         {
             DialogResult = result;
 
-            _ = Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
         });
     }
 

@@ -41,19 +41,19 @@
         <behaviors:FolderPanelInputBehavior />
 
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
-            <actions:InformationDialogInteractionMessageAction />
+            <actions:InformationAction />
         </behaviors1:InteractionMessageTrigger>
         
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyChangeEntryName}" Messenger="{Binding Messenger}">
-            <actions:ChangeEntryNameDialogInteractionMessageAction />
+            <actions:ChangeEntryNameAction />
         </behaviors1:InteractionMessageTrigger>
         
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyConfirmation}" Messenger="{Binding Messenger}">
-            <actions:ConfirmationDialogInteractionMessageAction />
+            <actions:ConfirmationAction />
         </behaviors1:InteractionMessageTrigger>
         
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeySelectFileCopyAction}" Messenger="{Binding Messenger}">
-            <actions:SelectFileCopyActionDialogInteractionMessageAction />
+            <actions:SelectFileCopyActionAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 

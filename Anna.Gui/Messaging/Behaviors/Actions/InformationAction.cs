@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Messaging.Behaviors.Actions;
 
-public sealed class InformationDialogInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
+public sealed class InformationAction : AvaloniaObject, IAction, IAsyncAction
 {
     public object Execute(object? sender, object? parameter)
     {

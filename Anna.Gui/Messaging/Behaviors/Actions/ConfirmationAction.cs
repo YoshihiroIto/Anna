@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Messaging.Behaviors.Actions;
 
-public sealed class SelectFolderDialogInteractionMessageAction : AvaloniaObject, IAction, IAsyncAction
+public sealed class ConfirmationAction : AvaloniaObject, IAction, IAsyncAction
 {
     public object Execute(object? sender, object? parameter)
     {
@@ -22,7 +22,7 @@ public sealed class SelectFolderDialogInteractionMessageAction : AvaloniaObject,
         InteractionMessage message,
         IHasServiceProviderContainer hasServiceProviderContainer)
     {
-        if (message is not SelectFolderMessage selectFolderMessage)
+        if (message is not ConfirmationMessage confirmationMessage)
             return;
 
         if (sender is not { AssociatedObject: IControl control })
@@ -30,11 +30,11 @@ public sealed class SelectFolderDialogInteractionMessageAction : AvaloniaObject,
 
         var owner = ControlHelper.FindOwnerWindow(control);
 
-        var result = await WindowOperator.SelectFolderAsync(
+        confirmationMessage.Response = await WindowOperator.DisplayConfirmationAsync(
             hasServiceProviderContainer.Dic,
             owner,
-            selectFolderMessage.CurrentFolderPath);
-
-        selectFolderMessage.Response = result;
+            confirmationMessage.Title,
+            confirmationMessage.Text,
+            confirmationMessage.ConfirmationType);
     }
 }

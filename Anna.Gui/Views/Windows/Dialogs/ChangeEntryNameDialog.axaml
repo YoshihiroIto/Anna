@@ -32,7 +32,7 @@
         <behaviors:DialogBehavior />
 
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
-            <actions:WindowInteractionMessageAction />
+            <actions:WindowActionAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 

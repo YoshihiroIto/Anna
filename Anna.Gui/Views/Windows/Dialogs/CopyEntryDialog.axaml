@@ -34,15 +34,15 @@
         <behaviors:DialogBehavior />
 
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
-            <actions:WindowInteractionMessageAction />
+            <actions:WindowActionAction />
         </behaviors1:InteractionMessageTrigger>
 
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyJumpFolder}" Messenger="{Binding Messenger}">
-            <actions:JumpFolderDialogInteractionMessageAction />
+            <actions:JumpFolderAction />
         </behaviors1:InteractionMessageTrigger>
 
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeySelectFolder}" Messenger="{Binding Messenger}">
-            <actions:SelectFolderDialogInteractionMessageAction />
+            <actions:SelectFolderAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 

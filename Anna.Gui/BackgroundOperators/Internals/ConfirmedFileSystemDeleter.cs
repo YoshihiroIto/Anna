@@ -5,11 +5,9 @@ using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Localization;
 using Anna.Service;
-using Avalonia.Threading;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.BackgroundOperators.Internals;
@@ -34,39 +32,25 @@ internal sealed class ConfirmedFileSystemDeleter
 
     protected override AccessFailureDeleteActions DeleteActionWhenAccessFailure(FileSystemInfo info)
     {
+        Debug.Assert(CancellationTokenSource is not null);
+
         lock (_lockObj)
         {
-            Debug.Assert(CancellationTokenSource is not null);
-
             if (CancellationTokenSource.IsCancellationRequested)
                 return AccessFailureDeleteActions.Cancel;
 
-            var resultDialogResult = DialogResultTypes.Cancel;
+            var message = _arg.Messenger.Raise(
+                new ConfirmationMessage(
+                    Resources.AppName,
+                    string.Format(Resources.Message_AccessFailureOnDelete, info.FullName),
+                    ConfirmationTypes.RetryCancel,
+                    WindowBaseViewModel.MessageKeyConfirmation));
 
-            using var m = new ManualResetEventSlim();
-
-            Dispatcher.UIThread.InvokeAsync(async () =>
-                {
-                    var message = await _arg.Messenger.RaiseAsync(
-                        new ConfirmationMessage(
-                            Resources.AppName,
-                            string.Format(Resources.Message_AccessFailureOnDelete, info.FullName),
-                        ConfirmationTypes.RetryCancel,
-                        WindowBaseViewModel.MessageKeyConfirmation));
-
-                resultDialogResult = message.Response;
-
-                // ReSharper disable once AccessToDisposedClosure
-                m.Set();
-            });
-
-            m.Wait();
-
-            switch (resultDialogResult)
+            switch (message.Response)
             {
                 case DialogResultTypes.Retry:
                     return AccessFailureDeleteActions.Retry;
-                
+
                 case DialogResultTypes.Cancel:
                     CancellationTokenSource.Cancel();
                     return AccessFailureDeleteActions.Cancel;

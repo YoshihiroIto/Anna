@@ -2,6 +2,7 @@
 using Anna.Service;
 using Avalonia.Threading;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -37,6 +38,34 @@ public sealed class InteractionMessenger : IHasServiceProviderContainer
 
         return message;
     }
+
+    public T Raise<T>(T message)
+        where T : InteractionMessage
+    {
+        if (Raised is null)
+            return message;
+
+        using var m = new ManualResetEventSlim();
+
+        Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            foreach (var d in Raised.GetInvocationList())
+            {
+                if (d is not InteractionMessageRaisedEventHandler eventHandler)
+                    throw new InvalidOperationException();
+
+                await eventHandler.Invoke(this, message);
+            }
+
+            // ReSharper disable once AccessToDisposedClosure
+            m.Set();
+        });
+
+        m.Wait();
+
+        return message;
+    }
+
 
     public delegate ValueTask InteractionMessageRaisedEventHandler(object? sender, InteractionMessage message);
 }

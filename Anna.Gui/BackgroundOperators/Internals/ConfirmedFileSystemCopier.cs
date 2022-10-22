@@ -4,10 +4,8 @@ using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Service;
-using Avalonia.Threading;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 
 namespace Anna.Gui.BackgroundOperators.Internals;
 
@@ -26,90 +24,55 @@ internal sealed class ConfirmedFileSystemCopier
 
     protected override void CopyActionWhenExists(string srcPath, string destPath, ref CopyActionWhenExistsResult result)
     {
+        Debug.Assert(CancellationTokenSource is not null);
+        
         lock (_lockObj)
         {
             if (result.IsSameActionThereafter)
                 return;
 
-            Debug.Assert(CancellationTokenSource is not null);
-
-            var resultDialogResult = DialogResultTypes.Cancel;
-            result = new CopyActionWhenExistsResult(ExistsCopyFileActions.Skip, "", false);
-
             if (CancellationTokenSource.IsCancellationRequested)
                 return;
 
-            using var m = new ManualResetEventSlim();
+            var message = _arg.Messenger.Raise(
+                new SelectFileCopyActionMessage(
+                    srcPath,
+                    destPath,
+                    WindowBaseViewModel.MessageKeySelectFileCopyAction));
 
-            var tempResult = new CopyActionWhenExistsResult(ExistsCopyFileActions.Skip, "", false);
+            result = message.Response.Result;
 
-            Dispatcher.UIThread.InvokeAsync(async () =>
-            {
-                var message = await _arg.Messenger.RaiseAsync(
-                    new SelectFileCopyActionMessage(
-                        srcPath,
-                        destPath,
-                        WindowBaseViewModel.MessageKeySelectFileCopyAction));
-
-                resultDialogResult = resultDialogResult = message.Response.DialogResult;
-                tempResult = message.Response.Result;
-
-                // ReSharper disable once AccessToDisposedClosure
-                m.Set();
-            });
-
-            m.Wait();
-
-            result = tempResult;
-
-            if (resultDialogResult == DialogResultTypes.Cancel)
+            if (message.Response.DialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();
         }
     }
 
-    protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(
-        string destPath)
+    protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(string destPath)
     {
+        Debug.Assert(CancellationTokenSource is not null);
+        
         lock (_lockObj)
         {
-            Debug.Assert(CancellationTokenSource is not null);
-
             if (CancellationTokenSource.IsCancellationRequested)
                 return new CopyActionWhenSamePathResult(SamePathCopyFileActions.Skip, "");
 
-            var resultDialogResult = DialogResultTypes.Cancel;
-            var resultFilePath = "";
+            var folder = Path.GetDirectoryName(destPath) ?? "";
+            var filename = Path.GetFileName(destPath);
 
-            using var m = new ManualResetEventSlim();
+            var message = _arg.Messenger.Raise(
+                new ChangeEntryNameMessage(
+                    folder,
+                    filename,
+                    WindowBaseViewModel.MessageKeyChangeEntryName));
 
-            Dispatcher.UIThread.InvokeAsync(async () =>
-            {
-                var folder = Path.GetDirectoryName(destPath) ?? "";
-                var filename = Path.GetFileName(destPath);
-
-                var message = await _arg.Messenger.RaiseAsync(
-                    new ChangeEntryNameMessage(
-                        folder,
-                        filename,
-                        WindowBaseViewModel.MessageKeyChangeEntryName));
-
-                resultDialogResult = message.Response.DialogResult;
-                resultFilePath = message.Response.FilePath;
-
-                // ReSharper disable once AccessToDisposedClosure
-                m.Set();
-            });
-
-            m.Wait();
-
-            if (resultDialogResult == DialogResultTypes.Cancel)
+            if (message.Response.DialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();
 
             return new CopyActionWhenSamePathResult(
-                resultDialogResult == DialogResultTypes.Ok
+                message.Response.DialogResult == DialogResultTypes.Ok
                     ? SamePathCopyFileActions.Override
                     : SamePathCopyFileActions.Skip,
-                resultFilePath);
+                message.Response.FilePath);
         }
     }
 }

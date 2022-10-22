@@ -8,7 +8,7 @@ namespace Anna.Gui.Views.Windows.Dialogs;
 public sealed class SelectFileCopyActionDialogViewModel
     : HasModelWindowBaseViewModel<(string SrcFilepath,  string DestFilepath)>
 {
-    public FileSystemCopier.CopyStrategyWhenExistsResult Result { get; private set; } =
+    public FileSystemCopier.CopyActionWhenExistsResult Result { get; private set; } =
         new(ExistsCopyFileActions.Skip, "", false);
 
     public SelectFileCopyActionDialogViewModel(IServiceProvider dic)

@@ -40,19 +40,19 @@ public abstract class FileSystemCopier : IFileProcessable
                     {
                         Directory.CreateDirectory(destPath);
 
-                        var strategy = SamePathCopyFileActions.Override;
+                        var action = SamePathCopyFileActions.Override;
                         var dest = Path.Combine(destPath, Path.GetFileName(src));
 
                         if (src == dest)
                         {
-                            (strategy, dest) = CopyStrategyWhenSamePath(dest);
+                            (action, dest) = CopyActionWhenSamePath(dest);
 
                             if (CancellationTokenSource is not null &&
                                 CancellationTokenSource.IsCancellationRequested)
                                 return;
                         }
 
-                        if (strategy == SamePathCopyFileActions.Override)
+                        if (action == SamePathCopyFileActions.Override)
                             CopyFileInternal(new FileInfo(src), new FileInfo(dest));
 
                         FileProcessed?.Invoke(this, EventArgs.Empty);
@@ -79,17 +79,17 @@ public abstract class FileSystemCopier : IFileProcessable
 
         var targetFolderPath = Path.Combine(dst, Path.GetFileName(src));
         {
-            var strategy = SamePathCopyFileActions.Override;
+            var action = SamePathCopyFileActions.Override;
 
             if (srcInfo.FullName == targetFolderPath)
             {
-                (strategy, targetFolderPath) = CopyStrategyWhenSamePath(targetFolderPath);
+                (action, targetFolderPath) = CopyActionWhenSamePath(targetFolderPath);
 
                 if (CancellationTokenSource.IsCancellationRequested)
                     return;
             }
 
-            if (strategy == SamePathCopyFileActions.Skip)
+            if (action == SamePathCopyFileActions.Skip)
                 return;
         }
 
@@ -104,18 +104,18 @@ public abstract class FileSystemCopier : IFileProcessable
             {
                 Debug.Assert(CancellationTokenSource is not null);
 
-                var strategy = SamePathCopyFileActions.Override;
+                var action = SamePathCopyFileActions.Override;
                 var dest = Path.Combine(targetFolderPath, file.Name);
 
                 if (file.FullName == dest)
                 {
-                    (strategy, dest) = CopyStrategyWhenSamePath(dest);
+                    (action, dest) = CopyActionWhenSamePath(dest);
 
                     if (CancellationTokenSource.IsCancellationRequested)
                         return;
                 }
 
-                if (strategy == SamePathCopyFileActions.Override)
+                if (action == SamePathCopyFileActions.Override)
                     CopyFileInternal(file, new FileInfo(dest));
 
                 FileProcessed?.Invoke(this, EventArgs.Empty);
@@ -135,7 +135,7 @@ public abstract class FileSystemCopier : IFileProcessable
 
         if (destFile.Exists)
         {
-            var result = CopyStrategyWhenExists(srcFile.FullName, destFile.FullName);
+            var result = CopyActionWhenExists(srcFile.FullName, destFile.FullName);
 
             switch (result.Action)
             {
@@ -175,13 +175,13 @@ public abstract class FileSystemCopier : IFileProcessable
         }
     }
 
-    protected abstract CopyStrategyWhenExistsResult CopyStrategyWhenExists(string srcPath, string destPath);
-    protected abstract CopyStrategyWhenSamePathResult CopyStrategyWhenSamePath(string destPath);
+    protected abstract CopyActionWhenExistsResult CopyActionWhenExists(string srcPath, string destPath);
+    protected abstract CopyActionWhenSamePathResult CopyActionWhenSamePath(string destPath);
 
-    public record struct CopyStrategyWhenExistsResult(ExistsCopyFileActions Action, string NewDestPath,
-        bool IsSameStrategyThereafter);
+    public record struct CopyActionWhenExistsResult(ExistsCopyFileActions Action, string NewDestPath,
+        bool IsSameActionThereafter);
 
-    public record struct CopyStrategyWhenSamePathResult(SamePathCopyFileActions Action, string NewDestPath);
+    public record struct CopyActionWhenSamePathResult(SamePathCopyFileActions Action, string NewDestPath);
 }
 
 public sealed class DefaultFileSystemCopier : FileSystemCopier
@@ -191,14 +191,14 @@ public sealed class DefaultFileSystemCopier : FileSystemCopier
     {
     }
 
-    protected override CopyStrategyWhenExistsResult CopyStrategyWhenExists(string srcPath, string destPath)
+    protected override CopyActionWhenExistsResult CopyActionWhenExists(string srcPath, string destPath)
     {
-        return new CopyStrategyWhenExistsResult(ExistsCopyFileActions.Override, destPath, true);
+        return new CopyActionWhenExistsResult(ExistsCopyFileActions.Override, destPath, true);
     }
 
-    protected override CopyStrategyWhenSamePathResult CopyStrategyWhenSamePath(
+    protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(
         string destPath)
     {
-        return new CopyStrategyWhenSamePathResult(SamePathCopyFileActions.Skip, destPath);
+        return new CopyActionWhenSamePathResult(SamePathCopyFileActions.Skip, destPath);
     }
 }

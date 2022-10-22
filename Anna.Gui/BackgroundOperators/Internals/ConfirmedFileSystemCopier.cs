@@ -24,14 +24,14 @@ internal sealed class ConfirmedFileSystemCopier
         dic.PopArg(out _arg);
     }
 
-    protected override CopyStrategyWhenExistsResult CopyStrategyWhenExists(string srcPath, string destPath)
+    protected override CopyActionWhenExistsResult CopyActionWhenExists(string srcPath, string destPath)
     {
         lock (_lockObj)
         {
             Debug.Assert(CancellationTokenSource is not null);
 
             var resultDialogResult = DialogResultTypes.Cancel;
-            var result = new CopyStrategyWhenExistsResult(ExistsCopyFileActions.Skip, "", false);
+            var result = new CopyActionWhenExistsResult(ExistsCopyFileActions.Skip, "", false);
 
             if (CancellationTokenSource.IsCancellationRequested)
                 return result;
@@ -62,7 +62,7 @@ internal sealed class ConfirmedFileSystemCopier
         }
     }
 
-    protected override CopyStrategyWhenSamePathResult CopyStrategyWhenSamePath(
+    protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(
         string destPath)
     {
         lock (_lockObj)
@@ -70,7 +70,7 @@ internal sealed class ConfirmedFileSystemCopier
             Debug.Assert(CancellationTokenSource is not null);
 
             if (CancellationTokenSource.IsCancellationRequested)
-                return new CopyStrategyWhenSamePathResult(SamePathCopyFileActions.Skip, "");
+                return new CopyActionWhenSamePathResult(SamePathCopyFileActions.Skip, "");
 
             var resultDialogResult = DialogResultTypes.Cancel;
             var resultFilePath = "";
@@ -100,7 +100,7 @@ internal sealed class ConfirmedFileSystemCopier
             if (resultDialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();
 
-            return new CopyStrategyWhenSamePathResult(
+            return new CopyActionWhenSamePathResult(
                 resultDialogResult == DialogResultTypes.Ok
                     ? SamePathCopyFileActions.Override
                     : SamePathCopyFileActions.Skip,

@@ -8,7 +8,7 @@ public sealed class SelectFileCopyActionMessage : InteractionMessage
     public string SrcPath { get; }
     public string DestPath { get; }
 
-    public (DialogResultTypes DialogResult, FileSystemCopier.CopyStrategyWhenExistsResult Result) Response
+    public (DialogResultTypes DialogResult, FileSystemCopier.CopyActionWhenExistsResult Result) Response
     {
         get;
         internal set;

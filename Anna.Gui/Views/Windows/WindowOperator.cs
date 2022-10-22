@@ -142,8 +142,7 @@ public static class WindowOperator
         return (viewModel.DialogResult, viewModel.ResultMode);
     }
 
-    public static async ValueTask<(DialogResultTypes Result, FileSystemCopier.CopyStrategyWhenExistsResult CopyStrategyWhenExistsResult)>
-        SelectFileCopyAction(IServiceProvider dic, Window owner, string srcFilepath, string destFilepath)
+    public static async ValueTask<(DialogResultTypes Result, FileSystemCopier.CopyActionWhenExistsResult CopyActionWhenExistsResult)> SelectFileCopyAction(IServiceProvider dic, Window owner, string srcFilepath, string destFilepath)
     {
         using var viewModel =
             dic.GetInstance<SelectFileCopyActionDialogViewModel, (string, string)>((srcFilepath, destFilepath));

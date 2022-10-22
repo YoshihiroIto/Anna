@@ -27,12 +27,12 @@ internal sealed class ConfirmedFileSystemDeleter
         dic.PopArg(out _arg);
     }
 
-    protected override ReadOnlyDeleteActions DeleteStrategyWhenReadonly(FileSystemInfo info)
+    protected override ReadOnlyDeleteActions DeleteActionWhenReadonly(FileSystemInfo info)
     {
         return ReadOnlyDeleteActions.Skip;
     }
 
-    protected override AccessFailureDeleteActions DeleteStrategyWhenAccessFailure(FileSystemInfo info)
+    protected override AccessFailureDeleteActions DeleteActionWhenAccessFailure(FileSystemInfo info)
     {
         lock (_lockObj)
         {

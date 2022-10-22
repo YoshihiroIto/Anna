@@ -88,7 +88,7 @@ public abstract class FileSystemDeleter : IFileProcessable
 
         if (isReadonly && state.IsAllDelete == false)
         {
-            switch (DeleteStrategyWhenReadonly(file))
+            switch (DeleteActionWhenReadonly(file))
             {
                 case ReadOnlyDeleteActions.Skip:
                     isSkip = true;
@@ -125,7 +125,7 @@ public abstract class FileSystemDeleter : IFileProcessable
         var isSkipped = 0;
 
         {
-            var (isSkip, _) = CheckDeleteStrategyWhenReadonly();
+            var (isSkip, _) = CheckDeleteActionWhenReadonly();
             if (CancellationTokenSource.IsCancellationRequested)
                 return true;
 
@@ -151,7 +151,7 @@ public abstract class FileSystemDeleter : IFileProcessable
             });
 
         {
-            var (isSkip, isReadOnly) = CheckDeleteStrategyWhenReadonly();
+            var (isSkip, isReadOnly) = CheckDeleteActionWhenReadonly();
             if (CancellationTokenSource.IsCancellationRequested)
                 return true;
 
@@ -169,7 +169,7 @@ public abstract class FileSystemDeleter : IFileProcessable
         return isSkipped != 0;
 
         //-----------------------------------------------------------------------------------
-        (bool IsSkip, bool IsReadonly) CheckDeleteStrategyWhenReadonly()
+        (bool IsSkip, bool IsReadonly) CheckDeleteActionWhenReadonly()
         {
             Debug.Assert(CancellationTokenSource is not null);
 
@@ -178,7 +178,7 @@ public abstract class FileSystemDeleter : IFileProcessable
 
             if (isReadonly && state.IsAllDelete == false)
             {
-                switch (DeleteStrategyWhenReadonly(srcInfo))
+                switch (DeleteActionWhenReadonly(srcInfo))
                 {
                     case ReadOnlyDeleteActions.Skip:
                         isSkip = true;
@@ -213,7 +213,7 @@ public abstract class FileSystemDeleter : IFileProcessable
             }
             catch (IOException)
             {
-                switch (DeleteStrategyWhenAccessFailure(di))
+                switch (DeleteActionWhenAccessFailure(di))
                 {
                     case AccessFailureDeleteActions.Skip:
                         isSkip = true;
@@ -234,8 +234,8 @@ public abstract class FileSystemDeleter : IFileProcessable
         }
     }
 
-    protected abstract ReadOnlyDeleteActions DeleteStrategyWhenReadonly(FileSystemInfo info);
-    protected abstract AccessFailureDeleteActions DeleteStrategyWhenAccessFailure(FileSystemInfo info);
+    protected abstract ReadOnlyDeleteActions DeleteActionWhenReadonly(FileSystemInfo info);
+    protected abstract AccessFailureDeleteActions DeleteActionWhenAccessFailure(FileSystemInfo info);
 }
 
 public class DefaultFileSystemDeleter : FileSystemDeleter
@@ -245,12 +245,12 @@ public class DefaultFileSystemDeleter : FileSystemDeleter
     {
     }
     
-    protected override ReadOnlyDeleteActions DeleteStrategyWhenReadonly(FileSystemInfo info)
+    protected override ReadOnlyDeleteActions DeleteActionWhenReadonly(FileSystemInfo info)
     {
         return ReadOnlyDeleteActions.Skip;
     }
 
-    protected override AccessFailureDeleteActions DeleteStrategyWhenAccessFailure(FileSystemInfo info)
+    protected override AccessFailureDeleteActions DeleteActionWhenAccessFailure(FileSystemInfo info)
     {
         return AccessFailureDeleteActions.Skip;
     }

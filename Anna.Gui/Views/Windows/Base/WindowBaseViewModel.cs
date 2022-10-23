@@ -19,7 +19,6 @@ namespace Anna.Gui.Views.Windows.Base;
 public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
 {
     public const string MessageKeyClose = nameof(MessageKeyClose);
-    public const string MessageKeyInformation = nameof(MessageKeyInformation);
     public const string MessageKeyConfirmation = nameof(MessageKeyConfirmation);
     public const string MessageKeyJumpFolder = nameof(MessageKeyJumpFolder);
     public const string MessageKeySelectFolder = nameof(MessageKeySelectFolder);

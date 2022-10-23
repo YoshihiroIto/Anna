@@ -39,10 +39,6 @@
 
     <Interaction.Behaviors>
         <behaviors:FolderPanelInputBehavior />
-
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyInformation}" Messenger="{Binding Messenger}">
-            <actions:InformationAction />
-        </behaviors1:InteractionMessageTrigger>
         
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyChangeEntryName}" Messenger="{Binding Messenger}">
             <actions:ChangeEntryNameAction />

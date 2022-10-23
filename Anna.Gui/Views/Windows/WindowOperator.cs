@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using ConfirmationDialog=Anna.Gui.Views.Windows.Dialogs.ConfirmationDialog;
 using EntryDisplayDialog=Anna.Gui.Views.Windows.Dialogs.EntryDisplayDialog;
 using JumpFolderDialog=Anna.Gui.Views.Windows.Dialogs.JumpFolderDialog;
-using MessageDialog=Anna.Gui.Views.Windows.Dialogs.MessageDialog;
 using SortModeAndOrderDialog=Anna.Gui.Views.Windows.Dialogs.SortModeAndOrderDialog;
 
 namespace Anna.Gui.Views.Windows;
@@ -81,19 +80,6 @@ public static class WindowOperator
         view.DataContext = viewModel;
 
         await view.ShowDialog(owner);
-    }
-
-    public static async ValueTask<DialogResultTypes>
-        DisplayInformationAsync(IServiceProvider dic, Window owner, string title, string text)
-    {
-        using var viewModel = dic.GetInstance<MessageDialogViewModel, (string Title, string Text)>((title, text));
-
-        var view = dic.GetInstance<MessageDialog>();
-        view.DataContext = viewModel;
-
-        await view.ShowDialog(owner);
-
-        return viewModel.DialogResult;
     }
 
     public static async ValueTask<DialogResultTypes>

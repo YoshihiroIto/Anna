@@ -1,4 +1,5 @@
-﻿using Anna.DomainModel.Config;
+﻿using Anna.Constants;
+using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
@@ -82,10 +83,11 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
             return true;
 
         await messenger.RaiseAsync(
-            new InformationMessage(
+            new ConfirmationMessage(
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),
-                WindowBaseViewModel.MessageKeyInformation));
+                DialogResultTypes.Ok,
+                WindowBaseViewModel.MessageKeyConfirmation));
 
         return false;
     }
@@ -109,10 +111,11 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                 .Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
 
             await messenger.RaiseAsync(
-                new InformationMessage(
+                new ConfirmationMessage(
                     Resources.AppName,
                     string.Format(Resources.Message_FailedToStartEditor, editor.Editor),
-                    WindowBaseViewModel.MessageKeyInformation));
+                    DialogResultTypes.Ok,
+                    WindowBaseViewModel.MessageKeyConfirmation));
         }
     }
 
@@ -128,10 +131,11 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                 .Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
 
             await messenger.RaiseAsync(
-                new InformationMessage(
+                new ConfirmationMessage(
                     Resources.AppName,
                     Resources.Message_FailedToStartAssociatedApp,
-                    WindowBaseViewModel.MessageKeyInformation));
+                    DialogResultTypes.Ok,
+                    WindowBaseViewModel.MessageKeyConfirmation));
         }
     }
 }

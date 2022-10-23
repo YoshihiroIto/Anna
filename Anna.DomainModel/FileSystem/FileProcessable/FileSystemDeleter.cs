@@ -51,7 +51,10 @@ public abstract class FileSystemDeleter : IFileProcessable
         CancellationTokenSource = new CancellationTokenSource();
 
         if (mode == EntryDeleteModes.TrashCan)
-            throw new NotImplementedException();
+        {
+            _dic.GetInstance<ITrashCanService>().SendToTrashCan(sourceEntries);
+            return;
+        }
 
         try
         {

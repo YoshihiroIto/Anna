@@ -39,6 +39,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.ObjectLifetimeChecker"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel.Service", "Anna.DomainModel.Service\Anna.DomainModel.Service.csproj", "{FD97A228-37B8-4310-B39F-7F7F01E4C20A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.Windows", "Anna.Service.Windows\Anna.Service.Windows.csproj", "{00E38B32-F25D-4BDD-A1D6-AF67AA37B62A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.MacOS", "Anna.Service.MacOS\Anna.Service.MacOS.csproj", "{384200DB-45FB-47EC-991E-A3571FDB83D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.Linux", "Anna.Service.Linux\Anna.Service.Linux.csproj", "{486892CA-08A8-4737-BB55-16C3B610A544}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +111,18 @@ Global
 		{FD97A228-37B8-4310-B39F-7F7F01E4C20A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD97A228-37B8-4310-B39F-7F7F01E4C20A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD97A228-37B8-4310-B39F-7F7F01E4C20A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00E38B32-F25D-4BDD-A1D6-AF67AA37B62A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00E38B32-F25D-4BDD-A1D6-AF67AA37B62A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00E38B32-F25D-4BDD-A1D6-AF67AA37B62A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00E38B32-F25D-4BDD-A1D6-AF67AA37B62A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{384200DB-45FB-47EC-991E-A3571FDB83D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{384200DB-45FB-47EC-991E-A3571FDB83D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{384200DB-45FB-47EC-991E-A3571FDB83D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{384200DB-45FB-47EC-991E-A3571FDB83D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{486892CA-08A8-4737-BB55-16C3B610A544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{486892CA-08A8-4737-BB55-16C3B610A544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{486892CA-08A8-4737-BB55-16C3B610A544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{486892CA-08A8-4737-BB55-16C3B610A544}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -64,7 +64,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
 
         return new DefaultServiceProvider(configDir, appConfigFilePath);
     }
-    
+
     private void Register(string logOutputDir, string appConfigFilePath)
     {
         RegisterSingleton<IObjectLifetimeCheckerService,
@@ -92,6 +92,19 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();
+        RegisterSingleton<ITrashCanService>(() =>
+        {
+            if (OperatingSystem.IsWindows())
+                return new Service.Windows.TrashCanService();
+
+            if (OperatingSystem.IsMacOS())
+                return new Service.MacOS.TrashCanService();
+
+            if (OperatingSystem.IsLinux())
+                return new Service.Linux.TrashCanService();
+
+            throw new PlatformNotSupportedException();
+        });
 
         Register<IBackgroundWorker, BackgroundWorker>(Lifestyle.Transient);
 

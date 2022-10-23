@@ -19,7 +19,7 @@ public abstract class FileSystemCopier : IFileProcessable
         private readonly CancellationTokenSource _cts;
 
         public CopyActionWhenExistsResult CopyActionWhenExistsResult =
-            new(ExistsCopyFileActions.Skip, "", false);
+            new(ExistsCopyFileActions.Skip, "", false, true);
 
         public State(CancellationTokenSource cts)
         {
@@ -202,7 +202,7 @@ public abstract class FileSystemCopier : IFileProcessable
     protected abstract CopyActionWhenSamePathResult CopyActionWhenSamePath(string destPath);
 
     public record struct CopyActionWhenExistsResult(ExistsCopyFileActions Action, string NewDestPath,
-        bool IsSameActionThereafter);
+        bool IsSameActionThereafter, bool IsFirst);
 
     public record struct CopyActionWhenSamePathResult(SamePathCopyFileActions Action, string NewDestPath);
 }
@@ -217,7 +217,7 @@ public sealed class DefaultFileSystemCopier : FileSystemCopier
     // ReSharper disable once RedundantAssignment
     protected override void CopyActionWhenExists(string srcPath, string destPath, ref CopyActionWhenExistsResult result)
     {
-        result = new CopyActionWhenExistsResult(ExistsCopyFileActions.Override, destPath, true);
+        result = new CopyActionWhenExistsResult(ExistsCopyFileActions.Override, destPath, true, true);
     }
 
     protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(

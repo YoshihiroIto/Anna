@@ -41,6 +41,7 @@ internal sealed class ConfirmedFileSystemCopier
                 new SelectFileCopyActionMessage(
                     srcPath,
                     destPath,
+                    result.IsFirst,
                     WindowBaseViewModel.MessageKeySelectFileCopyAction));
 
             result = message.Response.Result;

@@ -132,10 +132,12 @@ public static class WindowOperator
 
     public static async
         ValueTask<(DialogResultTypes Result, FileSystemCopier.CopyActionWhenExistsResult CopyActionWhenExistsResult)>
-        SelectFileCopyAction(IServiceProvider dic, Window owner, string srcFilepath, string destFilepath)
+        SelectFileCopyAction(IServiceProvider dic, Window owner, string srcFilepath, string destFilepath,
+            bool isSameActionThereafter)
     {
         using var viewModel =
-            dic.GetInstance<SelectFileCopyActionDialogViewModel, (string, string)>((srcFilepath, destFilepath));
+            dic.GetInstance<SelectFileCopyActionDialogViewModel, (string, string, bool)>
+                ((srcFilepath, destFilepath, isSameActionThereafter));
 
         var view = dic.GetInstance<SelectFileCopyActionDialog>();
         view.DataContext = viewModel;

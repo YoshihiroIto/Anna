@@ -34,6 +34,7 @@ public sealed class SelectFileCopyActionAction : AvaloniaObject, IAction, IAsync
             hasServiceProviderContainer.Dic,
             owner,
             selectFileCopyActionMessage.SrcPath,
-            selectFileCopyActionMessage.DestPath);
+            selectFileCopyActionMessage.DestPath,
+            selectFileCopyActionMessage.IsSameActionThereafter);
     }
 }

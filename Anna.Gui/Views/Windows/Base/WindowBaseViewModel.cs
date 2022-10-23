@@ -27,26 +27,11 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
 
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
-    public ICommand OkCommand => _OkCommand ??= CreateButtonCommand(DialogResultTypes.Ok);
-    public ICommand CancelCommand => _CancelCommand ??= CreateButtonCommand(DialogResultTypes.Cancel);
-    public ICommand YesCommand => _YesCommand ??= CreateButtonCommand(DialogResultTypes.Yes);
-    public ICommand NoCommand => _NoCommand ??= CreateButtonCommand(DialogResultTypes.No);
-    public ICommand SkipCommand => _SkipCommand ??= CreateButtonCommand(DialogResultTypes.Skip);
-    public ICommand RetryCommand => _RetryCommand ??= CreateButtonCommand(DialogResultTypes.Retry);
-    public ICommand AllDeleteCommand => _AllDeleteCommand ??= CreateButtonCommand(DialogResultTypes.AllDelete);
-
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily => _ViewerFontFamily ??= CreateViewerFontFamily();
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize => _ViewerFontSize ??= CreateViewerFontSize();
 
     public DialogResultTypes DialogResult { get; set; } = DialogResultTypes.Cancel;
 
-    protected ICommand? _OkCommand;
-    protected ICommand? _CancelCommand;
-    protected ICommand? _YesCommand;
-    protected ICommand? _NoCommand;
-    protected ICommand? _SkipCommand;
-    protected ICommand? _RetryCommand;
-    protected ICommand? _AllDeleteCommand;
     private ReadOnlyReactivePropertySlim<FontFamily>? _ViewerFontFamily;
     private ReadOnlyReactivePropertySlim<double>? _ViewerFontSize;
 
@@ -68,22 +53,7 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
         });
     }
 
-    protected ICommand FindButton(DialogResultTypes type)
-    {
-        return type switch
-        {
-            DialogResultTypes.Ok => OkCommand,
-            DialogResultTypes.Cancel => CancelCommand,
-            DialogResultTypes.Yes => YesCommand,
-            DialogResultTypes.No => NoCommand,
-            DialogResultTypes.Skip => SkipCommand,
-            DialogResultTypes.Retry => RetryCommand,
-            DialogResultTypes.AllDelete => AllDeleteCommand,
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
-    }
-
-    private ICommand CreateButtonCommand(DialogResultTypes result)
+    protected ICommand CreateButtonCommand(DialogResultTypes result)
     {
         return new AsyncDelegateCommand(async () =>
         {

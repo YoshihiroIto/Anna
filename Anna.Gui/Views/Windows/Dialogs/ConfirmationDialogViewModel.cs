@@ -39,7 +39,7 @@ public sealed class ConfirmationDialogViewModel
 
             confirmations &= ~c;
 
-            var command = FindButton((DialogResultTypes)c);
+            var command = CreateButtonCommand((DialogResultTypes)c);
             var caption = Resources.ResourceManager.GetString("Dialog_" + ((DialogResultTypes)c).ToStringFast()) ??
                           throw new NullReferenceException();
 

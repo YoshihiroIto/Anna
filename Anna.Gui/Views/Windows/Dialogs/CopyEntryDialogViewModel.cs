@@ -9,6 +9,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
@@ -26,7 +27,9 @@ public sealed class CopyEntryDialogViewModel
     public ReadOnlyObservableCollection<string> DestFoldersHistory => Model.DestFoldersHistory;
     public ReactivePropertySlim<int> SelectedDestFolderHistory { get; }
 
-    public AsyncReactiveCommand OpenJumpFolderDialogCommand { get; }
+    public ICommand OpenJumpFolderDialogCommand { get; }
+    public ICommand OkCommand { get; }
+    public ICommand CancelCommand { get; }
 
     public EntriesStatsPanelViewModel EntriesStatsPanelViewModel { get; }
 
@@ -45,9 +48,11 @@ public sealed class CopyEntryDialogViewModel
             .WithSubscribe(OnJumpFolderDialogSync)
             .AddTo(Trash);
         
-        _OkCommand = new AsyncReactiveCommand()
+        OkCommand = new AsyncReactiveCommand()
             .WithSubscribe(OnDecisionAsync)
             .AddTo(Trash);
+        
+        CancelCommand = CreateButtonCommand(DialogResultTypes.Cancel);
 
         EntriesStatsPanelViewModel =
             dic.GetInstance<EntriesStatsPanelViewModel, EntriesStats>(Model.Stats).AddTo(Trash);

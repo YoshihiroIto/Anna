@@ -33,7 +33,9 @@ public sealed class SelectFileCopyActionDialogViewModel
 
     public ICommand CopyWhenTimestampIsNewestCommand { get; }
     public ICommand CopyOverrideCommand { get; }
+    public ICommand SkipCommand { get; }
     public ICommand RenameAndCopyCommand { get; }
+    public ICommand CancelCommand { get; }
 
     public SelectFileCopyActionDialogViewModel(IServiceProvider dic)
         : base(dic)
@@ -54,9 +56,9 @@ public sealed class SelectFileCopyActionDialogViewModel
         CopyWhenTimestampIsNewestCommand =
             CreateButtonCommand(ExistsCopyFileActions.NewerTimestamp, DialogResultTypes.Ok);
         CopyOverrideCommand = CreateButtonCommand(ExistsCopyFileActions.Override, DialogResultTypes.Ok);
-
-        _SkipCommand = CreatSkipCommand();
+        SkipCommand = CreatSkipCommand();
         RenameAndCopyCommand = CreateRenameAndCopyCommand();
+        CancelCommand = CreateButtonCommand(DialogResultTypes.Cancel);
     }
 
     private ICommand CreateButtonCommand(ExistsCopyFileActions action, DialogResultTypes result)

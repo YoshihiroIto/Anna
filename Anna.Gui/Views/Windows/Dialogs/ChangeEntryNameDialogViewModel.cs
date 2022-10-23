@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Windows.Input;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
@@ -24,6 +25,10 @@ public sealed class ChangeEntryNameDialogViewModel
     public ReadOnlyReactivePropertySlim<bool> IsInvalidName { get; }
     public ReadOnlyReactivePropertySlim<bool> IsEmptyName { get; }
     public ReadOnlyReactivePropertySlim<bool> ExistsEntity { get; }
+    
+    public ICommand OkCommand { get; }
+    public ICommand SkipCommand { get; }
+    public ICommand CancelCommand { get; }
 
     public IEnumerable<ReadOnlyReactivePropertySlim<bool>> AllConditions
     {
@@ -56,10 +61,13 @@ public sealed class ChangeEntryNameDialogViewModel
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
-        _OkCommand = AllConditions.CombineLatestValuesAreAllFalse()
+        OkCommand = AllConditions.CombineLatestValuesAreAllFalse()
             .ToReactiveCommand()
             .WithSubscribe(OnDecisionWithoutCheckAsync)
             .AddTo(Trash);
+
+        SkipCommand = CreateButtonCommand(DialogResultTypes.Skip);
+        CancelCommand = CreateButtonCommand(DialogResultTypes.Cancel);
     }
 
     // ReSharper disable once UnusedMember.Global

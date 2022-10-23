@@ -67,6 +67,20 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
         });
     }
 
+    protected ICommand FindButton(DialogResultTypes type)
+    {
+        return type switch
+        {
+            DialogResultTypes.Ok => OkCommand,
+            DialogResultTypes.Cancel => CancelCommand,
+            DialogResultTypes.Yes => YesCommand,
+            DialogResultTypes.No => NoCommand,
+            DialogResultTypes.Skip => SkipCommand,
+            DialogResultTypes.Retry => RetryCommand,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+
     private ICommand CreateButtonCommand(DialogResultTypes result)
     {
         return new AsyncDelegateCommand(async () =>

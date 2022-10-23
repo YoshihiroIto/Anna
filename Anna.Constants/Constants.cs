@@ -79,22 +79,17 @@ public enum AccessFailureDeleteActions
     Retry
 }
 
-public enum ConfirmationTypes
-{
-    YesNo,
-    RetryCancel,
-}
-
 [EnumExtensions]
 [Flags]
 public enum DialogResultTypes
 {
-    Ok = 1<<0,
-    Cancel = 1<<1,
-    Yes = 1<<2,
-    No = 1<<3,
-    Skip = 1<<4,
-    Retry = 1<<5,
+    Retry = 1<<0,
+    
+    Ok = 1<<10,
+    Cancel = 1<<11,
+    Yes = 1<<12,
+    No = 1<<13,
+    Skip = 1<<14,
 }
 
 public static class Constants

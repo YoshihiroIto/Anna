@@ -9,7 +9,6 @@
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  xmlns:templateSelectors="clr-namespace:Anna.Gui.Views.TemplateSelectors"
                   Title="{Binding Title,
                                   Mode=OneTime}"
                   MinWidth="300"
@@ -41,43 +40,87 @@
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <ContentControl Content="{Binding}" DockPanel.Dock="Bottom">
             <ContentControl.Template>
-                <templateSelectors:ConfirmationDialogDataTemplateSelector>
-                    <templateSelectors:ConfirmationDialogDataTemplateSelector.YesNoDataTemplate>
+                <dialogs1:ConfirmationDialogDataTemplateSelector>
+                    <dialogs1:ConfirmationDialogDataTemplateSelector.C1Template>
                         <ControlTemplate>
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Button Classes="dialog" Command="{Binding YesCommand, Mode=OneTime}">
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[0].Command, Mode=OneTime}">
                                     <Interaction.Behaviors>
                                         <behaviors:InputElementFocusBehavior />
                                     </Interaction.Behaviors>
 
-                                    <AccessText Text="{ReflectionBinding R.Dialog_Yes}" />
-                                </Button>
-
-                                <Button Classes="dialog" Command="{Binding NoCommand, Mode=OneTime}">
-                                    <AccessText Text="{ReflectionBinding R.Dialog_No}" />
+                                    <AccessText Text="{ReflectionBinding Confirmations[0].Caption, Mode=OneTime}" />
                                 </Button>
                             </StackPanel>
                         </ControlTemplate>
-                    </templateSelectors:ConfirmationDialogDataTemplateSelector.YesNoDataTemplate>
+                    </dialogs1:ConfirmationDialogDataTemplateSelector.C1Template>
 
-                    <templateSelectors:ConfirmationDialogDataTemplateSelector.RetryCancelDataTemplate>
+                    <dialogs1:ConfirmationDialogDataTemplateSelector.C2Template>
                         <ControlTemplate>
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Button Classes="dialog" Command="{Binding RetryCommand, Mode=OneTime}">
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[0].Command, Mode=OneTime}">
                                     <Interaction.Behaviors>
                                         <behaviors:InputElementFocusBehavior />
                                     </Interaction.Behaviors>
 
-                                    <AccessText Text="{ReflectionBinding R.Dialog_Retry}" />
+                                    <AccessText Text="{ReflectionBinding Confirmations[0].Caption, Mode=OneTime}" />
                                 </Button>
 
-                                <Button Classes="dialog" Command="{Binding CancelCommand, Mode=OneTime}">
-                                    <AccessText Text="{ReflectionBinding R.Dialog_Cancel}" />
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[1].Command, Mode=OneTime}">
+                                    <AccessText Text="{ReflectionBinding Confirmations[1].Caption, Mode=OneTime}" />
                                 </Button>
                             </StackPanel>
                         </ControlTemplate>
-                    </templateSelectors:ConfirmationDialogDataTemplateSelector.RetryCancelDataTemplate>
-                </templateSelectors:ConfirmationDialogDataTemplateSelector>
+                    </dialogs1:ConfirmationDialogDataTemplateSelector.C2Template>
+
+                    <dialogs1:ConfirmationDialogDataTemplateSelector.C3Template>
+                        <ControlTemplate>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[0].Command, Mode=OneTime}">
+                                    <Interaction.Behaviors>
+                                        <behaviors:InputElementFocusBehavior />
+                                    </Interaction.Behaviors>
+
+                                    <AccessText Text="{ReflectionBinding Confirmations[0].Caption, Mode=OneTime}" />
+                                </Button>
+
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[1].Command, Mode=OneTime}">
+                                    <AccessText Text="{ReflectionBinding Confirmations[1].Caption, Mode=OneTime}" />
+                                </Button>
+
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[2].Command, Mode=OneTime}">
+                                    <AccessText Text="{ReflectionBinding Confirmations[2].Caption, Mode=OneTime}" />
+                                </Button>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </dialogs1:ConfirmationDialogDataTemplateSelector.C3Template>
+
+                    <dialogs1:ConfirmationDialogDataTemplateSelector.C4Template>
+                        <ControlTemplate>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[0].Command, Mode=OneTime}">
+                                    <Interaction.Behaviors>
+                                        <behaviors:InputElementFocusBehavior />
+                                    </Interaction.Behaviors>
+
+                                    <AccessText Text="{ReflectionBinding Confirmations[0].Caption, Mode=OneTime}" />
+                                </Button>
+
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[1].Command, Mode=OneTime}">
+                                    <AccessText Text="{ReflectionBinding Confirmations[1].Caption, Mode=OneTime}" />
+                                </Button>
+
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[2].Command, Mode=OneTime}">
+                                    <AccessText Text="{ReflectionBinding Confirmations[2].Caption, Mode=OneTime}" />
+                                </Button>
+
+                                <Button Classes="dialog" Command="{ReflectionBinding Confirmations[3].Command, Mode=OneTime}">
+                                    <AccessText Text="{ReflectionBinding Confirmations[3].Caption, Mode=OneTime}" />
+                                </Button>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </dialogs1:ConfirmationDialogDataTemplateSelector.C4Template>
+                </dialogs1:ConfirmationDialogDataTemplateSelector>
             </ContentControl.Template>
         </ContentControl>
 

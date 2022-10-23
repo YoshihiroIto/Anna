@@ -8,17 +8,17 @@ public sealed class ConfirmationMessage : InteractionMessage
 
     public readonly string Title;
     public readonly string Text;
-    public readonly ConfirmationTypes ConfirmationType;
+    public readonly DialogResultTypes Confirmations;
 
     public ConfirmationMessage(
         string title,
         string text,
-        ConfirmationTypes confirmationTypes,
+        DialogResultTypes confirmations,
         string messageKey)
         : base(messageKey)
     {
         Title = title;
         Text = text;
-        ConfirmationType = confirmationTypes;
+        Confirmations = confirmations;
     }
 }

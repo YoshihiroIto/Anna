@@ -46,7 +46,7 @@ internal sealed class ConfirmedFileSystemDeleter
                 new ConfirmationMessage(
                     Resources.AppName,
                     string.Format(Resources.Message_AccessFailureOnDelete, info.FullName),
-                    ConfirmationTypes.RetryCancel,
+                    DialogResultTypes.Retry | DialogResultTypes.Cancel,
                     WindowBaseViewModel.MessageKeyConfirmation));
 
             switch (message.Response)

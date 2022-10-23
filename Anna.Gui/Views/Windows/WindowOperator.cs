@@ -98,11 +98,11 @@ public static class WindowOperator
 
     public static async ValueTask<DialogResultTypes>
         DisplayConfirmationAsync(IServiceProvider dic, Window owner, string title, string text,
-            ConfirmationTypes confirmationType)
+            DialogResultTypes confirmations)
     {
-        using var viewModel = dic.GetInstance<ConfirmationDialogViewModel, (string, string, ConfirmationTypes)>((title,
+        using var viewModel = dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((title,
             text,
-            confirmationType));
+            confirmations));
 
         var view = dic.GetInstance<ConfirmationDialog>();
         view.DataContext = viewModel;

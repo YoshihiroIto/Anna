@@ -35,6 +35,6 @@ public sealed class ConfirmationAction : AvaloniaObject, IAction, IAsyncAction
             owner,
             confirmationMessage.Title,
             confirmationMessage.Text,
-            confirmationMessage.ConfirmationType);
+            confirmationMessage.Confirmations);
     }
 }

@@ -90,14 +90,22 @@ public abstract class FileSystemDeleter : IFileProcessable
         {
             switch (DeleteActionWhenReadonly(file))
             {
-                case ReadOnlyDeleteActions.Skip:
-                    isSkip = true;
+                case ReadOnlyDeleteActions.Delete:
+                    // do nothing
                     break;
 
                 case ReadOnlyDeleteActions.AllDelete:
                     state.IsAllDelete = true;
                     break;
-
+                
+                case ReadOnlyDeleteActions.Skip:
+                    isSkip = true;
+                    break;
+                    
+                case ReadOnlyDeleteActions.Cancel:
+                    CancellationTokenSource.Cancel();
+                    break;
+                
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -180,12 +188,20 @@ public abstract class FileSystemDeleter : IFileProcessable
             {
                 switch (DeleteActionWhenReadonly(srcInfo))
                 {
-                    case ReadOnlyDeleteActions.Skip:
-                        isSkip = true;
+                    case ReadOnlyDeleteActions.Delete:
+                        // do nothing
                         break;
 
                     case ReadOnlyDeleteActions.AllDelete:
                         state.IsAllDelete = true;
+                        break;
+                    
+                    case ReadOnlyDeleteActions.Skip:
+                        isSkip = true;
+                        break;
+                    
+                    case ReadOnlyDeleteActions.Cancel:
+                        CancellationTokenSource.Cancel();
                         break;
 
                     default:

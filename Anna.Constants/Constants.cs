@@ -66,8 +66,10 @@ public enum SamePathCopyFileActions
 
 public enum ReadOnlyDeleteActions
 {
-    Skip,
+    Delete,
     AllDelete,
+    Skip,
+    Cancel,
 }
 
 public enum AccessFailureDeleteActions

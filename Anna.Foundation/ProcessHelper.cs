@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Anna.Gui.Foundations;
 
@@ -10,6 +11,24 @@ public static class ProcessHelper
             Process.Start(command);
         else
             Process.Start(command, arguments);
+    }
+    
+    public static Task<string> ExecuteAndGetStdOutputAsync(string command, string arguments)
+    {
+        var process = new Process
+        {
+            StartInfo = new ProcessStartInfo(command)
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = false,
+                Arguments = arguments
+            }
+        };
+
+        process.Start();
+
+        return process.StandardOutput.ReadToEndAsync();
     }
 
     public static void RunAssociatedApp(string path)

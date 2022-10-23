@@ -45,10 +45,8 @@ public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<Folder>
             .Subscribe(_ =>
             {
                 if (dic.GetInstance<App>().Folders.IndexOf(Model) == -1)
- #pragma warning disable CS4014
-                    Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close,
-                        WindowBaseViewModel.MessageKeyClose));
- #pragma warning restore CS4014
+                    Messenger.RaiseAsync(
+                        new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose)).Forget();
             }).AddTo(Trash);
 
         Trash.Add(() =>

@@ -1,3 +1,4 @@
+using Anna.Foundation;
 using Anna.Gui.Views.Windows;
 using Anna.ServiceProvider;
 using Anna.TestFoundation;
@@ -58,15 +59,13 @@ public sealed class TestApp : IAsyncDisposable
 
     private async Task StartAsync(string[] args, bool isHeadless)
     {
- #pragma warning disable CS4014
         Task.Run(() =>
         {
             BuildAvaloniaApp(isHeadless, Dic)
                 .StartWithClassicDesktopLifetime(args);
 
             _sync.Set();
-        });
- #pragma warning restore CS4014
+        }).Forget();
 
         while (IsAvailableWindows == false)
             await Task.Delay(TimeSpan.FromMilliseconds(50));

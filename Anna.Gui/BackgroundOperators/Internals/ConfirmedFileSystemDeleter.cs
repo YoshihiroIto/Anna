@@ -68,7 +68,6 @@ internal sealed class ConfirmedFileSystemDeleter
                     break;
 
                 case DialogResultTypes.Cancel:
-                    CancellationTokenSource.Cancel();
                     action = ReadOnlyDeleteActions.Cancel;
                     break;
 
@@ -106,7 +105,6 @@ internal sealed class ConfirmedFileSystemDeleter
                     return AccessFailureDeleteActions.Retry;
 
                 case DialogResultTypes.Cancel:
-                    CancellationTokenSource.Cancel();
                     return AccessFailureDeleteActions.Cancel;
 
                 default:

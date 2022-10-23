@@ -69,6 +69,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All &amp;delete.
+        /// </summary>
+        public static string Dialog_AllDelete {
+            get {
+                return ResourceManager.GetString("Dialog_AllDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Cancel.
         /// </summary>
         public static string Dialog_Cancel {
@@ -269,10 +278,10 @@ namespace Anna.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The operation cannot be completed because the folder or file may be open in another program.
-        ///Please close the folder or file and retry the operation.
+        ///   Looks up a localized string similar to {0}
         ///
-        ///{0}.
+        ///The operation cannot be completed because the folder or file may be open in another program.
+        ///Please close the folder or file and retry the operation..
         /// </summary>
         public static string Message_AccessFailureOnDelete {
             get {
@@ -345,6 +354,17 @@ namespace Anna.Localization {
         public static string Message_OmittedDueToLargeSize {
             get {
                 return ResourceManager.GetString("Message_OmittedDueToLargeSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}
+        ///
+        ///This entry is read-only. Do you want to delete it?.
+        /// </summary>
+        public static string Message_ReadOnlyConfirmDelete {
+            get {
+                return ResourceManager.GetString("Message_ReadOnlyConfirmDelete", resourceCulture);
             }
         }
         

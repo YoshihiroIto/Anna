@@ -18,6 +18,8 @@ public abstract class FileSystemDeleter : IFileProcessable
     {
         public readonly ParallelOptions ParallelOptions;
 
+        public ReadOnlyDeleteActions ReadOnlyDeleteActions = ReadOnlyDeleteActions.Skip;
+
         public bool IsAllDelete
         {
             get => _IsAllDelete != 0;
@@ -88,7 +90,9 @@ public abstract class FileSystemDeleter : IFileProcessable
 
         if (isReadonly && state.IsAllDelete == false)
         {
-            switch (DeleteActionWhenReadonly(file))
+            DeleteActionWhenReadonly(file, ref state.ReadOnlyDeleteActions);
+
+            switch (state.ReadOnlyDeleteActions)
             {
                 case ReadOnlyDeleteActions.Delete:
                     // do nothing
@@ -97,15 +101,15 @@ public abstract class FileSystemDeleter : IFileProcessable
                 case ReadOnlyDeleteActions.AllDelete:
                     state.IsAllDelete = true;
                     break;
-                
+
                 case ReadOnlyDeleteActions.Skip:
                     isSkip = true;
                     break;
-                    
+
                 case ReadOnlyDeleteActions.Cancel:
                     CancellationTokenSource.Cancel();
                     break;
-                
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -186,7 +190,9 @@ public abstract class FileSystemDeleter : IFileProcessable
 
             if (isReadonly && state.IsAllDelete == false)
             {
-                switch (DeleteActionWhenReadonly(srcInfo))
+                DeleteActionWhenReadonly(srcInfo, ref state.ReadOnlyDeleteActions);
+                   
+                switch (state.ReadOnlyDeleteActions)
                 {
                     case ReadOnlyDeleteActions.Delete:
                         // do nothing
@@ -195,11 +201,11 @@ public abstract class FileSystemDeleter : IFileProcessable
                     case ReadOnlyDeleteActions.AllDelete:
                         state.IsAllDelete = true;
                         break;
-                    
+
                     case ReadOnlyDeleteActions.Skip:
                         isSkip = true;
                         break;
-                    
+
                     case ReadOnlyDeleteActions.Cancel:
                         CancellationTokenSource.Cancel();
                         break;
@@ -250,7 +256,8 @@ public abstract class FileSystemDeleter : IFileProcessable
         }
     }
 
-    protected abstract ReadOnlyDeleteActions DeleteActionWhenReadonly(FileSystemInfo info);
+    protected abstract void DeleteActionWhenReadonly(FileSystemInfo info, ref ReadOnlyDeleteActions action);
+
     protected abstract AccessFailureDeleteActions DeleteActionWhenAccessFailure(FileSystemInfo info);
 }
 
@@ -260,10 +267,11 @@ public class DefaultFileSystemDeleter : FileSystemDeleter
         : base(dic)
     {
     }
-    
-    protected override ReadOnlyDeleteActions DeleteActionWhenReadonly(FileSystemInfo info)
+
+    // ReSharper disable once RedundantAssignment
+    protected override void DeleteActionWhenReadonly(FileSystemInfo info, ref ReadOnlyDeleteActions action)
     {
-        return ReadOnlyDeleteActions.Skip;
+        action = ReadOnlyDeleteActions.Skip;
     }
 
     protected override AccessFailureDeleteActions DeleteActionWhenAccessFailure(FileSystemInfo info)

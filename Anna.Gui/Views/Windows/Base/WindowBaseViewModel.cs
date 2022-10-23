@@ -33,6 +33,7 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
     public ICommand NoCommand => _NoCommand ??= CreateButtonCommand(DialogResultTypes.No);
     public ICommand SkipCommand => _SkipCommand ??= CreateButtonCommand(DialogResultTypes.Skip);
     public ICommand RetryCommand => _RetryCommand ??= CreateButtonCommand(DialogResultTypes.Retry);
+    public ICommand AllDeleteCommand => _AllDeleteCommand ??= CreateButtonCommand(DialogResultTypes.AllDelete);
 
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily => _ViewerFontFamily ??= CreateViewerFontFamily();
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize => _ViewerFontSize ??= CreateViewerFontSize();
@@ -45,6 +46,7 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
     protected ICommand? _NoCommand;
     protected ICommand? _SkipCommand;
     protected ICommand? _RetryCommand;
+    protected ICommand? _AllDeleteCommand;
     private ReadOnlyReactivePropertySlim<FontFamily>? _ViewerFontFamily;
     private ReadOnlyReactivePropertySlim<double>? _ViewerFontSize;
 
@@ -76,6 +78,7 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
             DialogResultTypes.No => NoCommand,
             DialogResultTypes.Skip => SkipCommand,
             DialogResultTypes.Retry => RetryCommand,
+            DialogResultTypes.AllDelete => AllDeleteCommand,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

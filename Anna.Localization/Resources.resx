@@ -254,10 +254,10 @@ The editor is not registered or does not exist.</value>
     <value>_Retry</value>
   </data>
   <data name="Message_AccessFailureOnDelete" xml:space="preserve">
-    <value>The operation cannot be completed because the folder or file may be open in another program.
-Please close the folder or file and retry the operation.
+    <value>{0}
 
-{0}</value>
+The operation cannot be completed because the folder or file may be open in another program.
+Please close the folder or file and retry the operation.</value>
   </data>
   <data name="DialogTitle_SelectFileCopyAction" xml:space="preserve">
     <value>Select copy action</value>
@@ -276,5 +276,13 @@ Please close the folder or file and retry the operation.
   </data>
   <data name="UI_RenameAndCopy" xml:space="preserve">
     <value>_Rename and copy</value>
+  </data>
+  <data name="Message_ReadOnlyConfirmDelete" xml:space="preserve">
+    <value>{0}
+
+This entry is read-only. Do you want to delete it?</value>
+  </data>
+  <data name="Dialog_AllDelete" xml:space="preserve">
+    <value>All &amp;delete</value>
   </data>
 </root>

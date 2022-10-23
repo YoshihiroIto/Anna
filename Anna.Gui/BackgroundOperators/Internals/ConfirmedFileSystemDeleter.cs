@@ -26,9 +26,60 @@ internal sealed class ConfirmedFileSystemDeleter
         dic.PopArg(out _arg);
     }
 
-    protected override ReadOnlyDeleteActions DeleteActionWhenReadonly(FileSystemInfo info)
+    protected override void DeleteActionWhenReadonly(FileSystemInfo info, ref ReadOnlyDeleteActions action)
     {
-        return ReadOnlyDeleteActions.Skip;
+        Debug.Assert(CancellationTokenSource is not null);
+        
+        try
+        {
+            _lockObj.Enter();
+
+            if (action == ReadOnlyDeleteActions.AllDelete)
+                return;
+
+            if (CancellationTokenSource.IsCancellationRequested)
+            {
+                action = ReadOnlyDeleteActions.Cancel;
+                return;
+            }
+
+            var message = _arg.Messenger.Raise(
+                new ConfirmationMessage(
+                    Resources.AppName,
+                    string.Format(Resources.Message_ReadOnlyConfirmDelete, info.FullName),
+                    DialogResultTypes.Yes |
+                    DialogResultTypes.No |
+                    DialogResultTypes.AllDelete |
+                    DialogResultTypes.Cancel,
+                    WindowBaseViewModel.MessageKeyConfirmation));
+
+            switch (message.Response)
+            {
+                case DialogResultTypes.Yes:
+                    action = ReadOnlyDeleteActions.Delete;
+                    break;
+
+                case DialogResultTypes.No:
+                    action = ReadOnlyDeleteActions.Skip;
+                    break;
+
+                case DialogResultTypes.AllDelete:
+                    action = ReadOnlyDeleteActions.AllDelete;
+                    break;
+
+                case DialogResultTypes.Cancel:
+                    CancellationTokenSource.Cancel();
+                    action = ReadOnlyDeleteActions.Cancel;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        finally
+        {
+            _lockObj.Exit();
+        }
     }
 
     protected override AccessFailureDeleteActions DeleteActionWhenAccessFailure(FileSystemInfo info)

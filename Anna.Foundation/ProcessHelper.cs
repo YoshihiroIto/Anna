@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
-using System.Threading.Tasks;
 
-namespace Anna.Gui.Foundations;
+namespace Anna.Foundation;
 
 public static class ProcessHelper
 {
@@ -13,7 +12,7 @@ public static class ProcessHelper
             Process.Start(command, arguments);
     }
     
-    public static Task<string> ExecuteAndGetStdOutputAsync(string command, string arguments)
+    public static Task<string> ExecuteAndGetStdoutAsync(string command, string arguments)
     {
         var process = new Process
         {
@@ -21,7 +20,7 @@ public static class ProcessHelper
             {
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
-                CreateNoWindow = false,
+                CreateNoWindow = true,
                 Arguments = arguments
             }
         };

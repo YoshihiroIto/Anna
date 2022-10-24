@@ -5,7 +5,7 @@ namespace Anna.Service.MacOS;
 
 public sealed class TrashCanService : ITrashCanService
 {
-    public void SendToTrashCan(IEnumerable<IEntry> targets)
+    public void SendToTrashCan(IEntry target)
     {
         throw new NotImplementedException();
     }

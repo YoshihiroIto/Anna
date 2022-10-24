@@ -20,32 +20,27 @@ public sealed class TrashCanService : ITrashCanService
         'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
     };
 
-    public void SendToTrashCan(IEnumerable<IEntry> targets)
+    public void SendToTrashCan(IEntry target)
     {
         if (IsInitialized == false)
             Initialize();
 
-        var removingDateTime = DateTime.Now;
+        var metaDataBuffer = ArrayPool<byte>.Shared.Rent(target.Path.Length * 2 + 64);
+        var metaDataBufferSpan = metaDataBuffer.AsSpan();
 
-        foreach (var target in targets)
+        try
         {
-            var metaDataBuffer = ArrayPool<byte>.Shared.Rent(target.Path.Length * 2 + 64);
-            var metaDataBufferSpan = metaDataBuffer.AsSpan();
+            var trashedPath = MakeTrashedPath(target.Path);
 
-            try
-            {
-                var trashedPath = MakeTrashedPath(target.Path);
+            var size = target.IsFolder ? FileHelper.MeasureFolderSize(new DirectoryInfo(target.Path)) : target.Size;
+            var metaData = MakeMetaData(metaDataBufferSpan, target.Path, size, DateTime.Now);
 
-                var size = target.IsFolder ? FileHelper.MeasureFolderSize(new DirectoryInfo(target.Path)) : target.Size;
-                var metaData = MakeMetaData(metaDataBufferSpan, target.Path, size, removingDateTime);
-
-                Directory.Move(target.Path, trashedPath.Trashed);
-                FileHelper.WriteSpan(trashedPath.MetaData, metaData);
-            }
-            finally
-            {
-                ArrayPool<byte>.Shared.Return(metaDataBuffer);
-            }
+            Directory.Move(target.Path, trashedPath.Trashed);
+            FileHelper.WriteSpan(trashedPath.MetaData, metaData);
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(metaDataBuffer);
         }
     }
 

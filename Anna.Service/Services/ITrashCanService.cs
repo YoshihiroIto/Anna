@@ -4,5 +4,5 @@ namespace Anna.Service.Services;
 
 public interface ITrashCanService
 {
-    void SendToTrashCan(IEnumerable<IEntry> targets);
+    void SendToTrashCan(IEntry target);
 }

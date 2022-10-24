@@ -48,13 +48,15 @@ public abstract class FileSystemDeleter : IFileProcessable
 
     public void Invoke(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)
     {
-        CancellationTokenSource = new CancellationTokenSource();
-
         if (mode == EntryDeleteModes.TrashCan)
         {
-            _dic.GetInstance<ITrashCanService>().SendToTrashCan(sourceEntries);
+            foreach (var entry in sourceEntries)
+                _dic.GetInstance<ITrashCanService>().SendToTrashCan(entry);
+            
             return;
         }
+        
+        CancellationTokenSource = new CancellationTokenSource();
 
         try
         {

@@ -33,7 +33,7 @@ public sealed class FileSystemServiceTests : IDisposable
             var srcPath = Path.Combine(_tempFolder.RootPath, srcName);
             File.SetAttributes(srcPath, FileAttributes.ReadOnly);
 
-            var srcEntry = new TestEntry(srcPath, false);
+            var srcEntry = new TestEntry(srcPath, false, 0);
 
             fso.Invoke(new[] { srcEntry }, dstFolderPath);
 
@@ -62,7 +62,7 @@ public sealed class FileSystemServiceTests : IDisposable
             var srcPath = Path.Combine(_tempFolder.RootPath, srcName);
             File.SetAttributes(srcPath, FileAttributes.ReadOnly);
 
-            var srcEntry = new TestEntry(srcPath, true);
+            var srcEntry = new TestEntry(srcPath, true, 0);
 
             fso.Invoke(new[] { srcEntry }, dstFolderPath);
 
@@ -86,8 +86,8 @@ public sealed class FileSystemServiceTests : IDisposable
 
         var dstFolderPath = Path.Combine(_tempFolder.RootPath, "dst");
 
-        var srcEntry0 = new TestEntry(Path.Combine(_tempFolder.RootPath, "a"), false);
-        var srcEntry1 = new TestEntry(Path.Combine(_tempFolder.RootPath, "x"), true);
+        var srcEntry0 = new TestEntry(Path.Combine(_tempFolder.RootPath, "a"), false, 0);
+        var srcEntry1 = new TestEntry(Path.Combine(_tempFolder.RootPath, "x"), true, 0);
 
         fso.Invoke(new[] { srcEntry0, srcEntry1 }, dstFolderPath);
 
@@ -102,4 +102,4 @@ public sealed class FileSystemServiceTests : IDisposable
     }
 }
 
-internal sealed record TestEntry(string Path, bool IsFolder) : IEntry;
+internal sealed record TestEntry(string Path, bool IsFolder, long Size) : IEntry;

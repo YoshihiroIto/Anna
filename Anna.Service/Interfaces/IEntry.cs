@@ -3,5 +3,6 @@
 public interface IEntry
 {
     string Path { get; }
+    long Size { get; }
     bool IsFolder { get; }
 }

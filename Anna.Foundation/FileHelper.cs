@@ -15,21 +15,13 @@ public static class FileHelper
 
         Parallel.ForEach(dirInfo.EnumerateFiles(),
             () => 0L,
-            (fi, _, subSize) =>
-            {
-                subSize += fi.Length;
-                return subSize;
-            },
+            (fi, _, subSize) => subSize + fi.Length,
             finalResult => Interlocked.Add(ref size, finalResult)
         );
         
         Parallel.ForEach(dirInfo.EnumerateDirectories(),
             () => 0L,
-            (di, _, subSize) =>
-            {
-                subSize += MeasureFolderSize(di);
-                return subSize;
-            },
+            (di, _, subSize) => subSize + MeasureFolderSize(di),
             finalResult => Interlocked.Add(ref size, finalResult)
         );
         

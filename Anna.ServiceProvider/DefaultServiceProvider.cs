@@ -53,10 +53,9 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
             ? CommandLine.DefaultAppConfigFilePath
             : commandLine.AppConfigFilePath;
 
-        // Assembly loading optimization
-        var configDir = Path.GetDirectoryName(appConfigFilePath) ??
-                        CommandLine.DefaultAppConfigFilePath;
+        var configDir = Path.GetDirectoryName(appConfigFilePath) ?? CommandLine.DefaultAppConfigFilePath;
         {
+            // Assembly loading optimization
             Directory.CreateDirectory(configDir);
             ProfileOptimization.SetProfileRoot(configDir);
             ProfileOptimization.StartProfile("Startup.Profile");

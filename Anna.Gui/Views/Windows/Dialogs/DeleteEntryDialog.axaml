@@ -32,7 +32,8 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}"
+                                              Messenger="{Binding Messenger}">
             <actions:WindowActionAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
@@ -44,15 +45,16 @@
             <Button Classes="dialog"
                     Command="{Binding ToTrashCanCommand,
                                       Mode=OneTime}"
-                    Content="{ReflectionBinding R.UI_ToTrashCan}" />
+                    Content="{ReflectionBinding R.UI_ToTrashCan}">
+                <Interaction.Behaviors>
+                    <behaviors:InputElementFocusBehavior />
+                </Interaction.Behaviors>
+            </Button>
 
             <Button Classes="dialog"
                     Command="{Binding YesCommand,
                                       Mode=OneTime}"
                     Content="{ReflectionBinding R.Dialog_Yes}">
-                <Interaction.Behaviors>
-                    <behaviors:InputElementFocusBehavior />
-                </Interaction.Behaviors>
             </Button>
 
             <Button Classes="dialog"

@@ -13,7 +13,7 @@ public sealed class TrashCanService : ITrashCanService
     private bool IsInitialized => _sid != "";
     private string _sid = "";
     private readonly Random _random = new();
-    
+
     private static readonly char[] FilenameChars =
     {
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
@@ -29,25 +29,22 @@ public sealed class TrashCanService : ITrashCanService
 
         foreach (var target in targets)
         {
-            var buffer = ArrayPool<byte>.Shared.Rent(target.Path.Length * 2 + 64);
-            var bufferSpan = buffer.AsSpan();
+            var metaDataBuffer = ArrayPool<byte>.Shared.Rent(target.Path.Length * 2 + 64);
+            var metaDataBufferSpan = metaDataBuffer.AsSpan();
 
             try
             {
                 var trashedPath = MakeTrashedPath(target.Path);
 
-                // todo: Folder support
-                if (target.IsFolder)
-                    throw new NotImplementedException();
-                
-                var bufferSize = MakeMetaData(bufferSpan, target.Path, target.Size, removingDateTime);
-                
-                File.Move(target.Path, trashedPath.Trashed);
-                FileHelper.WriteSpan(trashedPath.MetaData, bufferSpan[..bufferSize]);
+                var size = target.IsFolder ? FileHelper.MeasureFolderSize(new DirectoryInfo(target.Path)) : target.Size;
+                var metaData = MakeMetaData(metaDataBufferSpan, target.Path, size, removingDateTime);
+
+                Directory.Move(target.Path, trashedPath.Trashed);
+                FileHelper.WriteSpan(trashedPath.MetaData, metaData);
             }
             finally
             {
-                ArrayPool<byte>.Shared.Return(buffer);
+                ArrayPool<byte>.Shared.Return(metaDataBuffer);
             }
         }
     }
@@ -100,7 +97,8 @@ public sealed class TrashCanService : ITrashCanService
         _sid = last.ToString(userInfo).TrimEnd();
     }
 
-    private static int MakeMetaData(Span<byte> buffer, string filePath, long fileSize, DateTime removingDateTime)
+    private static ReadOnlySpan<byte> MakeMetaData(
+        Span<byte> buffer, string filePath, long fileSize, DateTime removingDateTime)
     {
         var index = 0;
 
@@ -122,6 +120,6 @@ public sealed class TrashCanService : ITrashCanService
         Unsafe.As<byte, long>(ref buffer[index]) = 0;
         index += Unsafe.SizeOf<short>();
 
-        return index;
+        return buffer[..index];
     }
 }

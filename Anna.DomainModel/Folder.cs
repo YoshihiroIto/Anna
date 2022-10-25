@@ -204,6 +204,8 @@ public abstract class Folder : DisposableNotificationObject
     {
         lock (EntriesUpdatingLockObj)
         {
+            TrimRemovedSelectedEntries();
+        
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var alreadyExistsEntry))
                 RemoveEntryInternal(alreadyExistsEntry);
 
@@ -234,8 +236,6 @@ public abstract class Folder : DisposableNotificationObject
 
                 _removedSelectedEntries.Remove(entry.NameWithExtension, out _);
             }
-
-            TrimRemovedSelectedEntries();
         }
     }
 
@@ -243,6 +243,8 @@ public abstract class Folder : DisposableNotificationObject
     {
         lock (EntriesUpdatingLockObj)
         {
+            TrimRemovedSelectedEntries();
+        
             // todo: Binary search
             var index = Entries.IndexOf(entry);
 
@@ -253,8 +255,6 @@ public abstract class Folder : DisposableNotificationObject
 
             if (entry.IsSelected)
                 _removedSelectedEntries[entry.NameWithExtension] = DateTime.Now;
-
-            TrimRemovedSelectedEntries();
 
             if (entry.IsFolder)
                 --_foldersCount;

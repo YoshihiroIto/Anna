@@ -5,11 +5,13 @@ using Jewelry.Text;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using Exception=System.Exception;
 
 namespace Anna.Service.Windows;
 
 public sealed class TrashCanService : ITrashCanService
 {
+    private readonly IServiceProvider _dic;
     private bool IsInitialized => _sid != "";
     private string _sid = "";
     private readonly Random _random = new();
@@ -19,6 +21,11 @@ public sealed class TrashCanService : ITrashCanService
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
         'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
     };
+
+    public TrashCanService(IServiceProvider dic)
+    {
+        _dic = dic;
+    }
 
     public void SendToTrashCan(IEntry target)
     {
@@ -42,6 +49,32 @@ public sealed class TrashCanService : ITrashCanService
         {
             ArrayPool<byte>.Shared.Return(metaDataBuffer);
         }
+    }
+
+    public bool EmptyTrashCan()
+    {
+        try
+        {
+            SHEmptyRecycleBin(IntPtr.Zero,
+                null,
+                SHERB_NOCONFIRMATION |
+                SHERB_NOPROGRESSUI |
+                SHERB_NOSOUND
+            );
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            _dic.GetInstance<ILoggerService>().Error("EmptyTrashCan:" + e.Message);
+
+            return false;
+        }
+    }
+    
+    public void OpenTrashCan()
+    {
+        ProcessHelper.RunAssociatedApp("shell:::{645FF040-5081-101B-9F08-00AA002F954E}");
     }
 
     private string FindTrashCanPath(string targetPath)
@@ -117,4 +150,13 @@ public sealed class TrashCanService : ITrashCanService
 
         return buffer[..index];
     }
+
+    // ReSharper disable all
+    private const uint SHERB_NOCONFIRMATION = 0x00000001;
+    private const uint SHERB_NOPROGRESSUI = 0x00000002;
+    private const uint SHERB_NOSOUND = 0x00000004;
+
+    [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
+    private static extern uint SHEmptyRecycleBin(IntPtr hwnd, string? pszRootPath, uint dwFlags);
+    // ReSharper restore all
 }

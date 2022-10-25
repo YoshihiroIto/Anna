@@ -5,8 +5,4 @@ namespace Anna.Service.Linux;
 
 public sealed class TrashCanService : ITrashCanService
 {
-    public void SendToTrashCan(IEntry target)
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -43,6 +43,8 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             { Operations.JumpToRootFolder, JumpToRootFolderAsync },
             { Operations.CopyEntry, CopyEntryAsync },
             { Operations.DeleteEntry, DeleteEntryAsync },
+            { Operations.EmptyTrashCan, EmptyTrashCanAsync },
+            { Operations.OpenTrashCan, OpenTrashCanAsync },
         };
     }
 
@@ -167,7 +169,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             receiver.Folder.Path,
             receiver.TargetEntries,
             stats);
-        
+
         if (result.Result != DialogResultTypes.Ok)
         {
             stats.Dispose();
@@ -221,5 +223,17 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         ));
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+    }
+
+    private ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        Dic.GetInstance<ITrashCanService>().EmptyTrashCan();
+        return ValueTask.CompletedTask;
+    }
+
+    private ValueTask OpenTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        Dic.GetInstance<ITrashCanService>().OpenTrashCan();
+        return ValueTask.CompletedTask;
     }
 }

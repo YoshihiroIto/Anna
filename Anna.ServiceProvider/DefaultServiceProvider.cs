@@ -94,13 +94,13 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         RegisterSingleton<ITrashCanService>(() =>
         {
             if (OperatingSystem.IsWindows())
-                return new Service.Windows.TrashCanService();
+                return GetInstance<Service.Windows.TrashCanService>();
 
             if (OperatingSystem.IsMacOS())
-                return new Service.MacOS.TrashCanService();
+                return GetInstance<Service.MacOS.TrashCanService>();
 
             if (OperatingSystem.IsLinux())
-                return new Service.Linux.TrashCanService();
+                return GetInstance<Service.Linux.TrashCanService>();
 
             throw new PlatformNotSupportedException();
         });

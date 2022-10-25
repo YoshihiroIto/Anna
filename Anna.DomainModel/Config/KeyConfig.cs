@@ -45,10 +45,11 @@ public sealed class KeyConfigData : ConfigData
             new(Key.Back, KeyModifiers.None, Operations.JumpToParentFolder),
             new(Key.OemPipe, KeyModifiers.None, Operations.JumpToRootFolder),
             new(Key.Enter, KeyModifiers.Shift, Operations.OpenEntryByEditor1),
-            new(Key.Enter, metaKey, Operations.OpenEntryByApp),
-            new(Key.C, KeyModifiers.None, Operations.CopyEntry),
+            new(Key.Enter, metaKey, Operations.OpenEntryByApp), new(Key.C, KeyModifiers.None, Operations.CopyEntry),
             new(Key.D, KeyModifiers.None, Operations.DeleteEntry),
             new(Key.Delete, KeyModifiers.None, Operations.DeleteEntry),
+            new(Key.G, KeyModifiers.Shift, Operations.EmptyTrashCan),
+            new(Key.G, KeyModifiers.Control, Operations.OpenTrashCan),
         };
     }
 
@@ -73,4 +74,6 @@ public enum Operations
     JumpToRootFolder,
     CopyEntry,
     DeleteEntry,
+    EmptyTrashCan,
+    OpenTrashCan,
 }

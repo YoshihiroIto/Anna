@@ -2,7 +2,6 @@
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.DomainModel.FileSystem.FileProcessable;
-using Anna.Foundation;
 using Anna.Gui.BackgroundOperators;
 using Anna.Gui.BackgroundOperators.Internals;
 using Anna.Gui.Messaging;
@@ -156,47 +155,17 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         receiver.Folder.Path = rootDir;
     }
 
-    private async ValueTask CopyEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    private ValueTask CopyEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
-        if (receiver.TargetEntries.Length == 0)
-            return;
-
-        var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
-
-        var result = await WindowOperator.EntryCopyOrMoveAsync(
-            Dic,
-            receiver.Owner,
-            CopyOrMove.Copy,
-            receiver.Folder.Path,
-            receiver.TargetEntries,
-            stats);
-
-        if (result.Result != DialogResultTypes.Ok)
-        {
-            stats.Dispose();
-            return;
-        }
-
-        var destFolder = Path.IsPathRooted(result.DestFolder)
-            ? result.DestFolder
-            : Path.Combine(receiver.Folder.Path, result.DestFolder);
-
-        destFolder = PathStringHelper.Normalize(destFolder);
-
+        
         var worker = Dic.GetInstance<ConfirmedFileSystemCopier, (InteractionMessenger, int)>((receiver.Messenger, 0));
-        var targetEntries = receiver.TargetEntries;
 
-        var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
-        ((
-            stats,
+        return CopyOrMoveEntryAsync(
+            CopyOrMove.Copy,
             worker,
-            () => worker.Invoke(targetEntries, destFolder)
-        ));
-
-        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
-
-        Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
+            (targetEntries, destFolder) => worker.Invoke(targetEntries, destFolder),
+            shortcutKeyReceiver);
     }
 
     private async ValueTask DeleteEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
@@ -227,6 +196,23 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
     }
 
+    private ValueTask MoveEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        throw new NotImplementedException();
+
+#if false
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
+        
+        var worker = Dic.GetInstance<ConfirmedFileSystemMover, (InteractionMessenger, int)>((receiver.Messenger, 0));
+
+        return CopyOrMoveEntryAsync(
+            CopyOrMove.Move,
+            worker,
+            (targetEntries, destFolder) => worker.Invoke(targetEntries, destFolder),
+            shortcutKeyReceiver);
+#endif
+    }
+
     private ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         Dic.GetInstance<ITrashCanService>().EmptyTrashCan();
@@ -237,10 +223,5 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
     {
         Dic.GetInstance<ITrashCanService>().OpenTrashCan();
         return ValueTask.CompletedTask;
-    }
-
-    private ValueTask MoveEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
-    {
-        throw new NotImplementedException();
     }
 }

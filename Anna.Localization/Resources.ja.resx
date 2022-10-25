@@ -179,4 +179,7 @@
     <data name="Dialog_AllDelete" xml:space="preserve">
         <value>すべて削除(_A)</value>
     </data>
+    <data name="DialogTitle_MoveEntry" xml:space="preserve">
+        <value>エントリーの移動</value>
+    </data>
 </root>

@@ -164,9 +164,10 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
 
-        var result = await WindowOperator.EntryCopyAsync(
+        var result = await WindowOperator.EntryCopyOrMoveAsync(
             Dic,
             receiver.Owner,
+            CopyOrMove.Copy,
             receiver.Folder.Path,
             receiver.TargetEntries,
             stats);

@@ -5,9 +5,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public partial class CopyEntryDialog : WindowBase<CopyEntryDialogViewModel>
+public partial class CopyOrMoveEntryDialog : WindowBase<CopyOrMoveEntryDialogViewModel>
 {
-    public CopyEntryDialog()
+    public CopyOrMoveEntryDialog()
     {
         InitializeComponent();
 #if DEBUG

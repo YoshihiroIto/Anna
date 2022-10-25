@@ -1,4 +1,4 @@
-﻿<base1:WindowBase x:Class="Anna.Gui.Views.Windows.Dialogs.CopyEntryDialog"
+﻿<base1:WindowBase x:Class="Anna.Gui.Views.Windows.Dialogs.CopyOrMoveEntryDialog"
                   Classes="dialog"
                   xmlns="https://github.com/avaloniaui"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,20 +10,20 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
                   xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
-                  Title="{ReflectionBinding R.DialogTitle_CopyEntry}"
+                  Title="{Binding Title.Value}"
                   Width="500"
                   MinWidth="500"
                   MaxWidth="500"
                   d:DesignHeight="450"
                   d:DesignWidth="800"
                   x:CompileBindings="True"
-                  x:DataType="dialogs1:CopyEntryDialogViewModel"
+                  x:DataType="dialogs1:CopyOrMoveEntryDialogViewModel"
                   KeyDown="OnKeyDown"
                   SizeToContent="Height"
                   mc:Ignorable="d">
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->
-        <dialogs1:CopyEntryDialogViewModel />
+        <dialogs1:CopyOrMoveEntryDialogViewModel />
     </Design.DataContext>
 
     <Window.Styles>

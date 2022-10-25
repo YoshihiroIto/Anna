@@ -285,4 +285,7 @@ This entry is read-only. Do you want to delete it?</value>
   <data name="Dialog_AllDelete" xml:space="preserve">
     <value>All &amp;delete</value>
   </data>
+  <data name="DialogTitle_MoveEntry" xml:space="preserve">
+    <value>Move entry</value>
+  </data>
 </root>

@@ -99,15 +99,16 @@ public static class WindowOperator
     }
 
     public static async ValueTask<(DialogResultTypes Result, string DestFolder)>
-        EntryCopyAsync(IServiceProvider dic, Window owner, string currentFolderPath, Entry[] targets,
-            EntriesStats stats)
+        EntryCopyOrMoveAsync(IServiceProvider dic, Window owner, 
+            CopyOrMove copyOrMove,
+            string currentFolderPath, Entry[] targets, EntriesStats stats)
     {
         using var viewModel =
-            dic.GetInstance<CopyEntryDialogViewModel, (string, Entry[], EntriesStats,
-                    ReadOnlyObservableCollection<string>)>
-                ((currentFolderPath, targets, stats, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
+            dic.GetInstance<CopyOrMoveEntryDialogViewModel,
+                    (CopyOrMove, string, Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
+                ((copyOrMove, currentFolderPath, targets, stats, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
 
-        var view = dic.GetInstance<CopyEntryDialog>();
+        var view = dic.GetInstance<CopyOrMoveEntryDialog>();
         view.DataContext = viewModel;
 
         await view.ShowDialog(owner);

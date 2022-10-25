@@ -79,19 +79,25 @@ public enum AccessFailureDeleteActions
     Retry
 }
 
+public enum CopyOrMove
+{
+    Copy,
+    Move
+}
+
 [EnumExtensions]
 [Flags]
 public enum DialogResultTypes
 {
-    Retry = 1<<0,
-    
-    Yes = 1<<10,
-    No = 1<<11,
-    Ok = 1<<12,
-    Cancel = 1<<13,
-    Skip = 1<<14,
-    
-    AllDelete = 1<<20,
+    Retry = 1 << 0,
+
+    Yes = 1 << 10,
+    No = 1 << 11,
+    Ok = 1 << 12,
+    Cancel = 1 << 13,
+    Skip = 1 << 14,
+
+    AllDelete = 1 << 20,
 }
 
 public static class Constants
@@ -116,4 +122,3 @@ public static class Constants
         ".arw"
     };
 }
-

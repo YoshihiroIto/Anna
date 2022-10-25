@@ -3,6 +3,7 @@ using Anna.DomainModel;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Localization;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
@@ -14,10 +15,10 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class CopyEntryDialogViewModel
+public sealed class CopyOrMoveEntryDialogViewModel
     : HasModelWindowBaseViewModel<
-        (string CurrentFolderPath, Entry[] Targets, EntriesStats Stats, ReadOnlyObservableCollection<string>
-        DestFoldersHistory)>
+        (CopyOrMove CopyOrMOve, string CurrentFolderPath, Entry[] Targets, EntriesStats Stats,
+        ReadOnlyObservableCollection<string> DestFoldersHistory)>
 {
     public string ResultDestFolder { get; private set; } = "";
 
@@ -33,7 +34,14 @@ public sealed class CopyEntryDialogViewModel
 
     public EntriesStatsPanelViewModel EntriesStatsPanelViewModel { get; }
 
-    public CopyEntryDialogViewModel(IServiceProvider dic)
+    public ReactivePropertySlim<string> Title { get; }
+    
+    private string CulturedTitle =>
+        Model.CopyOrMOve == CopyOrMove.Copy
+            ? Resources.DialogTitle_CopyEntry
+            : Resources.DialogTitle_MoveEntry;
+
+    public CopyOrMoveEntryDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
         DestFolder = new ReactivePropertySlim<string>("").AddTo(Trash);
@@ -47,15 +55,24 @@ public sealed class CopyEntryDialogViewModel
         OpenJumpFolderDialogCommand = new AsyncReactiveCommand()
             .WithSubscribe(OnJumpFolderDialogSync)
             .AddTo(Trash);
-        
+
         OkCommand = new AsyncReactiveCommand()
             .WithSubscribe(OnDecisionAsync)
             .AddTo(Trash);
-        
+
         CancelCommand = CreateButtonCommand(DialogResultTypes.Cancel);
 
         EntriesStatsPanelViewModel =
             dic.GetInstance<EntriesStatsPanelViewModel, EntriesStats>(Model.Stats).AddTo(Trash);
+
+        Title = new ReactivePropertySlim<string>(CulturedTitle).AddTo(Trash);
+
+        Observable
+            .FromEventPattern(
+                h => Dic.GetInstance<ResourcesHolder>().CultureChanged += h,
+                h => Dic.GetInstance<ResourcesHolder>().CultureChanged -= h)
+            .Subscribe(_ => Title.Value = CulturedTitle)
+            .AddTo(Trash);
     }
 
     private async Task OnDecisionAsync()

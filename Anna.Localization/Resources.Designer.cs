@@ -168,6 +168,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move entry.
+        /// </summary>
+        public static string DialogTitle_MoveEntry {
+            get {
+                return ResourceManager.GetString("DialogTitle_MoveEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select copy action.
         /// </summary>
         public static string DialogTitle_SelectFileCopyAction {

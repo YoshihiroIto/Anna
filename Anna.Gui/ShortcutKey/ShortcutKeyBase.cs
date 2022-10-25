@@ -1,21 +1,15 @@
 ﻿using Anna.Constants;
-using Anna.DomainModel;
 using Anna.DomainModel.Config;
-using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
-using Anna.Gui.BackgroundOperators;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Localization;
-using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using Avalonia.Input;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -142,51 +136,5 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                     DialogResultTypes.Ok,
                     WindowBaseViewModel.MessageKeyConfirmation));
         }
-    }
-    
-    protected async ValueTask CopyOrMoveEntryAsync(
-        CopyOrMove copyOrMove,
-        IFileProcessable worker,
-        Action<IEnumerable<IEntry>, string> invokeWorker,
-        IShortcutKeyReceiver shortcutKeyReceiver)
-    {
-        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
-        if (receiver.TargetEntries.Length == 0)
-            return;
-
-        var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
-
-        var result = await WindowOperator.EntryCopyOrMoveAsync(
-            Dic,
-            receiver.Owner,
-            copyOrMove,
-            receiver.Folder.Path,
-            receiver.TargetEntries,
-            stats);
-
-        if (result.Result != DialogResultTypes.Ok)
-        {
-            stats.Dispose();
-            return;
-        }
-
-        var destFolder = Path.IsPathRooted(result.DestFolder)
-            ? result.DestFolder
-            : Path.Combine(receiver.Folder.Path, result.DestFolder);
-
-        destFolder = PathStringHelper.Normalize(destFolder);
-
-        var targetEntries = receiver.TargetEntries;
-
-        var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
-        ((
-            stats,
-            worker,
-            () => invokeWorker(targetEntries, destFolder)
-        ));
-
-        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
-
-        Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 }

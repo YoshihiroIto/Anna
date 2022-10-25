@@ -2,6 +2,7 @@
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.DomainModel.FileSystem.FileProcessable;
+using Anna.Foundation;
 using Anna.Gui.BackgroundOperators;
 using Anna.Gui.BackgroundOperators.Internals;
 using Anna.Gui.Messaging;
@@ -28,23 +29,29 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         return new Dictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>
         {
             { Operations.SortEntry, SelectSortModeAndOrderAsync },
-            { Operations.JumpFolder, JumpFolderAsync },
+            //
             { Operations.MoveCursorUp, s => MoveCursorAsync(s, Directions.Up) },
             { Operations.MoveCursorDown, s => MoveCursorAsync(s, Directions.Down) },
             { Operations.MoveCursorLeft, s => MoveCursorAsync(s, Directions.Left) },
             { Operations.MoveCursorRight, s => MoveCursorAsync(s, Directions.Right) },
+            //
             { Operations.ToggleSelectionCursorEntry, s => ToggleSelectionCursorEntryAsync(s, true) },
+            //
+            { Operations.JumpFolder, JumpFolderAsync },
+            { Operations.JumpToParentFolder, JumpToParentFolderAsync },
+            { Operations.JumpToRootFolder, JumpToRootFolderAsync },
+            //
             { Operations.OpenEntry, OpenEntryAsync },
             { Operations.OpenEntryByEditor1, s => OpenEntryByEditorAsync(s, 1) },
             { Operations.OpenEntryByEditor2, s => OpenEntryByEditorAsync(s, 2) },
             { Operations.OpenEntryByApp, OpenEntryByAppAsync },
-            { Operations.JumpToParentFolder, JumpToParentFolderAsync },
-            { Operations.JumpToRootFolder, JumpToRootFolderAsync },
+            //
             { Operations.CopyEntry, CopyEntryAsync },
             { Operations.DeleteEntry, DeleteEntryAsync },
+            { Operations.MoveEntry, MoveEntryAsync },
+            //
             { Operations.EmptyTrashCan, EmptyTrashCanAsync },
             { Operations.OpenTrashCan, OpenTrashCanAsync },
-            { Operations.MoveEntry, MoveEntryAsync },
         };
     }
 
@@ -223,5 +230,51 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
     {
         Dic.GetInstance<ITrashCanService>().OpenTrashCan();
         return ValueTask.CompletedTask;
+    }
+    
+    private async ValueTask CopyOrMoveEntryAsync(
+        CopyOrMove copyOrMove,
+        IFileProcessable worker,
+        Action<IEnumerable<IEntry>, string> invokeWorker,
+        IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
+        if (receiver.TargetEntries.Length == 0)
+            return;
+
+        var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
+
+        var result = await WindowOperator.EntryCopyOrMoveAsync(
+            Dic,
+            receiver.Owner,
+            copyOrMove,
+            receiver.Folder.Path,
+            receiver.TargetEntries,
+            stats);
+
+        if (result.Result != DialogResultTypes.Ok)
+        {
+            stats.Dispose();
+            return;
+        }
+
+        var destFolder = Path.IsPathRooted(result.DestFolder)
+            ? result.DestFolder
+            : Path.Combine(receiver.Folder.Path, result.DestFolder);
+
+        destFolder = PathStringHelper.Normalize(destFolder);
+
+        var targetEntries = receiver.TargetEntries;
+
+        var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
+        ((
+            stats,
+            worker,
+            () => invokeWorker(targetEntries, destFolder)
+        ));
+
+        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+
+        Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 }

@@ -45,6 +45,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             { Operations.DeleteEntry, DeleteEntryAsync },
             { Operations.EmptyTrashCan, EmptyTrashCanAsync },
             { Operations.OpenTrashCan, OpenTrashCanAsync },
+            { Operations.MoveEntry, MoveEntryAsync },
         };
     }
 
@@ -235,5 +236,10 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
     {
         Dic.GetInstance<ITrashCanService>().OpenTrashCan();
         return ValueTask.CompletedTask;
+    }
+
+    private ValueTask MoveEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        throw new NotImplementedException();
     }
 }

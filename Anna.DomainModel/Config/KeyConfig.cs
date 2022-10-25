@@ -50,6 +50,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.Delete, KeyModifiers.None, Operations.DeleteEntry),
             new(Key.G, KeyModifiers.Shift, Operations.EmptyTrashCan),
             new(Key.G, KeyModifiers.Control, Operations.OpenTrashCan),
+            new(Key.M, KeyModifiers.None, Operations.MoveEntry),
         };
     }
 
@@ -76,4 +77,5 @@ public enum Operations
     DeleteEntry,
     EmptyTrashCan,
     OpenTrashCan,
+    MoveEntry,
 }

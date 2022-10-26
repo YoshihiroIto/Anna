@@ -248,9 +248,10 @@ public abstract class FileSystemCopier : IFileProcessable
 
 public sealed class DefaultFileSystemCopier : FileSystemCopier
 {
-    public DefaultFileSystemCopier(IServiceProvider dic)
+    public DefaultFileSystemCopier(IServiceProvider dic, CopyOrMove copyOrMove)
         : base(dic)
     {
+        CopyOrMove = copyOrMove;
     }
 
     // ReSharper disable once RedundantAssignment

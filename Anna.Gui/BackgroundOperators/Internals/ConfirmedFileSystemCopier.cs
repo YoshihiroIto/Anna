@@ -12,15 +12,17 @@ namespace Anna.Gui.BackgroundOperators.Internals;
 
 internal sealed class ConfirmedFileSystemCopier
     : FileSystemCopier
-        , IHasArg<(InteractionMessenger Messenger, int Dummy)>
+        , IHasArg<(InteractionMessenger Messenger, CopyOrMove CopyOrMove)>
 {
-    private readonly (InteractionMessenger Messenger, int Dummy) _arg;
+    private readonly (InteractionMessenger Messenger, CopyOrMove CopyOrMove) _arg;
     private FastSpinLock _lockObj;
 
     public ConfirmedFileSystemCopier(IServiceProvider dic)
         : base(dic)
     {
         dic.PopArg(out _arg);
+
+        CopyOrMove = _arg.CopyOrMove;
     }
 
     protected override void CopyActionWhenExists(string srcPath, string destPath, ref CopyActionWhenExistsResult result)

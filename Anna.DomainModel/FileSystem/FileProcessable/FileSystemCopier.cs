@@ -13,6 +13,8 @@ public abstract class FileSystemCopier : IFileProcessable
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     private readonly IServiceProvider _dic;
 
+    protected CopyOrMove CopyOrMove { get; init; } = CopyOrMove.Unset;
+
     private sealed class State : IDisposable
     {
         public readonly ParallelOptions ParallelOptions;
@@ -44,42 +46,20 @@ public abstract class FileSystemCopier : IFileProcessable
 
         try
         {
-            using var state = new State(CancellationTokenSource);
+            switch (CopyOrMove)
+            {
+                case CopyOrMove.Copy:
+                    Copy(sourceEntries, destPath);
+                    break;
 
-            Parallel.ForEach(sourceEntries,
-                state.ParallelOptions,
-                entry =>
-                {
-                    var src = entry.Path;
+                case CopyOrMove.Move:
+                    Move(sourceEntries, destPath);
+                    break;
 
-                    if (entry.IsFolder)
-                    {
-                        // ReSharper disable once AccessToDisposedClosure
-                        CopyFolder(new DirectoryInfo(src), destPath, state);
-                    }
-                    else
-                    {
-                        Directory.CreateDirectory(destPath);
-
-                        var action = SamePathCopyFileActions.Override;
-                        var dest = Path.Combine(destPath, Path.GetFileName(src));
-
-                        if (src == dest)
-                        {
-                            (action, dest) = CopyActionWhenSamePath(dest);
-
-                            if (CancellationTokenSource is not null &&
-                                CancellationTokenSource.IsCancellationRequested)
-                                return;
-                        }
-
-                        if (action == SamePathCopyFileActions.Override)
-                            // ReSharper disable once AccessToDisposedClosure
-                            CopyFileInternal(new FileInfo(src), new FileInfo(dest), state);
-
-                        FileProcessed?.Invoke(this, EventArgs.Empty);
-                    }
-                });
+                case CopyOrMove.Unset:
+                default:
+                    throw new InvalidOperationException();
+            }
         }
         catch (OperationCanceledException)
         {
@@ -90,6 +70,64 @@ public abstract class FileSystemCopier : IFileProcessable
             var d = CancellationTokenSource;
             CancellationTokenSource = null;
             d.Dispose();
+        }
+    }
+
+    private void Copy(IEnumerable<IEntry> sourceEntries, string destPath)
+    {
+        Debug.Assert(CancellationTokenSource is not null);
+
+        using var state = new State(CancellationTokenSource);
+
+        Parallel.ForEach(sourceEntries,
+            state.ParallelOptions,
+            entry =>
+            {
+                var src = entry.Path;
+
+                if (entry.IsFolder)
+                {
+                    // ReSharper disable once AccessToDisposedClosure
+                    CopyFolder(new DirectoryInfo(src), destPath, state);
+                }
+                else
+                {
+                    Directory.CreateDirectory(destPath);
+
+                    var action = SamePathCopyFileActions.Override;
+                    var dest = Path.Combine(destPath, Path.GetFileName(src));
+
+                    if (src == dest)
+                    {
+                        (action, dest) = CopyActionWhenSamePath(dest);
+
+                        if (CancellationTokenSource is not null &&
+                            CancellationTokenSource.IsCancellationRequested)
+                            return;
+                    }
+
+                    if (action == SamePathCopyFileActions.Override)
+                        // ReSharper disable once AccessToDisposedClosure
+                        CopyFileInternal(new FileInfo(src), new FileInfo(dest), state);
+
+                    FileProcessed?.Invoke(this, EventArgs.Empty);
+                }
+            });
+    }
+
+    private static void Move(IEnumerable<IEntry> sourceEntries, string destPath)
+    {
+        foreach (var entry in sourceEntries)
+        {
+            var src = entry.Path;
+
+            var dest = Path.Combine(destPath, Path.GetFileName(src));
+            Directory.CreateDirectory(destPath);
+
+            if (entry.IsFolder)
+                Directory.Move(src, dest);
+            else
+                File.Move(src, dest);
         }
     }
 
@@ -197,8 +235,9 @@ public abstract class FileSystemCopier : IFileProcessable
         }
     }
 
-    protected abstract void CopyActionWhenExists(string srcPath, string destPath, ref CopyActionWhenExistsResult result);
-    
+    protected abstract void
+        CopyActionWhenExists(string srcPath, string destPath, ref CopyActionWhenExistsResult result);
+
     protected abstract CopyActionWhenSamePathResult CopyActionWhenSamePath(string destPath);
 
     public record struct CopyActionWhenExistsResult(ExistsCopyFileActions Action, string NewDestPath,
@@ -220,8 +259,7 @@ public sealed class DefaultFileSystemCopier : FileSystemCopier
         result = new CopyActionWhenExistsResult(ExistsCopyFileActions.Override, destPath, true, true);
     }
 
-    protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(
-        string destPath)
+    protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(string destPath)
     {
         return new CopyActionWhenSamePathResult(SamePathCopyFileActions.Skip, destPath);
     }

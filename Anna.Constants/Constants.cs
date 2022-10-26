@@ -81,6 +81,7 @@ public enum AccessFailureDeleteActions
 
 public enum CopyOrMove
 {
+    Unset,
     Copy,
     Move
 }

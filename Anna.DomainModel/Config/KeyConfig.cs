@@ -52,9 +52,9 @@ public sealed class KeyConfigData : ConfigData
             new(Key.Enter, metaKey, Operations.OpenEntryByApp),
             //
             new(Key.C, KeyModifiers.None, Operations.CopyEntry),
+            new(Key.M, KeyModifiers.None, Operations.MoveEntry),
             new(Key.D, KeyModifiers.None, Operations.DeleteEntry),
             new(Key.Delete, KeyModifiers.None, Operations.DeleteEntry),
-            new(Key.M, KeyModifiers.None, Operations.MoveEntry),
             //
             new(Key.G, KeyModifiers.Shift, Operations.EmptyTrashCan),
             new(Key.G, KeyModifiers.Control, Operations.OpenTrashCan),
@@ -86,8 +86,8 @@ public enum Operations
     OpenEntryByApp,
     //
     CopyEntry,
-    DeleteEntry,
     MoveEntry,
+    DeleteEntry,
     //
     EmptyTrashCan,
     OpenTrashCan,

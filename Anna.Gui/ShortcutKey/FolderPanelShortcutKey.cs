@@ -241,6 +241,10 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
     private async ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
+        if (receiver.TargetEntries.Length == 0)
+            return;
+
         var info = Dic.GetInstance<ITrashCanService>().GetTrashCanInfo();
         if (info.EntryCount == 0)
             return;
@@ -248,12 +252,12 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         var confirmText = info.EntryCount == 1
             ? Resources.Messege_ConfirmEmptyTrashCan_Single
             : Resources.Messege_ConfirmEmptyTrashCan_Multi;
-        
+
         var result = await shortcutKeyReceiver.Messenger.RaiseAsync(
             new ConfirmationMessage(
                 Resources.AppName,
-                string.Format(confirmText, info.EntryCount),
-                DialogResultTypes.OpenTrashCan |DialogResultTypes.Yes | DialogResultTypes.No,
+                string.Format(confirmText, info.EntryCount.ToString()),
+                DialogResultTypes.OpenTrashCan | DialogResultTypes.Yes | DialogResultTypes.No,
                 WindowBaseViewModel.MessageKeyConfirmation));
 
         switch (result.Response)
@@ -261,12 +265,15 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             case DialogResultTypes.OpenTrashCan:
                 Dic.GetInstance<ITrashCanService>().OpenTrashCan();
                 break;
-            
+
             case DialogResultTypes.Yes:
-                // todo: background worker
-                Dic.GetInstance<ITrashCanService>().EmptyTrashCan();
+                var @operator = Dic.GetInstance<DelegateBackgroundOperator, Action>(
+                    () => Dic.GetInstance<ITrashCanService>().EmptyTrashCan());
+
+                await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+
                 break;
-                
+
             case DialogResultTypes.No:
             case DialogResultTypes.Cancel:
                 break;

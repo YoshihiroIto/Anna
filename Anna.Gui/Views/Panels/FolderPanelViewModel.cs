@@ -3,9 +3,13 @@ using Anna.DomainModel;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
+using Anna.Gui.Messaging.Messages;
 using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
+using Anna.Gui.Views.Windows.Base;
 using Anna.Localization;
+using Anna.Service.Services;
+using Anna.Service.Workers;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
@@ -38,6 +42,9 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
+        
+        Model.BackgroundWorkerExceptionThrown += OnBackgroundWorkerExceptionThrown;
+        Trash.Add(() => Model.BackgroundWorkerExceptionThrown -= OnBackgroundWorkerExceptionThrown);
 
         var oldPath = Model.Path;
 
@@ -99,6 +106,18 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
                 .Subscribe(_ => UpdateCursorIndex(CursorEntry.Value))
                 .AddTo(Trash);
         }
+    }
+    
+    private async void OnBackgroundWorkerExceptionThrown(object? sender, ExceptionThrownEventArgs e)
+    {
+        await Messenger.RaiseAsync(
+            new ConfirmationMessage(
+                Resources.AppName,
+                e.Exception.Message,
+                DialogResultTypes.Ok,
+                WindowBaseViewModel.MessageKeyConfirmation));
+        
+        Dic.GetInstance<ILoggerService>().Error(e.Exception.Message);
     }
 
     public Entry[] CollectTargetEntries()

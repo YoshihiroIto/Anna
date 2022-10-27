@@ -30,6 +30,7 @@ internal sealed class MockBackgroundWorker : IBackgroundWorker
     public event PropertyChangedEventHandler? PropertyChanged;
 #pragma warning restore 0067
 
+    public event EventHandler<ExceptionThrownEventArgs>? ExceptionThrown;
     public bool IsInProcessing => false;
     public double Progress => 0;
     public ValueTask PushOperatorAsync(IBackgroundOperator @operator)

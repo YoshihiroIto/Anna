@@ -11,18 +11,11 @@ internal static class ShellApiWrapper
 {
     public static bool EmptyTrashCan()
     {
-        try
-        {
-            _ = SHEmptyRecycleBin(IntPtr.Zero,
-                null,
-                SHERB_NOCONFIRMATION | SHERB_NOPROGRESSUI | SHERB_NOSOUND);
+        var result = SHEmptyRecycleBin(IntPtr.Zero,
+            null,
+            SHERB_NOCONFIRMATION | SHERB_NOPROGRESSUI | SHERB_NOSOUND);
 
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+        return result == 0;
     }
 
     public static bool SendToTrashCan(string path)
@@ -33,12 +26,11 @@ internal static class ShellApiWrapper
             FileOperationFlags.FOF_SILENT);
     }
 
-
     public static (long EntryAllSize, long EntryCount) GetTrashCanInfo()
     {
         var info = new SHQUERYRBINFO();
         info.cbSize = Unsafe.SizeOf<SHQUERYRBINFO>();
-        
+
         _ = SHQueryRecycleBin("", ref info);
 
         return (info.i64Size, info.i64NumItems);
@@ -105,20 +97,15 @@ internal static class ShellApiWrapper
 
     private static bool Send(string path, FileOperationFlags flags)
     {
-        try
+        var fs = new SHFILEOPSTRUCT
         {
-            var fs = new SHFILEOPSTRUCT
-            {
-                wFunc = FileOperationType.FO_DELETE,
-                pFrom = path + '\0' + '\0',
-                fFlags = FileOperationFlags.FOF_ALLOWUNDO | flags
-            };
-            _ = SHFileOperation(ref fs);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+            wFunc = FileOperationType.FO_DELETE,
+            pFrom = path + '\0' + '\0',
+            fFlags = FileOperationFlags.FOF_ALLOWUNDO | flags
+        };
+        
+        var result = SHFileOperation(ref fs);
+        
+        return result == 0;
     }
 }

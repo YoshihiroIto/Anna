@@ -9,6 +9,8 @@ namespace Anna.DomainModel.Service;
 
 public sealed class BackgroundWorker : DisposableNotificationObject, IBackgroundWorker
 {
+    public event EventHandler<ExceptionThrownEventArgs>? ExceptionThrown;
+
     #region IsInProcessing
 
     private bool _IsInProcessing;
@@ -20,7 +22,6 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
     }
 
     #endregion
-
 
     #region Progress
 
@@ -62,13 +63,17 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
             if (_channel.Reader.TryRead(out var @operator) == false)
                 continue;
 
-            using (@operator.ObserveProperty(x => x.Progress)
-                       .Subscribe(x => Progress = x))
+            try
             {
+                using var d = @operator.ObserveProperty(x => x.Progress).Subscribe(x => Progress = x);
                 await @operator.ExecuteAsync().ConfigureAwait(false);
-
-                Progress = 100;
             }
+            catch (Exception e)
+            {
+                ExceptionThrown?.Invoke(this, new ExceptionThrownEventArgs(e));
+            }
+
+            Progress = 100;
 
             @operator.Dispose();
             IsInProcessing = Interlocked.Decrement(ref _operatorCount) > 0;

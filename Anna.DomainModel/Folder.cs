@@ -88,6 +88,12 @@ public abstract class Folder : DisposableNotificationObject
 
     public abstract Stream OpenRead(string path);
     public abstract Task<byte[]> ReadAllAsync(string path);
+    
+    public event EventHandler<ExceptionThrownEventArgs> BackgroundWorkerExceptionThrown
+    {
+        add => BackgroundWorker.ExceptionThrown += value;
+        remove => BackgroundWorker.ExceptionThrown -= value;
+    }
 
     protected Folder(string path, IServiceProvider dic)
         : base(dic)

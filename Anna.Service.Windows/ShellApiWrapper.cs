@@ -1,5 +1,6 @@
 ﻿// ReSharper disable all
 
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Anna.Service.Windows;
@@ -23,7 +24,7 @@ internal static class ShellApiWrapper
             return false;
         }
     }
-    
+
     public static bool SendToTrashCan(string path)
     {
         return Send(path,
@@ -32,12 +33,26 @@ internal static class ShellApiWrapper
             FileOperationFlags.FOF_SILENT);
     }
 
+
+    public static (long EntryAllSize, long EntryCount) GetTrashCanInfo()
+    {
+        var info = new SHQUERYRBINFO();
+        info.cbSize = Unsafe.SizeOf<SHQUERYRBINFO>();
+        
+        _ = SHQueryRecycleBin("", ref info);
+
+        return (info.i64Size, info.i64NumItems);
+    }
+
     [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
     private static extern uint SHEmptyRecycleBin(IntPtr hwnd, string? pszRootPath, uint dwFlags);
-    
+
     [DllImport("shell32.dll", CharSet = CharSet.Auto)]
     private static extern int SHFileOperation(ref SHFILEOPSTRUCT FileOp);
-    
+
+    [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+    private static extern int SHQueryRecycleBin(string pszRootPath, ref SHQUERYRBINFO pSHQueryRBInfo);
+
     private const uint SHERB_NOCONFIRMATION = 0x00000001;
     private const uint SHERB_NOPROGRESSUI = 0x00000002;
     private const uint SHERB_NOSOUND = 0x00000004;
@@ -78,6 +93,14 @@ internal static class ShellApiWrapper
 
         public IntPtr hNameMappings;
         public string lpszProgressTitle;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 8)]
+    public struct SHQUERYRBINFO
+    {
+        public int cbSize;
+        public long i64Size;
+        public long i64NumItems;
     }
 
     private static bool Send(string path, FileOperationFlags flags)

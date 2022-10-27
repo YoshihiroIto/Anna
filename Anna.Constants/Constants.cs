@@ -99,6 +99,7 @@ public enum DialogResultTypes
     Skip = 1 << 14,
 
     AllDelete = 1 << 20,
+    OpenTrashCan = 1 << 21,
 }
 
 public static class Constants

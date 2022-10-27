@@ -6,7 +6,10 @@ using Anna.Foundation;
 using Anna.Gui.BackgroundOperators;
 using Anna.Gui.BackgroundOperators.Internals;
 using Anna.Gui.Messaging;
+using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows;
+using Anna.Gui.Views.Windows.Base;
+using Anna.Localization;
 using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using System;
@@ -236,10 +239,41 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
     }
 
-    private ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    private async ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
-        Dic.GetInstance<ITrashCanService>().EmptyTrashCan();
-        return ValueTask.CompletedTask;
+        var info = Dic.GetInstance<ITrashCanService>().GetTrashCanInfo();
+        if (info.EntryCount == 0)
+            return;
+
+        var confirmText = info.EntryCount == 1
+            ? Resources.Messege_ConfirmEmptyTrashCan_Single
+            : Resources.Messege_ConfirmEmptyTrashCan_Multi;
+        
+        var result = await shortcutKeyReceiver.Messenger.RaiseAsync(
+            new ConfirmationMessage(
+                Resources.AppName,
+                string.Format(confirmText, info.EntryCount),
+                DialogResultTypes.OpenTrashCan |DialogResultTypes.Yes | DialogResultTypes.No,
+                WindowBaseViewModel.MessageKeyConfirmation));
+
+        switch (result.Response)
+        {
+            case DialogResultTypes.OpenTrashCan:
+                Dic.GetInstance<ITrashCanService>().OpenTrashCan();
+                break;
+            
+            case DialogResultTypes.Yes:
+                // todo: background worker
+                Dic.GetInstance<ITrashCanService>().EmptyTrashCan();
+                break;
+                
+            case DialogResultTypes.No:
+            case DialogResultTypes.Cancel:
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     private ValueTask OpenTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)

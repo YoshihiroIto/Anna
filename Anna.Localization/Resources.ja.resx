@@ -182,4 +182,15 @@
     <data name="DialogTitle_MoveEntry" xml:space="preserve">
         <value>エントリーの移動</value>
     </data>
+    <data name="Messege_ConfirmEmptyTrashCan_Multi" xml:space="preserve">
+        <value>{0}個のエントリーがごみ箱に存在します。
+完全に削除しますか？</value>
+    </data>
+    <data name="Messege_ConfirmEmptyTrashCan_Single" xml:space="preserve">
+        <value>{0}個のエントリーがごみ箱に存在します。
+完全に削除しますか？</value>
+    </data>
+    <data name="Dialog_OpenTrashCan" xml:space="preserve">
+        <value>ごみ箱を開く(_T)</value>
+    </data>
 </root>

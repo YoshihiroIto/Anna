@@ -13,6 +13,11 @@ public interface ITrashCanService
     {
         throw new NotImplementedException();
     }
+
+    (long EntryAllSize, long EntryCount) GetTrashCanInfo()
+    {
+        throw new NotImplementedException();
+    }
     
     void OpenTrashCan()
     {

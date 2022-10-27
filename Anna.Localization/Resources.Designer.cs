@@ -105,6 +105,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open _trash can.
+        /// </summary>
+        public static string Dialog_OpenTrashCan {
+            get {
+                return ResourceManager.GetString("Dialog_OpenTrashCan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Retry.
         /// </summary>
         public static string Dialog_Retry {
@@ -374,6 +383,26 @@ namespace Anna.Localization {
         public static string Message_ReadOnlyConfirmDelete {
             get {
                 return ResourceManager.GetString("Message_ReadOnlyConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} entries exist in the trash can.
+        ///Do you want to delete them completely?.
+        /// </summary>
+        public static string Messege_ConfirmEmptyTrashCan_Multi {
+            get {
+                return ResourceManager.GetString("Messege_ConfirmEmptyTrashCan_Multi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} entry exist in the trash can.
+        ///Do you want to delete it completely?.
+        /// </summary>
+        public static string Messege_ConfirmEmptyTrashCan_Single {
+            get {
+                return ResourceManager.GetString("Messege_ConfirmEmptyTrashCan_Single", resourceCulture);
             }
         }
         

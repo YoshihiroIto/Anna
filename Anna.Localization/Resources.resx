@@ -288,4 +288,15 @@ This entry is read-only. Do you want to delete it?</value>
   <data name="DialogTitle_MoveEntry" xml:space="preserve">
     <value>Move entry</value>
   </data>
+  <data name="Messege_ConfirmEmptyTrashCan_Single" xml:space="preserve">
+    <value>{0} entry exist in the trash can.
+Do you want to delete it completely?</value>
+  </data>
+  <data name="Messege_ConfirmEmptyTrashCan_Multi" xml:space="preserve">
+    <value>{0} entries exist in the trash can.
+Do you want to delete them completely?</value>
+  </data>
+  <data name="Dialog_OpenTrashCan" xml:space="preserve">
+    <value>Open _trash can</value>
+  </data>
 </root>

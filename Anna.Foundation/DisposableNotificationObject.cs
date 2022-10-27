@@ -46,8 +46,8 @@ public class DisposableNotificationObject
 }
 
 public class HasArgDisposableNotificationObject<TArg>
-    : DisposableNotificationObject,
-        IHasArg<TArg>
+    : DisposableNotificationObject
+        , IHasArg<TArg>
 {
     protected readonly TArg Arg;
 

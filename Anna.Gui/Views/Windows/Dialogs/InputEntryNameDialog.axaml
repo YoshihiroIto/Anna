@@ -92,7 +92,7 @@
                     </behaviors:ControlKeyDownTriggerBehavior>
 
                     <behaviors:InputElementFocusBehavior />
-                    <behaviors:TextBoxSelectAllBehavior />
+                    <behaviors:TextBoxSelectFileNameWithoutExtensionBehavior />
                 </Interaction.Behaviors>
             </TextBox>
 

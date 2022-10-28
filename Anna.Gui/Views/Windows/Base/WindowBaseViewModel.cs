@@ -22,7 +22,7 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
     public const string MessageKeyConfirmation = nameof(MessageKeyConfirmation);
     public const string MessageKeyJumpFolder = nameof(MessageKeyJumpFolder);
     public const string MessageKeySelectFolder = nameof(MessageKeySelectFolder);
-    public const string MessageKeyChangeEntryName = nameof(MessageKeyChangeEntryName);
+    public const string MessageKeyInputEntryName = nameof(MessageKeyInputEntryName);
     public const string MessageKeySelectFileCopyAction = nameof(MessageKeySelectFileCopyAction);
 
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;

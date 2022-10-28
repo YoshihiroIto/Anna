@@ -12,7 +12,7 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="DialogTitle_SortEntry" xml:space="preserve">
-        <value>エントリーのソート</value>
+        <value>エントリーソート</value>
     </data>
     <data name="SortEntry_Mode_Attribute" xml:space="preserve">
         <value>属性順(_R)</value>
@@ -106,7 +106,7 @@
         <value>バイナリファイルはプレビューできません。</value>
     </data>
     <data name="DialogTitle_CopyEntry" xml:space="preserve">
-        <value>エントリーのコピー</value>
+        <value>エントリーコピー</value>
     </data>
     <data name="UI_JumpFolderDialog" xml:space="preserve">
         <value>フォルダー(_F)...</value>
@@ -115,7 +115,7 @@
         <value>フォルダー選択</value>
     </data>
     <data name="DialogTitle_ChangeEntryName" xml:space="preserve">
-        <value>エントリーの名前変更</value>
+        <value>エントリー名前変更</value>
     </data>
     <data name="Dialog_Skip" xml:space="preserve">
         <value>スキップ(_S)</value>
@@ -139,7 +139,7 @@
         <value>既に存在します。</value>
     </data>
     <data name="DialogTitle_DeleteEntry" xml:space="preserve">
-        <value>エントリーの削除</value>
+        <value>エントリー削除</value>
     </data>
     <data name="UI_ToTrashCan" xml:space="preserve">
         <value>ごみ箱へ(_T)</value>
@@ -154,7 +154,7 @@
 フォルダ―またはファイルを閉じてから再実行してください。</value>
     </data>
     <data name="DialogTitle_SelectFileCopyAction" xml:space="preserve">
-        <value>コピー方法の選択</value>
+        <value>コピー方法選択</value>
     </data>
     <data name="Message_FolderAlreadyContainsSameName" xml:space="preserve">
         <value>コピー先フォルダーには、すでに同名ファイルが存在しています。</value>
@@ -180,7 +180,7 @@
         <value>すべて削除(_A)</value>
     </data>
     <data name="DialogTitle_MoveEntry" xml:space="preserve">
-        <value>エントリーの移動</value>
+        <value>エントリー移動</value>
     </data>
     <data name="Messege_ConfirmEmptyTrashCan_Multi" xml:space="preserve">
         <value>{0}個のエントリーがごみ箱に存在します。
@@ -192,5 +192,17 @@
     </data>
     <data name="Dialog_OpenTrashCan" xml:space="preserve">
         <value>ごみ箱を開く(_T)</value>
+    </data>
+    <data name="Entry_NewFilename" xml:space="preserve">
+        <value>新しいファイル</value>
+    </data>
+    <data name="Entry_NewFoldername" xml:space="preserve">
+        <value>新しいフォルダ―</value>
+    </data>
+    <data name="DialogTitle_CreateFile" xml:space="preserve">
+        <value>ファイル作成</value>
+    </data>
+    <data name="DialogTitle_CreateFolder" xml:space="preserve">
+        <value>フォルダ―作成</value>
     </data>
 </root>

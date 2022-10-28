@@ -4,6 +4,7 @@ using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Localization;
 using Anna.Service;
 using System.Diagnostics;
 using System.IO;
@@ -72,10 +73,13 @@ internal sealed class ConfirmedFileSystemCopier
             var filename = Path.GetFileName(destPath);
 
             var message = _arg.Messenger.Raise(
-                new ChangeEntryNameMessage(
+                new InputEntryNameMessage(
                     folder,
                     filename,
-                    WindowBaseViewModel.MessageKeyChangeEntryName));
+                    Resources.DialogTitle_ChangeEntryName,
+                    true,
+                    true,
+                    WindowBaseViewModel.MessageKeyInputEntryName));
 
             if (message.Response.DialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();

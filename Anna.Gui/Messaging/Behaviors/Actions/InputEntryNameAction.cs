@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Messaging.Behaviors.Actions;
 
-public sealed class ChangeEntryNameAction : AvaloniaObject, IAction, IAsyncAction
+public sealed class InputEntryNameAction : AvaloniaObject, IAction, IAsyncAction
 {
     public object Execute(object? sender, object? parameter)
     {
@@ -22,7 +22,7 @@ public sealed class ChangeEntryNameAction : AvaloniaObject, IAction, IAsyncActio
         InteractionMessage message,
         IHasServiceProviderContainer hasServiceProviderContainer)
     {
-        if (message is not ChangeEntryNameMessage changeEntryNameMessage)
+        if (message is not InputEntryNameMessage inputEntryNameMessage)
             return;
 
         if (sender is not { AssociatedObject: IControl control })
@@ -30,12 +30,16 @@ public sealed class ChangeEntryNameAction : AvaloniaObject, IAction, IAsyncActio
 
         var owner = ControlHelper.FindOwnerWindow(control);
 
-        var result = await WindowOperator.ChangeEntryNameAsync(
+        var result = await WindowOperator.InputEntryNameAsync(
             hasServiceProviderContainer.Dic,
             owner,
-            changeEntryNameMessage.CurrentFolderPath,
-            changeEntryNameMessage.CurrentFilename);
+            inputEntryNameMessage.CurrentFolderPath,
+            inputEntryNameMessage.CurrentFilename,
+            inputEntryNameMessage.Title,
+            inputEntryNameMessage.IsEnableCurrentInfo,
+            inputEntryNameMessage.IsEnableSkip
+        );
 
-        changeEntryNameMessage.Response = result;
+        inputEntryNameMessage.Response = result;
     }
 }

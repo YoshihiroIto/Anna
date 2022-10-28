@@ -4,6 +4,7 @@ using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Localization;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
@@ -92,10 +93,13 @@ public sealed class SelectFileCopyActionDialogViewModel
             .WithSubscribe(async () =>
             {
                 var changeNameMessage = await Messenger.RaiseAsync(
-                    new ChangeEntryNameMessage(
+                    new InputEntryNameMessage(
                         DestFolder,
                         Path.GetFileName(Model.DestFilepath),
-                        MessageKeyChangeEntryName));
+                        Resources.DialogTitle_ChangeEntryName,
+                        true,
+                        true,
+                        MessageKeyInputEntryName));
 
                 switch (changeNameMessage.Response.DialogResult)
                 {

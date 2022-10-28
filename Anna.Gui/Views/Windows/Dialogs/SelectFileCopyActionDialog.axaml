@@ -35,8 +35,8 @@
             <actions:WindowActionAction />
         </behaviors1:InteractionMessageTrigger>
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyChangeEntryName}" Messenger="{Binding Messenger}">
-            <actions:ChangeEntryNameAction />
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyInputEntryName}" Messenger="{Binding Messenger}">
+            <actions:InputEntryNameAction />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 

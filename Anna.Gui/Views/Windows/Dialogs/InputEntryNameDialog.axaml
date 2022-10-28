@@ -1,27 +1,27 @@
-﻿<base1:WindowBase x:Class="Anna.Gui.Views.Windows.Dialogs.ChangeEntryNameDialog"
+﻿<base1:WindowBase x:Class="Anna.Gui.Views.Windows.Dialogs.InputEntryNameDialog"
                   Classes="dialog"
                   xmlns="https://github.com/avaloniaui"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
                   xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
                   xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                   xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
-                  Title="{ReflectionBinding R.DialogTitle_ChangeEntryName}"
+                  Title="{Binding Title, Mode=OneTime}"
                   Width="400"
                   MinWidth="400"
                   MaxWidth="600"
                   d:DesignHeight="400"
                   d:DesignWidth="300"
                   x:CompileBindings="True"
-                  x:DataType="dialogs1:ChangeEntryNameDialogViewModel"
+                  x:DataType="dialogs1:InputEntryNameDialogViewModel"
                   SizeToContent="Height"
                   mc:Ignorable="d">
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->
-        <dialogs1:ChangeEntryNameDialogViewModel />
+        <dialogs1:InputEntryNameDialogViewModel />
     </Design.DataContext>
 
     <Window.Styles>
@@ -49,7 +49,9 @@
             <Button Classes="dialog"
                     Command="{Binding SkipCommand,
                                       Mode=OneTime}"
-                    Content="{ReflectionBinding R.Dialog_Skip}" />
+                    Content="{ReflectionBinding R.Dialog_Skip}"
+                    IsVisible="{Binding IsEnableSkip,
+                                        Mode=OneTime}" />
 
             <Button Classes="dialog"
                     Command="{Binding CancelCommand,
@@ -58,7 +60,10 @@
         </StackPanel>
 
         <StackPanel>
-            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+            <Grid ColumnDefinitions="Auto,*"
+                  RowDefinitions="Auto,Auto"
+                  IsVisible="{Binding IsEnableCurrentInfo,
+                                      Mode=OneTime}">
                 <TextBlock Grid.Row="0"
                            Grid.Column="0"
                            Text="{ReflectionBinding R.UI_Name}" />

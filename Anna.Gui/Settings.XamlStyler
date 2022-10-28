@@ -16,6 +16,7 @@
         "xmlns:*",
         "x:Key, Key, x:Name, Name, x:Uid, Uid, Title",
         "Selector",
+        "ColumnDefinitions", "RowDefinitions",
         "Grid.Row, Grid.RowSpan, Grid.Column, Grid.ColumnSpan, Canvas.Left, Canvas.Top, Canvas.Right, Canvas.Bottom",
         "Width, Height, MinWidth, MinHeight, MaxWidth, MaxHeight, ItemWidth, ItemHeight",
         "Margin, Padding, HorizontalAlignment, VerticalAlignment, HorizontalContentAlignment, VerticalContentAlignment, Panel.ZIndex",

@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public partial class ChangeEntryNameDialog : WindowBase<ChangeEntryNameDialogViewModel>
+public partial class InputEntryNameDialog : WindowBase<InputEntryNameDialogViewModel>
 {
-    public ChangeEntryNameDialog()
+    public InputEntryNameDialog()
     {
         InitializeComponent();
 #if DEBUG

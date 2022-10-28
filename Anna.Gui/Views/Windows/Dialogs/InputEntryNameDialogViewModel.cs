@@ -12,13 +12,16 @@ using System.Windows.Input;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class ChangeEntryNameDialogViewModel
-    : HasModelWindowBaseViewModel<(string CurrentFolderPath, string CurrentFilename)>
+public sealed class InputEntryNameDialogViewModel
+    : HasModelWindowBaseViewModel<(string CurrentFolderPath, string CurrentFilename, string Title, bool IsEnableCurrentInfo, bool IsEnableSkip)>
 {
     public string ResultFilePath { get; private set; } = "";
 
-    public string CurrentName => Model.CurrentFilename;
     public string CurrentFolder => Model.CurrentFolderPath;
+    public string CurrentName => Model.CurrentFilename;
+    public string Title => Model.Title;
+    public bool IsEnableCurrentInfo => Model.IsEnableCurrentInfo;
+    public bool IsEnableSkip => Model.IsEnableSkip;
 
     public ReactivePropertySlim<string> Filename { get; }
 
@@ -40,7 +43,7 @@ public sealed class ChangeEntryNameDialogViewModel
         }
     }
 
-    public ChangeEntryNameDialogViewModel(IServiceProvider dic)
+    public InputEntryNameDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
         Filename = new ReactivePropertySlim<string>(Model.CurrentFilename)

@@ -58,12 +58,15 @@ public static class WindowOperator
     }
 
     public static async ValueTask<(DialogResultTypes Result, string FilePath)>
-        ChangeEntryNameAsync(IServiceProvider dic, Window owner, string currentFolderPath, string currentFilename)
+        InputEntryNameAsync(IServiceProvider dic, Window owner, string currentFolderPath, string currentFilename,
+            string title, bool isEnableCurrentInfo, bool isEnableSkip
+        )
     {
         using var viewModel =
-            dic.GetInstance<ChangeEntryNameDialogViewModel, (string, string)>((currentFolderPath, currentFilename));
+            dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
+                (currentFolderPath, currentFilename, title, isEnableCurrentInfo, isEnableSkip));
 
-        var view = dic.GetInstance<ChangeEntryNameDialog>();
+        var view = dic.GetInstance<InputEntryNameDialog>();
         view.DataContext = viewModel;
 
         await view.ShowDialog(owner);
@@ -99,14 +102,15 @@ public static class WindowOperator
     }
 
     public static async ValueTask<(DialogResultTypes Result, string DestFolder)>
-        EntryCopyOrMoveAsync(IServiceProvider dic, Window owner, 
+        EntryCopyOrMoveAsync(IServiceProvider dic, Window owner,
             CopyOrMove copyOrMove,
             string currentFolderPath, Entry[] targets, EntriesStats stats)
     {
         using var viewModel =
             dic.GetInstance<CopyOrMoveEntryDialogViewModel,
-                    (CopyOrMove, string, Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
-                ((copyOrMove, currentFolderPath, targets, stats, dic.GetInstance<IFolderHistoryService>().DestinationFolders));
+                (CopyOrMove, string, Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
+            ((copyOrMove, currentFolderPath, targets, stats,
+                dic.GetInstance<IFolderHistoryService>().DestinationFolders));
 
         var view = dic.GetInstance<CopyOrMoveEntryDialog>();
         view.DataContext = viewModel;

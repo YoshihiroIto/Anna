@@ -1,6 +1,7 @@
-﻿namespace Anna.Foundation;
+﻿
+namespace Anna.Foundation;
 
-public static class FileHelper
+public static class FileSystemHelper
 {
     public static void WriteSpan(string filePath, ReadOnlySpan<byte> bytes)
     {
@@ -8,7 +9,7 @@ public static class FileHelper
 
         file.Write(bytes);
     }
-    
+
     public static long MeasureFolderSize(DirectoryInfo dirInfo)
     {
         var size = 0L;
@@ -18,13 +19,28 @@ public static class FileHelper
             (fi, _, subSize) => subSize + fi.Length,
             finalResult => Interlocked.Add(ref size, finalResult)
         );
-        
+
         Parallel.ForEach(dirInfo.EnumerateDirectories(),
             () => 0L,
             (di, _, subSize) => subSize + MeasureFolderSize(di),
             finalResult => Interlocked.Add(ref size, finalResult)
         );
-        
+
         return size;
+    }
+
+    public static string MakeNewEntryName(string folderPath, string baseName)
+    {
+        for (var i = 1;; ++i)
+        {
+            var entryName = i == 1
+                ? baseName
+                : $"{baseName} ({i})";
+
+            var path = Path.Combine(folderPath, entryName);
+
+            if (File.Exists(path) == false && Directory.Exists(path) == false)
+                return entryName;
+        }
     }
 }

@@ -299,4 +299,16 @@ Do you want to delete them completely?</value>
   <data name="Dialog_OpenTrashCan" xml:space="preserve">
     <value>Open _trash can</value>
   </data>
+  <data name="Entry_NewFilename" xml:space="preserve">
+    <value>NewFile</value>
+  </data>
+  <data name="Entry_NewFoldername" xml:space="preserve">
+    <value>NewFolder</value>
+  </data>
+  <data name="DialogTitle_CreateFile" xml:space="preserve">
+    <value>Create file</value>
+  </data>
+  <data name="DialogTitle_CreateFolder" xml:space="preserve">
+    <value>Create folder</value>
+  </data>
 </root>

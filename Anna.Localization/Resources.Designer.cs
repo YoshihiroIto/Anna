@@ -159,6 +159,24 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create file.
+        /// </summary>
+        public static string DialogTitle_CreateFile {
+            get {
+                return ResourceManager.GetString("DialogTitle_CreateFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create folder.
+        /// </summary>
+        public static string DialogTitle_CreateFolder {
+            get {
+                return ResourceManager.GetString("DialogTitle_CreateFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete entry.
         /// </summary>
         public static string DialogTitle_DeleteEntry {
@@ -209,6 +227,24 @@ namespace Anna.Localization {
         public static string DialogTitle_SortEntry {
             get {
                 return ResourceManager.GetString("DialogTitle_SortEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NewFile.
+        /// </summary>
+        public static string Entry_NewFilename {
+            get {
+                return ResourceManager.GetString("Entry_NewFilename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to NewFolder.
+        /// </summary>
+        public static string Entry_NewFoldername {
+            get {
+                return ResourceManager.GetString("Entry_NewFoldername", resourceCulture);
             }
         }
         

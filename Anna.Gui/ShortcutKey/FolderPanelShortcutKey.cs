@@ -53,6 +53,9 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             { Operations.MoveEntry, s => CopyOrMoveEntryAsync(CopyOrMove.Move, s) },
             { Operations.DeleteEntry, DeleteEntryAsync },
             //
+            { Operations.MakeFolder, s => MakeFolderOrFileAsync(true, s) },
+            { Operations.MakeFile, s => MakeFolderOrFileAsync(false, s) },
+            //
             { Operations.EmptyTrashCan, EmptyTrashCanAsync },
             { Operations.OpenTrashCan, OpenTrashCanAsync },
         };
@@ -239,11 +242,33 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
     }
 
+    private static async ValueTask MakeFolderOrFileAsync(bool isFolder, IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
+
+        var message = await receiver.Messenger.RaiseAsync(
+            new InputEntryNameMessage(
+                receiver.Folder.Path,
+                FileSystemHelper.MakeNewEntryName(
+                    receiver.Folder.Path,
+                    isFolder ? Resources.Entry_NewFoldername : Resources.Entry_NewFilename),
+                isFolder ? Resources.DialogTitle_CreateFolder : Resources.DialogTitle_CreateFile,
+                false,
+                false,
+                WindowBaseViewModel.MessageKeyInputEntryName));
+
+        if (message.Response.DialogResult == DialogResultTypes.Ok)
+        {
+            if (isFolder)
+                Directory.CreateDirectory(message.Response.FilePath);
+            else
+                await File.WriteAllBytesAsync(message.Response.FilePath, Array.Empty<byte>());
+        }
+    }
+
     private async ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
-        if (receiver.TargetEntries.Length == 0)
-            return;
 
         var info = Dic.GetInstance<ITrashCanService>().GetTrashCanInfo();
         if (info.EntryCount == 0)

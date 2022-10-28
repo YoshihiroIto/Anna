@@ -117,7 +117,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
                 DialogResultTypes.Ok,
                 WindowBaseViewModel.MessageKeyConfirmation));
         
-        Dic.GetInstance<ILoggerService>().Error(e.Exception.Message);
+        Dic.GetInstance<ILoggerService>().Warning(e.Exception.Message);
     }
 
     public Entry[] CollectTargetEntries()

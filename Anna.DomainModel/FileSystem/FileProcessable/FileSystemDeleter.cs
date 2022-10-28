@@ -48,14 +48,32 @@ public abstract class FileSystemDeleter : IFileProcessable
 
     public void Invoke(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)
     {
-        if (mode == EntryDeleteModes.TrashCan)
+        switch (mode)
         {
-            foreach (var entry in sourceEntries)
-                _dic.GetInstance<ITrashCanService>().SendToTrashCan(entry);
+            case EntryDeleteModes.Delete:
+                Delete(sourceEntries, mode);
+                break;
             
-            return;
+            case EntryDeleteModes.TrashCan:
+                SendToTrashCan(sourceEntries, mode);
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
         }
-        
+    }
+
+    private void SendToTrashCan(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)
+    {
+        foreach (var entry in sourceEntries)
+        {
+            _dic.GetInstance<ITrashCanService>().SendToTrashCan(entry);
+            FileProcessed?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private void Delete(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)
+    {
         CancellationTokenSource = new CancellationTokenSource();
 
         try
@@ -196,7 +214,7 @@ public abstract class FileSystemDeleter : IFileProcessable
             if (isReadonly && state.IsAllDelete == false)
             {
                 DeleteActionWhenReadonly(srcInfo, ref state.ReadOnlyDeleteActions);
-                   
+
                 switch (state.ReadOnlyDeleteActions)
                 {
                     case ReadOnlyDeleteActions.Delete:

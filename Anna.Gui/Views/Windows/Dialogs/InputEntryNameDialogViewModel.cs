@@ -42,6 +42,8 @@ public sealed class InputEntryNameDialogViewModel
             yield return ExistsEntity;
         }
     }
+    
+    private static readonly HashSet<char> InvalidFilenameChars = new(Path.GetInvalidFileNameChars());
 
     public InputEntryNameDialogViewModel(IServiceProvider dic)
         : base(dic)
@@ -95,6 +97,4 @@ public sealed class InputEntryNameDialogViewModel
         return Directory.EnumerateFileSystemEntries(CurrentFolder)
             .Any(x => x == Path.Combine(CurrentFolder, Filename.Value));
     }
-
-    private static readonly HashSet<char> InvalidFilenameChars = new(Path.GetInvalidFileNameChars());
 }

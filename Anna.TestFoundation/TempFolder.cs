@@ -5,7 +5,7 @@ namespace Anna.TestFoundation;
 public sealed class TempFolder : IDisposable
 {
     public string AppConfigFilePath => $"{RootPath}/AppConfig.json";
-    public string JumpFolderConfigFilePath => $"{RootPath}/{JumpFolderConfig.Filename}";
+    public string JumpFolderConfigFilePath => $"{RootPath}/{JumpFolderConfig.FileName}";
     public string LogFilePath => Path.Combine(RootPath, "logs", "log" + DateTime.Today.ToString("yyyyMMdd") + ".txt");
 
     public string[] ReadLogLines() => File.ReadAllLines(LogFilePath);

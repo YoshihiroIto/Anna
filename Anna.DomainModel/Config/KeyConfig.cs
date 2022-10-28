@@ -6,7 +6,7 @@ namespace Anna.DomainModel.Config;
 
 public sealed class KeyConfig : ConfigBase<KeyConfigData>
 {
-    public const string Filename = "Key.json";
+    public const string FileName = "Key.json";
 
     public KeyConfig(IObjectSerializerService objectSerializer)
         : base(objectSerializer)

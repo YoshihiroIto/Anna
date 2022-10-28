@@ -20,7 +20,7 @@ public sealed class SelectFileCopyActionDialogViewModel
     public FileSystemCopier.CopyActionWhenExistsResult Result { get; private set; } =
         new(ExistsCopyFileActions.Skip, "", false, false);
 
-    public string Filename => Path.GetFileName(Model.SrcFilepath);
+    public string FileName => Path.GetFileName(Model.SrcFilepath);
 
     public string SrcFolder { get; }
     public DateTime SrcTimeStamp { get; }

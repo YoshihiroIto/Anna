@@ -70,12 +70,12 @@ internal sealed class ConfirmedFileSystemCopier
                 return new CopyActionWhenSamePathResult(SamePathCopyFileActions.Skip, "");
 
             var folder = Path.GetDirectoryName(destPath) ?? "";
-            var filename = Path.GetFileName(destPath);
+            var fileName = Path.GetFileName(destPath);
 
             var message = _arg.Messenger.Raise(
                 new InputEntryNameMessage(
                     folder,
-                    filename,
+                    fileName,
                     Resources.DialogTitle_ChangeEntryName,
                     true,
                     true,

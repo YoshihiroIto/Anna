@@ -58,13 +58,13 @@ public static class WindowOperator
     }
 
     public static async ValueTask<(DialogResultTypes Result, string FilePath)>
-        InputEntryNameAsync(IServiceProvider dic, Window owner, string currentFolderPath, string currentFilename,
+        InputEntryNameAsync(IServiceProvider dic, Window owner, string currentFolderPath, string currentFileName,
             string title, bool isEnableCurrentInfo, bool isEnableSkip
         )
     {
         using var viewModel =
             dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
-                (currentFolderPath, currentFilename, title, isEnableCurrentInfo, isEnableSkip));
+                (currentFolderPath, currentFileName, title, isEnableCurrentInfo, isEnableSkip));
 
         var view = dic.GetInstance<InputEntryNameDialog>();
         view.DataContext = viewModel;

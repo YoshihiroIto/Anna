@@ -75,8 +75,8 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         >();
 
         var configFolder = Path.GetDirectoryName(appConfigFilePath) ?? "";
-        var keyConfigFilePath = Path.Combine(configFolder, KeyConfig.Filename);
-        var jumpFolderConfigFilePath = Path.Combine(configFolder, JumpFolderConfig.Filename);
+        var keyConfigFilePath = Path.Combine(configFolder, KeyConfig.FileName);
+        var jumpFolderConfigFilePath = Path.Combine(configFolder, JumpFolderConfig.FileName);
 
         RegisterSingleton(() =>
             new AppConfig(GetInstance<IObjectSerializerService>()) { FilePath = appConfigFilePath });

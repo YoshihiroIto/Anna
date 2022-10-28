@@ -34,7 +34,7 @@ public sealed class InputEntryNameAction : AvaloniaObject, IAction, IAsyncAction
             hasServiceProviderContainer.Dic,
             owner,
             inputEntryNameMessage.CurrentFolderPath,
-            inputEntryNameMessage.CurrentFilename,
+            inputEntryNameMessage.CurrentFileName,
             inputEntryNameMessage.Title,
             inputEntryNameMessage.IsEnableCurrentInfo,
             inputEntryNameMessage.IsEnableSkip

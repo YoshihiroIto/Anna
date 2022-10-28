@@ -13,17 +13,17 @@ using System.Windows.Input;
 namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class InputEntryNameDialogViewModel
-    : HasModelWindowBaseViewModel<(string CurrentFolderPath, string CurrentFilename, string Title, bool IsEnableCurrentInfo, bool IsEnableSkip)>
+    : HasModelWindowBaseViewModel<(string CurrentFolderPath, string CurrentFileName, string Title, bool IsEnableCurrentInfo, bool IsEnableSkip)>
 {
     public string ResultFilePath { get; private set; } = "";
 
     public string CurrentFolder => Model.CurrentFolderPath;
-    public string CurrentName => Model.CurrentFilename;
+    public string CurrentName => Model.CurrentFileName;
     public string Title => Model.Title;
     public bool IsEnableCurrentInfo => Model.IsEnableCurrentInfo;
     public bool IsEnableSkip => Model.IsEnableSkip;
 
-    public ReactivePropertySlim<string> Filename { get; }
+    public ReactivePropertySlim<string> FileName { get; }
 
     public ReadOnlyReactivePropertySlim<bool> IsInvalidName { get; }
     public ReadOnlyReactivePropertySlim<bool> IsEmptyName { get; }
@@ -43,25 +43,25 @@ public sealed class InputEntryNameDialogViewModel
         }
     }
     
-    private static readonly HashSet<char> InvalidFilenameChars = new(Path.GetInvalidFileNameChars());
+    private static readonly HashSet<char> InvalidFileNameChars = new(Path.GetInvalidFileNameChars());
 
     public InputEntryNameDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
-        Filename = new ReactivePropertySlim<string>(Model.CurrentFilename)
+        FileName = new ReactivePropertySlim<string>(Model.CurrentFileName)
             .AddTo(Trash);
 
-        IsInvalidName = Filename
-            .Select(x => x.Any(c => InvalidFilenameChars.Contains(c)))
+        IsInvalidName = FileName
+            .Select(x => x.Any(c => InvalidFileNameChars.Contains(c)))
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
-        IsEmptyName = Filename
+        IsEmptyName = FileName
             .Select(x => x.Length == 0)
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
-        ExistsEntity = Filename
+        ExistsEntity = FileName
             .Select(x => UpdateExistsEntry())
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
@@ -87,7 +87,7 @@ public sealed class InputEntryNameDialogViewModel
     public async void OnDecisionWithoutCheckAsync()
     {
         DialogResult = DialogResultTypes.Ok;
-        ResultFilePath = Path.Combine(CurrentFolder, Filename.Value);
+        ResultFilePath = Path.Combine(CurrentFolder, FileName.Value);
 
         await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
     }
@@ -95,6 +95,6 @@ public sealed class InputEntryNameDialogViewModel
     private bool UpdateExistsEntry()
     {
         return Directory.EnumerateFileSystemEntries(CurrentFolder)
-            .Any(x => x == Path.Combine(CurrentFolder, Filename.Value));
+            .Any(x => x == Path.Combine(CurrentFolder, FileName.Value));
     }
 }

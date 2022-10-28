@@ -233,18 +233,18 @@ namespace Anna.Localization {
         /// <summary>
         ///   Looks up a localized string similar to NewFile.
         /// </summary>
-        public static string Entry_NewFilename {
+        public static string Entry_NewFile {
             get {
-                return ResourceManager.GetString("Entry_NewFilename", resourceCulture);
+                return ResourceManager.GetString("Entry_NewFile", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to NewFolder.
         /// </summary>
-        public static string Entry_NewFoldername {
+        public static string Entry_NewFolder {
             get {
-                return ResourceManager.GetString("Entry_NewFoldername", resourceCulture);
+                return ResourceManager.GetString("Entry_NewFolder", resourceCulture);
             }
         }
         

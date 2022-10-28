@@ -7,14 +7,14 @@ public sealed class InputEntryNameMessage : InteractionMessage
     public (DialogResultTypes DialogResult, string FilePath) Response { get; internal set; }
 
     public readonly string CurrentFolderPath;
-    public readonly string CurrentFilename;
+    public readonly string CurrentFileName;
     public readonly string Title;
     public readonly bool IsEnableCurrentInfo;
     public readonly bool IsEnableSkip;
 
     public InputEntryNameMessage(
         string currentFolderPath, 
-        string currentFilename, 
+        string currentFileName, 
         string title,
         bool isEnableCurrentInfo,
         bool isEnableSkip,
@@ -22,7 +22,7 @@ public sealed class InputEntryNameMessage : InteractionMessage
         : base(messageKey)
     {
         CurrentFolderPath = currentFolderPath;
-        CurrentFilename = currentFilename;
+        CurrentFileName = currentFileName;
         Title = title;
         IsEnableCurrentInfo = isEnableCurrentInfo;
         IsEnableSkip = isEnableSkip;

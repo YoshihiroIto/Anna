@@ -193,10 +193,10 @@
     <data name="Dialog_OpenTrashCan" xml:space="preserve">
         <value>ごみ箱を開く(_T)</value>
     </data>
-    <data name="Entry_NewFilename" xml:space="preserve">
+    <data name="Entry_NewFile" xml:space="preserve">
         <value>新しいファイル</value>
     </data>
-    <data name="Entry_NewFoldername" xml:space="preserve">
+    <data name="Entry_NewFolder" xml:space="preserve">
         <value>新しいフォルダ―</value>
     </data>
     <data name="DialogTitle_CreateFile" xml:space="preserve">

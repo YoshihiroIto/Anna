@@ -85,7 +85,7 @@
             </Grid>
 
             <TextBlock Margin="0,12,0,0" Text="{ReflectionBinding R.Message_InputNewName}" />
-            <TextBox HorizontalAlignment="Stretch" Text="{Binding Filename.Value}">
+            <TextBox HorizontalAlignment="Stretch" Text="{Binding FileName.Value}">
                 <Interaction.Behaviors>
                     <behaviors:ControlKeyDownTriggerBehavior Key="Enter">
                         <CallMethodAction MethodName="OnDecision" TargetObject="{Binding}" />

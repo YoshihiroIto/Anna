@@ -52,7 +52,7 @@
         </StackPanel.Styles>
 
         <TextBlock Text="{ReflectionBinding R.Message_FolderAlreadyContainsSameName}" />
-        <TextBlock Text="{Binding Filename, Mode=OneTime}" />
+        <TextBlock Text="{Binding FileName, Mode=OneTime}" />
 
         <Border Margin="0,12,0,0"
                 BorderBrush="#444444"

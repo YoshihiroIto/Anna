@@ -251,7 +251,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
                 receiver.Folder.Path,
                 FileSystemHelper.MakeNewEntryName(
                     receiver.Folder.Path,
-                    isFolder ? Resources.Entry_NewFoldername : Resources.Entry_NewFilename),
+                    isFolder ? Resources.Entry_NewFolder : Resources.Entry_NewFile),
                 isFolder ? Resources.DialogTitle_CreateFolder : Resources.DialogTitle_CreateFile,
                 false,
                 false,

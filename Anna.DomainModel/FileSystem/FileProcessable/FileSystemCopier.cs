@@ -222,7 +222,7 @@ public abstract class FileSystemCopier : IFileProcessable
 
         if (isSkip == false)
         {
-            if (destPath == null && destFile.Exists)
+            if (destPath is null && destFile.Exists)
             {
                 if ((destFile.Attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                     destFile.Attributes &= ~FileAttributes.ReadOnly;

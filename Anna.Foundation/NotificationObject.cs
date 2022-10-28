@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -8,9 +8,7 @@ public class NotificationObject : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    // use Hashtable to get free lockless reading
-    private static readonly Hashtable PropChanged = new();
-    private static FastSpinLock _lockObj;
+    private static readonly ConcurrentDictionary<string, PropertyChangedEventArgs> PropChanged = new();
 
     protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
     {
@@ -30,28 +28,7 @@ public class NotificationObject : INotifyPropertyChanged
         if (PropertyChanged is null)
             return;
 
-        // ReSharper disable once InconsistentlySynchronizedField
-        var pc = (PropertyChangedEventArgs?)PropChanged[propertyName];
-
-        if (pc is null)
-        {
-            try
-            {
-                _lockObj.Enter();
-
-                pc = (PropertyChangedEventArgs?)PropChanged[propertyName];
-
-                if (pc is null)
-                {
-                    pc = new PropertyChangedEventArgs(propertyName);
-                    PropChanged[propertyName] = pc;
-                }
-            }
-            finally
-            {
-                _lockObj.Exit();
-            }
-        }
+        var pc = PropChanged.GetOrAdd(propertyName, name => new PropertyChangedEventArgs(name));
 
         PropertyChanged.Invoke(this, pc);
     }

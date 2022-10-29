@@ -1,6 +1,5 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
-using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
@@ -14,7 +13,7 @@ namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class EntryDisplayDialogViewModel
     : HasModelWindowBaseViewModel<Entry>
-        , IHasArg<(string CurrentFolderPath, JumpFolderConfigData Config)>
+        , IHasArg<(string CurrentFolderPath, int Dummy)>
 {
     public string Title => Model.NameWithExtension + " - " + Path.GetDirectoryName(Model.Path);
 

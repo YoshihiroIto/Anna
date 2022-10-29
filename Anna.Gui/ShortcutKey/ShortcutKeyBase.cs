@@ -4,6 +4,7 @@ using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service.Services;
 using Avalonia.Input;
@@ -81,12 +82,14 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         if (Dic.GetInstance<IFileSystemIsAccessibleService>().IsAccessible(path))
             return true;
 
-        await messenger.RaiseAsync(
-            new ConfirmationMessage(
+        using var viewModel =
+            Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),
-                DialogResultTypes.Ok,
-                WindowBaseViewModel.MessageKeyConfirmation));
+                DialogResultTypes.Ok
+            ));
+
+        await messenger.RaiseAsync(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
 
         return false;
     }
@@ -109,12 +112,14 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
             Dic.GetInstance<ILoggerService>()
                 .Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
 
-            await messenger.RaiseAsync(
-                new ConfirmationMessage(
+            using var viewModel =
+                Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
                     Resources.AppName,
                     string.Format(Resources.Message_FailedToStartEditor, editor.Editor),
-                    DialogResultTypes.Ok,
-                    WindowBaseViewModel.MessageKeyConfirmation));
+                    DialogResultTypes.Ok
+                ));
+
+            await messenger.RaiseAsync(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
         }
     }
 
@@ -129,12 +134,14 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
             Dic.GetInstance<ILoggerService>()
                 .Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
 
-            await messenger.RaiseAsync(
-                new ConfirmationMessage(
-                    Resources.AppName,
-                    Resources.Message_FailedToStartAssociatedApp,
-                    DialogResultTypes.Ok,
-                    WindowBaseViewModel.MessageKeyConfirmation));
+            using var viewModel =
+                Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
+                     Resources.AppName,
+                     Resources.Message_FailedToStartAssociatedApp,
+                     DialogResultTypes.Ok
+                ));
+
+            await messenger.RaiseAsync(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
         }
     }
 }

@@ -4,6 +4,7 @@ using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service;
 using System.Diagnostics;
@@ -29,27 +30,25 @@ internal sealed class ConfirmedFileSystemCopier
     protected override void CopyActionWhenExists(string srcPath, string destPath, ref CopyActionWhenExistsResult result)
     {
         Debug.Assert(CancellationTokenSource is not null);
-        
+
         try
         {
             _lockObj.Enter();
-            
+
             if (result.IsSameActionThereafter)
                 return;
 
             if (CancellationTokenSource.IsCancellationRequested)
                 return;
 
-            var message = _arg.Messenger.Raise(
-                new SelectFileCopyActionMessage(
-                    srcPath,
-                    destPath,
-                    result.IsFirst,
-                    WindowBaseViewModel.MessageKeySelectFileCopyAction));
+            using var viewModel = Dic.GetInstance<SelectFileCopyActionDialogViewModel, (string, string, bool)>
+                ((srcPath, destPath, result.IsFirst));
 
-            result = message.Response.Result;
+            _arg.Messenger.Raise(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeySelectFileCopy));
 
-            if (message.Response.DialogResult == DialogResultTypes.Cancel)
+            result = viewModel.Result;
+
+            if (viewModel.DialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();
         }
         finally
@@ -61,34 +60,31 @@ internal sealed class ConfirmedFileSystemCopier
     protected override CopyActionWhenSamePathResult CopyActionWhenSamePath(string destPath)
     {
         Debug.Assert(CancellationTokenSource is not null);
-        
+
         try
         {
             _lockObj.Enter();
-            
+
             if (CancellationTokenSource.IsCancellationRequested)
                 return new CopyActionWhenSamePathResult(SamePathCopyFileActions.Skip, "");
 
             var folder = Path.GetDirectoryName(destPath) ?? "";
             var fileName = Path.GetFileName(destPath);
 
-            var message = _arg.Messenger.Raise(
-                new InputEntryNameMessage(
-                    folder,
-                    fileName,
-                    Resources.DialogTitle_ChangeEntryName,
-                    true,
-                    true,
-                    WindowBaseViewModel.MessageKeyInputEntryName));
+            using var viewModel =
+                Dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
+                    (folder, fileName, Resources.DialogTitle_ChangeEntryName, true, true));
 
-            if (message.Response.DialogResult == DialogResultTypes.Cancel)
+            _arg.Messenger.Raise(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyInputEntryName));
+
+            if (viewModel.DialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();
-
+                
             return new CopyActionWhenSamePathResult(
-                message.Response.DialogResult == DialogResultTypes.Ok
+                viewModel.DialogResult == DialogResultTypes.Ok
                     ? SamePathCopyFileActions.Override
                     : SamePathCopyFileActions.Skip,
-                message.Response.FilePath);
+                viewModel.ResultFilePath);
         }
         finally
         {

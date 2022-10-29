@@ -43,20 +43,24 @@ public sealed class JumpFolderDialogViewModel
                 return;
 
             case Key.Delete:
-                if (SelectedPath.Value.Model.Path == "")
+                {
+                    if (SelectedPath.Value.Model.Path == "")
+                        return;
+
+                    using var viewModel =
+                        Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
+                            Resources.AppName,
+                            string.Format(Resources.Message_ConfirmDelete, SelectedPath.Value.Model.Path),
+                            DialogResultTypes.Yes | DialogResultTypes.No
+                        ));
+
+                    await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKeyConfirmation));
+
+                    if (viewModel.DialogResult == DialogResultTypes.Yes)
+                        SelectedPath.Value.Model.Path = "";
+
                     return;
-
-                var mes = await Messenger.RaiseAsync(
-                    new ConfirmationMessage(
-                        Resources.AppName,
-                        string.Format(Resources.Message_ConfirmDelete, SelectedPath.Value.Model.Path),
-                        DialogResultTypes.Yes | DialogResultTypes.No,
-                        MessageKeyConfirmation));
-
-                if (mes.Response == DialogResultTypes.Yes)
-                    SelectedPath.Value.Model.Path = "";
-
-                return;
+                }
         }
 
         foreach (var path in Model.Config.Paths)
@@ -73,7 +77,7 @@ public sealed class JumpFolderDialogViewModel
     {
         ResultPath = path;
         DialogResult = string.IsNullOrWhiteSpace(ResultPath) ? DialogResultTypes.Cancel : DialogResultTypes.Ok;
-        
+
         return Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
     }
 }

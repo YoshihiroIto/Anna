@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
+using Anna.DomainModel.Config;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
@@ -35,7 +36,7 @@ public sealed class CopyOrMoveEntryDialogViewModel
     public EntriesStatsPanelViewModel EntriesStatsPanelViewModel { get; }
 
     public ReactivePropertySlim<string> Title { get; }
-    
+
     private string CulturedTitle =>
         Model.CopyOrMOve == CopyOrMove.Copy
             ? Resources.DialogTitle_CopyEntry
@@ -79,12 +80,13 @@ public sealed class CopyOrMoveEntryDialogViewModel
     {
         if (DestFolder.Value == "")
         {
-            var message =
-                await Messenger.RaiseAsync(new SelectFolderMessage(Model.CurrentFolderPath, MessageKeySelectFolder));
-            if (message.Response.DialogResult != DialogResultTypes.Ok)
-                return;
+            using var viewModel =
+                Dic.GetInstance<SelectFolderDialogViewModel, (string, int)>(
+                    (Model.CurrentFolderPath, 0));
 
-            DestFolder.Value = message.Response.Path;
+            await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKeySelectFolder));
+
+            DestFolder.Value = viewModel.ResultPath;
         }
         else
         {
@@ -97,11 +99,15 @@ public sealed class CopyOrMoveEntryDialogViewModel
 
     public async Task OnJumpFolderDialogSync()
     {
-        var message = await Messenger.RaiseAsync(new JumpFolderMessage(Model.CurrentFolderPath, MessageKeyJumpFolder));
+        using var viewModel =
+            Dic.GetInstance<JumpFolderDialogViewModel, (string, JumpFolderConfigData )>(
+                (Model.CurrentFolderPath, Dic.GetInstance<JumpFolderConfig>().Data));
 
-        if (message.Response.DialogResult != DialogResultTypes.Ok)
+        await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKeyJumpFolder));
+
+        if (viewModel.DialogResult != DialogResultTypes.Ok)
             return;
 
-        DestFolder.Value = message.Response.Path;
+        DestFolder.Value = viewModel.ResultPath;
     }
 }

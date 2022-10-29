@@ -7,6 +7,7 @@ using Anna.Gui.Messaging.Messages;
 using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service.Services;
 using Anna.Service.Workers;
@@ -243,12 +244,14 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
 
     private async void OnBackgroundWorkerExceptionThrown(object? sender, ExceptionThrownEventArgs e)
     {
-        await Messenger.RaiseAsync(
-            new ConfirmationMessage(
+        using var viewModel =
+            Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
                 Resources.AppName,
                 e.Exception.Message,
-                DialogResultTypes.Ok,
-                WindowBaseViewModel.MessageKeyConfirmation));
+                DialogResultTypes.Ok
+            ));
+
+        await Messenger.RaiseAsync(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
 
         Dic.GetInstance<ILoggerService>().Warning(e.Exception.Message);
     }

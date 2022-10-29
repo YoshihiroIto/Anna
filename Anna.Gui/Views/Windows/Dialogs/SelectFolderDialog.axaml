@@ -34,10 +34,6 @@
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
             <actions:WindowActionAction />
         </behaviors1:InteractionMessageTrigger>
-
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyConfirmation}" Messenger="{Binding Messenger}">
-            <actions:ConfirmationAction />
-        </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <TextBlock HorizontalAlignment="Center"

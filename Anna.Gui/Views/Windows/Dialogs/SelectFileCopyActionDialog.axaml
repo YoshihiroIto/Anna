@@ -36,7 +36,9 @@
         </behaviors1:InteractionMessageTrigger>
 
         <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyInputEntryName}" Messenger="{Binding Messenger}">
-            <actions:InputEntryNameAction />
+            <actions:TransitionAction Dic="{Binding Dic}"
+                                      Mode="Dialog"
+                                      WindowType="{x:Type dialogs1:InputEntryNameDialog}" />
         </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 

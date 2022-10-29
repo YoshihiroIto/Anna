@@ -12,7 +12,7 @@ public abstract class FileSystemDeleter : IFileProcessable
     public event EventHandler? FileProcessed;
 
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
-    private readonly IServiceProvider _dic;
+    protected readonly IServiceProvider Dic;
 
     private sealed class State : IDisposable
     {
@@ -43,7 +43,7 @@ public abstract class FileSystemDeleter : IFileProcessable
 
     protected FileSystemDeleter(IServiceProvider dic)
     {
-        _dic = dic;
+        Dic = dic;
     }
 
     public void Invoke(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)
@@ -65,7 +65,7 @@ public abstract class FileSystemDeleter : IFileProcessable
 
     private void SendToTrashCan(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)
     {
-        _dic.GetInstance<ITrashCanService>().SendToTrashCan(sourceEntries.Select(x => x.Path));
+        Dic.GetInstance<ITrashCanService>().SendToTrashCan(sourceEntries.Select(x => x.Path));
     }
 
     private void Delete(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)
@@ -90,7 +90,7 @@ public abstract class FileSystemDeleter : IFileProcessable
         }
         catch (OperationCanceledException)
         {
-            _dic.GetInstance<ILoggerService>().Information("FileSystemDeleter.Invoke() -- Canceled");
+            Dic.GetInstance<ILoggerService>().Information("FileSystemDeleter.Invoke() -- Canceled");
         }
         finally
         {

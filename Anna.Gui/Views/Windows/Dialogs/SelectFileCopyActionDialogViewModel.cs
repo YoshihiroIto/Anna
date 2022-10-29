@@ -92,22 +92,20 @@ public sealed class SelectFileCopyActionDialogViewModel
             .ToAsyncReactiveCommand()
             .WithSubscribe(async () =>
             {
-                var changeNameMessage = await Messenger.RaiseAsync(
-                    new InputEntryNameMessage(
-                        DestFolder,
-                        Path.GetFileName(Model.DestFilepath),
-                        Resources.DialogTitle_ChangeEntryName,
-                        true,
-                        true,
-                        MessageKeyInputEntryName));
+                using var viewModel =
+                    Dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
+                        (DestFolder, Path.GetFileName(Model.DestFilepath), Resources.DialogTitle_ChangeEntryName, true,
+                            true));
 
-                switch (changeNameMessage.Response.DialogResult)
+                await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKeyInputEntryName));
+
+                switch (viewModel.DialogResult)
                 {
                     case DialogResultTypes.Ok:
                         DialogResult = DialogResultTypes.Ok;
                         Result = new FileSystemCopier.CopyActionWhenExistsResult(
                             ExistsCopyFileActions.Rename,
-                            changeNameMessage.Response.FilePath,
+                            viewModel.ResultFilePath,
                             IsSameActionThereafter.Value,
                             false);
 

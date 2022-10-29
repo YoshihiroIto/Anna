@@ -4,6 +4,7 @@ using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service;
 using System;
@@ -29,7 +30,7 @@ internal sealed class ConfirmedFileSystemDeleter
     protected override void DeleteActionWhenReadonly(FileSystemInfo info, ref ReadOnlyDeleteActions action)
     {
         Debug.Assert(CancellationTokenSource is not null);
-        
+
         try
         {
             _lockObj.Enter();
@@ -43,17 +44,19 @@ internal sealed class ConfirmedFileSystemDeleter
                 return;
             }
 
-            var message = _arg.Messenger.Raise(
-                new ConfirmationMessage(
+            using var viewModel =
+                Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
                     Resources.AppName,
                     string.Format(Resources.Message_ReadOnlyConfirmDelete, info.FullName),
                     DialogResultTypes.Yes |
                     DialogResultTypes.No |
                     DialogResultTypes.AllDelete |
-                    DialogResultTypes.Cancel,
-                    WindowBaseViewModel.MessageKeyConfirmation));
+                    DialogResultTypes.Cancel
+                ));
 
-            switch (message.Response)
+            _arg.Messenger.Raise(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
+
+            switch (viewModel.DialogResult)
             {
                 case DialogResultTypes.Yes:
                     action = ReadOnlyDeleteActions.Delete;
@@ -92,14 +95,16 @@ internal sealed class ConfirmedFileSystemDeleter
             if (CancellationTokenSource.IsCancellationRequested)
                 return AccessFailureDeleteActions.Cancel;
 
-            var message = _arg.Messenger.Raise(
-                new ConfirmationMessage(
+            using var viewModel =
+                Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
                     Resources.AppName,
                     string.Format(Resources.Message_AccessFailureOnDelete, info.FullName),
-                    DialogResultTypes.Retry | DialogResultTypes.Cancel,
-                    WindowBaseViewModel.MessageKeyConfirmation));
+                    DialogResultTypes.Retry | DialogResultTypes.Cancel
+                ));
 
-            switch (message.Response)
+            _arg.Messenger.Raise(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
+
+            switch (viewModel.DialogResult)
             {
                 case DialogResultTypes.Retry:
                     return AccessFailureDeleteActions.Retry;

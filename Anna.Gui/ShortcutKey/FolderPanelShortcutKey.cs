@@ -57,6 +57,10 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             { Operations.MakeFolder, s => MakeFolderOrFileAsync(true, s) },
             { Operations.MakeFile, s => MakeFolderOrFileAsync(false, s) },
             //
+            { Operations.CompressEntry, CompressEntryAsync },
+            { Operations.DecompressEntry, DecompressEntryAsync },
+
+            //
             { Operations.EmptyTrashCan, EmptyTrashCanAsync },
             { Operations.OpenTrashCan, OpenTrashCanAsync },
         };
@@ -265,7 +269,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             {
                 case DialogResultTypes.Cancel:
                     return;
-                
+
                 case DialogResultTypes.Skip:
                     // do nothing
                     break;
@@ -283,7 +287,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
                     throw new ArgumentOutOfRangeException();
             }
         }
-        
+
         if (lastRemovePath is not null)
             receiver.Folder.InvokeEntryExplicitlyCreated(lastRemovePath);
     }
@@ -307,6 +311,16 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             return;
 
         receiver.Folder.CreateEntry(isFolder, message.Response.FilePath, true);
+    }
+
+    private static ValueTask CompressEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        throw new NotImplementedException();
+    }
+
+    private static ValueTask DecompressEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        throw new NotImplementedException();
     }
 
     private async ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)

@@ -60,6 +60,9 @@ public sealed class KeyConfigData : ConfigData
             new(Key.K, KeyModifiers.None, Operations.MakeFolder),
             new(Key.K, KeyModifiers.Shift, Operations.MakeFile),
             //
+            new(Key.P, KeyModifiers.None, Operations.CompressEntry),
+            new(Key.U, KeyModifiers.None, Operations.DecompressEntry),
+            //
             new(Key.G, KeyModifiers.Shift, Operations.EmptyTrashCan),
             new(Key.G, KeyModifiers.Control, Operations.OpenTrashCan),
         };
@@ -96,6 +99,9 @@ public enum Operations
     //
     MakeFolder,
     MakeFile,
+    //
+    CompressEntry,
+    DecompressEntry,
     //
     EmptyTrashCan,
     OpenTrashCan,

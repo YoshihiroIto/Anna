@@ -9,7 +9,7 @@ public class DisposableNotificationObject
     : NotificationObject
         , IDisposable
 {
-    protected readonly IServiceProvider Dic;
+    public IServiceProvider Dic { get; }
 
     private CompositeDisposable? _trashes;
     private bool _disposed;

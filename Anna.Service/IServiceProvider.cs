@@ -3,6 +3,8 @@
 public interface IServiceProvider
 {
     TService GetInstance<TService>() where TService : class;
+    
+    TService GetInstance<TService>(Type type) where TService : class;
 
     THasArg GetInstance<THasArg, TArg>(TArg arg)
         where THasArg : class, IHasArg<TArg>;

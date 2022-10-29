@@ -11,7 +11,7 @@ public abstract class FileSystemCopier : IFileProcessable
     public event EventHandler? FileProcessed;
 
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
-    private readonly IServiceProvider _dic;
+    protected readonly IServiceProvider Dic;
 
     protected CopyOrMove CopyOrMove { get; init; } = CopyOrMove.Unset;
 
@@ -37,7 +37,7 @@ public abstract class FileSystemCopier : IFileProcessable
 
     protected FileSystemCopier(IServiceProvider dic)
     {
-        _dic = dic;
+        Dic = dic;
     }
 
     public void Invoke(IEnumerable<IEntry> sourceEntries, string destPath)
@@ -63,7 +63,7 @@ public abstract class FileSystemCopier : IFileProcessable
         }
         catch (OperationCanceledException)
         {
-            _dic.GetInstance<ILoggerService>().Information("FileSystemCopier.Invoke() -- Canceled");
+            Dic.GetInstance<ILoggerService>().Information("FileSystemCopier.Invoke() -- Canceled");
         }
         finally
         {

@@ -17,7 +17,12 @@ public class ServiceProviderBase : Container, IServiceProvider
         Options.EnableAutoVerification = false;
 #endif
     }
-
+    
+    public TService GetInstance<TService>(Type type) where TService : class
+    {
+        return (TService)GetInstance(type);
+    }
+    
     public THasArgService GetInstance<THasArgService, TArg>(TArg arg)
         where THasArgService : class, IHasArg<TArg>
     {

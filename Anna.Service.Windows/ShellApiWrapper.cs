@@ -1,5 +1,6 @@
 ﻿// ReSharper disable all
 
+using Jewelry.Text;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -18,12 +19,21 @@ internal static class ShellApiWrapper
         return result == 0;
     }
 
-    public static bool SendToTrashCan(string path)
+    public static bool SendToTrashCan(IEnumerable<string> targetFilePaths)
     {
-        return Send(path,
-            FileOperationFlags.FOF_NOCONFIRMATION |
-            FileOperationFlags.FOF_NOERRORUI |
-            FileOperationFlags.FOF_SILENT);
+        var fileOp = new SHFILEOPSTRUCT
+        {
+            wFunc = FileOperationType.FO_DELETE,
+            pFrom = MakePathsString(targetFilePaths),
+            fFlags = FileOperationFlags.FOF_ALLOWUNDO |
+                     FileOperationFlags.FOF_NOCONFIRMATION |
+                     FileOperationFlags.FOF_NOERRORUI |
+                     FileOperationFlags.FOF_SILENT
+        };
+
+        var result = SHFileOperation(ref fileOp);
+
+        return result == 0;
     }
 
     public static (long EntryAllSize, long EntryCount) GetTrashCanInfo()
@@ -34,6 +44,21 @@ internal static class ShellApiWrapper
         _ = SHQueryRecycleBin("", ref info);
 
         return (info.i64Size, info.i64NumItems);
+    }
+
+    private static string MakePathsString(IEnumerable<string> paths)
+    {
+        using var lsb = new LiteStringBuilder(stackalloc char[64 * 1024]);
+
+        foreach (var path in paths)
+        {
+            lsb.Append(path);
+            lsb.Append('\0');
+        }
+
+        lsb.Append('\0');
+        
+        return lsb.ToString();
     }
 
     [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
@@ -93,19 +118,5 @@ internal static class ShellApiWrapper
         public int cbSize;
         public long i64Size;
         public long i64NumItems;
-    }
-
-    private static bool Send(string path, FileOperationFlags flags)
-    {
-        var fs = new SHFILEOPSTRUCT
-        {
-            wFunc = FileOperationType.FO_DELETE,
-            pFrom = path + '\0' + '\0',
-            fFlags = FileOperationFlags.FOF_ALLOWUNDO | flags
-        };
-        
-        var result = SHFileOperation(ref fs);
-        
-        return result == 0;
     }
 }

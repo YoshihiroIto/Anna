@@ -53,7 +53,7 @@ public abstract class FileSystemDeleter : IFileProcessable
             case EntryDeleteModes.Delete:
                 Delete(sourceEntries, mode);
                 break;
-            
+
             case EntryDeleteModes.TrashCan:
                 SendToTrashCan(sourceEntries, mode);
                 break;
@@ -65,11 +65,7 @@ public abstract class FileSystemDeleter : IFileProcessable
 
     private void SendToTrashCan(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)
     {
-        foreach (var entry in sourceEntries)
-        {
-            _dic.GetInstance<ITrashCanService>().SendToTrashCan(entry);
-            FileProcessed?.Invoke(this, EventArgs.Empty);
-        }
+        _dic.GetInstance<ITrashCanService>().SendToTrashCan(sourceEntries.Select(x => x.Path));
     }
 
     private void Delete(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)

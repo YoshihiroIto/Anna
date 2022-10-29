@@ -1,16 +1,14 @@
 ﻿using Anna.Foundation;
-using Anna.Service.Interfaces;
 using Anna.Service.Services;
 
 namespace Anna.Service.Windows;
 
 public sealed class TrashCanService : ITrashCanService
 {
-    void ITrashCanService.SendToTrashCan(IEntry target)
+    public void SendToTrashCan(IEnumerable<string> targetFilePaths)
     {
-        ShellApiWrapper.SendToTrashCan(target.Path);
+        ShellApiWrapper.SendToTrashCan(targetFilePaths);
     }
-
     bool ITrashCanService.EmptyTrashCan()
     {
         return ShellApiWrapper.EmptyTrashCan();

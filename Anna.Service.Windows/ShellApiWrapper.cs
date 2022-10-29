@@ -46,6 +46,7 @@ internal static class ShellApiWrapper
         return (info.i64Size, info.i64NumItems);
     }
 
+    [SkipLocalsInit]
     private static string MakePathsString(IEnumerable<string> paths)
     {
         using var lsb = new LiteStringBuilder(stackalloc char[64 * 1024]);

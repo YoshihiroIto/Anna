@@ -20,8 +20,8 @@ public sealed class InfoPanelViewModel : HasModelViewModelBase<Folder>, ILocaliz
     public ReadOnlyReactivePropertySlim<int> EntriesCount { get; }
     public ReadOnlyReactivePropertySlim<int> SelectedEntriesCount { get; }
 
-    public ReactiveProperty<long> TotalSize { get; }
-    public ReactiveProperty<long> SelectedTotalSize { get; }
+    public ReactivePropertySlim<long> TotalSize { get; }
+    public ReactivePropertySlim<long> SelectedTotalSize { get; }
     public ReadOnlyReactivePropertySlim<bool> IsInProcessing { get; }
     public ReadOnlyReactivePropertySlim<double> Progress { get; }
 
@@ -52,8 +52,8 @@ public sealed class InfoPanelViewModel : HasModelViewModelBase<Folder>, ILocaliz
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
-        TotalSize = new ReactiveProperty<long>().AddTo(Trash);
-        SelectedTotalSize = new ReactiveProperty<long>().AddTo(Trash);
+        TotalSize = new ReactivePropertySlim<long>().AddTo(Trash);
+        SelectedTotalSize = new ReactivePropertySlim<long>().AddTo(Trash);
 
         IsInProcessing = Model.BackgroundWorker
             .ObserveProperty(x => x.IsInProcessing)
@@ -84,6 +84,7 @@ public sealed class InfoPanelViewModel : HasModelViewModelBase<Folder>, ILocaliz
             .Merge(Model.Entries.CollectionChangedAsObservable().ToUnit())
             .Merge(entrySizeChanged.ToUnit())
             .Throttle(TimeSpan.FromMilliseconds(10))
+            .ObserveOnUIDispatcher()
             .Subscribe(_ => UpdateTotalSize())
             .AddTo(Trash);
     }

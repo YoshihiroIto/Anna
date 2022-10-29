@@ -42,7 +42,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
-        
+
         Model.BackgroundWorkerExceptionThrown += OnBackgroundWorkerExceptionThrown;
         Trash.Add(() => Model.BackgroundWorkerExceptionThrown -= OnBackgroundWorkerExceptionThrown);
 
@@ -90,7 +90,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
                 .Subscribe(_ =>
                     {
                         // If it is not a folder move, do nothing.
-                        if (oldPath !=  Model.Path)
+                        if (oldPath != Model.Path)
                         {
                             SetCurrentIndex(oldPath);
                             oldPath = Model.Path;
@@ -107,7 +107,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
                 .AddTo(Trash);
         }
     }
-    
+
     private async void OnBackgroundWorkerExceptionThrown(object? sender, ExceptionThrownEventArgs e)
     {
         await Messenger.RaiseAsync(
@@ -116,7 +116,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
                 e.Exception.Message,
                 DialogResultTypes.Ok,
                 WindowBaseViewModel.MessageKeyConfirmation));
-        
+
         Dic.GetInstance<ILoggerService>().Warning(e.Exception.Message);
     }
 

@@ -86,21 +86,24 @@ public abstract class Folder : DisposableNotificationObject
 
     public readonly IBackgroundWorker BackgroundWorker;
 
-    public abstract Stream OpenRead(string path);
-    public abstract Task<byte[]> ReadAllAsync(string path);
-    
     public event EventHandler<ExceptionThrownEventArgs> BackgroundWorkerExceptionThrown
     {
         add => BackgroundWorker.ExceptionThrown += value;
         remove => BackgroundWorker.ExceptionThrown -= value;
     }
 
+    public event EventHandler<EntryExplicitlyCreatedEventArgs>? EntryExplicitlyCreated;
+
+    public abstract Stream OpenRead(string path);
+    public abstract Task<byte[]> ReadAllAsync(string path);
+    public abstract void CreateEntry(bool isFolder, string path);
+
     protected Folder(string path, IServiceProvider dic)
         : base(dic)
     {
         BackgroundWorker = dic.GetInstance<IBackgroundWorker>();// create new
         (BackgroundWorker as IDisposable)?.AddTo(Trash);
-        
+
         Path = PathStringHelper.Normalize(path);
     }
 
@@ -174,6 +177,24 @@ public abstract class Folder : DisposableNotificationObject
         }
     }
 
+    public int IndexOfEntriesByPath(string path)
+    {
+        var name = System.IO.Path.GetFileName(path);
+        
+        lock (EntriesUpdatingLockObj)
+        {
+            if (_entriesDict.TryGetValue(name, out var entry) == false)
+                return -1;
+
+            return Entries.IndexOf(entry);
+        }
+    }
+
+    protected void InvokeEntryExplicitlyCreated(string path)
+    {
+        EntryExplicitlyCreated?.Invoke(this, new EntryExplicitlyCreatedEventArgs(path));
+    }
+
     private void UpdateEntries()
     {
         try
@@ -211,7 +232,7 @@ public abstract class Folder : DisposableNotificationObject
         lock (EntriesUpdatingLockObj)
         {
             TrimRemovedSelectedEntries();
-        
+
             if (_entriesDict.TryGetValue(entry.NameWithExtension, out var alreadyExistsEntry))
                 RemoveEntryInternal(alreadyExistsEntry);
 
@@ -250,7 +271,7 @@ public abstract class Folder : DisposableNotificationObject
         lock (EntriesUpdatingLockObj)
         {
             TrimRemovedSelectedEntries();
-        
+
             // todo: Binary search
             var index = Entries.IndexOf(entry);
 
@@ -307,5 +328,15 @@ public abstract class Folder : DisposableNotificationObject
                     _removedSelectedEntries.Remove(name);
             }
         }
+    }
+}
+
+public sealed class EntryExplicitlyCreatedEventArgs : EventArgs
+{
+    public readonly string Path;
+
+    public EntryExplicitlyCreatedEventArgs(string path)
+    {
+        Path = path;
     }
 }

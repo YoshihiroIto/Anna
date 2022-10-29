@@ -260,10 +260,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         if (message.Response.DialogResult != DialogResultTypes.Ok)
             return;
 
-        if (isFolder)
-            Directory.CreateDirectory(message.Response.FilePath);
-        else
-            await File.WriteAllBytesAsync(message.Response.FilePath, Array.Empty<byte>());
+        receiver.Folder.CreateEntry(isFolder, message.Response.FilePath);
     }
 
     private async ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)

@@ -15,6 +15,8 @@ using Reactive.Bindings.Extensions;
 using System;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Panels;
@@ -34,6 +36,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
 
     private EntryViewModel? _oldEntry;
     private readonly bool _isBufferingUpdate = false;
+    private int _OnEntryExplicitlyCreatedRunning;
 
     public FolderPanelViewModel(IServiceProvider dic)
         : base(dic)
@@ -45,6 +48,9 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
 
         Model.BackgroundWorkerExceptionThrown += OnBackgroundWorkerExceptionThrown;
         Trash.Add(() => Model.BackgroundWorkerExceptionThrown -= OnBackgroundWorkerExceptionThrown);
+
+        Model.EntryExplicitlyCreated += OnEntryExplicitlyCreated;
+        Trash.Add(() => Model.EntryExplicitlyCreated -= OnEntryExplicitlyCreated);
 
         var oldPath = Model.Path;
 
@@ -106,18 +112,6 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
                 .Subscribe(_ => UpdateCursorIndex(CursorEntry.Value))
                 .AddTo(Trash);
         }
-    }
-
-    private async void OnBackgroundWorkerExceptionThrown(object? sender, ExceptionThrownEventArgs e)
-    {
-        await Messenger.RaiseAsync(
-            new ConfirmationMessage(
-                Resources.AppName,
-                e.Exception.Message,
-                DialogResultTypes.Ok,
-                WindowBaseViewModel.MessageKeyConfirmation));
-
-        Dic.GetInstance<ILoggerService>().Warning(e.Exception.Message);
     }
 
     public Entry[] CollectTargetEntries()
@@ -209,11 +203,11 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
         CursorIndex.Value = index;
     }
 
-    private void SetCurrentIndex(string targetPath)
+    private void SetCurrentIndex(string path)
     {
         for (var i = 0; i != Entries.Count; ++i)
         {
-            if (Entries[i].Model.Path != targetPath)
+            if (Entries[i].Model.Path != path)
                 continue;
 
             CursorIndex.Value = i;
@@ -221,5 +215,56 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
         }
 
         CursorIndex.Value = 0;
+    }
+
+    private async Task ForceSetCurrentIndex(string path)
+    {
+        const int timeOutOut = 50;
+
+        int index = -1;
+
+        for (var i = 0; i != timeOutOut; ++i)
+        {
+            // ReSharper disable once InconsistentlySynchronizedField
+            index = Model.IndexOfEntriesByPath(path);
+
+            if (index != -1)
+                break;
+
+            await Task.Delay(1);
+        }
+
+        if (index == -1)
+            return;
+
+        CursorIndex.Value = index;
+        CursorIndex.ForceNotify();
+    }
+
+    private async void OnBackgroundWorkerExceptionThrown(object? sender, ExceptionThrownEventArgs e)
+    {
+        await Messenger.RaiseAsync(
+            new ConfirmationMessage(
+                Resources.AppName,
+                e.Exception.Message,
+                DialogResultTypes.Ok,
+                WindowBaseViewModel.MessageKeyConfirmation));
+
+        Dic.GetInstance<ILoggerService>().Warning(e.Exception.Message);
+    }
+
+    private async void OnEntryExplicitlyCreated(object? sender, EntryExplicitlyCreatedEventArgs e)
+    {
+        if (Interlocked.CompareExchange(ref _OnEntryExplicitlyCreatedRunning, 1, 0) != 0)
+            return;
+
+        try
+        {
+            await ForceSetCurrentIndex(e.Path);
+        }
+        finally
+        {
+            Interlocked.Exchange(ref _OnEntryExplicitlyCreatedRunning, 0);
+        }
     }
 }

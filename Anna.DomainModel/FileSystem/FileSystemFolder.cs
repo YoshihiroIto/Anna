@@ -76,6 +76,16 @@ public sealed class FileSystemFolder : Folder
     {
         return File.ReadAllBytesAsync(path);
     }
+    
+    public override void CreateEntry(bool isFolder, string path)
+    {
+        if (isFolder)
+            Directory.CreateDirectory(path);
+        else
+            File.WriteAllBytes(path, Array.Empty<byte>());
+        
+        InvokeEntryExplicitlyCreated(path);
+    }
 
     private void UpdateWatcher(string path)
     {

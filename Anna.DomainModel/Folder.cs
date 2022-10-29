@@ -96,7 +96,8 @@ public abstract class Folder : DisposableNotificationObject
 
     public abstract Stream OpenRead(string path);
     public abstract Task<byte[]> ReadAllAsync(string path);
-    public abstract void CreateEntry(bool isFolder, string path);
+    public abstract void CreateEntry(bool isFolder, string path, bool isInvokeEntryExplicitlyCreated);
+    public abstract void RenameEntry(Entry entry, string newName, bool isInvokeEntryExplicitlyCreated);
 
     protected Folder(string path, IServiceProvider dic)
         : base(dic)
@@ -190,7 +191,7 @@ public abstract class Folder : DisposableNotificationObject
         }
     }
 
-    protected void InvokeEntryExplicitlyCreated(string path)
+    public void InvokeEntryExplicitlyCreated(string path)
     {
         EntryExplicitlyCreated?.Invoke(this, new EntryExplicitlyCreatedEventArgs(path));
     }

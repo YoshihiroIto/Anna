@@ -204,6 +204,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rename.
+        /// </summary>
+        public static string DialogTitle_Rename {
+            get {
+                return ResourceManager.GetString("DialogTitle_Rename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select copy action.
         /// </summary>
         public static string DialogTitle_SelectFileCopyAction {

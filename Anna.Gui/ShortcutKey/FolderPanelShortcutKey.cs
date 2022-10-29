@@ -52,6 +52,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             { Operations.CopyEntry, s => CopyOrMoveEntryAsync(CopyOrMove.Copy, s) },
             { Operations.MoveEntry, s => CopyOrMoveEntryAsync(CopyOrMove.Move, s) },
             { Operations.DeleteEntry, DeleteEntryAsync },
+            { Operations.RenameEntry, RenameEntryAsync },
             //
             { Operations.MakeFolder, s => MakeFolderOrFileAsync(true, s) },
             { Operations.MakeFile, s => MakeFolderOrFileAsync(false, s) },
@@ -242,6 +243,51 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
     }
 
+    private static async ValueTask RenameEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    {
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
+        var targetEntries = receiver.TargetEntries;
+
+        string? lastRemovePath = null;
+
+        foreach (var targetEntry in targetEntries)
+        {
+            var message = await receiver.Messenger.RaiseAsync(
+                new InputEntryNameMessage(
+                    receiver.Folder.Path,
+                    targetEntry.NameWithExtension,
+                    Resources.DialogTitle_Rename,
+                    false,
+                    true,
+                    WindowBaseViewModel.MessageKeyInputEntryName));
+
+            switch (message.Response.DialogResult)
+            {
+                case DialogResultTypes.Cancel:
+                    return;
+                
+                case DialogResultTypes.Skip:
+                    // do nothing
+                    break;
+
+                case DialogResultTypes.Ok:
+                    {
+                        var fileName = Path.GetFileName(message.Response.FilePath);
+                        receiver.Folder.RenameEntry(targetEntry, fileName, false);
+
+                        lastRemovePath = fileName;
+                        break;
+                    }
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        if (lastRemovePath is not null)
+            receiver.Folder.InvokeEntryExplicitlyCreated(lastRemovePath);
+    }
+
     private static async ValueTask MakeFolderOrFileAsync(bool isFolder, IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
@@ -260,7 +306,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         if (message.Response.DialogResult != DialogResultTypes.Ok)
             return;
 
-        receiver.Folder.CreateEntry(isFolder, message.Response.FilePath);
+        receiver.Folder.CreateEntry(isFolder, message.Response.FilePath, true);
     }
 
     private async ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)

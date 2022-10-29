@@ -11,7 +11,7 @@ namespace Anna.DomainModel.FileSystem;
 
 public sealed class FileSystemFolder : Folder
 {
-    public override bool IsRoot => System.IO.Path.GetPathRoot(Path) ==  Path;
+    public override bool IsRoot => System.IO.Path.GetPathRoot(Path) == Path;
 
     private readonly CompositeDisposable _watchTrash = new();
 
@@ -23,7 +23,7 @@ public sealed class FileSystemFolder : Folder
         this.ObserveProperty(x => x.Path)
             .Subscribe(UpdateWatcher)
             .AddTo(Trash);
-        
+
         _watchTrash.AddTo(Trash);
     }
 
@@ -76,15 +76,31 @@ public sealed class FileSystemFolder : Folder
     {
         return File.ReadAllBytesAsync(path);
     }
-    
-    public override void CreateEntry(bool isFolder, string path)
+
+    public override void CreateEntry(bool isFolder, string path, bool isInvokeEntryExplicitlyCreated)
     {
         if (isFolder)
             Directory.CreateDirectory(path);
         else
             File.WriteAllBytes(path, Array.Empty<byte>());
-        
-        InvokeEntryExplicitlyCreated(path);
+
+        if (isInvokeEntryExplicitlyCreated)
+            InvokeEntryExplicitlyCreated(path);
+    }
+
+    public override void RenameEntry(Entry entry, string newName, bool isInvokeEntryExplicitlyCreated)
+    {
+        var destPath = System.IO.Path.Combine(
+            System.IO.Path.GetDirectoryName(entry.Path) ?? throw new NullReferenceException(),
+            newName);
+
+        if (entry.IsFolder)
+            Directory.Move(entry.Path, destPath);
+        else
+            File.Move(entry.Path, destPath);
+
+        if (isInvokeEntryExplicitlyCreated)
+            InvokeEntryExplicitlyCreated(destPath);
     }
 
     private void UpdateWatcher(string path)

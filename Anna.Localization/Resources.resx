@@ -311,4 +311,7 @@ Do you want to delete them completely?</value>
   <data name="DialogTitle_CreateFolder" xml:space="preserve">
     <value>Create folder</value>
   </data>
+  <data name="DialogTitle_Rename" xml:space="preserve">
+    <value>Rename</value>
+  </data>
 </root>

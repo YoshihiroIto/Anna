@@ -55,6 +55,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.M, KeyModifiers.None, Operations.MoveEntry),
             new(Key.D, KeyModifiers.None, Operations.DeleteEntry),
             new(Key.Delete, KeyModifiers.None, Operations.DeleteEntry),
+            new(Key.N, KeyModifiers.None, Operations.RenameEntry),
             //
             new(Key.K, KeyModifiers.None, Operations.MakeFolder),
             new(Key.K, KeyModifiers.Shift, Operations.MakeFile),
@@ -91,6 +92,7 @@ public enum Operations
     CopyEntry,
     MoveEntry,
     DeleteEntry,
+    RenameEntry,
     //
     MakeFolder,
     MakeFile,

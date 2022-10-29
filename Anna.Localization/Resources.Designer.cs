@@ -150,6 +150,15 @@ namespace Anna.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compress.
+        /// </summary>
+        public static string DialogTitle_Compress {
+            get {
+                return ResourceManager.GetString("DialogTitle_Compress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy entry.
         /// </summary>
         public static string DialogTitle_CopyEntry {
@@ -173,6 +182,15 @@ namespace Anna.Localization {
         public static string DialogTitle_CreateFolder {
             get {
                 return ResourceManager.GetString("DialogTitle_CreateFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Decompress.
+        /// </summary>
+        public static string DialogTitle_Decompress {
+            get {
+                return ResourceManager.GetString("DialogTitle_Decompress", resourceCulture);
             }
         }
         

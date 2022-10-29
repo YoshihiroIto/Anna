@@ -314,4 +314,10 @@ Do you want to delete them completely?</value>
   <data name="DialogTitle_Rename" xml:space="preserve">
     <value>Rename</value>
   </data>
+  <data name="DialogTitle_Compress" xml:space="preserve">
+    <value>Compress</value>
+  </data>
+  <data name="DialogTitle_Decompress" xml:space="preserve">
+    <value>Decompress</value>
+  </data>
 </root>

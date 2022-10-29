@@ -106,7 +106,7 @@
         <value>バイナリファイルはプレビューできません。</value>
     </data>
     <data name="DialogTitle_CopyEntry" xml:space="preserve">
-        <value>エントリーコピー</value>
+        <value>エントリーのコピー</value>
     </data>
     <data name="UI_JumpFolderDialog" xml:space="preserve">
         <value>フォルダー(_F)...</value>
@@ -207,5 +207,11 @@
     </data>
     <data name="DialogTitle_Rename" xml:space="preserve">
         <value>名前変更</value>
+    </data>
+    <data name="DialogTitle_Compress" xml:space="preserve">
+        <value>圧縮</value>
+    </data>
+    <data name="DialogTitle_Decompress" xml:space="preserve">
+        <value>展開</value>
     </data>
 </root>

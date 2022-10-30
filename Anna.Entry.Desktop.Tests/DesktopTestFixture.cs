@@ -1,6 +1,6 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Config;
-using Anna.Repository;
+using Anna.Service.Repository;
 using Anna.TestFoundation;
 using System.Text.Json;
 using Xunit;

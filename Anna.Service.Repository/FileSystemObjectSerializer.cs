@@ -3,7 +3,7 @@ using Anna.Service.Services;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Anna.Repository;
+namespace Anna.Service.Repository;
 
 public sealed class FileSystemObjectSerializer : IObjectSerializerService
 {

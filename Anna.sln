@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel", "Anna.Do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Foundation", "Anna.Foundation\Anna.Foundation.csproj", "{AC1CC76B-B8A7-40B5-BDBF-502BA00A44CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Log", "Anna.Log\Anna.Log.csproj", "{2E54D7D8-8D9E-4B27-A74D-482B9FABE4C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.Log", "Anna.Service.Log\Anna.Service.Log.csproj", "{2E54D7D8-8D9E-4B27-A74D-482B9FABE4C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service", "Anna.Service\Anna.Service.csproj", "{93428CFB-5007-4AE9-ADD7-F04601080B16}"
 EndProject

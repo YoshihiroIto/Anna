@@ -14,7 +14,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Anna.DomainModel.Service\Anna.DomainModel.Service.csproj" />
       <ProjectReference Include="..\Anna.Gui\Anna.Gui.csproj" />
-      <ProjectReference Include="..\Anna.Log\Anna.Log.csproj" />
+      <ProjectReference Include="..\Anna.Service.Log\Anna.Service.Log.csproj" />
       <ProjectReference Include="..\Anna.ObjectLifetimeChecker\Anna.ObjectLifetimeChecker.csproj" />
       <ProjectReference Include="..\Anna.Repository\Anna.Repository.csproj" />
       <ProjectReference Include="..\Anna.Service.Linux\Anna.Service.Linux.csproj" />

@@ -5,6 +5,7 @@ using Anna.Gui;
 using Anna.Gui.Views.Windows.Base;
 using Anna.ObjectLifetimeChecker;
 using Anna.Repository;
+using Anna.Service.Log;
 using Anna.Service.Services;
 using Anna.Service.Workers;
 using SimpleInjector;
@@ -84,7 +85,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
             new KeyConfig(GetInstance<IObjectSerializerService>()) { FilePath = keyConfigFilePath });
         RegisterSingleton(() =>
             new JumpFolderConfig(GetInstance<IObjectSerializerService>()) { FilePath = jumpFolderConfigFilePath });
-        RegisterSingleton<ILoggerService>(() => new Log.DefaultLogger(logOutputDir));
+        RegisterSingleton<ILoggerService>(() => new DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
         RegisterSingleton<IFileSystemIsAccessibleService, FileSystemIsAccessibleService>();
         RegisterSingleton<IFolderHistoryService, FolderHistoryService>();

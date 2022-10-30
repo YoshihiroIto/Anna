@@ -3,6 +3,7 @@ using Anna.DomainModel.Config;
 using Anna.DomainModel.Service;
 using Anna.Gui;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Service.Compression;
 using Anna.Service.Log;
 using Anna.Service.ObjectLifetimeChecker;
 using Anna.Service.Repository;
@@ -89,6 +90,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
         RegisterSingleton<IFileSystemIsAccessibleService, FileSystemIsAccessibleService>();
         RegisterSingleton<IFolderHistoryService, FolderHistoryService>();
+        RegisterSingleton<ICompressionService, CompressionService>();
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();

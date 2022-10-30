@@ -7,4 +7,14 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Anna.Foundation\Anna.Foundation.csproj" />
+      <ProjectReference Include="..\Anna.Service\Anna.Service.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Jewelry" Version="2.0.7" />
+      <PackageReference Include="SharpZipLib" Version="1.4.0" />
+    </ItemGroup>
+
 </Project>

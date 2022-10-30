@@ -338,7 +338,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         if (receiver.TargetEntries.Length == 0)
             return;
 
-        var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
+        using var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
 
         using var viewModel =
             Dic.GetInstance<DecompressEntryDialogViewModel,
@@ -352,13 +352,27 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         await receiver.Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.DecompressEntry));
 
-        if (viewModel.DialogResult != DialogResultTypes.Yes)
-        {
-            stats.Dispose();
+        if (viewModel.DialogResult != DialogResultTypes.Ok)
             return;
-        }
 
-        throw new NotImplementedException();
+        var destFolder = Path.IsPathRooted(viewModel.ResultDestFolder)
+            ? viewModel.ResultDestFolder
+            : Path.Combine(receiver.Folder.Path, viewModel.ResultDestFolder);
+
+        destFolder = PathStringHelper.Normalize(destFolder);
+
+        var targetEntries = receiver.TargetEntries;
+
+        var @operator = Dic.GetInstance<DelegateBackgroundOperator, Action>(
+            () =>
+            {
+                foreach (var targetEntry in targetEntries)
+                    Dic.GetInstance<ICompressionService>().Decompress(targetEntry.Path, destFolder);
+            });
+
+        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+
+        Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 
     private async ValueTask EmptyTrashCanAsync(IShortcutKeyReceiver shortcutKeyReceiver)

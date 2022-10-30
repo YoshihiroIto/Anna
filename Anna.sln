@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel.Tests", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.TestFoundation", "Anna.TestFoundation\Anna.TestFoundation.csproj", "{5FAD6C7A-808F-43F9-80B1-405E63BCFBC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.ObjectLifetimeChecker", "Anna.ObjectLifetimeChecker\Anna.ObjectLifetimeChecker.csproj", "{F5E9977A-022C-4006-93EF-E5846144F16D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.ObjectLifetimeChecker", "Anna.Service.ObjectLifetimeChecker\Anna.Service.ObjectLifetimeChecker.csproj", "{F5E9977A-022C-4006-93EF-E5846144F16D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.DomainModel.Service", "Anna.DomainModel.Service\Anna.DomainModel.Service.csproj", "{FD97A228-37B8-4310-B39F-7F7F01E4C20A}"
 EndProject

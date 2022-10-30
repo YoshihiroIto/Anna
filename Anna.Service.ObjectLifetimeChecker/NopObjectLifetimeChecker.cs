@@ -1,6 +1,6 @@
 ﻿using Anna.Service.Services;
 
-namespace Anna.ObjectLifetimeChecker;
+namespace Anna.Service.ObjectLifetimeChecker;
 
 public sealed class NopObjectLifetimeChecker : IObjectLifetimeCheckerService
 {

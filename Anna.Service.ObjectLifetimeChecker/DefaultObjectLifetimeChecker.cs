@@ -4,7 +4,7 @@ using Anna.Service.Services;
 using System.Collections.Concurrent;
 using System.Text;
 
-namespace Anna.ObjectLifetimeChecker;
+namespace Anna.Service.ObjectLifetimeChecker;
 
 public sealed class DefaultObjectLifetimeChecker : IObjectLifetimeCheckerService
 {

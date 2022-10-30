@@ -15,7 +15,7 @@
       <ProjectReference Include="..\Anna.DomainModel.Service\Anna.DomainModel.Service.csproj" />
       <ProjectReference Include="..\Anna.Gui\Anna.Gui.csproj" />
       <ProjectReference Include="..\Anna.Service.Log\Anna.Service.Log.csproj" />
-      <ProjectReference Include="..\Anna.ObjectLifetimeChecker\Anna.ObjectLifetimeChecker.csproj" />
+      <ProjectReference Include="..\Anna.Service.ObjectLifetimeChecker\Anna.Service.ObjectLifetimeChecker.csproj" />
       <ProjectReference Include="..\Anna.Service.Repository\Anna.Service.Repository.csproj" />
       <ProjectReference Include="..\Anna.Service.Linux\Anna.Service.Linux.csproj" />
       <ProjectReference Include="..\Anna.Service.MacOS\Anna.Service.MacOS.csproj" />

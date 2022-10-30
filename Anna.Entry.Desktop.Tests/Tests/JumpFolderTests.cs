@@ -142,7 +142,6 @@ public sealed class JumpFolderTests : IDisposable
     }
 
     [Theory]
-    [InlineData(Key.Space)]
     [InlineData(Key.Insert)]
     public async Task Edit_folder(Key key)
     {

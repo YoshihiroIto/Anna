@@ -48,7 +48,7 @@ public partial class JumpFolderDialog : WindowBase<JumpFolderDialogViewModel>
         if (IsEditing)
             return;
 
-        if (e.Key is Key.Insert or Key.Space)
+        if (e.Key is Key.Insert)
         {
             EditSelectedItem();
             e.Handled = true;

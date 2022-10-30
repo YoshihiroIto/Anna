@@ -90,7 +90,7 @@ public abstract class FileSystemDeleter : IFileProcessable
         }
         catch (OperationCanceledException)
         {
-            Dic.GetInstance<ILoggerService>().Information("FileSystemDeleter.Invoke() -- Canceled");
+            Dic.GetInstance<ILogService>().Information("FileSystemDeleter.Invoke() -- Canceled");
         }
         finally
         {

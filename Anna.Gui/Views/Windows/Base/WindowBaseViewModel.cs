@@ -38,11 +38,11 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
             .AddTo(Trash);
 
-        Dic.GetInstance<ILoggerService>().Start(GetType().Name);
+        Dic.GetInstance<ILogService>().Start(GetType().Name);
 
         Trash.Add(() =>
         {
-            Dic.GetInstance<ILoggerService>().End(GetType().Name);
+            Dic.GetInstance<ILogService>().End(GetType().Name);
         });
     }
 

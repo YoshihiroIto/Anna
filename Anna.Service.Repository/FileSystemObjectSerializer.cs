@@ -7,16 +7,16 @@ namespace Anna.Service.Repository;
 
 public sealed class FileSystemObjectSerializer : IObjectSerializerService
 {
-    private readonly ILoggerService _logger;
+    private readonly ILogService _log;
 
     public static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = true, Converters = { new JsonStringEnumConverter() }
     };
     
-    public FileSystemObjectSerializer(ILoggerService logger)
+    public FileSystemObjectSerializer(ILogService log)
     {
-        _logger = logger;
+        _log = log;
     }
 
     public async ValueTask<(T obj, ResultCode code)> ReadAsync<T>(string path, Func<T> defaultGenerator)
@@ -37,7 +37,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _logger.Error($"FileSystemObjectReader.ReadAsync: {e.Message}");
+            _log.Error($"FileSystemObjectReader.ReadAsync: {e.Message}");
         }
 
         return (defaultGenerator(), ResultCode.Error);
@@ -60,7 +60,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _logger.Error($"FileSystemObjectReader.ReadAsync: {e.Message}");
+            _log.Error($"FileSystemObjectReader.ReadAsync: {e.Message}");
         }
 
         return (defaultGenerator(), ResultCode.Error);
@@ -78,7 +78,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _logger.Error($"FileSystemObjectWriter.WriteAsync: {e.Message}");
+            _log.Error($"FileSystemObjectWriter.WriteAsync: {e.Message}");
         }
 
         return ResultCode.Error;
@@ -95,7 +95,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _logger.Error($"FileSystemObjectWriter.WriteAsync: {e.Message}");
+            _log.Error($"FileSystemObjectWriter.WriteAsync: {e.Message}");
         }
 
         return ResultCode.Error;

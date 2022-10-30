@@ -122,14 +122,14 @@ public abstract class Folder : DisposableNotificationObject
 
     protected void OnCreated(Entry newEntry)
     {
-        Dic.GetInstance<ILoggerService>().Information($"OnCreated: {Path}, {newEntry.NameWithExtension}");
+        Dic.GetInstance<ILogService>().Information($"OnCreated: {Path}, {newEntry.NameWithExtension}");
 
         AddEntryInternal(newEntry);
     }
 
     protected void OnChanged(Entry entry)
     {
-        Dic.GetInstance<ILoggerService>().Information($"OnChanged: {Path}, {entry.NameWithExtension}");
+        Dic.GetInstance<ILogService>().Information($"OnChanged: {Path}, {entry.NameWithExtension}");
 
         bool isSizeChanged;
 
@@ -149,7 +149,7 @@ public abstract class Folder : DisposableNotificationObject
 
     protected void OnDeleted(string name)
     {
-        Dic.GetInstance<ILoggerService>().Information($"OnDeleted: {Path}, {name}");
+        Dic.GetInstance<ILogService>().Information($"OnDeleted: {Path}, {name}");
 
         lock (EntriesUpdatingLockObj)
         {
@@ -162,7 +162,7 @@ public abstract class Folder : DisposableNotificationObject
 
     protected void OnRenamed(string oldName, string newName)
     {
-        Dic.GetInstance<ILoggerService>().Information($"OnRenamed: {Path}, {oldName}, {newName}");
+        Dic.GetInstance<ILogService>().Information($"OnRenamed: {Path}, {oldName}, {newName}");
 
         lock (EntriesUpdatingLockObj)
         {

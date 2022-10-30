@@ -70,7 +70,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
 
         if (_shortcutKeys.ContainsKey(k))
         {
-            Dic.GetInstance<ILoggerService>().Warning("Already registered");
+            Dic.GetInstance<ILogService>().Warning("Already registered");
             return;
         }
 
@@ -108,7 +108,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         }
         catch
         {
-            Dic.GetInstance<ILoggerService>()
+            Dic.GetInstance<ILogService>()
                 .Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
 
             using var viewModel =
@@ -130,7 +130,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         }
         catch
         {
-            Dic.GetInstance<ILoggerService>()
+            Dic.GetInstance<ILogService>()
                 .Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
 
             using var viewModel =

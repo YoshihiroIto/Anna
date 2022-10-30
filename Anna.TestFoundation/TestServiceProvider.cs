@@ -13,7 +13,7 @@ public sealed class TestServiceProvider : ServiceProviderBase
     public TestServiceProvider()
     {
         RegisterSingleton<IObjectLifetimeCheckerService, NopObjectLifetimeChecker>();
-        RegisterSingleton<ILoggerService, NopLogger>();
+        RegisterSingleton<ILogService, NopLog>();
         RegisterSingleton<IBackgroundWorker, MockBackgroundWorker>();
 
         Options.ResolveUnregisteredConcreteTypes = true;

@@ -16,16 +16,16 @@ namespace Anna.ServiceProvider;
 
 public sealed class DefaultServiceProvider : ServiceProviderBase
 {
-    private readonly ILoggerService _logger;
+    private readonly ILogService _log;
 
     private DefaultServiceProvider(string logOutputDir, string appConfigFilePath)
     {
         Register(logOutputDir, appConfigFilePath);
 
-        _logger = GetInstance<ILoggerService>();
-        _logger.Start("Application");
+        _log = GetInstance<ILogService>();
+        _log.Start("Application");
 
-        GetInstance<IObjectLifetimeCheckerService>().Start(s => _logger.Error(s));
+        GetInstance<IObjectLifetimeCheckerService>().Start(s => _log.Error(s));
         GetInstance<AppConfig>().Load();
         GetInstance<KeyConfig>().Load();
         GetInstance<JumpFolderConfig>().Load();
@@ -42,8 +42,8 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         Dispose();
 
         checker.End();
-        _logger.End("Application");
-        _logger.Destroy();
+        _log.End("Application");
+        _log.Destroy();
     }
 
     public static DefaultServiceProvider Create(string[] args)
@@ -85,7 +85,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
             new KeyConfig(GetInstance<IObjectSerializerService>()) { FilePath = keyConfigFilePath });
         RegisterSingleton(() =>
             new JumpFolderConfig(GetInstance<IObjectSerializerService>()) { FilePath = jumpFolderConfigFilePath });
-        RegisterSingleton<ILoggerService>(() => new DefaultLogger(logOutputDir));
+        RegisterSingleton<ILogService>(() => new DefaultLog(logOutputDir));
         RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
         RegisterSingleton<IFileSystemIsAccessibleService, FileSystemIsAccessibleService>();
         RegisterSingleton<IFolderHistoryService, FolderHistoryService>();
@@ -109,7 +109,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         Register<IBackgroundWorker, BackgroundWorker>(Lifestyle.Transient);
 
         // property injection
-        RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerService>());
+        RegisterInitializer<WindowBase>(d => d.Log = GetInstance<ILogService>());
 
         GetRegistration(typeof(IBackgroundWorker))!.Registration
             .SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,

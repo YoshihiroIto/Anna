@@ -253,7 +253,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
 
         await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
 
-        Dic.GetInstance<ILoggerService>().Warning(e.Exception.Message);
+        Dic.GetInstance<ILogService>().Warning(e.Exception.Message);
     }
 
     private async void OnEntryExplicitlyCreated(object? sender, EntryExplicitlyCreatedEventArgs e)

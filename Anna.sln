@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.MacOS", "Anna.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.Linux", "Anna.Service.Linux\Anna.Service.Linux.csproj", "{486892CA-08A8-4737-BB55-16C3B610A544}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.Compression", "Anna.Service.Compression\Anna.Service.Compression.csproj", "{3345650C-2C1C-41E0-9225-0FF4C381F982}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{486892CA-08A8-4737-BB55-16C3B610A544}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486892CA-08A8-4737-BB55-16C3B610A544}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{486892CA-08A8-4737-BB55-16C3B610A544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3345650C-2C1C-41E0-9225-0FF4C381F982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3345650C-2C1C-41E0-9225-0FF4C381F982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3345650C-2C1C-41E0-9225-0FF4C381F982}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3345650C-2C1C-41E0-9225-0FF4C381F982}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

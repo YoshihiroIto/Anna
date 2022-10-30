@@ -208,7 +208,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         }
 
         var worker =
-            Dic.GetInstance<ConfirmedFileSystemCopier, (InteractionMessenger, CopyOrMove)>((receiver.Messenger,
+            Dic.GetInstance<ConfirmedFileSystemCopier, (Messenger, CopyOrMove)>((receiver.Messenger,
                 copyOrMove));
 
         var destFolder = Path.IsPathRooted(viewModel.ResultDestFolder)
@@ -252,7 +252,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             return;
         }
 
-        var worker = Dic.GetInstance<ConfirmedFileSystemDeleter, (InteractionMessenger, int)>((receiver.Messenger, 0));
+        var worker = Dic.GetInstance<ConfirmedFileSystemDeleter, (Messenger, int)>((receiver.Messenger, 0));
         var targetEntries = receiver.TargetEntries;
 
         var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>

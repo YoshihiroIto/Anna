@@ -9,7 +9,7 @@ public enum WindowAction
     Active
 }
 
-public sealed class WindowActionMessage : InteractionMessage
+public sealed class WindowActionMessage : MessageBase
 {
     public readonly WindowAction Action;
 

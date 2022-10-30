@@ -56,7 +56,7 @@ public sealed class TransitionAction : AvaloniaObject, IAction, IAsyncAction
 
     public async ValueTask ExecuteAsync(
         Trigger sender,
-        InteractionMessage message,
+        MessageBase message,
         IHasServiceProviderContainer hasServiceProviderContainer)
     {
         if (message is not TransitionMessage transitionMessage)

@@ -25,7 +25,7 @@ public sealed partial class TextViewer : UserControl, ITextViewerShortcutKeyRece
     private TextViewerViewModel ViewModel => _viewModel ?? throw new NullReferenceException();
     private TextViewerViewModel? _viewModel;
 
-    public InteractionMessenger Messenger =>
+    public Messenger Messenger =>
         (ControlHelper.FindOwnerWindow(this) as WindowBase)?.ViewModel.Messenger ??
         throw new NullReferenceException();
 

@@ -8,11 +8,11 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Messaging;
 
-public sealed class InteractionMessenger : IHasServiceProviderContainer
+public sealed class Messenger : IHasServiceProviderContainer
 {
     public IServiceProvider Dic { get; }
 
-    public InteractionMessenger(IServiceProvider dic)
+    public Messenger(IServiceProvider dic)
     {
         Dic = dic;
     }
@@ -20,7 +20,7 @@ public sealed class InteractionMessenger : IHasServiceProviderContainer
     public event InteractionMessageRaisedEventHandler? Raised;
 
     public async ValueTask<T> RaiseAsync<T>(T message)
-        where T : InteractionMessage
+        where T : MessageBase
     {
         if (Raised is null)
             return message;
@@ -40,7 +40,7 @@ public sealed class InteractionMessenger : IHasServiceProviderContainer
     }
 
     public T Raise<T>(T message)
-        where T : InteractionMessage
+        where T : MessageBase
     {
         if (Raised is null)
             return message;
@@ -67,5 +67,5 @@ public sealed class InteractionMessenger : IHasServiceProviderContainer
     }
 
 
-    public delegate ValueTask InteractionMessageRaisedEventHandler(object? sender, InteractionMessage message);
+    public delegate ValueTask InteractionMessageRaisedEventHandler(object? sender, MessageBase message);
 }

@@ -77,7 +77,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         _shortcutKeys[k] = action;
     }
 
-    protected async ValueTask<bool> CheckIsAccessibleAsync(string path, InteractionMessenger messenger)
+    protected async ValueTask<bool> CheckIsAccessibleAsync(string path, Messenger messenger)
     {
         if (Dic.GetInstance<IFileSystemIsAccessibleService>().IsAccessible(path))
             return true;
@@ -95,7 +95,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
     }
 
     protected async ValueTask OpenFileByEditorAsync(
-        int index, string targetFilepath, int targetLineIndex, InteractionMessenger messenger)
+        int index, string targetFilepath, int targetLineIndex, Messenger messenger)
     {
         var editor = Dic.GetInstance<AppConfig>().Data.FindEditor(index);
         var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilepath, targetLineIndex);
@@ -123,7 +123,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         }
     }
 
-    protected async ValueTask StartAssociatedAppAsync(string targetFilepath, InteractionMessenger messenger)
+    protected async ValueTask StartAssociatedAppAsync(string targetFilepath, Messenger messenger)
     {
         try
         {

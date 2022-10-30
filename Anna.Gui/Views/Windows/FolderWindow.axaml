@@ -32,9 +32,9 @@
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
             <actions:WindowActionAction />
-        </behaviors1:InteractionMessageTrigger>
+        </behaviors1:MessageTrigger>
     </Interaction.Behaviors>
 
     <DockPanel>

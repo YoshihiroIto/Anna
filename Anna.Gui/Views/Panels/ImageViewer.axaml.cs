@@ -19,7 +19,7 @@ public sealed partial class ImageViewer : UserControl, IImageViewerShortcutKeyRe
     private ImageViewerViewModel ViewModel => _viewModel ?? throw new NullReferenceException();
     private ImageViewerViewModel? _viewModel;
 
-    public InteractionMessenger Messenger =>
+    public Messenger Messenger =>
         (ControlHelper.FindOwnerWindow(this) as WindowBase)?.ViewModel.Messenger ??
         throw new NullReferenceException();
 

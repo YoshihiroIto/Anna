@@ -105,7 +105,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelShortcutKeyRe
 
     FolderWindow IFolderPanelShortcutKeyReceiver.Owner => ControlHelper.FindParent<FolderWindow>(this) ?? throw new NullReferenceException();
     Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
-    InteractionMessenger IShortcutKeyReceiver.Messenger => ViewModel.Messenger;
+    Messenger IShortcutKeyReceiver.Messenger => ViewModel.Messenger;
     Folder IFolderPanelShortcutKeyReceiver.Folder => ViewModel.Model;
 
     Entry IFolderPanelShortcutKeyReceiver.CurrentEntry =>

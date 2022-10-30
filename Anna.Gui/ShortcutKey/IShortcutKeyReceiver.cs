@@ -12,7 +12,7 @@ namespace Anna.Gui.ShortcutKey;
 public interface IShortcutKeyReceiver
 {
     Window Owner { get; }
-    InteractionMessenger Messenger { get; }
+    Messenger Messenger { get; }
 }
 
 public interface IFolderPanelShortcutKeyReceiver : IShortcutKeyReceiver

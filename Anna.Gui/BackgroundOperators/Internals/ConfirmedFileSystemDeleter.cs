@@ -16,9 +16,9 @@ namespace Anna.Gui.BackgroundOperators.Internals;
 
 internal sealed class ConfirmedFileSystemDeleter
     : FileSystemDeleter
-        , IHasArg<(InteractionMessenger Messenger, int Dummy)>
+        , IHasArg<(Messenger Messenger, int Dummy)>
 {
-    private readonly (InteractionMessenger Messenger, int Dummy) _arg;
+    private readonly (Messenger Messenger, int Dummy) _arg;
     private FastSpinLock _lockObj;
 
     public ConfirmedFileSystemDeleter(IServiceProvider dic)

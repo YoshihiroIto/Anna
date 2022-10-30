@@ -14,9 +14,9 @@ namespace Anna.Gui.BackgroundOperators.Internals;
 
 internal sealed class ConfirmedFileSystemCopier
     : FileSystemCopier
-        , IHasArg<(InteractionMessenger Messenger, CopyOrMove CopyOrMove)>
+        , IHasArg<(Messenger Messenger, CopyOrMove CopyOrMove)>
 {
-    private readonly (InteractionMessenger Messenger, CopyOrMove CopyOrMove) _arg;
+    private readonly (Messenger Messenger, CopyOrMove CopyOrMove) _arg;
     private FastSpinLock _lockObj;
 
     public ConfirmedFileSystemCopier(IServiceProvider dic)

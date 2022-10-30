@@ -16,7 +16,7 @@ public sealed class WindowActionAction : AvaloniaObject, IAction, IAsyncAction
 
     public ValueTask ExecuteAsync(
         Trigger sender,
-        InteractionMessage message,
+        MessageBase message,
         IHasServiceProviderContainer hasServiceProviderContainer)
     {
         if (message is not WindowActionMessage windowActionMessage)

@@ -9,6 +9,6 @@ public interface IAsyncAction
 {
     public ValueTask ExecuteAsync(
         Trigger sender,
-        InteractionMessage message,
+        MessageBase message,
         IHasServiceProviderContainer hasServiceProviderContainer);
 }

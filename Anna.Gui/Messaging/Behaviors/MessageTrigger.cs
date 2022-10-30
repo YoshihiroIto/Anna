@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Messaging.Behaviors;
 
-public sealed class InteractionMessageTrigger : Trigger<Control>
+public sealed class MessageTrigger : Trigger<Control>
 {
-    public static readonly StyledProperty<InteractionMessenger> MessengerProperty =
-        AvaloniaProperty.Register<InteractionMessageTrigger, InteractionMessenger>(
+    public static readonly StyledProperty<Messenger> MessengerProperty =
+        AvaloniaProperty.Register<MessageTrigger, Messenger>(
             nameof(Messenger),
             defaultBindingMode: BindingMode.OneTime);
 
-    public InteractionMessenger Messenger
+    public Messenger Messenger
     {
         get => GetValue(MessengerProperty);
         set => SetValue(MessengerProperty, value);
@@ -24,14 +24,14 @@ public sealed class InteractionMessageTrigger : Trigger<Control>
 
     public string MessageKey { get; set; } = "";
 
-    static InteractionMessageTrigger()
+    static MessageTrigger()
     {
         MessengerProperty.Changed.Subscribe(MessengerChanged);
     }
 
-    private static void MessengerChanged(AvaloniaPropertyChangedEventArgs<InteractionMessenger> e)
+    private static void MessengerChanged(AvaloniaPropertyChangedEventArgs<Messenger> e)
     {
-        if (e.Sender is not InteractionMessageTrigger self)
+        if (e.Sender is not MessageTrigger self)
             return;
 
         var oldValue = e.OldValue.GetValueOrDefault();
@@ -44,7 +44,7 @@ public sealed class InteractionMessageTrigger : Trigger<Control>
             self.Messenger.Raised += self.MessengerOnRaised;
     }
     
-    private async ValueTask MessengerOnRaised(object? sender, InteractionMessage message)
+    private async ValueTask MessengerOnRaised(object? sender, MessageBase message)
     {
         if (message.MessageKey != MessageKey)
             return;

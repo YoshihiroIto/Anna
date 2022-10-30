@@ -1,10 +1,10 @@
 ﻿namespace Anna.Gui.Messaging.Messages;
 
-public class InteractionMessage
+public class MessageBase
 {
     public readonly string MessageKey;
     
-    public InteractionMessage(string messageKey)
+    public MessageBase(string messageKey)
     {
         MessageKey = messageKey;
     }

@@ -8,7 +8,7 @@ public enum TransitionMode
     Dialog,
 }
 
-public sealed class TransitionMessage : InteractionMessage
+public sealed class TransitionMessage : MessageBase
 {
     public readonly WindowBaseViewModel ViewModel;
     public readonly TransitionMode Mode;

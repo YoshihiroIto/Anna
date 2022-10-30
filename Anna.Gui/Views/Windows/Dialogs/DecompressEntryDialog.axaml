@@ -33,21 +33,21 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
             <actions:WindowActionAction />
-        </behaviors1:InteractionMessageTrigger>
+        </behaviors1:MessageTrigger>
 
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyJumpFolder}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyJumpFolder}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs1:JumpFolderDialog}" />
-        </behaviors1:InteractionMessageTrigger>
+        </behaviors1:MessageTrigger>
         
-        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeySelectFolder}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeySelectFolder}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs1:SelectFolderDialog}" />
-        </behaviors1:InteractionMessageTrigger>
+        </behaviors1:MessageTrigger>
     </Interaction.Behaviors>
 
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

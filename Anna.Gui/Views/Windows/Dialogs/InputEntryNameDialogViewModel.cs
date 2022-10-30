@@ -89,7 +89,7 @@ public sealed class InputEntryNameDialogViewModel
         DialogResult = DialogResultTypes.Ok;
         ResultFilePath = Path.Combine(CurrentFolder, FileName.Value);
 
-        await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+        await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
     private bool UpdateExistsEntry()

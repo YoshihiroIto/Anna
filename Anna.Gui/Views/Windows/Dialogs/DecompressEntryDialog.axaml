@@ -10,6 +10,7 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
                   xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
+                  xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
                   Title="{ReflectionBinding R.DialogTitle_Decompress}"
                   Width="500"
                   MinWidth="500"
@@ -33,17 +34,17 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.Close}" Messenger="{Binding Messenger}">
             <actions:WindowActionAction />
         </behaviors1:MessageTrigger>
 
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyJumpFolder}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.JumpFolder}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs1:JumpFolderDialog}" />
         </behaviors1:MessageTrigger>
         
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeySelectFolder}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.SelectFolder}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs1:SelectFolderDialog}" />

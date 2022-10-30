@@ -9,6 +9,7 @@
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
+                  xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
                   Title="{ReflectionBinding R.DialogTitle_SelectFolder}"
                   Width="300"
                   MinWidth="300"
@@ -31,7 +32,7 @@
     <Interaction.Behaviors>
         <behaviors:DialogBehavior />
 
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.Close}" Messenger="{Binding Messenger}">
             <actions:WindowActionAction />
         </behaviors1:MessageTrigger>
     </Interaction.Behaviors>

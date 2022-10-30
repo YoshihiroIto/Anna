@@ -54,7 +54,7 @@ public sealed class JumpFolderDialogViewModel
                             DialogResultTypes.Yes | DialogResultTypes.No
                         ));
 
-                    await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKeyConfirmation));
+                    await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
 
                     if (viewModel.DialogResult == DialogResultTypes.Yes)
                         SelectedPath.Value.Model.Path = "";
@@ -78,7 +78,7 @@ public sealed class JumpFolderDialogViewModel
         ResultPath = path;
         DialogResult = string.IsNullOrWhiteSpace(ResultPath) ? DialogResultTypes.Cancel : DialogResultTypes.Ok;
 
-        return Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+        return Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 }
 

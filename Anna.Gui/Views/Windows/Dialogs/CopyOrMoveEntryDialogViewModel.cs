@@ -84,7 +84,7 @@ public sealed class CopyOrMoveEntryDialogViewModel
                 Dic.GetInstance<SelectFolderDialogViewModel, (string, int)>(
                     (Model.CurrentFolderPath, 0));
 
-            await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKeySelectFolder));
+            await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.SelectFolder));
 
             DestFolder.Value = viewModel.ResultPath;
         }
@@ -93,7 +93,7 @@ public sealed class CopyOrMoveEntryDialogViewModel
             ResultDestFolder = DestFolder.Value;
             DialogResult = DialogResultTypes.Ok;
 
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
         }
     }
 
@@ -103,7 +103,7 @@ public sealed class CopyOrMoveEntryDialogViewModel
             Dic.GetInstance<JumpFolderDialogViewModel, (string, JumpFolderConfigData )>(
                 (Model.CurrentFolderPath, Dic.GetInstance<JumpFolderConfig>().Data));
 
-        await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKeyJumpFolder));
+        await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.JumpFolder));
 
         if (viewModel.DialogResult != DialogResultTypes.Ok)
             return;

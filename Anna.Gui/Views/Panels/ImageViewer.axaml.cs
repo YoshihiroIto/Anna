@@ -2,7 +2,7 @@
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.ShortcutKey;
-using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
@@ -43,7 +43,7 @@ public sealed partial class ImageViewer : UserControl, IImageViewerShortcutKeyRe
     {
         if (e.Key == Key.Escape)
         {
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
             e.Handled = true;
         }
         else

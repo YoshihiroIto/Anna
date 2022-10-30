@@ -3,7 +3,7 @@ using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service;
@@ -54,7 +54,7 @@ internal sealed class ConfirmedFileSystemDeleter
                     DialogResultTypes.Cancel
                 ));
 
-            _arg.Messenger.Raise(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
+            _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.Confirmation));
 
             switch (viewModel.DialogResult)
             {
@@ -102,7 +102,7 @@ internal sealed class ConfirmedFileSystemDeleter
                     DialogResultTypes.Retry | DialogResultTypes.Cancel
                 ));
 
-            _arg.Messenger.Raise(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
+            _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.Confirmation));
 
             switch (viewModel.DialogResult)
             {

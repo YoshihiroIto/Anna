@@ -18,19 +18,6 @@ namespace Anna.Gui.Views.Windows.Base;
 
 public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
 {
-    public const string MessageKeyClose = nameof(MessageKeyClose);
-    public const string MessageKeyConfirmation = nameof(MessageKeyConfirmation);
-    public const string MessageKeyJumpFolder = nameof(MessageKeyJumpFolder);
-    public const string MessageKeySelectFolder = nameof(MessageKeySelectFolder);
-    public const string MessageKeyInputEntryName = nameof(MessageKeyInputEntryName);
-    public const string MessageKeySelectFileCopy = nameof(MessageKeySelectFileCopy);
-    public const string MessageKeyEntryDisplay = nameof(MessageKeyEntryDisplay);
-    public const string MessageKeyDeleteEntry = nameof(MessageKeyDeleteEntry);
-    public const string MessageKeyCopyOrMoveEntry = nameof(MessageKeyCopyOrMoveEntry);
-    public const string MessageKeySelectSortModeAndOrder = nameof(MessageKeySelectSortModeAndOrder);
-    public const string MessageKeyCompressEntry = nameof(MessageKeyCompressEntry);
-    public const string MessageKeyDecompressEntry = nameof(MessageKeyDecompressEntry);
-
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily => _ViewerFontFamily ??= CreateViewerFontFamily();
@@ -65,7 +52,7 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
         {
             DialogResult = result;
 
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
         });
     }
 

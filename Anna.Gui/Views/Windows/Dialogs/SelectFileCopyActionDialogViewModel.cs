@@ -69,7 +69,7 @@ public sealed class SelectFileCopyActionDialogViewModel
             DialogResult = result;
             Result = new FileSystemCopier.CopyActionWhenExistsResult(action, "", IsSameActionThereafter.Value, false);
 
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
         });
     }
 
@@ -81,7 +81,7 @@ public sealed class SelectFileCopyActionDialogViewModel
             .WithSubscribe(async () =>
             {
                 DialogResult = DialogResultTypes.Skip;
-                await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+                await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
             });
     }
 
@@ -97,7 +97,7 @@ public sealed class SelectFileCopyActionDialogViewModel
                         (DestFolder, Path.GetFileName(Model.DestFilepath), Resources.DialogTitle_ChangeEntryName, true,
                             true));
 
-                await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKeyInputEntryName));
+                await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.InputEntryName));
 
                 switch (viewModel.DialogResult)
                 {
@@ -109,7 +109,7 @@ public sealed class SelectFileCopyActionDialogViewModel
                             IsSameActionThereafter.Value,
                             false);
 
-                        await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+                        await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
 
                         break;
 
@@ -125,7 +125,7 @@ public sealed class SelectFileCopyActionDialogViewModel
                             IsSameActionThereafter.Value,
                             false);
 
-                        await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+                        await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
 
                         break;
 

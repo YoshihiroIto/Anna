@@ -32,7 +32,7 @@ public sealed class DeleteEntryDialogViewModel
             DialogResult = DialogResultTypes.Yes;
             ResultMode = EntryDeleteModes.TrashCan;
 
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
         });
 
         EntriesStatsPanelViewModel =

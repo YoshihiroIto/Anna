@@ -1,6 +1,7 @@
 ﻿<base1:WindowBase x:Class="Anna.Gui.Views.Windows.FolderWindow"
                   xmlns="https://github.com/avaloniaui"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
                   xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
                   xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                   xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
@@ -8,7 +9,6 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
                   xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
-                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
                   Title="{ReflectionBinding R.AppName}"
                   Width="1000"
                   Height="600"
@@ -32,7 +32,7 @@
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
 
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyClose}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.Close}" Messenger="{Binding Messenger}">
             <actions:WindowActionAction />
         </behaviors1:MessageTrigger>
     </Interaction.Behaviors>

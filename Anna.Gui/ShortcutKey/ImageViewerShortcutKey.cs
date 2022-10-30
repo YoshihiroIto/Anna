@@ -1,6 +1,6 @@
 ﻿using Anna.DomainModel.Config;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -31,7 +31,7 @@ public sealed class ImageViewerShortcutKey : ShortcutKeyBase
         var receiver = (IImageViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
         await receiver.Messenger.RaiseAsync(
-            new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose));
+            new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
     private ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)

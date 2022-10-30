@@ -3,7 +3,7 @@ using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service;
@@ -44,7 +44,7 @@ internal sealed class ConfirmedFileSystemCopier
             using var viewModel = Dic.GetInstance<SelectFileCopyActionDialogViewModel, (string, string, bool)>
                 ((srcPath, destPath, result.IsFirst));
 
-            _arg.Messenger.Raise(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeySelectFileCopy));
+            _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.SelectFileCopy));
 
             result = viewModel.Result;
 
@@ -75,7 +75,7 @@ internal sealed class ConfirmedFileSystemCopier
                 Dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
                     (folder, fileName, Resources.DialogTitle_ChangeEntryName, true, true));
 
-            _arg.Messenger.Raise(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyInputEntryName));
+            _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.InputEntryName));
 
             if (viewModel.DialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();

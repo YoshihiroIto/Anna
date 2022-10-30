@@ -3,7 +3,7 @@ using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service.Services;
@@ -89,7 +89,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                 DialogResultTypes.Ok
             ));
 
-        await messenger.RaiseAsync(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
+        await messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
 
         return false;
     }
@@ -104,8 +104,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         {
             ProcessHelper.Execute(editor.Editor, arguments);
 
-            await messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close,
-                WindowBaseViewModel.MessageKeyClose));
+            await messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
         }
         catch
         {
@@ -119,7 +118,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                     DialogResultTypes.Ok
                 ));
 
-            await messenger.RaiseAsync(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
+            await messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
         }
     }
 
@@ -141,7 +140,7 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
                      DialogResultTypes.Ok
                 ));
 
-            await messenger.RaiseAsync(new TransitionMessage(viewModel, WindowBaseViewModel.MessageKeyConfirmation));
+            await messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
         }
     }
 }

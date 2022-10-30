@@ -2,7 +2,7 @@
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.ShortcutKey;
-using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -110,7 +110,7 @@ public sealed partial class TextViewer : UserControl, ITextViewerShortcutKeyRece
     {
         if (e.Key == Key.Escape)
         {
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose));
+            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
             e.Handled = true;
         }
         else

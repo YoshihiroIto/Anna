@@ -1,7 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.Config;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.Views.Windows.Base;
+using Anna.Gui.Views.Windows;
 using Avalonia;
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ public sealed class TextViewerShortcutKey : ShortcutKeyBase
         var receiver = (ITextViewerShortcutKeyReceiver)shortcutKeyReceiver;
 
         await receiver.Messenger.RaiseAsync(
-            new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose));
+            new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
     private ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)

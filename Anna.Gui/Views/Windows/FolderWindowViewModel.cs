@@ -45,8 +45,7 @@ public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<Folder>
             .Subscribe(_ =>
             {
                 if (dic.GetInstance<App>().Folders.IndexOf(Model) == -1)
-                    Messenger.RaiseAsync(
-                        new WindowActionMessage(WindowAction.Close, WindowBaseViewModel.MessageKeyClose)).Forget();
+                    Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close)).Forget();
             }).AddTo(Trash);
 
         Trash.Add(() =>

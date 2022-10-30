@@ -2,7 +2,6 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
-             xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
              xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
              xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
              xmlns:converters="clr-namespace:Anna.Gui.Views.Converters"
@@ -12,6 +11,7 @@
              xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
              xmlns:templateSelectors="clr-namespace:Anna.Gui.Views.TemplateSelectors"
              xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
+             xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
@@ -41,55 +41,55 @@
     <Interaction.Behaviors>
         <behaviors:FolderPanelInputBehavior />
 
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyConfirmation}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.Confirmation}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:ConfirmationDialog}" />
         </behaviors1:MessageTrigger>
 
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyInputEntryName}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.InputEntryName}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:InputEntryNameDialog}" />
         </behaviors1:MessageTrigger>
 
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeySelectFileCopy}" Messenger="{Binding Messenger}">
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.SelectFileCopy}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:SelectFileCopyActionDialog}" />
         </behaviors1:MessageTrigger>
-        
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyJumpFolder}" Messenger="{Binding Messenger}">
+
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.JumpFolder}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:JumpFolderDialog}" />
         </behaviors1:MessageTrigger>
-        
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyEntryDisplay}" Messenger="{Binding Messenger}">
+
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.EntryDisplay}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:EntryDisplayDialog}" />
         </behaviors1:MessageTrigger>
-        
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyDeleteEntry}" Messenger="{Binding Messenger}">
+
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.DeleteEntry}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:DeleteEntryDialog}" />
         </behaviors1:MessageTrigger>
-        
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyCopyOrMoveEntry}" Messenger="{Binding Messenger}">
+
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.CopyOrMoveEntry}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:CopyOrMoveEntryDialog}" />
         </behaviors1:MessageTrigger>
-        
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeySelectSortModeAndOrder}" Messenger="{Binding Messenger}">
+
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.SelectSortModeAndOrder}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:SortModeAndOrderDialog}" />
         </behaviors1:MessageTrigger>
-        
-        <behaviors1:MessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyDecompressEntry}" Messenger="{Binding Messenger}">
+
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.DecompressEntry}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:DecompressEntryDialog}" />

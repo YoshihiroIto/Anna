@@ -8,20 +8,29 @@ namespace Anna.Service.Compression;
 
 public sealed class CompressionService : ICompressionService
 {
-    public void Compress(IEnumerable<string> targetFilePaths, string destArchiveFilePath)
+    public void Compress(IEnumerable<string> targetFilePaths, string destArchiveFilePath, Action<double> onProgress)
     {
         throw new NotImplementedException();
     }
 
-    public void Decompress(string archiveFilePath, string destFolderPath)
+    public void Decompress(string archiveFilePath, string destFolderPath, Action<double> onProgress)
     {
         Directory.CreateDirectory(destFolderPath);
+
+        long fileCount;
+
+        using (var zip = new ZipFile(archiveFilePath))
+        {
+            fileCount = zip.Count;
+        }
 
         using var folders = new TempBuffer<(string Path, DateTime TimeStamp)>(512);
 
         // decompress files
         using var inputFileStream = File.OpenRead(archiveFilePath);
         using var zipInputStream = new ZipInputStream(inputFileStream);
+
+        var processed = 0;
 
         while (zipInputStream.GetNextEntry() is {} entry)
         {
@@ -51,10 +60,16 @@ public sealed class CompressionService : ICompressionService
                     ArrayPool<byte>.Shared.Return(buffer);
                 }
             }
+
+            ++processed;
+
+            onProgress((double)processed / fileCount);
         }
 
         // set folder timestamp
         foreach (var folder in folders.Buffer)
             Directory.SetLastWriteTimeUtc(folder.Path, folder.TimeStamp);
+
+        onProgress(1d);
     }
 }

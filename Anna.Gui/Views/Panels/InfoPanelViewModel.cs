@@ -63,7 +63,8 @@ public sealed class InfoPanelViewModel : HasModelViewModelBase<Folder>, ILocaliz
         
         Progress = Model.BackgroundWorker
             .ObserveProperty(x => x.Progress)
-            .Sample(TimeSpan.FromMilliseconds(100)) 
+            .Sample(TimeSpan.FromMilliseconds(16)) 
+            .Select(x => x * 100)
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);

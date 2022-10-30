@@ -363,12 +363,27 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         var targetEntries = receiver.TargetEntries;
 
+        DelegateBackgroundOperator? op = null;
         var @operator = Dic.GetInstance<DelegateBackgroundOperator, Action>(
             () =>
             {
-                foreach (var targetEntry in targetEntries)
-                    Dic.GetInstance<ICompressionService>().Decompress(targetEntry.Path, destFolder);
+                for (var i = 0; i != targetEntries.Length; ++ i)
+                {
+                    Dic.GetInstance<ICompressionService>().Decompress(
+                        targetEntries[i].Path,
+                        destFolder,
+                        p =>
+                        {
+                            // ReSharper disable AccessToModifiedClosure
+                            if (op is not null)
+                                op.Progress = (i + p) / targetEntries.Length;
+                            // ReSharper restore AccessToModifiedClosure
+                        }
+                    );
+                }
             });
+
+        op = @operator;
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
 

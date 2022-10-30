@@ -12,12 +12,12 @@ public class DelegateBackgroundOperator
 {
     #region Progress
 
-    private readonly double _Progress;
+    private double _Progress;
 
     public double Progress
     {
         get => _Progress;
-        init => SetProperty(ref _Progress, value);
+        set => SetProperty(ref _Progress, value);
     }
 
     #endregion

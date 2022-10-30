@@ -70,6 +70,6 @@ public class EntryBackgroundOperator
     {
         Progress = _fileCount == 0
             ? 0
-            : Math.Min(0.999999, (double)_fileProcessedCount / _fileCount) * 100;
+            : Math.Min(0.999999, (double)_fileProcessedCount / _fileCount);
     }
 }

@@ -21,7 +21,7 @@ public sealed class TestApp : IAsyncDisposable
 
     public DefaultServiceProvider Dic { get; }
 
-    public TestApp(TempFolder? configFolder = null, string workFolder = "", bool isHeadless = true)
+    public TestApp(TempFolder? configFolder = null, string workFolder = "", bool isHeadless = false)
     {
         if (configFolder is null)
         {
@@ -92,9 +92,9 @@ public sealed class TestApp : IAsyncDisposable
     {
         var appBuilder = Program.BuildAvaloniaAppForDesktopTests(dic);
 
-        if (isHeadless)
-            appBuilder.UseHeadless(new AvaloniaHeadlessPlatformOptions { UseCompositor = false });
-
+         if (isHeadless)
+            appBuilder.UseHeadless(new AvaloniaHeadlessPlatformOptions { UseCompositor = false, UseHeadlessDrawing = false});
+            
         return appBuilder;
     }
 

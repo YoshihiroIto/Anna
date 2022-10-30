@@ -47,7 +47,7 @@ public sealed class JumpFolderTests : IDisposable
         Assert.Equal(configFolder.WorkPath, model.Path);
     }
 
-    [Fact(Skip="Due to instability")]
+    [Fact]
     public async Task Select_empty()
     {
         var configFolder = _fixture.ConfigFolder;
@@ -71,7 +71,7 @@ public sealed class JumpFolderTests : IDisposable
         Assert.Equal(configFolder.WorkPath, model.Path);
     }
 
-    [Fact(Skip="Due to instability")]
+    [Fact]
     public async Task Select_folder()
     {
         var configFolder = _fixture.ConfigFolder;
@@ -141,16 +141,17 @@ public sealed class JumpFolderTests : IDisposable
         Assert.Equal("", afterF1.Path);
     }
 
-    [Theory]
-    [InlineData(Key.Insert)]
-    public async Task Edit_folder(Key key)
+    [Fact]
+    public async Task Edit_folder()
     {
+        await Task.Delay(100);
+    
         await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
 
             await w.PressKeyAsync(Key.J);
-            await w.PressKeyAsync(key);
+            await w.PressKeyAsync(Key.Insert);
 
             var textBox = FocusManager.Instance?.Current as TextBox ?? throw new NullReferenceException();
             textBox.Text = "123abc";

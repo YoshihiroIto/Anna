@@ -88,6 +88,12 @@
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs:SortModeAndOrderDialog}" />
         </behaviors1:InteractionMessageTrigger>
+        
+        <behaviors1:InteractionMessageTrigger MessageKey="{x:Static base1:WindowBaseViewModel.MessageKeyDecompressEntry}" Messenger="{Binding Messenger}">
+            <actions:TransitionAction Dic="{Binding Dic}"
+                                      Mode="Dialog"
+                                      WindowType="{x:Type dialogs:DecompressEntryDialog}" />
+        </behaviors1:InteractionMessageTrigger>
     </Interaction.Behaviors>
 
     <UserControl.Styles>

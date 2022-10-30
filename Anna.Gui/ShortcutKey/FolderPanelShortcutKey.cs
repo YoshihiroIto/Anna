@@ -337,8 +337,33 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         throw new NotImplementedException();
     }
 
-    private static ValueTask DecompressEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    private async ValueTask DecompressEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
+        var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
+        if (receiver.TargetEntries.Length == 0)
+            return;
+
+        var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
+
+        using var viewModel =
+            Dic.GetInstance<DecompressEntryDialogViewModel,
+                (string, Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
+            ((
+                receiver.Folder.Path,
+                receiver.TargetEntries,
+                stats,
+                Dic.GetInstance<IFolderHistoryService>().DestinationFolders
+            ));
+
+        await receiver.Messenger.RaiseAsync(new TransitionMessage(viewModel,
+            WindowBaseViewModel.MessageKeyDecompressEntry));
+        
+        if (viewModel.DialogResult != DialogResultTypes.Yes)
+        {
+            stats.Dispose();
+            return;
+        }
+
         throw new NotImplementedException();
     }
 

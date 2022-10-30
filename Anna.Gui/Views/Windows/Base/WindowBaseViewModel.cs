@@ -28,6 +28,8 @@ public class WindowBaseViewModel : ViewModelBase, ILocalizableViewModel
     public const string MessageKeyDeleteEntry = nameof(MessageKeyDeleteEntry);
     public const string MessageKeyCopyOrMoveEntry = nameof(MessageKeyCopyOrMoveEntry);
     public const string MessageKeySelectSortModeAndOrder = nameof(MessageKeySelectSortModeAndOrder);
+    public const string MessageKeyCompressEntry = nameof(MessageKeyCompressEntry);
+    public const string MessageKeyDecompressEntry = nameof(MessageKeyDecompressEntry);
 
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 

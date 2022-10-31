@@ -19,32 +19,26 @@ public sealed class ImageViewerShortcutKey : ShortcutKeyBase
     {
         return new Dictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>
         {
-            { Operations.OpenEntry, CloseAsync },
-            { Operations.OpenEntryByEditor1, s => OpenFileByEditorAsync(s, 1) },
-            { Operations.OpenEntryByEditor2, s => OpenFileByEditorAsync(s, 2) },
-            { Operations.OpenEntryByApp, OpenFileByAppAsync },
+            { Operations.OpenEntry, s => CloseAsync((IImageViewerShortcutKeyReceiver)s) },
+            { Operations.OpenEntryByEditor1, s => OpenFileByEditorAsync((IImageViewerShortcutKeyReceiver)s, 1) },
+            { Operations.OpenEntryByEditor2, s => OpenFileByEditorAsync((IImageViewerShortcutKeyReceiver)s, 2) },
+            { Operations.OpenEntryByApp, s => OpenFileByAppAsync((IImageViewerShortcutKeyReceiver)s) },
         };
     }
 
-    private static async ValueTask CloseAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    private static async ValueTask CloseAsync(IImageViewerShortcutKeyReceiver receiver)
     {
-        var receiver = (IImageViewerShortcutKeyReceiver)shortcutKeyReceiver;
-
         await receiver.Messenger.RaiseAsync(
             new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
-    private ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
+    private ValueTask OpenFileByEditorAsync(IImageViewerShortcutKeyReceiver receiver, int index)
     {
-        var receiver = (IImageViewerShortcutKeyReceiver)shortcutKeyReceiver;
-
         return OpenFileByEditorAsync(index, receiver.TargetFilepath, 1, receiver.Messenger);
     }
 
-    private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    private ValueTask OpenFileByAppAsync(IImageViewerShortcutKeyReceiver receiver)
     {
-        var receiver = (IImageViewerShortcutKeyReceiver)shortcutKeyReceiver;
-
         return StartAssociatedAppAsync(receiver.TargetFilepath, receiver.Messenger);
     }
 }

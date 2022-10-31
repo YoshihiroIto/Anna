@@ -21,43 +21,35 @@ public sealed class TextViewerShortcutKey : ShortcutKeyBase
     {
         return new Dictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>
         {
-            { Operations.OpenEntry, CloseAsync },
-            { Operations.OpenEntryByEditor1, s => OpenFileByEditorAsync(s, 1) },
-            { Operations.OpenEntryByEditor2, s => OpenFileByEditorAsync(s, 2) },
-            { Operations.OpenEntryByApp, OpenFileByAppAsync },
-            { Operations.MoveCursorUp, s => ScrollAsync(s, Directions.Up) },
-            { Operations.MoveCursorDown, s => ScrollAsync(s, Directions.Down) },
-            { Operations.MoveCursorLeft, s => ScrollAsync(s, Directions.Left) },
-            { Operations.MoveCursorRight, s => ScrollAsync(s, Directions.Right) },
+            { Operations.OpenEntry, s => CloseAsync((ITextViewerShortcutKeyReceiver)s) },
+            { Operations.OpenEntryByEditor1, s => OpenFileByEditorAsync((ITextViewerShortcutKeyReceiver)s, 1) },
+            { Operations.OpenEntryByEditor2, s => OpenFileByEditorAsync((ITextViewerShortcutKeyReceiver)s, 2) },
+            { Operations.OpenEntryByApp, s => OpenFileByAppAsync((ITextViewerShortcutKeyReceiver)s) },
+            { Operations.MoveCursorUp, s => ScrollAsync((ITextViewerShortcutKeyReceiver)s, Directions.Up) },
+            { Operations.MoveCursorDown, s => ScrollAsync((ITextViewerShortcutKeyReceiver)s, Directions.Down) },
+            { Operations.MoveCursorLeft, s => ScrollAsync((ITextViewerShortcutKeyReceiver)s, Directions.Left) },
+            { Operations.MoveCursorRight, s => ScrollAsync((ITextViewerShortcutKeyReceiver)s, Directions.Right) },
         };
     }
 
-    private static async ValueTask CloseAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    private static async ValueTask CloseAsync(ITextViewerShortcutKeyReceiver receiver)
     {
-        var receiver = (ITextViewerShortcutKeyReceiver)shortcutKeyReceiver;
-
         await receiver.Messenger.RaiseAsync(
             new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
-    private ValueTask OpenFileByEditorAsync(IShortcutKeyReceiver shortcutKeyReceiver, int index)
+    private ValueTask OpenFileByEditorAsync(ITextViewerShortcutKeyReceiver receiver, int index)
     {
-        var receiver = (ITextViewerShortcutKeyReceiver)shortcutKeyReceiver;
-
         return OpenFileByEditorAsync(index, receiver.TargetFilepath, receiver.LineIndex, receiver.Messenger);
     }
 
-    private ValueTask OpenFileByAppAsync(IShortcutKeyReceiver shortcutKeyReceiver)
+    private ValueTask OpenFileByAppAsync(ITextViewerShortcutKeyReceiver receiver)
     {
-        var receiver = (ITextViewerShortcutKeyReceiver)shortcutKeyReceiver;
-
         return StartAssociatedAppAsync(receiver.TargetFilepath, receiver.Messenger);
     }
 
-    private static ValueTask ScrollAsync(IShortcutKeyReceiver shortcutKeyReceiver, Directions dir)
+    private static ValueTask ScrollAsync(ITextViewerShortcutKeyReceiver receiver, Directions dir)
     {
-        var receiver = (ITextViewerShortcutKeyReceiver)shortcutKeyReceiver;
-
         var lineHeight = receiver.CalcLineHeight();
         var pageHeight = TrimmingScrollY(receiver.TextEditor.TextArea.Bounds.Height);
 

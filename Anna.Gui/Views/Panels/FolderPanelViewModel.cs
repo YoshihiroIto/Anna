@@ -2,9 +2,9 @@
 using Anna.DomainModel;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
+using Anna.Gui.Hotkey;
 using Anna.Gui.Interfaces;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.ShortcutKey;
 using Anna.Gui.ViewModels;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
@@ -29,7 +29,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
 
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
-    public readonly FolderPanelShortcutKey ShortcutKey;
+    public readonly FolderPanelHotkey Hotkey;
 
     public ReactivePropertySlim<int> CursorIndex { get; }
 
@@ -42,7 +42,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
     public FolderPanelViewModel(IServiceProvider dic)
         : base(dic)
     {
-        ShortcutKey = dic.GetInstance<FolderPanelShortcutKey>().AddTo(Trash);
+        Hotkey = dic.GetInstance<FolderPanelHotkey>().AddTo(Trash);
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);

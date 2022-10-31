@@ -3,7 +3,7 @@ using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interfaces;
-using Anna.Gui.ShortcutKey;
+using Anna.Gui.Hotkey;
 using Anna.Localization;
 using Anna.Service;
 using Avalonia.Media;
@@ -17,7 +17,7 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<Entry>, ILocaliz
 {
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
-    public readonly TextViewerShortcutKey ShortcutKey;
+    public readonly TextViewerHotkey Hotkey;
     
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily { get; }
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
@@ -37,7 +37,7 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<Entry>, ILocaliz
     public TextViewerViewModel(IServiceProvider dic)
         : base(dic)
     {
-        ShortcutKey = dic.GetInstance<TextViewerShortcutKey>().AddTo(Trash);
+        Hotkey = dic.GetInstance<TextViewerHotkey>().AddTo(Trash);
         
         ViewerFontFamily = Dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.ViewerFontFamily)

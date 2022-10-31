@@ -7,15 +7,15 @@ using Avalonia.Controls;
 using AvaloniaEdit;
 using Entry=Anna.DomainModel.Entry;
 
-namespace Anna.Gui.ShortcutKey;
+namespace Anna.Gui.Hotkey;
 
-public interface IShortcutKeyReceiver
+public interface IHotkeyReceiver
 {
     Window Owner { get; }
     Messenger Messenger { get; }
 }
 
-public interface IFolderPanelShortcutKeyReceiver : IShortcutKeyReceiver
+public interface IFolderPanelHotkeyReceiver : IHotkeyReceiver
 {
     new FolderWindow Owner { get; }
     Folder Folder { get; }
@@ -27,7 +27,7 @@ public interface IFolderPanelShortcutKeyReceiver : IShortcutKeyReceiver
     void ToggleSelectionCursorEntry(bool isMoveDown);
 }
 
-public interface ITextViewerShortcutKeyReceiver : IShortcutKeyReceiver
+public interface ITextViewerHotkeyReceiver : IHotkeyReceiver
 {
     public TextEditor TextEditor { get; }
     public ScrollViewer ScrollViewer { get; }
@@ -37,7 +37,7 @@ public interface ITextViewerShortcutKeyReceiver : IShortcutKeyReceiver
     public int LineIndex { get; }
 }
 
-public interface IImageViewerShortcutKeyReceiver : IShortcutKeyReceiver
+public interface IImageViewerHotkeyReceiver : IHotkeyReceiver
 {
     public string TargetFilepath { get; }
 }

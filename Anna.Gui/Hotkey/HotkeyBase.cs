@@ -15,40 +15,40 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
-namespace Anna.Gui.ShortcutKey;
+namespace Anna.Gui.Hotkey;
 
-public abstract class ShortcutKeyBase : DisposableNotificationObject
+public abstract class HotkeyBase : DisposableNotificationObject
 {
-    protected abstract IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators();
+    protected abstract IReadOnlyDictionary<Operations, Func<IHotkeyReceiver, ValueTask>> SetupOperators();
 
-    private readonly Dictionary<(Key, KeyModifiers), Func<IShortcutKeyReceiver, ValueTask>> _shortcutKeys = new();
-    private readonly IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> _operators;
+    private readonly Dictionary<(Key, KeyModifiers), Func<IHotkeyReceiver, ValueTask>> _hotkeys = new();
+    private readonly IReadOnlyDictionary<Operations, Func<IHotkeyReceiver, ValueTask>> _operators;
 
-    protected ShortcutKeyBase(IServiceProvider dic)
+    protected HotkeyBase(IServiceProvider dic)
         : base(dic)
     {
         // ReSharper disable once VirtualMemberCallInConstructor
         _operators = SetupOperators();
 
         dic.GetInstance<KeyConfig>().ObserveProperty(x => x.Data)
-            .Subscribe(UpdateShortcutKeys)
+            .Subscribe(UpdateHotkeys)
             .AddTo(Trash);
     }
 
-    public ValueTask OnKeyDownAsync(IShortcutKeyReceiver receiver, KeyEventArgs e)
+    public ValueTask OnKeyDownAsync(IHotkeyReceiver receiver, KeyEventArgs e)
     {
         var k = (e.Key, e.KeyModifiers);
 
-        if (_shortcutKeys.TryGetValue(k, out var value) == false)
+        if (_hotkeys.TryGetValue(k, out var value) == false)
             return ValueTask.CompletedTask;
 
         e.Handled = true;
         return value(receiver);
     }
 
-    private void UpdateShortcutKeys(KeyConfigData keyConfig)
+    private void UpdateHotkeys(KeyConfigData keyConfig)
     {
-        _shortcutKeys.Clear();
+        _hotkeys.Clear();
 
         foreach (var key in keyConfig.Keys)
         {
@@ -65,17 +65,17 @@ public abstract class ShortcutKeyBase : DisposableNotificationObject
         }
     }
 
-    private void Register(Key key, KeyModifiers modifierKeys, Func<IShortcutKeyReceiver, ValueTask> action)
+    private void Register(Key key, KeyModifiers modifierKeys, Func<IHotkeyReceiver, ValueTask> action)
     {
         var k = (key, modifierKeys);
 
-        if (_shortcutKeys.ContainsKey(k))
+        if (_hotkeys.ContainsKey(k))
         {
             Dic.GetInstance<ILogService>().Warning("Already registered");
             return;
         }
 
-        _shortcutKeys[k] = action;
+        _hotkeys[k] = action;
     }
 
     protected async ValueTask<bool> CheckIsAccessibleAsync(string path, Messenger messenger)

@@ -3,7 +3,7 @@ using Anna.DomainModel;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
-using Anna.Gui.ShortcutKey;
+using Anna.Gui.Hotkey;
 using Anna.Gui.ViewModels;
 using Anna.Gui.Views.Windows;
 using Anna.Service.Workers;
@@ -20,7 +20,7 @@ using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed partial class FolderPanel : UserControl, IFolderPanelShortcutKeyReceiver
+public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceiver
 {
     public static readonly StyledProperty<IDataTemplate?> ItemTemplateProperty =
         AvaloniaProperty.Register<FolderPanel, IDataTemplate?>(nameof(ItemTemplate));
@@ -103,19 +103,19 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelShortcutKeyRe
         };
     }
 
-    FolderWindow IFolderPanelShortcutKeyReceiver.Owner => ControlHelper.FindParent<FolderWindow>(this) ?? throw new NullReferenceException();
-    Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
-    Messenger IShortcutKeyReceiver.Messenger => ViewModel.Messenger;
-    Folder IFolderPanelShortcutKeyReceiver.Folder => ViewModel.Model;
+    FolderWindow IFolderPanelHotkeyReceiver.Owner => ControlHelper.FindParent<FolderWindow>(this) ?? throw new NullReferenceException();
+    Window IHotkeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
+    Messenger IHotkeyReceiver.Messenger => ViewModel.Messenger;
+    Folder IFolderPanelHotkeyReceiver.Folder => ViewModel.Model;
 
-    Entry IFolderPanelShortcutKeyReceiver.CurrentEntry =>
+    Entry IFolderPanelHotkeyReceiver.CurrentEntry =>
         ViewModel.CursorEntry.Value?.Model ?? throw new InvalidOperationException();
 
-    Entry[] IFolderPanelShortcutKeyReceiver.TargetEntries => ViewModel.CollectTargetEntries();
-    IBackgroundWorker IFolderPanelShortcutKeyReceiver.BackgroundWorker => ViewModel.Model.BackgroundWorker;
+    Entry[] IFolderPanelHotkeyReceiver.TargetEntries => ViewModel.CollectTargetEntries();
+    IBackgroundWorker IFolderPanelHotkeyReceiver.BackgroundWorker => ViewModel.Model.BackgroundWorker;
 
-    void IFolderPanelShortcutKeyReceiver.MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
-    void IFolderPanelShortcutKeyReceiver.ToggleSelectionCursorEntry(bool isMoveDown) =>
+    void IFolderPanelHotkeyReceiver.MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
+    void IFolderPanelHotkeyReceiver.ToggleSelectionCursorEntry(bool isMoveDown) =>
         ViewModel.ToggleSelectionCursorEntry(isMoveDown);
 
     private void UpdateItemCellSize()

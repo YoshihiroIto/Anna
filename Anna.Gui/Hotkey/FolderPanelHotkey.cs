@@ -6,6 +6,7 @@ using Anna.Foundation;
 using Anna.Gui.BackgroundOperators;
 using Anna.Gui.BackgroundOperators.Internals;
 using Anna.Gui.Messaging;
+using Anna.Gui.Hotkey;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
@@ -18,57 +19,57 @@ using System.IO;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
-namespace Anna.Gui.ShortcutKey;
+namespace Anna.Gui.Hotkey;
 
-public sealed class FolderPanelShortcutKey : ShortcutKeyBase
+public sealed class FolderPanelHotkey : HotkeyBase
 {
-    public FolderPanelShortcutKey(IServiceProvider dic)
+    public FolderPanelHotkey(IServiceProvider dic)
         : base(dic)
     {
     }
 
-    protected override IReadOnlyDictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>> SetupOperators()
+    protected override IReadOnlyDictionary<Operations, Func<IHotkeyReceiver, ValueTask>> SetupOperators()
     {
-        return new Dictionary<Operations, Func<IShortcutKeyReceiver, ValueTask>>
+        return new Dictionary<Operations, Func<IHotkeyReceiver, ValueTask>>
         {
-            { Operations.SortEntry, s => SelectSortModeAndOrderAsync((IFolderPanelShortcutKeyReceiver)s) },
+            { Operations.SortEntry, s => SelectSortModeAndOrderAsync((IFolderPanelHotkeyReceiver)s) },
             //
-            { Operations.MoveCursorUp, s => MoveCursorAsync((IFolderPanelShortcutKeyReceiver)s, Directions.Up) },
-            { Operations.MoveCursorDown, s => MoveCursorAsync((IFolderPanelShortcutKeyReceiver)s, Directions.Down) },
-            { Operations.MoveCursorLeft, s => MoveCursorAsync((IFolderPanelShortcutKeyReceiver)s, Directions.Left) },
-            { Operations.MoveCursorRight, s => MoveCursorAsync((IFolderPanelShortcutKeyReceiver)s, Directions.Right) },
+            { Operations.MoveCursorUp, s => MoveCursorAsync((IFolderPanelHotkeyReceiver)s, Directions.Up) },
+            { Operations.MoveCursorDown, s => MoveCursorAsync((IFolderPanelHotkeyReceiver)s, Directions.Down) },
+            { Operations.MoveCursorLeft, s => MoveCursorAsync((IFolderPanelHotkeyReceiver)s, Directions.Left) },
+            { Operations.MoveCursorRight, s => MoveCursorAsync((IFolderPanelHotkeyReceiver)s, Directions.Right) },
             //
             {
                 Operations.ToggleSelectionCursorEntry,
-                s => ToggleSelectionCursorEntryAsync((IFolderPanelShortcutKeyReceiver)s, true)
+                s => ToggleSelectionCursorEntryAsync((IFolderPanelHotkeyReceiver)s, true)
             },
             //
-            { Operations.JumpFolder, s => JumpFolderAsync((IFolderPanelShortcutKeyReceiver)s) },
-            { Operations.JumpToParentFolder, s => JumpToParentFolderAsync((IFolderPanelShortcutKeyReceiver)s) },
-            { Operations.JumpToRootFolder, s => JumpToRootFolderAsync((IFolderPanelShortcutKeyReceiver)s) },
+            { Operations.JumpFolder, s => JumpFolderAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.JumpToParentFolder, s => JumpToParentFolderAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.JumpToRootFolder, s => JumpToRootFolderAsync((IFolderPanelHotkeyReceiver)s) },
             //
-            { Operations.OpenEntry, s => OpenEntryAsync((IFolderPanelShortcutKeyReceiver)s) },
-            { Operations.OpenEntryByEditor1, s => OpenEntryByEditorAsync((IFolderPanelShortcutKeyReceiver)s, 1) },
-            { Operations.OpenEntryByEditor2, s => OpenEntryByEditorAsync((IFolderPanelShortcutKeyReceiver)s, 2) },
-            { Operations.OpenEntryByApp, s => OpenEntryByAppAsync((IFolderPanelShortcutKeyReceiver)s) },
+            { Operations.OpenEntry, s => OpenEntryAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.OpenEntryByEditor1, s => OpenEntryByEditorAsync((IFolderPanelHotkeyReceiver)s, 1) },
+            { Operations.OpenEntryByEditor2, s => OpenEntryByEditorAsync((IFolderPanelHotkeyReceiver)s, 2) },
+            { Operations.OpenEntryByApp, s => OpenEntryByAppAsync((IFolderPanelHotkeyReceiver)s) },
             //
-            { Operations.CopyEntry, s => CopyOrMoveEntryAsync((IFolderPanelShortcutKeyReceiver)s, CopyOrMove.Copy) },
-            { Operations.MoveEntry, s => CopyOrMoveEntryAsync((IFolderPanelShortcutKeyReceiver)s, CopyOrMove.Move) },
-            { Operations.DeleteEntry, s => DeleteEntryAsync((IFolderPanelShortcutKeyReceiver)s) },
-            { Operations.RenameEntry, s => RenameEntryAsync((IFolderPanelShortcutKeyReceiver)s) },
+            { Operations.CopyEntry, s => CopyOrMoveEntryAsync((IFolderPanelHotkeyReceiver)s, CopyOrMove.Copy) },
+            { Operations.MoveEntry, s => CopyOrMoveEntryAsync((IFolderPanelHotkeyReceiver)s, CopyOrMove.Move) },
+            { Operations.DeleteEntry, s => DeleteEntryAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.RenameEntry, s => RenameEntryAsync((IFolderPanelHotkeyReceiver)s) },
             //
-            { Operations.MakeFolder, s => MakeFolderOrFileAsync((IFolderPanelShortcutKeyReceiver)s, true) },
-            { Operations.MakeFile, s => MakeFolderOrFileAsync((IFolderPanelShortcutKeyReceiver)s, false) },
+            { Operations.MakeFolder, s => MakeFolderOrFileAsync((IFolderPanelHotkeyReceiver)s, true) },
+            { Operations.MakeFile, s => MakeFolderOrFileAsync((IFolderPanelHotkeyReceiver)s, false) },
             //
-            { Operations.CompressEntry, s => CompressEntryAsync((IFolderPanelShortcutKeyReceiver)s) },
-            { Operations.DecompressEntry, s => DecompressEntryAsync((IFolderPanelShortcutKeyReceiver)s) },
+            { Operations.CompressEntry, s => CompressEntryAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.DecompressEntry, s => DecompressEntryAsync((IFolderPanelHotkeyReceiver)s) },
             //
-            { Operations.EmptyTrashCan, s => EmptyTrashCanAsync((IFolderPanelShortcutKeyReceiver)s) },
-            { Operations.OpenTrashCan, s => OpenTrashCanAsync((IFolderPanelShortcutKeyReceiver)s) },
+            { Operations.EmptyTrashCan, s => EmptyTrashCanAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.OpenTrashCan, s => OpenTrashCanAsync((IFolderPanelHotkeyReceiver)s) },
         };
     }
 
-    private async ValueTask SelectSortModeAndOrderAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private async ValueTask SelectSortModeAndOrderAsync(IFolderPanelHotkeyReceiver receiver)
     {
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
             Dic.GetInstance<SortModeAndOrderDialogViewModel>(),
@@ -80,7 +81,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         receiver.Folder.SetSortModeAndOrder(viewModel.ResultSortMode, viewModel.ResultSortOrder);
     }
 
-    private async ValueTask JumpFolderAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private async ValueTask JumpFolderAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var currentFolderPath = receiver.Owner.ViewModel.Model.Path;
 
@@ -98,21 +99,21 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         receiver.Folder.Path = viewModel.ResultPath;
     }
 
-    private static ValueTask MoveCursorAsync(IFolderPanelShortcutKeyReceiver receiver, Directions dir)
+    private static ValueTask MoveCursorAsync(IFolderPanelHotkeyReceiver receiver, Directions dir)
     {
         receiver.MoveCursor(dir);
 
         return ValueTask.CompletedTask;
     }
 
-    private static ValueTask ToggleSelectionCursorEntryAsync(IFolderPanelShortcutKeyReceiver receiver, bool isMoveDown)
+    private static ValueTask ToggleSelectionCursorEntryAsync(IFolderPanelHotkeyReceiver receiver, bool isMoveDown)
     {
         receiver.ToggleSelectionCursorEntry(isMoveDown);
 
         return ValueTask.CompletedTask;
     }
 
-    private async ValueTask OpenEntryAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private async ValueTask OpenEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var target = receiver.CurrentEntry;
 
@@ -131,19 +132,19 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         }
     }
 
-    private ValueTask OpenEntryByEditorAsync(IFolderPanelShortcutKeyReceiver receiver, int index)
+    private ValueTask OpenEntryByEditorAsync(IFolderPanelHotkeyReceiver receiver, int index)
     {
         return receiver.CurrentEntry.IsFolder
             ? ValueTask.CompletedTask
             : OpenFileByEditorAsync(index, receiver.CurrentEntry.Path, 1, receiver.Messenger);
     }
 
-    private ValueTask OpenEntryByAppAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private ValueTask OpenEntryByAppAsync(IFolderPanelHotkeyReceiver receiver)
     {
         return StartAssociatedAppAsync(receiver.CurrentEntry.Path, receiver.Messenger);
     }
 
-    private async ValueTask JumpToParentFolderAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private async ValueTask JumpToParentFolderAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var parentDir = new DirectoryInfo(receiver.Folder.Path).Parent?.FullName;
         if (parentDir is null)
@@ -154,7 +155,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         receiver.Folder.Path = parentDir;
     }
-    private async ValueTask JumpToRootFolderAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private async ValueTask JumpToRootFolderAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var rootDir = Path.GetPathRoot(receiver.Folder.Path);
         if (rootDir is null)
@@ -166,7 +167,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         receiver.Folder.Path = rootDir;
     }
 
-    private async ValueTask CopyOrMoveEntryAsync(IFolderPanelShortcutKeyReceiver receiver, CopyOrMove copyOrMove)
+    private async ValueTask CopyOrMoveEntryAsync(IFolderPanelHotkeyReceiver receiver, CopyOrMove copyOrMove)
     {
         if (receiver.TargetEntries.Length == 0)
             return;
@@ -213,7 +214,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 
-    private async ValueTask DeleteEntryAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private async ValueTask DeleteEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         if (receiver.TargetEntries.Length == 0)
             return;
@@ -244,7 +245,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
     }
 
-    private async ValueTask RenameEntryAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private async ValueTask RenameEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         string? lastRemovePath = null;
 
@@ -285,7 +286,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
             receiver.Folder.InvokeEntryExplicitlyCreated(lastRemovePath);
     }
 
-    private async ValueTask MakeFolderOrFileAsync(IFolderPanelShortcutKeyReceiver receiver, bool isFolder)
+    private async ValueTask MakeFolderOrFileAsync(IFolderPanelHotkeyReceiver receiver, bool isFolder)
     {
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
             Dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
@@ -304,12 +305,12 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         receiver.Folder.CreateEntry(isFolder, viewModel.ResultFilePath, true);
     }
 
-    private static ValueTask CompressEntryAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private static ValueTask CompressEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         throw new NotImplementedException();
     }
 
-    private async ValueTask DecompressEntryAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private async ValueTask DecompressEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         if (receiver.TargetEntries.Length == 0)
             return;
@@ -365,7 +366,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 
-    private async ValueTask EmptyTrashCanAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private async ValueTask EmptyTrashCanAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var info = Dic.GetInstance<ITrashCanService>().GetTrashCanInfo();
         if (info.EntryCount == 0)
@@ -405,7 +406,7 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         }
     }
 
-    private ValueTask OpenTrashCanAsync(IFolderPanelShortcutKeyReceiver receiver)
+    private ValueTask OpenTrashCanAsync(IFolderPanelHotkeyReceiver receiver)
     {
         Dic.GetInstance<ITrashCanService>().OpenTrashCan();
         return ValueTask.CompletedTask;

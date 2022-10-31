@@ -1,6 +1,6 @@
 ﻿using Anna.DomainModel;
 using Anna.Gui.Foundations;
-using Anna.Gui.ShortcutKey;
+using Anna.Gui.Hotkey;
 using Anna.Service;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
@@ -12,7 +12,7 @@ namespace Anna.Gui.Views.Panels;
 
 public sealed class ImageViewerViewModel : HasModelViewModelBase<Entry>
 {
-    public readonly ImageViewerShortcutKey ShortcutKey;
+    public readonly ImageViewerHotkey Hotkey;
 
     #region Image
 
@@ -29,7 +29,7 @@ public sealed class ImageViewerViewModel : HasModelViewModelBase<Entry>
     public ImageViewerViewModel(IServiceProvider dic)
         : base(dic)
     {
-        ShortcutKey = dic.GetInstance<ImageViewerShortcutKey>().AddTo(Trash);
+        Hotkey = dic.GetInstance<ImageViewerHotkey>().AddTo(Trash);
 
         Task.Run(async () =>
         {

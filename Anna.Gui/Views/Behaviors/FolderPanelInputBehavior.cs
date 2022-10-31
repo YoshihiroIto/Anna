@@ -67,9 +67,9 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
                 return;
         }
 
-        var shortcutKey = viewModel?.ShortcutKey;
+        var hotkey = viewModel?.Hotkey;
         
-        if (shortcutKey is not null)
-            await shortcutKey.OnKeyDownAsync(AssociatedObject ?? throw new NullReferenceException(), e);
+        if (hotkey is not null)
+            await hotkey.OnKeyDownAsync(AssociatedObject ?? throw new NullReferenceException(), e);
     }
 }

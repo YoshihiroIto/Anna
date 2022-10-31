@@ -1,7 +1,7 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.ShortcutKey;
+using Anna.Gui.Hotkey;
 using Anna.Gui.Views.Windows;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -11,9 +11,9 @@ using WindowBase=Anna.Gui.Views.Windows.Base.WindowBase;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed partial class ImageViewer : UserControl, IImageViewerShortcutKeyReceiver
+public sealed partial class ImageViewer : UserControl, IImageViewerHotkeyReceiver
 {
-    Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
+    Window IHotkeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
     public string TargetFilepath => ViewModel.Model.Path;
     
     private ImageViewerViewModel ViewModel => _viewModel ?? throw new NullReferenceException();
@@ -48,7 +48,7 @@ public sealed partial class ImageViewer : UserControl, IImageViewerShortcutKeyRe
         }
         else
         {
-            await ViewModel.ShortcutKey.OnKeyDownAsync(this, e);
+            await ViewModel.Hotkey.OnKeyDownAsync(this, e);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.ShortcutKey;
+using Anna.Gui.Hotkey;
 using Anna.Gui.Views.Windows;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -18,9 +18,9 @@ using WindowBase=Anna.Gui.Views.Windows.Base.WindowBase;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed partial class TextViewer : UserControl, ITextViewerShortcutKeyReceiver
+public sealed partial class TextViewer : UserControl, ITextViewerHotkeyReceiver
 {
-    Window IShortcutKeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
+    Window IHotkeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
     
     private TextViewerViewModel ViewModel => _viewModel ?? throw new NullReferenceException();
     private TextViewerViewModel? _viewModel;
@@ -115,7 +115,7 @@ public sealed partial class TextViewer : UserControl, ITextViewerShortcutKeyRece
         }
         else
         {
-            await ViewModel.ShortcutKey.OnKeyDownAsync(this, e);
+            await ViewModel.Hotkey.OnKeyDownAsync(this, e);
         }
     }
 

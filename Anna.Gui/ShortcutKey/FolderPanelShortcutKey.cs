@@ -215,13 +215,11 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        var targetEntries = receiver.TargetEntries;
-
         var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
         ((
             stats,
             worker,
-            () => worker.Invoke(targetEntries, destFolder)
+            () => worker.Invoke(receiver.TargetEntries, destFolder)
         ));
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
@@ -250,14 +248,13 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
         }
 
         var worker = Dic.GetInstance<ConfirmedFileSystemDeleter, (Messenger, int)>((receiver.Messenger, 0));
-        var targetEntries = receiver.TargetEntries;
 
         var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
         ((
             stats,
             worker,
             // ReSharper disable once AccessToDisposedClosure
-            () => worker.Invoke(targetEntries, viewModel.ResultMode)
+            () => worker.Invoke(receiver.TargetEntries, viewModel.ResultMode)
         ));
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
@@ -266,11 +263,10 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
     private async ValueTask RenameEntryAsync(IShortcutKeyReceiver shortcutKeyReceiver)
     {
         var receiver = (IFolderPanelShortcutKeyReceiver)shortcutKeyReceiver;
-        var targetEntries = receiver.TargetEntries;
 
         string? lastRemovePath = null;
 
-        foreach (var targetEntry in targetEntries)
+        foreach (var targetEntry in receiver.TargetEntries)
         {
             using var viewModel =
                 Dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
@@ -361,13 +357,13 @@ public sealed class FolderPanelShortcutKey : ShortcutKeyBase
 
         destFolder = PathStringHelper.Normalize(destFolder);
 
-        var targetEntries = receiver.TargetEntries;
-
         DelegateBackgroundOperator? op = null;
         var @operator = Dic.GetInstance<DelegateBackgroundOperator, Action>(
             () =>
             {
-                for (var i = 0; i != targetEntries.Length; ++ i)
+                var targetEntries = receiver.TargetEntries;
+
+                for (var i = 0; i != targetEntries.Length; ++i)
                 {
                     Dic.GetInstance<ICompressionService>().Decompress(
                         targetEntries[i].Path,

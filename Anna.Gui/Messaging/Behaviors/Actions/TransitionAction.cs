@@ -1,6 +1,5 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Messaging.Messages;
-using Anna.Service;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
@@ -54,10 +53,7 @@ public sealed class TransitionAction : AvaloniaObject, IAction, IAsyncAction
         throw new NotSupportedException();
     }
 
-    public async ValueTask ExecuteAsync(
-        Trigger sender,
-        MessageBase message,
-        IHasServiceProviderContainer hasServiceProviderContainer)
+    public async ValueTask ExecuteAsync(Trigger sender, MessageBase message)
     {
         if (message is not TransitionMessage transitionMessage)
             return;

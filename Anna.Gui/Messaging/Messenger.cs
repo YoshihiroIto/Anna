@@ -1,22 +1,14 @@
 ﻿using Anna.Gui.Messaging.Messages;
-using Anna.Service;
+using Anna.Gui.Views.Windows.Base;
 using Avalonia.Threading;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Messaging;
 
-public sealed class Messenger : IHasServiceProviderContainer
+public sealed class Messenger
 {
-    public IServiceProvider Dic { get; }
-
-    public Messenger(IServiceProvider dic)
-    {
-        Dic = dic;
-    }
-
     public event InteractionMessageRaisedEventHandler? Raised;
 
     public async ValueTask<T> RaiseAsync<T>(T message)
@@ -65,7 +57,6 @@ public sealed class Messenger : IHasServiceProviderContainer
 
         return message;
     }
-
 
     public delegate ValueTask InteractionMessageRaisedEventHandler(object? sender, MessageBase message);
 }

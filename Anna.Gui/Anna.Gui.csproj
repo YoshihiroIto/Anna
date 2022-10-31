@@ -29,5 +29,8 @@
         <DependentUpon>DecompressEntryDialog.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Views\Controls\EditableTextBlock.cs">
+        <DependentUpon>EditableTextBlock.axaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

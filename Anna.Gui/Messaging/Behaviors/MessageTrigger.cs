@@ -54,7 +54,7 @@ public sealed class MessageTrigger : Trigger<Control>
             if (avaloniaObject is not IAsyncAction action)
                 throw new NotSupportedException();
 
-            await action.ExecuteAsync(this, message, Messenger);
+            await action.ExecuteAsync(this, message);
         }
     }
 }

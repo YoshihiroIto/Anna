@@ -1,7 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.Gui.Messaging;
-using Anna.Gui.Views.Windows;
 using Anna.Service.Workers;
 using Avalonia.Controls;
 using AvaloniaEdit;
@@ -11,13 +10,11 @@ namespace Anna.Gui.Hotkey;
 
 public interface IHotkeyReceiver
 {
-    Window Owner { get; }
     Messenger Messenger { get; }
 }
 
 public interface IFolderPanelHotkeyReceiver : IHotkeyReceiver
 {
-    new FolderWindow Owner { get; }
     Folder Folder { get; }
     Entry CurrentEntry { get; }
     Entry[] TargetEntries { get; }

@@ -4,6 +4,7 @@ using Anna.DomainModel.Config;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Service.Services;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
@@ -17,15 +18,14 @@ namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class DecompressEntryDialogViewModel
     : HasModelWindowBaseViewModel<
-        (string CurrentFolderPath, Entry[] Targets, EntriesStats Stats,
-        ReadOnlyObservableCollection<string> DestFoldersHistory)>
+        (string CurrentFolderPath, Entry[] Targets, EntriesStats Stats)>
 {
     public string ResultDestFolder { get; private set; } = "";
 
     public string LeaderName => Model.Targets[0].NameWithExtension;
 
     public ReactivePropertySlim<string> DestFolder { get; }
-    public ReadOnlyObservableCollection<string> DestFoldersHistory => Model.DestFoldersHistory;
+    public ReadOnlyObservableCollection<string> DestFoldersHistory => Dic.GetInstance<IFolderHistoryService>().DestinationFolders;
     public ReactivePropertySlim<int> SelectedDestFolderHistory { get; }
 
     public ICommand OpenJumpFolderDialogCommand { get; }
@@ -42,7 +42,7 @@ public sealed class DecompressEntryDialogViewModel
         SelectedDestFolderHistory = new ReactivePropertySlim<int>(-1).AddTo(Trash);
         SelectedDestFolderHistory
             .Where(x => x != -1)
-            .Subscribe(x => DestFolder.Value = Model.DestFoldersHistory[x])
+            .Subscribe(x => DestFolder.Value = DestFoldersHistory[x])
             .AddTo(Trash);
 
         OpenJumpFolderDialogCommand = new AsyncReactiveCommand()

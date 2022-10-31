@@ -82,10 +82,10 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
     private async ValueTask JumpFolderAsync(IFolderPanelHotkeyReceiver receiver)
     {
-        var currentFolderPath = receiver.Owner.ViewModel.Model.Path;
+        var currentFolderPath = receiver.Folder.Path;
 
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-            Dic.GetInstance<JumpFolderDialogViewModel, (string, JumpFolderConfigData )>
+            Dic.GetInstance<JumpFolderDialogViewModel, (string, JumpFolderConfigData)>
                 ((currentFolderPath, Dic.GetInstance<JumpFolderConfig>().Data)),
             MessageKey.JumpFolder);
 
@@ -125,7 +125,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         }
         else
         {
-            using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
+            using var _ = await RaiseTransitionAsync(receiver.Messenger,
                 Dic.GetInstance<EntryDisplayDialogViewModel, Entry>(target),
                 MessageKey.EntryDisplay);
         }
@@ -143,27 +143,17 @@ public sealed class FolderPanelHotkey : HotkeyBase
         return StartAssociatedAppAsync(receiver.CurrentEntry.Path, receiver.Messenger);
     }
 
-    private async ValueTask JumpToParentFolderAsync(IFolderPanelHotkeyReceiver receiver)
+    private ValueTask JumpToParentFolderAsync(IFolderPanelHotkeyReceiver receiver)
     {
-        var parentDir = new DirectoryInfo(receiver.Folder.Path).Parent?.FullName;
-        if (parentDir is null)
-            return;
+        var parentFolder = receiver.Folder.FindParentPath();
 
-        if (await CheckIsAccessibleAsync(receiver.Folder.Path, receiver.Messenger) == false)
-            return;
-
-        receiver.Folder.Path = parentDir;
+        return MoveFolderAsync(parentFolder, receiver);
     }
-    private async ValueTask JumpToRootFolderAsync(IFolderPanelHotkeyReceiver receiver)
+    private ValueTask JumpToRootFolderAsync(IFolderPanelHotkeyReceiver receiver)
     {
-        var rootDir = Path.GetPathRoot(receiver.Folder.Path);
-        if (rootDir is null)
-            return;
+        var rootFolder = receiver.Folder.FindRootPath();
 
-        if (await CheckIsAccessibleAsync(rootDir, receiver.Messenger) == false)
-            return;
-
-        receiver.Folder.Path = rootDir;
+        return MoveFolderAsync(rootFolder, receiver);
     }
 
     private async ValueTask CopyOrMoveEntryAsync(IFolderPanelHotkeyReceiver receiver, CopyOrMove copyOrMove)
@@ -174,15 +164,8 @@ public sealed class FolderPanelHotkey : HotkeyBase
         var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
 
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-            Dic.GetInstance<CopyOrMoveEntryDialogViewModel,
-                (CopyOrMove, string, Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
-            ((
-                copyOrMove,
-                receiver.Folder.Path,
-                receiver.TargetEntries,
-                stats,
-                Dic.GetInstance<IFolderHistoryService>().DestinationFolders
-            )),
+            Dic.GetInstance<CopyOrMoveEntryDialogViewModel, (CopyOrMove, string, Entry[], EntriesStats)>
+                ((copyOrMove, receiver.Folder.Path, receiver.TargetEntries, stats)),
             MessageKey.CopyOrMoveEntry);
 
         if (viewModel.DialogResult != DialogResultTypes.Ok)
@@ -192,14 +175,9 @@ public sealed class FolderPanelHotkey : HotkeyBase
         }
 
         var worker =
-            Dic.GetInstance<ConfirmedFileSystemCopier, (Messenger, CopyOrMove)>((receiver.Messenger,
-                copyOrMove));
+            Dic.GetInstance<ConfirmedFileSystemCopier, (Messenger, CopyOrMove)>((receiver.Messenger, copyOrMove));
 
-        var destFolder = Path.IsPathRooted(viewModel.ResultDestFolder)
-            ? viewModel.ResultDestFolder
-            : Path.Combine(receiver.Folder.Path, viewModel.ResultDestFolder);
-
-        destFolder = PathStringHelper.Normalize(destFolder);
+        var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
 
         var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
         ((
@@ -317,24 +295,14 @@ public sealed class FolderPanelHotkey : HotkeyBase
         using var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
 
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-            Dic.GetInstance<DecompressEntryDialogViewModel,
-                (string, Entry[], EntriesStats, ReadOnlyObservableCollection<string>)>
-            ((
-                receiver.Folder.Path,
-                receiver.TargetEntries,
-                stats,
-                Dic.GetInstance<IFolderHistoryService>().DestinationFolders
-            )),
+            Dic.GetInstance<DecompressEntryDialogViewModel, (string, Entry[], EntriesStats)>
+                ((receiver.Folder.Path, receiver.TargetEntries, stats)),
             MessageKey.DecompressEntry);
 
         if (viewModel.DialogResult != DialogResultTypes.Ok)
             return;
 
-        var destFolder = Path.IsPathRooted(viewModel.ResultDestFolder)
-            ? viewModel.ResultDestFolder
-            : Path.Combine(receiver.Folder.Path, viewModel.ResultDestFolder);
-
-        destFolder = PathStringHelper.Normalize(destFolder);
+        var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
 
         DelegateBackgroundOperator? op = null;
         var @operator = Dic.GetInstance<DelegateBackgroundOperator, Action>(
@@ -409,5 +377,16 @@ public sealed class FolderPanelHotkey : HotkeyBase
     {
         Dic.GetInstance<ITrashCanService>().OpenTrashCan();
         return ValueTask.CompletedTask;
+    }
+
+    private async ValueTask MoveFolderAsync(string? destPath, IFolderPanelHotkeyReceiver receiver)
+    {
+        if (destPath is null)
+            return;
+
+        if (await CheckIsAccessibleAsync(destPath, receiver.Messenger) == false)
+            return;
+
+        receiver.Folder.Path = destPath;
     }
 }

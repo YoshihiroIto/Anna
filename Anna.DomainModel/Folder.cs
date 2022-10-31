@@ -196,6 +196,16 @@ public abstract class Folder : DisposableNotificationObject
         EntryExplicitlyCreated?.Invoke(this, new EntryExplicitlyCreatedEventArgs(path));
     }
 
+    public string? FindParentPath()
+    {
+        return new DirectoryInfo(Path).Parent?.FullName;
+    }
+    
+    public string? FindRootPath()
+    {
+        return System.IO.Path.GetPathRoot(Path);
+    }
+
     private void UpdateEntries()
     {
         try

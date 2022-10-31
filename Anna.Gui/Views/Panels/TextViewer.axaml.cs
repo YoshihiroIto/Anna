@@ -20,8 +20,6 @@ namespace Anna.Gui.Views.Panels;
 
 public sealed partial class TextViewer : UserControl, ITextViewerHotkeyReceiver
 {
-    Window IHotkeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
-    
     private TextViewerViewModel ViewModel => _viewModel ?? throw new NullReferenceException();
     private TextViewerViewModel? _viewModel;
 

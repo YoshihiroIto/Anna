@@ -1,11 +1,9 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.Foundation;
-using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Hotkey;
 using Anna.Gui.ViewModels;
-using Anna.Gui.Views.Windows;
 using Anna.Service.Workers;
 using Avalonia;
 using Avalonia.Controls;
@@ -103,8 +101,6 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
         };
     }
 
-    FolderWindow IFolderPanelHotkeyReceiver.Owner => ControlHelper.FindParent<FolderWindow>(this) ?? throw new NullReferenceException();
-    Window IHotkeyReceiver.Owner => ControlHelper.FindOwnerWindow(this);
     Messenger IHotkeyReceiver.Messenger => ViewModel.Messenger;
     Folder IFolderPanelHotkeyReceiver.Folder => ViewModel.Model;
 

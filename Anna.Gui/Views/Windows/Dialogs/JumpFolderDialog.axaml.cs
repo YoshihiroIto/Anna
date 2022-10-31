@@ -7,7 +7,6 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
@@ -27,7 +26,6 @@ public partial class JumpFolderDialog : WindowBase<JumpFolderDialogViewModel>
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
-        
         
         AddHandler(InputElement.KeyDownEvent, OnPreviewKeyDown, RoutingStrategies.Tunnel);
     }

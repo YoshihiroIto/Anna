@@ -6,7 +6,6 @@ using Anna.Foundation;
 using Anna.Gui.BackgroundOperators;
 using Anna.Gui.BackgroundOperators.Internals;
 using Anna.Gui.Messaging;
-using Anna.Gui.Hotkey;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;

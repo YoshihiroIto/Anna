@@ -23,8 +23,8 @@ public class ServiceProviderBase : Container, IServiceProvider
         return (TService)GetInstance(type);
     }
     
-    public THasArgService GetInstance<THasArgService, TArg>(TArg arg)
-        where THasArgService : class, IHasArg<TArg>
+    public THasArg GetInstance<THasArg, TArg>(TArg arg)
+        where THasArg : class, IHasArg<TArg>
     {
         if (arg is null)
             throw new ArgumentNullException(nameof(arg));
@@ -33,7 +33,7 @@ public class ServiceProviderBase : Container, IServiceProvider
 
         _argBox = arg;
 
-        var instance = GetInstance<THasArgService>();
+        var instance = GetInstance<THasArg>();
 
         Debug.Assert(_argBox is null);
 

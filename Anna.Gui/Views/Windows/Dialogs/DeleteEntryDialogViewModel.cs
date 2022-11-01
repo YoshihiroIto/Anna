@@ -10,8 +10,8 @@ using System.Windows.Input;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class DeleteEntryDialogViewModel
-    : HasModelWindowBaseViewModel<(Entry[] Targets, EntriesStats Stats)>
+public sealed class DeleteEntryDialogViewModel : HasModelWindowBaseViewModel<DeleteEntryDialogViewModel,
+    (Entry[] Targets, EntriesStats Stats)>
 {
     public EntryDeleteModes ResultMode { get; private set; } = EntryDeleteModes.Delete;
 
@@ -35,7 +35,6 @@ public sealed class DeleteEntryDialogViewModel
             await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
         });
 
-        EntriesStatsPanelViewModel =
-            dic.GetInstance<EntriesStatsPanelViewModel, EntriesStats>(Model.Stats).AddTo(Trash);
+        EntriesStatsPanelViewModel = dic.GetInstance(EntriesStatsPanelViewModel.T, Model.Stats).AddTo(Trash);
     }
 }

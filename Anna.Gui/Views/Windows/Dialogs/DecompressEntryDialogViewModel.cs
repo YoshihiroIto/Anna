@@ -16,16 +16,18 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class DecompressEntryDialogViewModel
-    : HasModelWindowBaseViewModel<
-        (string CurrentFolderPath, Entry[] Targets, EntriesStats Stats)>
+public sealed class DecompressEntryDialogViewModel : HasModelWindowBaseViewModel<DecompressEntryDialogViewModel,
+    (string CurrentFolderPath, Entry[] Targets, EntriesStats Stats)>
 {
     public string ResultDestFolder { get; private set; } = "";
 
     public string LeaderName => Model.Targets[0].NameWithExtension;
 
     public ReactivePropertySlim<string> DestFolder { get; }
-    public ReadOnlyObservableCollection<string> DestFoldersHistory => Dic.GetInstance<IFolderHistoryService>().DestinationFolders;
+
+    public ReadOnlyObservableCollection<string> DestFoldersHistory =>
+        Dic.GetInstance<IFolderHistoryService>().DestinationFolders;
+
     public ReactivePropertySlim<int> SelectedDestFolderHistory { get; }
 
     public ICommand OpenJumpFolderDialogCommand { get; }
@@ -56,16 +58,14 @@ public sealed class DecompressEntryDialogViewModel
         CancelCommand = CreateButtonCommand(DialogResultTypes.Cancel);
 
         EntriesStatsPanelViewModel =
-            dic.GetInstance<EntriesStatsPanelViewModel, EntriesStats>(Model.Stats).AddTo(Trash);
+            dic.GetInstance(EntriesStatsPanelViewModel.T, Model.Stats).AddTo(Trash);
     }
 
     private async Task OnDecisionAsync()
     {
         if (DestFolder.Value == "")
         {
-            using var viewModel =
-                Dic.GetInstance<SelectFolderDialogViewModel, (string, int)>(
-                    (Model.CurrentFolderPath, 0));
+            using var viewModel = Dic.GetInstance(SelectFolderDialogViewModel.T, (Model.CurrentFolderPath, 0));
 
             await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.SelectFolder));
 
@@ -83,7 +83,7 @@ public sealed class DecompressEntryDialogViewModel
     public async Task OnJumpFolderDialogSync()
     {
         using var viewModel =
-            Dic.GetInstance<JumpFolderDialogViewModel, (string, JumpFolderConfigData )>(
+            Dic.GetInstance(JumpFolderDialogViewModel.T,
                 (Model.CurrentFolderPath, Dic.GetInstance<JumpFolderConfig>().Data));
 
         await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.JumpFolder));

@@ -8,7 +8,7 @@ using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.ViewModels;
 
-public sealed class EntryViewModel : HasModelViewModelBase<Entry>
+public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry>
 {
     public bool IsFolder => Model.IsFolder;
 

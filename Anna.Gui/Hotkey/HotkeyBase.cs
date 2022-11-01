@@ -84,7 +84,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
             return true;
 
         using var viewModel =
-            Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
+            Dic.GetInstance(ConfirmationDialogViewModel.T, (
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),
                 DialogResultTypes.Ok
@@ -113,7 +113,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
                 .Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
 
             using var viewModel =
-                Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
+                Dic.GetInstance(ConfirmationDialogViewModel.T, (
                     Resources.AppName,
                     string.Format(Resources.Message_FailedToStartEditor, editor.Editor),
                     DialogResultTypes.Ok
@@ -135,7 +135,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
                 .Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
 
             using var viewModel =
-                Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
+                Dic.GetInstance(ConfirmationDialogViewModel.T, (
                      Resources.AppName,
                      Resources.Message_FailedToStartAssociatedApp,
                      DialogResultTypes.Ok

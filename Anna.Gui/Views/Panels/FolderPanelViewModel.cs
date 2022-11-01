@@ -22,7 +22,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocalizableViewModel
+public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelViewModel, Folder>, ILocalizableViewModel
 {
     public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; }
     public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; }
@@ -245,7 +245,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<Folder>, ILocal
     private async void OnBackgroundWorkerExceptionThrown(object? sender, ExceptionThrownEventArgs e)
     {
         using var viewModel =
-            Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
+            Dic.GetInstance(ConfirmationDialogViewModel.T, (
                 Resources.AppName,
                 e.Exception.Message,
                 DialogResultTypes.Ok

@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed class TextViewerViewModel : HasModelViewModelBase<Entry>, ILocalizableViewModel
+public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewModel, Entry>, ILocalizableViewModel
 {
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
     public readonly TextViewerHotkey Hotkey;
-    
+
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily { get; }
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
 
@@ -38,7 +38,7 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<Entry>, ILocaliz
         : base(dic)
     {
         Hotkey = dic.GetInstance<TextViewerHotkey>().AddTo(Trash);
-        
+
         ViewerFontFamily = Dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.ViewerFontFamily)
             .ToReadOnlyReactivePropertySlim()

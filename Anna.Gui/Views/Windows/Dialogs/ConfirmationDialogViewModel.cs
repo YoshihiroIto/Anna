@@ -15,8 +15,8 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class ConfirmationDialogViewModel
-    : HasModelWindowBaseViewModel<(string Title, string Text, DialogResultTypes confirmations)>
+public sealed class ConfirmationDialogViewModel : HasModelWindowBaseViewModel<ConfirmationDialogViewModel,
+    (string Title, string Text, DialogResultTypes confirmations)>
 {
     public string Title => Model.Title;
     public string Text => Model.Text;

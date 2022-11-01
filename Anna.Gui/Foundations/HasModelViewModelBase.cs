@@ -2,10 +2,12 @@
 
 namespace Anna.Gui.Foundations;
 
-public class HasModelViewModelBase<TModel>
-    : ViewModelBase,
-        IHasArg<TModel>
+public class HasModelViewModelBase<TSelf, TModel>
+    : ViewModelBase, IHasArg<TModel>
 {
+    // for type propagation
+    public static readonly TSelf T = default!;
+    
     public readonly TModel Model;
 
     protected HasModelViewModelBase(IServiceProvider dic)

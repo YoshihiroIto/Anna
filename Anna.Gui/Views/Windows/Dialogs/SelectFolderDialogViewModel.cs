@@ -4,7 +4,7 @@ using Anna.Service;
 namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class SelectFolderDialogViewModel
-    : HasModelWindowBaseViewModel<(string CurrentFolderPath, int Dummy)>
+    : HasModelWindowBaseViewModel<SelectFolderDialogViewModel, (string CurrentFolderPath, int Dummy)>
 {
     public string ResultPath { get; private set; } = "";
 

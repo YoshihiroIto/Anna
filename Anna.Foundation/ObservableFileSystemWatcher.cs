@@ -4,7 +4,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Foundation;
 
-public sealed class ObservableFileSystemWatcher : HasArgDisposableNotificationObject<string>
+public sealed class ObservableFileSystemWatcher : HasArgDisposableNotificationObject<ObservableFileSystemWatcher, string>
 {
     public readonly IObservable<FileSystemEventArgs> Created;
     public readonly IObservable<FileSystemEventArgs> Changed;

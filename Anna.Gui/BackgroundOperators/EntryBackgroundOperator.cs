@@ -9,10 +9,9 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.BackgroundOperators;
 
-public class EntryBackgroundOperator
-    : HasArgDisposableNotificationObject
-        <(IEntriesStats Stats, IFileProcessable FileProcessable, Action FileOperationPrim)>
-        , IBackgroundOperator
+public class EntryBackgroundOperator : HasArgDisposableNotificationObject
+    <EntryBackgroundOperator, (IEntriesStats Stats, IFileProcessable FileProcessable, Action FileOperationPrim)>
+    , IBackgroundOperator
 {
     #region Progress
 

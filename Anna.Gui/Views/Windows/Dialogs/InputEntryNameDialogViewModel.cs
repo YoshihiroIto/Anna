@@ -12,8 +12,8 @@ using System.Windows.Input;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class InputEntryNameDialogViewModel
-    : HasModelWindowBaseViewModel<(string CurrentFolderPath, string CurrentFileName, string Title, bool IsEnableCurrentInfo, bool IsEnableSkip)>
+public sealed class InputEntryNameDialogViewModel : HasModelWindowBaseViewModel<InputEntryNameDialogViewModel,
+    (string CurrentFolderPath, string CurrentFileName, string Title, bool IsEnableCurrentInfo, bool IsEnableSkip)>
 {
     public string ResultFilePath { get; private set; } = "";
 
@@ -28,7 +28,7 @@ public sealed class InputEntryNameDialogViewModel
     public ReadOnlyReactivePropertySlim<bool> IsInvalidName { get; }
     public ReadOnlyReactivePropertySlim<bool> IsEmptyName { get; }
     public ReadOnlyReactivePropertySlim<bool> ExistsEntity { get; }
-    
+
     public ICommand OkCommand { get; }
     public ICommand SkipCommand { get; }
     public ICommand CancelCommand { get; }
@@ -42,7 +42,7 @@ public sealed class InputEntryNameDialogViewModel
             yield return ExistsEntity;
         }
     }
-    
+
     private static readonly HashSet<char> InvalidFileNameChars = new(Path.GetInvalidFileNameChars());
 
     public InputEntryNameDialogViewModel(IServiceProvider dic)

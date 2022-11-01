@@ -48,14 +48,14 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(7, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("dir1", model.Entries[1].NameWithExtension);
-        Assert.Equal("dir2", model.Entries[2].NameWithExtension);
-        Assert.Equal("dir3", model.Entries[3].NameWithExtension);
-        Assert.Equal("001.dat", model.Entries[4].NameWithExtension);
-        Assert.Equal("002.dat", model.Entries[5].NameWithExtension);
-        Assert.Equal("003.dat", model.Entries[6].NameWithExtension);
+        Assert.Equal(7, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("dir1", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("dir2", model.Folder.Entries[2].NameWithExtension);
+        Assert.Equal("dir3", model.Folder.Entries[3].NameWithExtension);
+        Assert.Equal("001.dat", model.Folder.Entries[4].NameWithExtension);
+        Assert.Equal("002.dat", model.Folder.Entries[5].NameWithExtension);
+        Assert.Equal("003.dat", model.Folder.Entries[6].NameWithExtension);
     }
 
     [Fact]
@@ -86,14 +86,14 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(7, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("dir3", model.Entries[1].NameWithExtension);
-        Assert.Equal("dir2", model.Entries[2].NameWithExtension);
-        Assert.Equal("dir1", model.Entries[3].NameWithExtension);
-        Assert.Equal("003.dat", model.Entries[4].NameWithExtension);
-        Assert.Equal("002.dat", model.Entries[5].NameWithExtension);
-        Assert.Equal("001.dat", model.Entries[6].NameWithExtension);
+        Assert.Equal(7, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("dir3", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("dir2", model.Folder.Entries[2].NameWithExtension);
+        Assert.Equal("dir1", model.Folder.Entries[3].NameWithExtension);
+        Assert.Equal("003.dat", model.Folder.Entries[4].NameWithExtension);
+        Assert.Equal("002.dat", model.Folder.Entries[5].NameWithExtension);
+        Assert.Equal("001.dat", model.Folder.Entries[6].NameWithExtension);
     }
 
     [Fact]
@@ -121,11 +121,11 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(4, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("003.a", model.Entries[1].NameWithExtension);
-        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
-        Assert.Equal("001.c", model.Entries[3].NameWithExtension);
+        Assert.Equal(4, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("003.a", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Folder.Entries[2].NameWithExtension);
+        Assert.Equal("001.c", model.Folder.Entries[3].NameWithExtension);
     }
 
     [Fact]
@@ -154,11 +154,11 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(4, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("001.c", model.Entries[1].NameWithExtension);
-        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
-        Assert.Equal("003.a", model.Entries[3].NameWithExtension);
+        Assert.Equal(4, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("001.c", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Folder.Entries[2].NameWithExtension);
+        Assert.Equal("003.a", model.Folder.Entries[3].NameWithExtension);
     }
 
     [Fact]
@@ -189,11 +189,11 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(4, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("003.a", model.Entries[1].NameWithExtension);
-        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
-        Assert.Equal("001.c", model.Entries[3].NameWithExtension);
+        Assert.Equal(4, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("003.a", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Folder.Entries[2].NameWithExtension);
+        Assert.Equal("001.c", model.Folder.Entries[3].NameWithExtension);
     }
 
     [Fact]
@@ -225,11 +225,11 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(4, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("001.c", model.Entries[1].NameWithExtension);
-        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
-        Assert.Equal("003.a", model.Entries[3].NameWithExtension);
+        Assert.Equal(4, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("001.c", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Folder.Entries[2].NameWithExtension);
+        Assert.Equal("003.a", model.Folder.Entries[3].NameWithExtension);
     }
 
     [Fact]
@@ -259,11 +259,11 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(4, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("003.a", model.Entries[1].NameWithExtension);
-        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
-        Assert.Equal("001.c", model.Entries[3].NameWithExtension);
+        Assert.Equal(4, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("003.a", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Folder.Entries[2].NameWithExtension);
+        Assert.Equal("001.c", model.Folder.Entries[3].NameWithExtension);
     }
 
     [Fact]
@@ -294,11 +294,11 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(4, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("001.c", model.Entries[1].NameWithExtension);
-        Assert.Equal("002.b", model.Entries[2].NameWithExtension);
-        Assert.Equal("003.a", model.Entries[3].NameWithExtension);
+        Assert.Equal(4, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("001.c", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("002.b", model.Folder.Entries[2].NameWithExtension);
+        Assert.Equal("003.a", model.Folder.Entries[3].NameWithExtension);
     }
 
     [Fact]
@@ -328,10 +328,10 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(3, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("001.b", model.Entries[1].NameWithExtension);
-        Assert.Equal("002.c", model.Entries[2].NameWithExtension);
+        Assert.Equal(3, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("001.b", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("002.c", model.Folder.Entries[2].NameWithExtension);
     }
 
     [Fact]
@@ -362,9 +362,9 @@ public sealed class SortEntryTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(3, model.Entries.Count);
-        Assert.Equal("..", model.Entries[0].NameWithExtension);
-        Assert.Equal("002.c", model.Entries[1].NameWithExtension);
-        Assert.Equal("001.b", model.Entries[2].NameWithExtension);
+        Assert.Equal(3, model.Folder.Entries.Count);
+        Assert.Equal("..", model.Folder.Entries[0].NameWithExtension);
+        Assert.Equal("002.c", model.Folder.Entries[1].NameWithExtension);
+        Assert.Equal("001.b", model.Folder.Entries[2].NameWithExtension);
     }
 }

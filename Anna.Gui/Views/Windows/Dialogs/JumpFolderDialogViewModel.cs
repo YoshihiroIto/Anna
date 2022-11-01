@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class JumpFolderDialogViewModel
-    : HasModelWindowBaseViewModel<(string CurrentFolderPath, JumpFolderConfigData Config)>
+public sealed class JumpFolderDialogViewModel : HasModelWindowBaseViewModel<JumpFolderDialogViewModel,
+    (string CurrentFolderPath, JumpFolderConfigData Config)>
 {
     public string ResultPath { get; private set; } = "";
 
@@ -28,7 +28,7 @@ public sealed class JumpFolderDialogViewModel
         : base(dic)
     {
         Paths = Model.Config.Paths
-            .Select(x => dic.GetInstance<JumpFolderPathViewModel, JumpFolderConfigData.PathData>(x).AddTo(Trash))
+            .Select(x => dic.GetInstance(JumpFolderPathViewModel.T, x).AddTo(Trash))
             .ToArray();
 
         SelectedPath = new ReactivePropertySlim<JumpFolderPathViewModel>(Paths[0]).AddTo(Trash);
@@ -48,11 +48,12 @@ public sealed class JumpFolderDialogViewModel
                         return;
 
                     using var viewModel =
-                        Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
-                            Resources.AppName,
-                            string.Format(Resources.Message_ConfirmDelete, SelectedPath.Value.Model.Path),
-                            DialogResultTypes.Yes | DialogResultTypes.No
-                        ));
+                        Dic.GetInstance(ConfirmationDialogViewModel.T,
+                            (
+                                Resources.AppName,
+                                string.Format(Resources.Message_ConfirmDelete, SelectedPath.Value.Model.Path),
+                                DialogResultTypes.Yes | DialogResultTypes.No
+                            ));
 
                     await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
 
@@ -82,7 +83,7 @@ public sealed class JumpFolderDialogViewModel
     }
 }
 
-public sealed class JumpFolderPathViewModel : HasModelViewModelBase<JumpFolderConfigData.PathData>
+public sealed class JumpFolderPathViewModel : HasModelViewModelBase<JumpFolderPathViewModel, JumpFolderConfigData.PathData>
 {
     public string Key { get; }
     public ReactivePropertySlim<string> Path { get; }

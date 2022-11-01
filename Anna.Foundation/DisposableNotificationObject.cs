@@ -45,10 +45,13 @@ public class DisposableNotificationObject
     }
 }
 
-public class HasArgDisposableNotificationObject<TArg>
+public class HasArgDisposableNotificationObject<TSelf, TArg>
     : DisposableNotificationObject
         , IHasArg<TArg>
 {
+    // for type propagation
+    public static readonly TSelf T = default!;
+    
     protected readonly TArg Arg;
 
     public HasArgDisposableNotificationObject(IServiceProvider dic)

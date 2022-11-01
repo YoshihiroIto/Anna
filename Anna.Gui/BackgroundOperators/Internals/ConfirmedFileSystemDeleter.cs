@@ -14,10 +14,11 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.BackgroundOperators.Internals;
 
-internal sealed class ConfirmedFileSystemDeleter
-    : FileSystemDeleter
-        , IHasArg<(Messenger Messenger, int Dummy)>
+internal sealed class ConfirmedFileSystemDeleter : FileSystemDeleter
+    , IHasArg<(Messenger Messenger, int Dummy)>
 {
+    public static readonly ConfirmedFileSystemDeleter T = default!;
+    
     private readonly (Messenger Messenger, int Dummy) _arg;
     private FastSpinLock _lockObj;
 
@@ -45,14 +46,15 @@ internal sealed class ConfirmedFileSystemDeleter
             }
 
             using var viewModel =
-                Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
-                    Resources.AppName,
-                    string.Format(Resources.Message_ReadOnlyConfirmDelete, info.FullName),
-                    DialogResultTypes.Yes |
-                    DialogResultTypes.No |
-                    DialogResultTypes.AllDelete |
-                    DialogResultTypes.Cancel
-                ));
+                Dic.GetInstance(ConfirmationDialogViewModel.T,
+                    (
+                        Resources.AppName,
+                        string.Format(Resources.Message_ReadOnlyConfirmDelete, info.FullName),
+                        DialogResultTypes.Yes |
+                        DialogResultTypes.No |
+                        DialogResultTypes.AllDelete |
+                        DialogResultTypes.Cancel
+                    ));
 
             _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.Confirmation));
 
@@ -96,11 +98,12 @@ internal sealed class ConfirmedFileSystemDeleter
                 return AccessFailureDeleteActions.Cancel;
 
             using var viewModel =
-                Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
-                    Resources.AppName,
-                    string.Format(Resources.Message_AccessFailureOnDelete, info.FullName),
-                    DialogResultTypes.Retry | DialogResultTypes.Cancel
-                ));
+                Dic.GetInstance(ConfirmationDialogViewModel.T,
+                    (
+                        Resources.AppName,
+                        string.Format(Resources.Message_AccessFailureOnDelete, info.FullName),
+                        DialogResultTypes.Retry | DialogResultTypes.Cancel
+                    ));
 
             _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.Confirmation));
 

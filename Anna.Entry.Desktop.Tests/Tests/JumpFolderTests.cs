@@ -44,7 +44,7 @@ public sealed class JumpFolderTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(configFolder.WorkPath, model.Path);
+        Assert.Equal(configFolder.WorkPath, model.Folder.Path);
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public sealed class JumpFolderTests : IDisposable
 
             await w.PressKeyAsync(Key.J);
             await w.PressKeyAsync(Key.Enter);
-            
+
             await Task.Delay(500);
 
             return w.ViewModel.Model;
@@ -68,7 +68,7 @@ public sealed class JumpFolderTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(configFolder.WorkPath, model.Path);
+        Assert.Equal(configFolder.WorkPath, model.Folder.Path);
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public sealed class JumpFolderTests : IDisposable
 
             await w.PressKeyAsync(Key.J);
             await w.PressKeyAsync(Key.A);
-            
+
             await Task.Delay(500);
 
             return w.ViewModel.Model;
@@ -103,7 +103,7 @@ public sealed class JumpFolderTests : IDisposable
 
         await Task.Delay(100);
 
-        Assert.Equal(a.Path, model.Path);
+        Assert.Equal(a.Path, model.Folder.Path);
     }
 
     [Fact]
@@ -145,7 +145,7 @@ public sealed class JumpFolderTests : IDisposable
     public async Task Edit_folder()
     {
         await Task.Delay(100);
-    
+
         await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();

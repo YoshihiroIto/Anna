@@ -6,9 +6,8 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.BackgroundOperators;
 
-public class DelegateBackgroundOperator
-    : HasArgDisposableNotificationObject<Action>
-        , IBackgroundOperator
+public class DelegateBackgroundOperator : HasArgDisposableNotificationObject<DelegateBackgroundOperator, Action>
+    , IBackgroundOperator
 {
     #region Progress
 
@@ -21,12 +20,12 @@ public class DelegateBackgroundOperator
     }
 
     #endregion
-    
+
     public DelegateBackgroundOperator(IServiceProvider dic) : base(dic)
     {
         Progress = 0;
     }
-    
+
     public ValueTask ExecuteAsync()
     {
         Arg.Invoke();

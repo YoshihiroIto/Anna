@@ -14,8 +14,9 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class SelectFileCopyActionDialogViewModel
-    : HasModelWindowBaseViewModel<(string SrcFilepath, string DestFilepath, bool IsSameActionThereafter)>
+public sealed class SelectFileCopyActionDialogViewModel : HasModelWindowBaseViewModel<
+    SelectFileCopyActionDialogViewModel,
+    (string SrcFilepath, string DestFilepath, bool IsSameActionThereafter)>
 {
     public FileSystemCopier.CopyActionWhenExistsResult Result { get; private set; } =
         new(ExistsCopyFileActions.Skip, "", false, false);
@@ -93,9 +94,14 @@ public sealed class SelectFileCopyActionDialogViewModel
             .WithSubscribe(async () =>
             {
                 using var viewModel =
-                    Dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
-                        (DestFolder, Path.GetFileName(Model.DestFilepath), Resources.DialogTitle_ChangeEntryName, true,
-                            true));
+                    Dic.GetInstance(InputEntryNameDialogViewModel.T,
+                        (
+                            DestFolder,
+                            Path.GetFileName(Model.DestFilepath),
+                            Resources.DialogTitle_ChangeEntryName,
+                            true,
+                            true
+                        ));
 
                 await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.InputEntryName));
 

@@ -5,7 +5,6 @@ using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Gui.BackgroundOperators;
 using Anna.Gui.BackgroundOperators.Internals;
-using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
@@ -13,7 +12,6 @@ using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
@@ -85,8 +83,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         var currentFolderPath = receiver.Folder.Path;
 
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-            Dic.GetInstance<JumpFolderDialogViewModel, (string, JumpFolderConfigData)>
-                ((currentFolderPath, Dic.GetInstance<JumpFolderConfig>().Data)),
+            Dic.GetInstance(JumpFolderDialogViewModel.T, (currentFolderPath, Dic.GetInstance<JumpFolderConfig>().Data)),
             MessageKey.JumpFolder);
 
         if (viewModel.DialogResult != DialogResultTypes.Ok)
@@ -126,7 +123,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         else
         {
             using var _ = await RaiseTransitionAsync(receiver.Messenger,
-                Dic.GetInstance<EntryDisplayDialogViewModel, Entry>(target),
+                Dic.GetInstance(EntryDisplayDialogViewModel.T, (target, 0)),
                 MessageKey.EntryDisplay);
         }
     }
@@ -161,11 +158,11 @@ public sealed class FolderPanelHotkey : HotkeyBase
         if (receiver.TargetEntries.Length == 0)
             return;
 
-        var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
+        var stats = Dic.GetInstance(EntriesStats.T, receiver.TargetEntries);
 
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-            Dic.GetInstance<CopyOrMoveEntryDialogViewModel, (CopyOrMove, string, Entry[], EntriesStats)>
-                ((copyOrMove, receiver.Folder.Path, receiver.TargetEntries, stats)),
+            Dic.GetInstance(CopyOrMoveEntryDialogViewModel.T,
+                (copyOrMove, receiver.Folder.Path, receiver.TargetEntries, stats)),
             MessageKey.CopyOrMoveEntry);
 
         if (viewModel.DialogResult != DialogResultTypes.Ok)
@@ -174,17 +171,16 @@ public sealed class FolderPanelHotkey : HotkeyBase
             return;
         }
 
-        var worker =
-            Dic.GetInstance<ConfirmedFileSystemCopier, (Messenger, CopyOrMove)>((receiver.Messenger, copyOrMove));
+        var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T, (receiver.Messenger, copyOrMove));
 
         var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
 
-        var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
-        ((
-            stats,
-            worker,
-            () => worker.Invoke(receiver.TargetEntries, destFolder)
-        ));
+        var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
+            (
+                (IEntriesStats)stats,
+                (IFileProcessable)worker,
+                (Action)(() => worker.Invoke(receiver.TargetEntries, destFolder))
+            ));
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
 
@@ -196,11 +192,10 @@ public sealed class FolderPanelHotkey : HotkeyBase
         if (receiver.TargetEntries.Length == 0)
             return;
 
-        var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
+        var stats = Dic.GetInstance(EntriesStats.T, receiver.TargetEntries);
 
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-            Dic.GetInstance<DeleteEntryDialogViewModel, (Entry[], EntriesStats)>
-                ((receiver.TargetEntries, stats)),
+            Dic.GetInstance(DeleteEntryDialogViewModel.T, (receiver.TargetEntries, stats)),
             MessageKey.DeleteEntry);
 
         if (viewModel.DialogResult != DialogResultTypes.Yes)
@@ -209,15 +204,15 @@ public sealed class FolderPanelHotkey : HotkeyBase
             return;
         }
 
-        var worker = Dic.GetInstance<ConfirmedFileSystemDeleter, (Messenger, int)>((receiver.Messenger, 0));
+        var worker = Dic.GetInstance(ConfirmedFileSystemDeleter.T, (receiver.Messenger, 0));
 
-        var @operator = Dic.GetInstance<EntryBackgroundOperator, (IEntriesStats, IFileProcessable, Action)>
-        ((
-            stats,
-            worker,
-            // ReSharper disable once AccessToDisposedClosure
-            () => worker.Invoke(receiver.TargetEntries, viewModel.ResultMode)
-        ));
+        var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
+            (
+                (IEntriesStats)stats,
+                (IFileProcessable)worker,
+                // ReSharper disable once AccessToDisposedClosure
+                (Action)(() => worker.Invoke(receiver.TargetEntries, viewModel.ResultMode))
+            ));
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
     }
@@ -229,7 +224,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         foreach (var targetEntry in receiver.TargetEntries)
         {
             using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-                Dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
+                Dic.GetInstance(InputEntryNameDialogViewModel.T,
                     (receiver.Folder.Path, targetEntry.NameWithExtension, Resources.DialogTitle_Rename, false, true)),
                 MessageKey.InputEntryName);
 
@@ -266,14 +261,16 @@ public sealed class FolderPanelHotkey : HotkeyBase
     private async ValueTask MakeFolderOrFileAsync(IFolderPanelHotkeyReceiver receiver, bool isFolder)
     {
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-            Dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
-                (receiver.Folder.Path,
+            Dic.GetInstance(InputEntryNameDialogViewModel.T,
+                (
+                    receiver.Folder.Path,
                     FileSystemHelper.MakeNewEntryName(
                         receiver.Folder.Path,
                         isFolder ? Resources.Entry_NewFolder : Resources.Entry_NewFile),
                     isFolder ? Resources.DialogTitle_CreateFolder : Resources.DialogTitle_CreateFile,
                     false,
-                    false)),
+                    false
+                )),
             MessageKey.InputEntryName);
 
         if (viewModel.DialogResult != DialogResultTypes.Ok)
@@ -292,11 +289,10 @@ public sealed class FolderPanelHotkey : HotkeyBase
         if (receiver.TargetEntries.Length == 0)
             return;
 
-        using var stats = Dic.GetInstance<EntriesStats, Entry[]>(receiver.TargetEntries);
+        using var stats = Dic.GetInstance(EntriesStats.T, receiver.TargetEntries);
 
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-            Dic.GetInstance<DecompressEntryDialogViewModel, (string, Entry[], EntriesStats)>
-                ((receiver.Folder.Path, receiver.TargetEntries, stats)),
+            Dic.GetInstance(DecompressEntryDialogViewModel.T, (receiver.Folder.Path, receiver.TargetEntries, stats)),
             MessageKey.DecompressEntry);
 
         if (viewModel.DialogResult != DialogResultTypes.Ok)
@@ -305,7 +301,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
 
         DelegateBackgroundOperator? op = null;
-        var @operator = Dic.GetInstance<DelegateBackgroundOperator, Action>(
+        var @operator = Dic.GetInstance(DelegateBackgroundOperator.T,
             () =>
             {
                 var targetEntries = receiver.TargetEntries;
@@ -344,11 +340,12 @@ public sealed class FolderPanelHotkey : HotkeyBase
             : Resources.Messege_ConfirmEmptyTrashCan_Multi;
 
         using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
-            Dic.GetInstance<ConfirmationDialogViewModel, (string, string, DialogResultTypes)>((
-                Resources.AppName,
-                string.Format(confirmText, info.EntryCount.ToString()),
-                DialogResultTypes.OpenTrashCan | DialogResultTypes.Yes | DialogResultTypes.No
-            )),
+            Dic.GetInstance(ConfirmationDialogViewModel.T,
+                (
+                    Resources.AppName,
+                    string.Format(confirmText, info.EntryCount.ToString()),
+                    DialogResultTypes.OpenTrashCan | DialogResultTypes.Yes | DialogResultTypes.No
+                )),
             MessageKey.Confirmation);
 
         switch (viewModel.DialogResult)
@@ -358,8 +355,8 @@ public sealed class FolderPanelHotkey : HotkeyBase
                 break;
 
             case DialogResultTypes.Yes:
-                var @operator = Dic.GetInstance<DelegateBackgroundOperator, Action>(
-                    () => Dic.GetInstance<ITrashCanService>().EmptyTrashCan());
+                var @operator = Dic.GetInstance(DelegateBackgroundOperator.T,
+                    (Action)(() => Dic.GetInstance<ITrashCanService>().EmptyTrashCan()));
 
                 await receiver.BackgroundWorker.PushOperatorAsync(@operator);
                 break;

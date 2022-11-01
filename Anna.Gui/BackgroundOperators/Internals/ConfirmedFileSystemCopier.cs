@@ -12,10 +12,11 @@ using System.IO;
 
 namespace Anna.Gui.BackgroundOperators.Internals;
 
-internal sealed class ConfirmedFileSystemCopier
-    : FileSystemCopier
-        , IHasArg<(Messenger Messenger, CopyOrMove CopyOrMove)>
+internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
+    IHasArg<(Messenger Messenger, CopyOrMove CopyOrMove)>
 {
+    public static readonly ConfirmedFileSystemCopier T = default!;
+    
     private readonly (Messenger Messenger, CopyOrMove CopyOrMove) _arg;
     private FastSpinLock _lockObj;
 
@@ -41,8 +42,8 @@ internal sealed class ConfirmedFileSystemCopier
             if (CancellationTokenSource.IsCancellationRequested)
                 return;
 
-            using var viewModel = Dic.GetInstance<SelectFileCopyActionDialogViewModel, (string, string, bool)>
-                ((srcPath, destPath, result.IsFirst));
+            using var viewModel =
+                Dic.GetInstance(SelectFileCopyActionDialogViewModel.T, (srcPath, destPath, result.IsFirst));
 
             _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.SelectFileCopy));
 
@@ -72,14 +73,14 @@ internal sealed class ConfirmedFileSystemCopier
             var fileName = Path.GetFileName(destPath);
 
             using var viewModel =
-                Dic.GetInstance<InputEntryNameDialogViewModel, (string, string, string, bool, bool)>(
+                Dic.GetInstance(InputEntryNameDialogViewModel.T,
                     (folder, fileName, Resources.DialogTitle_ChangeEntryName, true, true));
 
             _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.InputEntryName));
 
             if (viewModel.DialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();
-                
+
             return new CopyActionWhenSamePathResult(
                 viewModel.DialogResult == DialogResultTypes.Ok
                     ? SamePathCopyFileActions.Override

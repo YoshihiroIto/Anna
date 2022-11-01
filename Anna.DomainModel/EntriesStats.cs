@@ -5,7 +5,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel;
 
-public sealed class EntriesStats : HasArgDisposableNotificationObject<Entry[]>, IEntriesStats
+public sealed class EntriesStats : HasArgDisposableNotificationObject<EntriesStats, Entry[]>, IEntriesStats
 {
     #region IsInMeasuring
 

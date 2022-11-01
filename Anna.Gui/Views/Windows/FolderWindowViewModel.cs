@@ -14,7 +14,8 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows;
 
-public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<Folder>
+public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<FolderWindowViewModel,
+    (Folder Folder, int Dummy)>
 {
     public FolderPanelViewModel FolderPanelViewModel { get; }
     public InfoPanelViewModel InfoPanelViewModel { get; }
@@ -35,22 +36,22 @@ public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<Folder>
         ToEnglishCommand = new DelegateCommand(() => Dic.GetInstance<AppConfig>().Data.Culture = Cultures.En);
         ToJapaneseCommand = new DelegateCommand(() => Dic.GetInstance<AppConfig>().Data.Culture = Cultures.Ja);
 
-        InfoPanelViewModel = dic.GetInstance<InfoPanelViewModel, Folder>(Model)
+        InfoPanelViewModel = dic.GetInstance(InfoPanelViewModel.T, Model.Folder)
             .AddTo(Trash);
 
-        FolderPanelViewModel = dic.GetInstance<FolderPanelViewModel, Folder>(Model)
+        FolderPanelViewModel = dic.GetInstance(FolderPanelViewModel.T, Model.Folder)
             .AddTo(Trash);
 
         dic.GetInstance<App>().Folders.CollectionChangedAsObservable()
             .Subscribe(_ =>
             {
-                if (dic.GetInstance<App>().Folders.IndexOf(Model) == -1)
+                if (dic.GetInstance<App>().Folders.IndexOf(Model.Folder) == -1)
                     Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close)).Forget();
             }).AddTo(Trash);
 
         Trash.Add(() =>
         {
-            Dic.GetInstance<App>().RemoveFolder(Model);
+            Dic.GetInstance<App>().RemoveFolder(Model.Folder);
         });
     }
 }

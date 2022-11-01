@@ -107,7 +107,7 @@ public sealed class FileSystemFolder : Folder
     {
         _watchTrash.Clear();
 
-        var watcher = Dic.GetInstance<ObservableFileSystemWatcher, string>(path).AddTo(_watchTrash);
+        var watcher = Dic.GetInstance(ObservableFileSystemWatcher.T, path).AddTo(_watchTrash);
 
         watcher.Created
             .Subscribe(e =>

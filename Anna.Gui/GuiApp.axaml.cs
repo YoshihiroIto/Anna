@@ -65,7 +65,7 @@ public sealed class GuiApp : Application
             .Subscribe(x =>
             {
                 var d = _dic.GetInstance<FolderWindow>();
-                d.DataContext = _dic.GetInstance<FolderWindowViewModel, Folder>(x);
+                d.DataContext = _dic.GetInstance(FolderWindowViewModel.T, (x, 0));
                 d.Show();
             }).AddTo(_trash);
 

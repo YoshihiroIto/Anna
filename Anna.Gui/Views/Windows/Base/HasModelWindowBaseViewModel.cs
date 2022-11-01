@@ -2,8 +2,11 @@
 
 namespace Anna.Gui.Views.Windows.Base;
 
-public class HasModelWindowBaseViewModel<TModel> : WindowBaseViewModel, IHasArg<TModel>
+public class HasModelWindowBaseViewModel<TSelf, TModel> : WindowBaseViewModel, IHasArg<TModel>
 {
+    // for type propagation
+    public static readonly TSelf T = default!;
+    
     public readonly TModel Model;
 
     protected HasModelWindowBaseViewModel(IServiceProvider dic)

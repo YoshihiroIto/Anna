@@ -4,7 +4,6 @@ using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows;
-using Anna.Gui.Views.Windows.Base;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service.Services;
@@ -143,13 +142,5 @@ public abstract class HotkeyBase : DisposableNotificationObject
 
             await messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
         }
-    }
-    
-    protected async ValueTask<T> RaiseTransitionAsync<T>(Messenger messenger, T viewModel, string messageKey)
-        where T : WindowBaseViewModel
-    {
-        await messenger.RaiseAsync(new TransitionMessage(viewModel, messageKey));
-
-        return viewModel;
     }
 }

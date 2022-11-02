@@ -5,6 +5,7 @@ using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Gui.BackgroundOperators;
 using Anna.Gui.BackgroundOperators.Internals;
+using Anna.Gui.Messaging;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
@@ -68,7 +69,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
     private async ValueTask SelectSortModeAndOrderAsync(IFolderPanelHotkeyReceiver receiver)
     {
-        using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
+        using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             Dic.GetInstance<SortModeAndOrderDialogViewModel>(),
             MessageKey.SelectSortModeAndOrder);
 
@@ -82,7 +83,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
     {
         var currentFolderPath = receiver.Folder.Path;
 
-        using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
+        using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             Dic.GetInstance(JumpFolderDialogViewModel.T, (currentFolderPath, Dic.GetInstance<JumpFolderConfig>().Data)),
             MessageKey.JumpFolder);
 
@@ -122,7 +123,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         }
         else
         {
-            using var _ = await RaiseTransitionAsync(receiver.Messenger,
+            using var _ = await receiver.Messenger.RaiseTransitionAsync(
                 Dic.GetInstance(EntryDisplayDialogViewModel.T, (target, 0)),
                 MessageKey.EntryDisplay);
         }
@@ -160,7 +161,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var stats = Dic.GetInstance(EntriesStats.T, receiver.TargetEntries);
 
-        using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
+        using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             Dic.GetInstance(CopyOrMoveEntryDialogViewModel.T,
                 (copyOrMove, receiver.Folder.Path, receiver.TargetEntries, stats)),
             MessageKey.CopyOrMoveEntry);
@@ -194,7 +195,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var stats = Dic.GetInstance(EntriesStats.T, receiver.TargetEntries);
 
-        using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
+        using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             Dic.GetInstance(DeleteEntryDialogViewModel.T, (receiver.TargetEntries, stats)),
             MessageKey.DeleteEntry);
 
@@ -223,7 +224,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         foreach (var targetEntry in receiver.TargetEntries)
         {
-            using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
+            using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
                 Dic.GetInstance(InputEntryNameDialogViewModel.T,
                     (receiver.Folder.Path, targetEntry.NameWithExtension, Resources.DialogTitle_Rename, false, true)),
                 MessageKey.InputEntryName);
@@ -260,7 +261,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
     private async ValueTask MakeFolderOrFileAsync(IFolderPanelHotkeyReceiver receiver, bool isFolder)
     {
-        using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
+        using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             Dic.GetInstance(InputEntryNameDialogViewModel.T,
                 (
                     receiver.Folder.Path,
@@ -291,7 +292,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         using var stats = Dic.GetInstance(EntriesStats.T, receiver.TargetEntries);
 
-        using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
+        using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             Dic.GetInstance(DecompressEntryDialogViewModel.T, (receiver.Folder.Path, receiver.TargetEntries, stats)),
             MessageKey.DecompressEntry);
 
@@ -339,7 +340,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
             ? Resources.Messege_ConfirmEmptyTrashCan_Single
             : Resources.Messege_ConfirmEmptyTrashCan_Multi;
 
-        using var viewModel = await RaiseTransitionAsync(receiver.Messenger,
+        using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             Dic.GetInstance(ConfirmationDialogViewModel.T,
                 (
                     Resources.AppName,

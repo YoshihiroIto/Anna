@@ -186,15 +186,15 @@ public sealed class FolderPanelHotkey : HotkeyBase
             return;
         }
 
-        var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T, (receiver.Messenger, copyOrMove));
         var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
+        var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T,
+            (receiver.Messenger, receiver.TargetEntries, destFolder, copyOrMove));
 
         var @operator = Dic.GetInstance(
             EntryBackgroundOperator.T,
             (
                 (IEntriesStats)stats,
-                (IFileProcessable)worker,
-                (Action)(() => worker.Invoke(receiver.TargetEntries, destFolder))
+                (IFileProcessable)worker
             ));
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
@@ -222,14 +222,14 @@ public sealed class FolderPanelHotkey : HotkeyBase
         }
 
         var resultMode = viewModel.ResultMode;
-        var worker = Dic.GetInstance(ConfirmedFileSystemDeleter.T, (receiver.Messenger, 0));
+        var worker = Dic.GetInstance(ConfirmedFileSystemDeleter.T,
+            (receiver.Messenger, receiver.TargetEntries, resultMode));
 
         var @operator = Dic.GetInstance(
             EntryBackgroundOperator.T,
             (
                 (IEntriesStats)stats,
-                (IFileProcessable)worker,
-                (Action)(() => worker.Invoke(receiver.TargetEntries, resultMode))
+                (IFileProcessable)worker
             ));
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);

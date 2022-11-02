@@ -14,6 +14,9 @@ public abstract class FileSystemDeleter : IFileProcessable
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     protected readonly IServiceProvider Dic;
 
+    protected Entry[] SourceEntries { get; init; } = Array.Empty<Entry>();
+    protected EntryDeleteModes Mode { get; init; }
+
     private sealed class State : IDisposable
     {
         public readonly ParallelOptions ParallelOptions;
@@ -46,20 +49,20 @@ public abstract class FileSystemDeleter : IFileProcessable
         Dic = dic;
     }
 
-    public void Invoke(IEnumerable<IEntry> sourceEntries, EntryDeleteModes mode)
+    public void Invoke()
     {
-        switch (mode)
+        switch (Mode)
         {
             case EntryDeleteModes.Delete:
-                Delete(sourceEntries, mode);
+                Delete(SourceEntries, Mode);
                 break;
 
             case EntryDeleteModes.TrashCan:
-                SendToTrashCan(sourceEntries, mode);
+                SendToTrashCan(SourceEntries, Mode);
                 break;
 
             default:
-                throw new ArgumentOutOfRangeException(nameof(mode), mode, null);
+                throw new ArgumentOutOfRangeException(nameof(Mode), Mode, null);
         }
     }
 

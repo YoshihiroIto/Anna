@@ -10,7 +10,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 namespace Anna.Gui.BackgroundOperators;
 
 public class EntryBackgroundOperator : HasArgDisposableNotificationObject
-    <EntryBackgroundOperator, (IEntriesStats Stats, IFileProcessable FileProcessable, Action FileOperationPrim)>
+    <EntryBackgroundOperator, (IEntriesStats Stats, IFileProcessable FileProcessable)>
     , IBackgroundOperator
 {
     #region Progress
@@ -49,7 +49,7 @@ public class EntryBackgroundOperator : HasArgDisposableNotificationObject
         try
         {
             Arg.FileProcessable.FileProcessed += OnFileProcessed;
-            Arg.FileOperationPrim.Invoke();
+            Arg.FileProcessable.Invoke();
         }
         finally
         {

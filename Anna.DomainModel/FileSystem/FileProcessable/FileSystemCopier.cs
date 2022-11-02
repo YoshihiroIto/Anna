@@ -13,6 +13,8 @@ public abstract class FileSystemCopier : IFileProcessable
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     protected readonly IServiceProvider Dic;
 
+    protected Entry[] SourceEntries { get; init; } = Array.Empty<Entry>();
+    protected string DestPath { get; init; } = "";
     protected CopyOrMove CopyOrMove { get; init; } = CopyOrMove.Unset;
 
     private sealed class State : IDisposable
@@ -40,7 +42,7 @@ public abstract class FileSystemCopier : IFileProcessable
         Dic = dic;
     }
 
-    public void Invoke(IEnumerable<IEntry> sourceEntries, string destPath)
+    public void Invoke()
     {
         CancellationTokenSource = new CancellationTokenSource();
 
@@ -49,11 +51,11 @@ public abstract class FileSystemCopier : IFileProcessable
             switch (CopyOrMove)
             {
                 case CopyOrMove.Copy:
-                    Copy(sourceEntries, destPath);
+                    Copy(SourceEntries, DestPath);
                     break;
 
                 case CopyOrMove.Move:
-                    Move(sourceEntries, destPath);
+                    Move(SourceEntries, DestPath);
                     break;
 
                 case CopyOrMove.Unset:
@@ -61,7 +63,7 @@ public abstract class FileSystemCopier : IFileProcessable
                     throw new InvalidOperationException();
             }
 
-            Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destPath);
+            Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(DestPath);
         }
         catch (OperationCanceledException)
         {

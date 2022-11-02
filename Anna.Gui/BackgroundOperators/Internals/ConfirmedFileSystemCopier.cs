@@ -1,4 +1,5 @@
 ﻿using Anna.Constants;
+using Anna.DomainModel;
 using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Gui.Messaging;
@@ -12,11 +13,11 @@ using System.IO;
 namespace Anna.Gui.BackgroundOperators.Internals;
 
 internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
-    IHasArg<(Messenger Messenger, CopyOrMove CopyOrMove)>
+    IHasArg<(Messenger Messenger, Entry[] SourceEntries, string DestPath, CopyOrMove CopyOrMove)>
 {
     public static readonly ConfirmedFileSystemCopier T = default!;
 
-    private readonly (Messenger Messenger, CopyOrMove CopyOrMove) _arg;
+    private readonly (Messenger Messenger, Entry[] SourceEntries, string DestPath, CopyOrMove CopyOrMove) _arg;
     private FastSpinLock _lockObj;
 
     public ConfirmedFileSystemCopier(IServiceProvider dic)
@@ -24,6 +25,8 @@ internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
     {
         dic.PopArg(out _arg);
 
+        SourceEntries = _arg.SourceEntries;
+        DestPath = _arg.DestPath;
         CopyOrMove = _arg.CopyOrMove;
     }
 

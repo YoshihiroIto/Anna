@@ -14,7 +14,7 @@ public abstract class FileSystemDeleter : IFileProcessable
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     protected readonly IServiceProvider Dic;
 
-    protected Entry[] SourceEntries { get; init; } = Array.Empty<Entry>();
+    protected IEnumerable<IEntry> SourceEntries { get; init; } = Enumerable.Empty<IEntry>();
     protected EntryDeleteModes Mode { get; init; }
 
     private sealed class State : IDisposable

@@ -1,5 +1,4 @@
 ﻿using Anna.Constants;
-using Anna.DomainModel;
 using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Gui.Messaging;
@@ -7,7 +6,9 @@ using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service;
+using Anna.Service.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using IServiceProvider=Anna.Service.IServiceProvider;
@@ -15,11 +16,11 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 namespace Anna.Gui.BackgroundOperators.Internals;
 
 internal sealed class ConfirmedFileSystemDeleter : FileSystemDeleter
-    , IHasArg<(Messenger Messenger, Entry[] SourceEntries, EntryDeleteModes Mode)>
+    , IHasArg<(Messenger Messenger, IEnumerable<IEntry> SourceEntries, EntryDeleteModes Mode)>
 {
     public static readonly ConfirmedFileSystemDeleter T = default!;
 
-    private readonly (Messenger Messenger, Entry[] SourceEntries, EntryDeleteModes Mode) _arg;
+    private readonly (Messenger Messenger, IEnumerable<IEntry> SourceEntries, EntryDeleteModes Mode) _arg;
     private FastSpinLock _lockObj;
 
     public ConfirmedFileSystemDeleter(IServiceProvider dic)

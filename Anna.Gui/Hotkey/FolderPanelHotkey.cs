@@ -14,6 +14,7 @@ using Anna.Service.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -190,7 +191,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T,
             (
                 receiver.Messenger,
-                receiver.TargetEntries,
+                receiver.TargetEntries.Cast<IEntry>(),
                 destFolder,
                 copyOrMove
             ));
@@ -230,7 +231,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         var worker = Dic.GetInstance(ConfirmedFileSystemDeleter.T,
             (
                 receiver.Messenger,
-                receiver.TargetEntries,
+                receiver.TargetEntries.Cast<IEntry>(),
                 resultMode
             ));
 

@@ -13,7 +13,7 @@ public abstract class FileSystemCopier : IFileProcessable
     protected CancellationTokenSource? CancellationTokenSource { get; private set; }
     protected readonly IServiceProvider Dic;
 
-    protected IEntry[] SourceEntries { get; init; } = Array.Empty<IEntry>();
+    protected IEnumerable<IEntry> SourceEntries { get; init; } = Enumerable.Empty<IEntry>();
     protected string DestPath { get; init; } = "";
     protected CopyOrMove CopyOrMove { get; init; } = CopyOrMove.Unset;
 

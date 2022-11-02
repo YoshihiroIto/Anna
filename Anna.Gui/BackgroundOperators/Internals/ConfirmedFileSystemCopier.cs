@@ -1,5 +1,4 @@
 ﻿using Anna.Constants;
-using Anna.DomainModel;
 using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Gui.Messaging;
@@ -7,17 +6,19 @@ using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service;
+using Anna.Service.Interfaces;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
 namespace Anna.Gui.BackgroundOperators.Internals;
 
 internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
-    IHasArg<(Messenger Messenger, Entry[] SourceEntries, string DestPath, CopyOrMove CopyOrMove)>
+    IHasArg<(Messenger Messenger, IEnumerable<IEntry> SourceEntries, string DestPath, CopyOrMove CopyOrMove)>
 {
     public static readonly ConfirmedFileSystemCopier T = default!;
 
-    private readonly (Messenger Messenger, Entry[] SourceEntries, string DestPath, CopyOrMove CopyOrMove) _arg;
+    private readonly (Messenger Messenger, IEnumerable<IEntry> SourceEntries, string DestPath, CopyOrMove CopyOrMove) _arg;
     private FastSpinLock _lockObj;
 
     public ConfirmedFileSystemCopier(IServiceProvider dic)

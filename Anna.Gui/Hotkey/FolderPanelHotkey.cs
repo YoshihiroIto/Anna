@@ -187,10 +187,10 @@ public sealed class FolderPanelHotkey : HotkeyBase
         }
 
         var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T, (receiver.Messenger, copyOrMove));
-
         var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
 
-        var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
+        var @operator = Dic.GetInstance(
+            EntryBackgroundOperator.T,
             (
                 (IEntriesStats)stats,
                 (IFileProcessable)worker,
@@ -223,14 +223,15 @@ public sealed class FolderPanelHotkey : HotkeyBase
             return;
         }
 
+        var resultMode = viewModel.ResultMode;
         var worker = Dic.GetInstance(ConfirmedFileSystemDeleter.T, (receiver.Messenger, 0));
 
-        var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
+        var @operator = Dic.GetInstance(
+            EntryBackgroundOperator.T,
             (
                 (IEntriesStats)stats,
                 (IFileProcessable)worker,
-                // ReSharper disable once AccessToDisposedClosure
-                (Action)(() => worker.Invoke(receiver.TargetEntries, viewModel.ResultMode))
+                (Action)(() => worker.Invoke(receiver.TargetEntries, resultMode))
             ));
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
@@ -331,7 +332,8 @@ public sealed class FolderPanelHotkey : HotkeyBase
         var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
 
         DelegateBackgroundOperator? op = null;
-        var @operator = Dic.GetInstance(DelegateBackgroundOperator.T,
+        var @operator = Dic.GetInstance(
+            DelegateBackgroundOperator.T,
             () =>
             {
                 var targetEntries = receiver.TargetEntries;

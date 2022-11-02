@@ -188,7 +188,12 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
         var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T,
-            (receiver.Messenger, receiver.TargetEntries, destFolder, copyOrMove));
+            (
+                receiver.Messenger,
+                receiver.TargetEntries,
+                destFolder,
+                copyOrMove
+            ));
 
         var @operator = Dic.GetInstance(
             EntryBackgroundOperator.T,
@@ -223,7 +228,11 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var resultMode = viewModel.ResultMode;
         var worker = Dic.GetInstance(ConfirmedFileSystemDeleter.T,
-            (receiver.Messenger, receiver.TargetEntries, resultMode));
+            (
+                receiver.Messenger,
+                receiver.TargetEntries,
+                resultMode
+            ));
 
         var @operator = Dic.GetInstance(
             EntryBackgroundOperator.T,

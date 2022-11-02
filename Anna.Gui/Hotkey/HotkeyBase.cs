@@ -82,14 +82,14 @@ public abstract class HotkeyBase : DisposableNotificationObject
         if (Dic.GetInstance<IFileSystemIsAccessibleService>().IsAccessible(path))
             return true;
 
-        using var viewModel =
-            Dic.GetInstance(ConfirmationDialogViewModel.T, (
+        using var viewModel = await messenger.RaiseTransitionAsync(
+            ConfirmationDialogViewModel.T,
+            (
                 Resources.AppName,
                 string.Format(Resources.Message_AccessDenied, path),
                 DialogResultTypes.Ok
-            ));
-
-        await messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
+            ),
+            MessageKey.Confirmation);
 
         return false;
     }
@@ -111,14 +111,14 @@ public abstract class HotkeyBase : DisposableNotificationObject
             Dic.GetInstance<ILogService>()
                 .Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
 
-            using var viewModel =
-                Dic.GetInstance(ConfirmationDialogViewModel.T, (
+            using var viewModel = await messenger.RaiseTransitionAsync(
+                ConfirmationDialogViewModel.T,
+                (
                     Resources.AppName,
                     string.Format(Resources.Message_FailedToStartEditor, editor.Editor),
                     DialogResultTypes.Ok
-                ));
-
-            await messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
+                ),
+                MessageKey.Confirmation);
         }
     }
 
@@ -133,14 +133,14 @@ public abstract class HotkeyBase : DisposableNotificationObject
             Dic.GetInstance<ILogService>()
                 .Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
 
-            using var viewModel =
-                Dic.GetInstance(ConfirmationDialogViewModel.T, (
-                     Resources.AppName,
-                     Resources.Message_FailedToStartAssociatedApp,
-                     DialogResultTypes.Ok
-                ));
-
-            await messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
+            using var viewModel = await messenger.RaiseTransitionAsync(
+                ConfirmationDialogViewModel.T,
+                (
+                    Resources.AppName,
+                    Resources.Message_FailedToStartAssociatedApp,
+                    DialogResultTypes.Ok
+                ),
+                MessageKey.Confirmation);
         }
     }
 }

@@ -4,7 +4,7 @@ using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Hotkey;
 using Anna.Gui.Interfaces;
-using Anna.Gui.Messaging.Messages;
+using Anna.Gui.Messaging;
 using Anna.Gui.ViewModels;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
@@ -244,14 +244,14 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
 
     private async void OnBackgroundWorkerExceptionThrown(object? sender, ExceptionThrownEventArgs e)
     {
-        using var viewModel =
-            Dic.GetInstance(ConfirmationDialogViewModel.T, (
+        using var viewModel = await Messenger.RaiseTransitionAsync(
+            ConfirmationDialogViewModel.T,
+            (
                 Resources.AppName,
                 e.Exception.Message,
                 DialogResultTypes.Ok
-            ));
-
-        await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
+            ),
+            MessageKey.Confirmation);
 
         Dic.GetInstance<ILogService>().Warning(e.Exception.Message);
     }

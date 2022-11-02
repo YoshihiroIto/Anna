@@ -2,6 +2,7 @@
 using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
+using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Localization;
@@ -93,17 +94,16 @@ public sealed class SelectFileCopyActionDialogViewModel : HasModelWindowBaseView
             .ToAsyncReactiveCommand()
             .WithSubscribe(async () =>
             {
-                using var viewModel =
-                    Dic.GetInstance(InputEntryNameDialogViewModel.T,
-                        (
-                            DestFolder,
-                            Path.GetFileName(Model.DestFilepath),
-                            Resources.DialogTitle_ChangeEntryName,
-                            true,
-                            true
-                        ));
-
-                await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.InputEntryName));
+                using var viewModel = await Messenger.RaiseTransitionAsync(
+                    InputEntryNameDialogViewModel.T,
+                    (
+                        DestFolder,
+                        Path.GetFileName(Model.DestFilepath),
+                        Resources.DialogTitle_ChangeEntryName,
+                        true,
+                        true
+                    ),
+                    MessageKey.InputEntryName);
 
                 switch (viewModel.DialogResult)
                 {

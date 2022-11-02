@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel.Config;
 using Anna.Gui.Foundations;
+using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Localization;
@@ -47,15 +48,14 @@ public sealed class JumpFolderDialogViewModel : HasModelWindowBaseViewModel<Jump
                     if (SelectedPath.Value.Model.Path == "")
                         return;
 
-                    using var viewModel =
-                        Dic.GetInstance(ConfirmationDialogViewModel.T,
-                            (
-                                Resources.AppName,
-                                string.Format(Resources.Message_ConfirmDelete, SelectedPath.Value.Model.Path),
-                                DialogResultTypes.Yes | DialogResultTypes.No
-                            ));
-
-                    await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.Confirmation));
+                    using var viewModel = await Messenger.RaiseTransitionAsync(
+                        ConfirmationDialogViewModel.T,
+                        (
+                            Resources.AppName,
+                            string.Format(Resources.Message_ConfirmDelete, SelectedPath.Value.Model.Path),
+                            DialogResultTypes.Yes | DialogResultTypes.No
+                        ),
+                        MessageKey.Confirmation);
 
                     if (viewModel.DialogResult == DialogResultTypes.Yes)
                         SelectedPath.Value.Model.Path = "";
@@ -83,7 +83,8 @@ public sealed class JumpFolderDialogViewModel : HasModelWindowBaseViewModel<Jump
     }
 }
 
-public sealed class JumpFolderPathViewModel : HasModelViewModelBase<JumpFolderPathViewModel, JumpFolderConfigData.PathData>
+public sealed class JumpFolderPathViewModel
+    : HasModelViewModelBase<JumpFolderPathViewModel, JumpFolderConfigData.PathData>
 {
     public string Key { get; }
     public ReactivePropertySlim<string> Path { get; }

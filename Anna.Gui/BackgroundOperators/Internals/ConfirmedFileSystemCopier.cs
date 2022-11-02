@@ -2,7 +2,6 @@
 using Anna.DomainModel.FileSystem.FileProcessable;
 using Anna.Foundation;
 using Anna.Gui.Messaging;
-using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
@@ -16,7 +15,7 @@ internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
     IHasArg<(Messenger Messenger, CopyOrMove CopyOrMove)>
 {
     public static readonly ConfirmedFileSystemCopier T = default!;
-    
+
     private readonly (Messenger Messenger, CopyOrMove CopyOrMove) _arg;
     private FastSpinLock _lockObj;
 
@@ -42,10 +41,14 @@ internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
             if (CancellationTokenSource.IsCancellationRequested)
                 return;
 
-            using var viewModel =
-                Dic.GetInstance(SelectFileCopyActionDialogViewModel.T, (srcPath, destPath, result.IsFirst));
-
-            _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.SelectFileCopy));
+            using var viewModel = _arg.Messenger.RaiseTransition(
+                SelectFileCopyActionDialogViewModel.T,
+                (
+                    srcPath,
+                    destPath,
+                    result.IsFirst
+                ),
+                MessageKey.SelectFileCopy);
 
             result = viewModel.Result;
 
@@ -72,11 +75,16 @@ internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
             var folder = Path.GetDirectoryName(destPath) ?? "";
             var fileName = Path.GetFileName(destPath);
 
-            using var viewModel =
-                Dic.GetInstance(InputEntryNameDialogViewModel.T,
-                    (folder, fileName, Resources.DialogTitle_ChangeEntryName, true, true));
-
-            _arg.Messenger.Raise(new TransitionMessage(viewModel, MessageKey.InputEntryName));
+            using var viewModel = _arg.Messenger.RaiseTransition(
+                InputEntryNameDialogViewModel.T,
+                (
+                    folder,
+                    fileName,
+                    Resources.DialogTitle_ChangeEntryName,
+                    true,
+                    true
+                ),
+                MessageKey.InputEntryName);
 
             if (viewModel.DialogResult == DialogResultTypes.Cancel)
                 CancellationTokenSource.Cancel();

@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.DomainModel.Config;
+using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
@@ -81,9 +82,13 @@ public sealed class CopyOrMoveEntryDialogViewModel : HasModelWindowBaseViewModel
     {
         if (DestFolder.Value == "")
         {
-            using var viewModel = Dic.GetInstance(SelectFolderDialogViewModel.T, (Model.CurrentFolderPath, 0));
-
-            await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.SelectFolder));
+            using var viewModel = await Messenger.RaiseTransitionAsync(
+                SelectFolderDialogViewModel.T,
+                (
+                    Model.CurrentFolderPath,
+                    0
+                ),
+                MessageKey.SelectFolder);
 
             DestFolder.Value = viewModel.ResultPath;
         }
@@ -98,11 +103,13 @@ public sealed class CopyOrMoveEntryDialogViewModel : HasModelWindowBaseViewModel
 
     public async Task OnJumpFolderDialogSync()
     {
-        using var viewModel =
-            Dic.GetInstance(JumpFolderDialogViewModel.T,
-                (Model.CurrentFolderPath, Dic.GetInstance<JumpFolderConfig>().Data));
-
-        await Messenger.RaiseAsync(new TransitionMessage(viewModel, MessageKey.JumpFolder));
+        using var viewModel = await Messenger.RaiseTransitionAsync(
+            JumpFolderDialogViewModel.T,
+            (
+                Model.CurrentFolderPath,
+                Dic.GetInstance<JumpFolderConfig>().Data
+            ),
+            MessageKey.JumpFolder);
 
         if (viewModel.DialogResult != DialogResultTypes.Ok)
             return;

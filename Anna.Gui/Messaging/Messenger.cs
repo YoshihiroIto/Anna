@@ -3,12 +3,19 @@ using Avalonia.Threading;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Messaging;
 
 public sealed class Messenger
 {
+    public readonly IServiceProvider Dic;
     public event InteractionMessageRaisedEventHandler? Raised;
+
+    public Messenger(IServiceProvider dic)
+    {
+        Dic = dic;
+    }
 
     public async ValueTask<T> RaiseAsync<T>(T message)
         where T : MessageBase

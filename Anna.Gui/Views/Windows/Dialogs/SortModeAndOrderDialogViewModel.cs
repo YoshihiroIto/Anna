@@ -4,7 +4,8 @@ using Anna.Service;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class SortModeAndOrderDialogViewModel : WindowBaseViewModel
+public sealed class SortModeAndOrderDialogViewModel
+    : HasModelWindowBaseViewModel<SortModeAndOrderDialogViewModel, int/*dummy*/>
 {
     public SortModes ResultSortMode { get; set; }
     public SortOrders ResultSortOrder { get; set; }

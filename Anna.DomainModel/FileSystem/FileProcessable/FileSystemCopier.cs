@@ -60,6 +60,8 @@ public abstract class FileSystemCopier : IFileProcessable
                 default:
                     throw new InvalidOperationException();
             }
+
+            Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destPath);
         }
         catch (OperationCanceledException)
         {

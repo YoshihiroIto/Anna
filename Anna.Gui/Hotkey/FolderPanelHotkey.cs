@@ -198,8 +198,6 @@ public sealed class FolderPanelHotkey : HotkeyBase
             ));
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
-
-        Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 
     private async ValueTask DeleteEntryAsync(IFolderPanelHotkeyReceiver receiver)
@@ -352,13 +350,13 @@ public sealed class FolderPanelHotkey : HotkeyBase
                         }
                     );
                 }
+
+                Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
             });
 
         op = @operator;
 
         await receiver.BackgroundWorker.PushOperatorAsync(@operator);
-
-        Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
     }
 
     private async ValueTask EmptyTrashCanAsync(IFolderPanelHotkeyReceiver receiver)

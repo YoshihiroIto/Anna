@@ -4,6 +4,7 @@ using Anna.Service.ObjectLifetimeChecker;
 using Anna.Service.Services;
 using Anna.Service.Workers;
 using Anna.ServiceProvider;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Anna.TestFoundation;
@@ -15,6 +16,7 @@ public sealed class TestServiceProvider : ServiceProviderBase
         RegisterSingleton<IObjectLifetimeCheckerService, NopObjectLifetimeChecker>();
         RegisterSingleton<ILogService, NopLog>();
         RegisterSingleton<IBackgroundWorker, MockBackgroundWorker>();
+        RegisterSingleton<IFolderHistoryService, MockFolderHistoryService>();
 
         Options.ResolveUnregisteredConcreteTypes = true;
 
@@ -36,5 +38,15 @@ internal sealed class MockBackgroundWorker : IBackgroundWorker
     public ValueTask PushOperatorAsync(IBackgroundOperator @operator)
     {
         throw new NotImplementedException();
+    }
+}
+
+internal sealed class MockFolderHistoryService : IFolderHistoryService
+{
+    public ReadOnlyObservableCollection<string> DestinationFolders =>
+        default!;
+
+    public void AddDestinationFolder(string path)
+    {
     }
 }

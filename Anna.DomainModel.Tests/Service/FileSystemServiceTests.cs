@@ -22,8 +22,6 @@ public sealed class FileSystemServiceTests : IDisposable
     [InlineData("a", "b", "c")]
     public void File_copy(params string[] srcNames)
     {
-        var fso = new DefaultFileSystemCopier(_dic, CopyOrMove.Copy);
-
         _tempFolder.CreateFolder("x");
         var dstFolderPath = Path.Combine(_tempFolder.RootPath, "x");
 
@@ -36,7 +34,8 @@ public sealed class FileSystemServiceTests : IDisposable
 
             var srcEntry = new TestEntry(srcPath, false, 0);
 
-            fso.Invoke(new[] { srcEntry }, dstFolderPath);
+            var fso = new DefaultFileSystemCopier(_dic, new IEntry[] { srcEntry }, dstFolderPath, CopyOrMove.Copy);
+            fso.Invoke();
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -51,8 +50,6 @@ public sealed class FileSystemServiceTests : IDisposable
     [InlineData("a", "b", "c")]
     public void Folder_copy(params string[] srcNames)
     {
-        var fso = new DefaultFileSystemCopier(_dic, CopyOrMove.Copy);
-
         _tempFolder.CreateFolder("x");
         var dstFolderPath = Path.Combine(_tempFolder.RootPath, "x");
 
@@ -65,7 +62,8 @@ public sealed class FileSystemServiceTests : IDisposable
 
             var srcEntry = new TestEntry(srcPath, true, 0);
 
-            fso.Invoke(new[] { srcEntry }, dstFolderPath);
+            var fso = new DefaultFileSystemCopier(_dic, new IEntry[] { srcEntry }, dstFolderPath, CopyOrMove.Copy);
+            fso.Invoke();
 
             var dstPath = Path.Combine(dstFolderPath, srcName);
 
@@ -77,8 +75,6 @@ public sealed class FileSystemServiceTests : IDisposable
     [Fact]
     public void SubFolder_copy()
     {
-        var fso = new DefaultFileSystemCopier(_dic, CopyOrMove.Copy);
-
         _tempFolder.CreateFolder("x/y/z");
         _tempFolder.CreateFile("a");
         _tempFolder.CreateFile("x/b");
@@ -90,7 +86,8 @@ public sealed class FileSystemServiceTests : IDisposable
         var srcEntry0 = new TestEntry(Path.Combine(_tempFolder.RootPath, "a"), false, 0);
         var srcEntry1 = new TestEntry(Path.Combine(_tempFolder.RootPath, "x"), true, 0);
 
-        fso.Invoke(new[] { srcEntry0, srcEntry1 }, dstFolderPath);
+        var fso = new DefaultFileSystemCopier(_dic, new IEntry[] { srcEntry0, srcEntry1 }, dstFolderPath, CopyOrMove.Copy);
+        fso.Invoke();
 
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x")));
         Assert.True(Directory.Exists(Path.Combine(dstFolderPath, "x/y")));

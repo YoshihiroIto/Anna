@@ -67,6 +67,10 @@ public sealed class CompressionService : ICompressionService
             else
             {
                 var filePath = Path.Combine(destFolderPath, entry.Name);
+                var folderPath = Path.GetDirectoryName(filePath) ?? throw new NullReferenceException();
+                
+                if (Directory.Exists(folderPath) == false)
+                    Directory.CreateDirectory(folderPath);
 
                 using (var file = File.OpenWrite(filePath))
                     zipInput.CopyTo(file);

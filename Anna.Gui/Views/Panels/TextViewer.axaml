@@ -24,7 +24,7 @@
     </UserControl.Styles>
 
     <avaloniaEdit:TextEditor x:Name="ViewTextEditor"
-                             HorizontalScrollBarVisibility="Disabled"
+                             HorizontalScrollBarVisibility="Auto"
                              IsReadOnly="True"
                              ShowLineNumbers="True" />
 </UserControl>

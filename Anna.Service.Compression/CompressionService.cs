@@ -1,16 +1,66 @@
-﻿using Anna.Foundation;
-using Anna.Service.Services;
+﻿using Anna.Service.Services;
 using ICSharpCode.SharpZipLib.Zip;
 using Jewelry.Memory;
-using System.Buffers;
 
 namespace Anna.Service.Compression;
 
 public sealed class CompressionService : ICompressionService
 {
-    public void Compress(IEnumerable<string> targetFilePaths, string destArchiveFilePath, Action<double> onProgress)
+    public void Compress(IEnumerable<string> sourceEntryPaths, string destArchiveFilePath, Action onFileProcessed)
     {
-        throw new NotImplementedException();
+        using var zipOutput = new ZipOutputStream(File.Create(destArchiveFilePath));
+
+        var baseFolder = Path.GetDirectoryName(destArchiveFilePath) ?? throw new NullReferenceException();
+
+        foreach (var targetEntryPath in sourceEntryPaths)
+        {
+            if (File.Exists(targetEntryPath))
+                CompressEntry(zipOutput,
+                    baseFolder,
+                    targetEntryPath,
+                    File.GetLastWriteTime(targetEntryPath),
+                    true,
+                    onFileProcessed);
+            else
+                CompressFolder(zipOutput, baseFolder, targetEntryPath, onFileProcessed);
+        }
+
+        zipOutput.Finish();
+    }
+
+    private static void CompressFolder(ZipOutputStream zipOutput, string baseFolder, string targetPath,
+        Action onFileProcessed)
+    {
+        var di = new DirectoryInfo(targetPath);
+        
+        CompressEntry(zipOutput, baseFolder, di.FullName, di.LastWriteTime, false, onFileProcessed);
+
+        foreach (var fi in di.EnumerateFileSystemInfos("*", SearchOption.AllDirectories).OrderBy(x => x.FullName))
+        {
+            var isFile = fi is FileInfo;
+            CompressEntry(zipOutput, baseFolder, fi.FullName, fi.LastWriteTime, isFile, onFileProcessed);
+        }
+    }
+
+    private static void CompressEntry(ZipOutputStream zipOutput, string baseFolder, string targetPath,
+        DateTime targetTimeStamp, bool isFile, Action onFileProcessed)
+    {
+        var zippedEntryPath = Path.GetRelativePath(baseFolder, targetPath);
+
+        var entry = new ZipEntry(isFile ? zippedEntryPath : zippedEntryPath + "/") { DateTime = targetTimeStamp };
+
+        if (isFile == false)
+            entry.CompressionMethod = CompressionMethod.Stored;
+
+        zipOutput.PutNextEntry(entry);
+
+        if (isFile)
+        {
+            using var targetFile = File.OpenRead(targetPath);
+            targetFile.CopyTo(zipOutput);
+
+            onFileProcessed();
+        }
     }
 
     public void Decompress(IEnumerable<string> archiveFilePaths, string destFolderPath, Action<double> onProgress)
@@ -30,7 +80,7 @@ public sealed class CompressionService : ICompressionService
 
             ++count;
         }
-        
+
         onProgress(1d);
     }
 
@@ -68,7 +118,7 @@ public sealed class CompressionService : ICompressionService
             {
                 var filePath = Path.Combine(destFolderPath, entry.Name);
                 var folderPath = Path.GetDirectoryName(filePath) ?? throw new NullReferenceException();
-                
+
                 if (Directory.Exists(folderPath) == false)
                     Directory.CreateDirectory(folderPath);
 

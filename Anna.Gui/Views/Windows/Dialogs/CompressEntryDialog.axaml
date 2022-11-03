@@ -2,6 +2,7 @@
                   Classes="dialog"
                   xmlns="https://github.com/avaloniaui"
                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
                   xmlns:base1="clr-namespace:Anna.Gui.Views.Windows.Base"
                   xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
                   xmlns:behaviors1="clr-namespace:Anna.Gui.Messaging.Behaviors"
@@ -9,7 +10,6 @@
                   xmlns:dialogs1="clr-namespace:Anna.Gui.Views.Windows.Dialogs"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
-                  xmlns:actions="clr-namespace:Anna.Gui.Messaging.Behaviors.Actions"
                   xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
                   Title="{ReflectionBinding R.DialogTitle_Compress}"
                   Width="500"
@@ -43,7 +43,7 @@
                                       Mode="Dialog"
                                       WindowType="{x:Type dialogs1:JumpFolderDialog}" />
         </behaviors1:MessageTrigger>
-        
+
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.SelectFolder}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"
@@ -79,13 +79,19 @@
                 </Style>
             </StackPanel.Styles>
 
+            <TextBox Margin="0,0,0,32"
+                     HorizontalAlignment="Stretch"
+                     Text="{Binding DestArchiveName.Value}">
+                <Interaction.Behaviors>
+                    <behaviors:InputElementFocusBehavior />
+                </Interaction.Behaviors>
+            </TextBox>
+
             <TextBox HorizontalAlignment="Stretch" Text="{Binding DestFolder.Value}">
                 <Interaction.Behaviors>
                     <behaviors:ControlKeyDownTriggerBehavior Key="Enter">
-                        <InvokeCommandAction Command="{Binding OkCommand, Mode=OneTime}"  />
+                        <InvokeCommandAction Command="{Binding OkCommand, Mode=OneTime}" />
                     </behaviors:ControlKeyDownTriggerBehavior>
-
-                    <behaviors:InputElementFocusBehavior />
                 </Interaction.Behaviors>
             </TextBox>
 
@@ -98,8 +104,8 @@
                     Content="{ReflectionBinding R.UI_JumpFolderDialog}" />
 
             <TextBlock Text="{Binding LeaderName}" TextTrimming="CharacterEllipsis" />
-            
-            <panels:EntriesStatsPanel DataContext="{Binding EntriesStatsPanelViewModel}"/>
+
+            <panels:EntriesStatsPanel DataContext="{Binding EntriesStatsPanelViewModel}" />
         </StackPanel>
     </DockPanel>
 </base1:WindowBase>

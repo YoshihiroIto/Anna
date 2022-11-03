@@ -5,12 +5,12 @@ using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
-using Anna.Localization;
 using Anna.Service.Services;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -21,10 +21,12 @@ namespace Anna.Gui.Views.Windows.Dialogs;
 public sealed class CompressEntryDialogViewModel : HasModelWindowBaseViewModel<CompressEntryDialogViewModel,
     (string CurrentFolderPath, Entry[] Targets, EntriesStats Stats )>
 {
+    public string ResultDestArchiveName { get; private set; } = "";
     public string ResultDestFolder { get; private set; } = "";
 
     public string LeaderName => Model.Targets[0].NameWithExtension;
 
+    public ReactivePropertySlim<string> DestArchiveName { get; }
     public ReactivePropertySlim<string> DestFolder { get; }
 
     public ReadOnlyObservableCollection<string> DestFoldersHistory =>
@@ -41,6 +43,7 @@ public sealed class CompressEntryDialogViewModel : HasModelWindowBaseViewModel<C
     public CompressEntryDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
+        DestArchiveName = new ReactivePropertySlim<string>(Path.ChangeExtension(LeaderName, ".zip")).AddTo(Trash);
         DestFolder = new ReactivePropertySlim<string>("").AddTo(Trash);
 
         SelectedDestFolderHistory = new ReactivePropertySlim<int>(-1).AddTo(Trash);
@@ -78,6 +81,11 @@ public sealed class CompressEntryDialogViewModel : HasModelWindowBaseViewModel<C
         }
         else
         {
+            ResultDestArchiveName =
+                DestArchiveName.Value.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)
+                    ? DestArchiveName.Value
+                    : DestArchiveName.Value + ".zip";
+            
             ResultDestFolder = DestFolder.Value;
             DialogResult = DialogResultTypes.Ok;
 

@@ -22,7 +22,7 @@ public sealed class TestApp : IAsyncDisposable
 
     public DefaultServiceProvider Dic { get; }
 
-    public TestApp(TempFolder? configFolder = null, string workFolder = "", bool isHeadless = false)
+    public TestApp(TempFolder? configFolder = null, string workFolder = "", bool isHeadless = true)
     {
         if (configFolder is null)
         {

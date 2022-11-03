@@ -36,8 +36,11 @@ public sealed class JumpFolderTests : IDisposable
         {
             var w = _fixture.App.FolderWindows.First();
 
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.J);
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.Escape);
+            await Task.Delay(100);
 
             return w.ViewModel.Model;
         });
@@ -47,7 +50,7 @@ public sealed class JumpFolderTests : IDisposable
         Assert.Equal(configFolder.WorkPath, model.Folder.Path);
     }
 
-    [Fact(Skip = "skip")]
+    [Fact]
     public async Task Select_empty()
     {
         var configFolder = _fixture.ConfigFolder;
@@ -58,8 +61,11 @@ public sealed class JumpFolderTests : IDisposable
         {
             var w = _fixture.App.FolderWindows.First();
 
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.J);
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.Enter);
+            await Task.Delay(100);
 
             await Task.Delay(500);
 
@@ -71,7 +77,7 @@ public sealed class JumpFolderTests : IDisposable
         Assert.Equal(configFolder.WorkPath, model.Folder.Path);
     }
 
-    [Fact(Skip = "skip")]
+    [Fact]
     public async Task Select_folder()
     {
         var configFolder = _fixture.ConfigFolder;
@@ -93,8 +99,11 @@ public sealed class JumpFolderTests : IDisposable
         {
             var w = _fixture.App.FolderWindows.First();
 
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.J);
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.A);
+            await Task.Delay(100);
 
             await Task.Delay(500);
 
@@ -126,10 +135,14 @@ public sealed class JumpFolderTests : IDisposable
         await Dispatcher.UIThread.InvokeAsync(async () =>
         {
             var w = _fixture.App.FolderWindows.First();
+            await Task.Delay(100);
 
             await w.PressKeyAsync(Key.J);
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.Delete);
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.Enter);// Confirmation dialog
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.Escape);
         });
 
@@ -150,14 +163,20 @@ public sealed class JumpFolderTests : IDisposable
         {
             var w = _fixture.App.FolderWindows.First();
 
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.J);
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.Insert);
+            await Task.Delay(100);
 
             var textBox = FocusManager.Instance?.Current as TextBox ?? throw new NullReferenceException();
             textBox.Text = "123abc";
 
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.Enter);
+            await Task.Delay(100);
             await w.PressKeyAsync(Key.Escape);
+            await Task.Delay(100);
         });
 
         await Task.Delay(100);

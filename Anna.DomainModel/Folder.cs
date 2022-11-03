@@ -2,6 +2,7 @@
 using Anna.Foundation;
 using Anna.Service.Services;
 using Anna.Service.Workers;
+using Jewelry.Memory;
 using Reactive.Bindings.Extensions;
 using System.Diagnostics;
 using IServiceProvider=Anna.Service.IServiceProvider;

@@ -51,6 +51,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.OpenEntryByEditor1, s => OpenEntryByEditorAsync((IFolderPanelHotkeyReceiver)s, 1) },
             { Operations.OpenEntryByEditor2, s => OpenEntryByEditorAsync((IFolderPanelHotkeyReceiver)s, 2) },
             { Operations.OpenEntryByApp, s => OpenEntryByAppAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.PreviewEntry, s => PreviewEntryAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.CopyEntry, s => CopyOrMoveEntryAsync((IFolderPanelHotkeyReceiver)s, CopyOrMove.Copy) },
             { Operations.MoveEntry, s => CopyOrMoveEntryAsync((IFolderPanelHotkeyReceiver)s, CopyOrMove.Move) },
@@ -131,6 +132,22 @@ public sealed class FolderPanelHotkey : HotkeyBase
                 (target, 0),
                 MessageKey.EntryDisplay);
         }
+    }
+
+    private async ValueTask PreviewEntryAsync(IFolderPanelHotkeyReceiver receiver)
+    {
+        var target = receiver.CurrentEntry;
+
+        if (target.IsFolder)
+            return;
+
+        if (await CheckIsAccessibleAsync(target.Path, receiver.Messenger) == false)
+            return;
+
+        using var _ = await receiver.Messenger.RaiseTransitionAsync(
+            EntryDisplayDialogViewModel.T,
+            (target, 0),
+            MessageKey.EntryDisplay);
     }
 
     private ValueTask OpenEntryByEditorAsync(IFolderPanelHotkeyReceiver receiver, int index)

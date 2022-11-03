@@ -50,6 +50,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.Enter, KeyModifiers.None, Operations.OpenEntry),
             new(Key.Enter, KeyModifiers.Shift, Operations.OpenEntryByEditor1),
             new(Key.Enter, metaKey, Operations.OpenEntryByApp),
+            new(Key.V, KeyModifiers.None, Operations.PreviewEntry),
             //
             new(Key.C, KeyModifiers.None, Operations.CopyEntry),
             new(Key.M, KeyModifiers.None, Operations.MoveEntry),
@@ -91,6 +92,7 @@ public enum Operations
     OpenEntryByEditor1,
     OpenEntryByEditor2,
     OpenEntryByApp,
+    PreviewEntry,
     //
     CopyEntry,
     MoveEntry,

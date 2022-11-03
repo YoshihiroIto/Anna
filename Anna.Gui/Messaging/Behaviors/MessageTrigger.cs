@@ -15,6 +15,12 @@ public sealed class MessageTrigger : Trigger<Control>
         AvaloniaProperty.Register<MessageTrigger, Messenger>(
             nameof(Messenger),
             defaultBindingMode: BindingMode.OneTime);
+            
+    public static readonly StyledProperty<string> MessageKeyProperty =
+        AvaloniaProperty.Register<MessageTrigger, string>(
+            nameof(MessageKey),
+            defaultValue: "",
+            defaultBindingMode: BindingMode.OneTime);
 
     public Messenger Messenger
     {
@@ -22,7 +28,11 @@ public sealed class MessageTrigger : Trigger<Control>
         set => SetValue(MessengerProperty, value);
     }
 
-    public string MessageKey { get; set; } = "";
+    public string MessageKey
+    {
+        get => GetValue(MessageKeyProperty);
+        set => SetValue(MessageKeyProperty, value);
+    }
 
     static MessageTrigger()
     {

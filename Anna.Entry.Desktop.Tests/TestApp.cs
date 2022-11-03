@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Headless;
 using Avalonia.Threading;
+using Jewelry.Memory;
 using Xunit;
 
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
@@ -75,7 +76,9 @@ public sealed class TestApp : IAsyncDisposable
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            foreach (var dw in FolderWindows.ToArray())
+            using var folderWindows = FolderWindows.ToPooledArray();
+            
+            foreach (var dw in folderWindows.AsSpan())
                 dw.Close();
         });
     }

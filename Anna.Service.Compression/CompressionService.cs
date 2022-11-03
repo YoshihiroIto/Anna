@@ -15,16 +15,20 @@ public sealed class CompressionService : ICompressionService
 
     public void Decompress(IEnumerable<string> archiveFilePaths, string destFolderPath, Action<double> onProgress)
     {
-        var filePaths = archiveFilePaths as string[] ?? archiveFilePaths.ToArray();
+        using var tempFilePaths = archiveFilePaths.ToPooledArray();
 
-        for (var i = 0; i != filePaths.Length; ++i)
+        var filePathsLengthInverse = 1d / tempFilePaths.Length;
+        var count = 0;
+        foreach (var filePath in tempFilePaths.AsSpan())
         {
             DecompressInternal(
-                filePaths[i],
+                filePath,
                 destFolderPath,
-                p => onProgress(p / filePaths.Length),
-                i
+                p => onProgress(p * filePathsLengthInverse),
+                count
             );
+
+            ++count;
         }
         
         onProgress(1d);

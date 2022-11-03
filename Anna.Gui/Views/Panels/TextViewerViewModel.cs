@@ -10,6 +10,7 @@ using Avalonia.Media;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Threading.Tasks;
+using Anna.Service.Services;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -23,6 +24,18 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewMo
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
 
     public async ValueTask<string> ReadText()
+    {
+        return Constants.Constants.SupportedArchiveFormats.Contains(Model.Extension)
+            ? await ReadTextArchive()
+            : await ReadTextDefault();
+    }
+
+    public async ValueTask<string> ReadTextArchive()
+    {
+        return await Task.Run(() => Dic.GetInstance<ICompressionService>().ReadMetaString(Model.Path));
+    }
+
+    public async ValueTask<string> ReadTextDefault()
     {
         await using var stream = Model.OpenRead();
 

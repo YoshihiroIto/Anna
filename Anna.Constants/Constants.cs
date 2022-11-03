@@ -123,4 +123,7 @@ public static class Constants
         ".nef",
         ".arw"
     };
+    
+    // todo: ReadOnlyHashSet
+    public static readonly HashSet<string> SupportedArchiveFormats = new(StringComparer.OrdinalIgnoreCase) { ".zip" };
 }

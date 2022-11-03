@@ -13,7 +13,26 @@ public sealed class CompressionService : ICompressionService
         throw new NotImplementedException();
     }
 
-    public void Decompress(string archiveFilePath, string destFolderPath, Action<double> onProgress)
+    public void Decompress(IEnumerable<string> archiveFilePaths, string destFolderPath, Action<double> onProgress)
+    {
+        var filePaths = archiveFilePaths as string[] ?? archiveFilePaths.ToArray();
+
+        for (var i = 0; i != filePaths.Length; ++i)
+        {
+            DecompressInternal(
+                filePaths[i],
+                destFolderPath,
+                p => onProgress(p / filePaths.Length),
+                i
+            );
+        }
+        
+        onProgress(1d);
+    }
+
+    private static void DecompressInternal(
+        string archiveFilePath, string destFolderPath, Action<double> onProgress,
+        double progressOffset)
     {
         Directory.CreateDirectory(destFolderPath);
 
@@ -64,7 +83,7 @@ public sealed class CompressionService : ICompressionService
 
                 ++processed;
 
-                onProgress((double)processed / fileCount);
+                onProgress(progressOffset + (double)processed / fileCount);
             }
         }
         finally
@@ -75,7 +94,5 @@ public sealed class CompressionService : ICompressionService
         // set folder timestamp
         foreach (var folder in folders.Buffer)
             Directory.SetLastWriteTimeUtc(folder.Path, folder.TimeStamp);
-
-        onProgress(1d);
     }
 }

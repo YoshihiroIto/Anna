@@ -384,22 +384,12 @@ public sealed class FolderPanelHotkey : HotkeyBase
             DelegateBackgroundOperator.T,
             () =>
             {
-                var targetEntries = receiver.TargetEntries;
-
-                for (var i = 0; i != targetEntries.Length; ++i)
-                {
-                    Dic.GetInstance<ICompressionService>().Decompress(
-                        targetEntries[i].Path,
-                        destFolder,
-                        p =>
-                        {
-                            // ReSharper disable AccessToModifiedClosure
-                            if (op is not null)
-                                op.Progress = (i + p) / targetEntries.Length;
-                            // ReSharper restore AccessToModifiedClosure
-                        }
-                    );
-                }
+                Dic.GetInstance<ICompressionService>().Decompress(
+                    receiver.TargetEntries.Select(x => x.Path),
+                    destFolder,
+                    // ReSharper disable once AccessToModifiedClosure
+                    p => op!.Progress = p
+                );
 
                 Dic.GetInstance<IFolderHistoryService>().AddDestinationFolder(destFolder);
             });

@@ -182,7 +182,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
             ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
-        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+        receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
     }
 
     private async ValueTask DeleteEntryAsync(IFolderPanelHotkeyReceiver receiver)
@@ -209,7 +209,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
             ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
-        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+        receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
     }
 
     private async ValueTask RenameEntryAsync(IFolderPanelHotkeyReceiver receiver)
@@ -297,7 +297,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
             ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
-        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+        receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
     }
 
     private async ValueTask DecompressEntryAsync(IFolderPanelHotkeyReceiver receiver)
@@ -322,7 +322,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
             (NopEntriesStats.Instance, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Direct));
-        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+        receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
     }
 
     private async ValueTask EmptyTrashCanAsync(IFolderPanelHotkeyReceiver receiver)
@@ -352,7 +352,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
                 var @operator = Dic.GetInstance(DelegateBackgroundOperator.T,
                     (Action)(() => Dic.GetInstance<ITrashCanService>().EmptyTrashCan()));
 
-                await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+                receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
                 break;
 
             case DialogResultTypes.No:

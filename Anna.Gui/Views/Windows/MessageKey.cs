@@ -8,7 +8,7 @@ public static class MessageKey
     public const string SelectFolder = nameof(SelectFolder);
     public const string InputEntryName = nameof(InputEntryName);
     public const string SelectFileCopy = nameof(SelectFileCopy);
-    public const string EntryDisplay = nameof(EntryDisplay);
+    public const string PreviewDisplay = nameof(PreviewDisplay);
     public const string DeleteEntry = nameof(DeleteEntry);
     public const string CopyOrMoveEntry = nameof(CopyOrMoveEntry);
     public const string SelectSortModeAndOrder = nameof(SelectSortModeAndOrder);

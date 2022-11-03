@@ -122,16 +122,9 @@ public sealed class FolderPanelHotkey : HotkeyBase
             return;
 
         if (target.IsFolder)
-        {
             receiver.Folder.Path = target.Path;
-        }
         else
-        {
-            using var _ = await receiver.Messenger.RaiseTransitionAsync(
-                EntryDisplayDialogViewModel.T,
-                (target, 0),
-                MessageKey.EntryDisplay);
-        }
+            await PreviewEntryAsync(receiver);
     }
 
     private async ValueTask PreviewEntryAsync(IFolderPanelHotkeyReceiver receiver)
@@ -145,9 +138,9 @@ public sealed class FolderPanelHotkey : HotkeyBase
             return;
 
         using var _ = await receiver.Messenger.RaiseTransitionAsync(
-            EntryDisplayDialogViewModel.T,
+            EntryPreviewDialogViewModel.T,
             (target, 0),
-            MessageKey.EntryDisplay);
+            MessageKey.PreviewDisplay);
     }
 
     private ValueTask OpenEntryByEditorAsync(IFolderPanelHotkeyReceiver receiver, int index)

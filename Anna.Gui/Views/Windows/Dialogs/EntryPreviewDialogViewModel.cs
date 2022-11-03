@@ -10,14 +10,14 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public sealed class EntryDisplayDialogViewModel : HasModelWindowBaseViewModel<EntryDisplayDialogViewModel,
+public sealed class EntryPreviewDialogViewModel : HasModelWindowBaseViewModel<EntryPreviewDialogViewModel,
     (Entry Entry, int Dummy)>
 {
     public string Title => Model.Entry.NameWithExtension + " - " + Path.GetDirectoryName(Model.Entry.Path);
 
     public ViewModelBase? ContentViewModel { get; }
 
-    public EntryDisplayDialogViewModel(IServiceProvider dic)
+    public EntryPreviewDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
         switch (Model.Entry.Format)

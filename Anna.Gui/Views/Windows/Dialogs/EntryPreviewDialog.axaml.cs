@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Anna.Gui.Views.Windows.Dialogs;
 
-public partial class EntryDisplayDialog : WindowBase<EntryDisplayDialogViewModel>
+public partial class EntryPreviewDialog : WindowBase<EntryPreviewDialogViewModel>
 {
-    public EntryDisplayDialog()
+    public EntryPreviewDialog()
     {
         InitializeComponent();
 #if DEBUG

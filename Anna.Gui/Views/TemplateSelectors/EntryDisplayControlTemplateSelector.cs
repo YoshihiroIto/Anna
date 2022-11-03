@@ -16,7 +16,7 @@ public sealed class EntryDisplayControlTemplateSelector : IControlTemplate
     {
         var contentControl = param as ContentControl ?? throw new NullReferenceException();
 
-        if (contentControl.Content is not EntryDisplayDialogViewModel vm)
+        if (contentControl.Content is not EntryPreviewDialogViewModel vm)
             throw new NotSupportedException();
 
         return vm.ContentViewModel switch

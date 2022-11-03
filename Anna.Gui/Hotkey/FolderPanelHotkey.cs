@@ -68,7 +68,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         };
     }
 
-    private async ValueTask SelectSortModeAndOrderAsync(IFolderPanelHotkeyReceiver receiver)
+    private static async ValueTask SelectSortModeAndOrderAsync(IFolderPanelHotkeyReceiver receiver)
     {
         using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             SortModeAndOrderDialogViewModel.T,
@@ -212,7 +212,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
     }
 
-    private async ValueTask RenameEntryAsync(IFolderPanelHotkeyReceiver receiver)
+    private static async ValueTask RenameEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         string? lastRemovePath = null;
 
@@ -253,7 +253,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
             receiver.Folder.InvokeEntryExplicitlyCreated(lastRemovePath);
     }
 
-    private async ValueTask MakeFolderOrFileAsync(IFolderPanelHotkeyReceiver receiver, bool isFolder)
+    private static async ValueTask MakeFolderOrFileAsync(IFolderPanelHotkeyReceiver receiver, bool isFolder)
     {
         var newName = FileSystemHelper.MakeNewEntryName(
             receiver.Folder.Path,

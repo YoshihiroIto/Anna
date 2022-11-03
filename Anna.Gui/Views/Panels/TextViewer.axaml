@@ -26,5 +26,5 @@
     <avaloniaEdit:TextEditor x:Name="ViewTextEditor"
                              HorizontalScrollBarVisibility="Auto"
                              IsReadOnly="True"
-                             ShowLineNumbers="True" />
+                             ShowLineNumbers="{Binding ShowLineNumbers, Mode=OneTime}" />
 </UserControl>

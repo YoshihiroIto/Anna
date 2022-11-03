@@ -20,6 +20,8 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewMo
 
     public readonly TextViewerHotkey Hotkey;
 
+    public bool ShowLineNumbers { get; init; }
+    
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily { get; }
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
 
@@ -51,6 +53,7 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewMo
         : base(dic)
     {
         Hotkey = dic.GetInstance<TextViewerHotkey>().AddTo(Trash);
+        ShowLineNumbers = Constants.Constants.SupportedArchiveFormats.Contains(Model.Extension) == false;
 
         ViewerFontFamily = Dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.ViewerFontFamily)

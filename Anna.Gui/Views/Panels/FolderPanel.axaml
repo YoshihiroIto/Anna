@@ -42,63 +42,43 @@
         <behaviors:FolderPanelInputBehavior />
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.Confirmation}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:ConfirmationDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:ConfirmationDialog}" />
         </behaviors1:MessageTrigger>
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.InputEntryName}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:InputEntryNameDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:InputEntryNameDialog}" />
         </behaviors1:MessageTrigger>
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.SelectFileCopy}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:SelectFileCopyActionDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:SelectFileCopyActionDialog}" />
         </behaviors1:MessageTrigger>
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.JumpFolder}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:JumpFolderDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:JumpFolderDialog}" />
         </behaviors1:MessageTrigger>
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.EntryDisplay}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:EntryDisplayDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:EntryDisplayDialog}" />
         </behaviors1:MessageTrigger>
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.DeleteEntry}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:DeleteEntryDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:DeleteEntryDialog}" />
         </behaviors1:MessageTrigger>
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.CopyOrMoveEntry}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:CopyOrMoveEntryDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:CopyOrMoveEntryDialog}" />
         </behaviors1:MessageTrigger>
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.SelectSortModeAndOrder}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:SortModeAndOrderDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:SortModeAndOrderDialog}" />
         </behaviors1:MessageTrigger>
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.CompressEntry}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:CompressEntryDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:CompressEntryDialog}" />
         </behaviors1:MessageTrigger>
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.DecompressEntry}" Messenger="{Binding Messenger}">
-            <actions:TransitionAction Dic="{Binding Dic}"
-                                      Mode="Dialog"
-                                      WindowType="{x:Type dialogs:DecompressEntryDialog}" />
+            <actions:TransitionAction Dic="{Binding Dic}" WindowType="{x:Type dialogs:DecompressEntryDialog}" />
         </behaviors1:MessageTrigger>
     </Interaction.Behaviors>
 

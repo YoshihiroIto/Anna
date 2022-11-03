@@ -28,7 +28,7 @@ public sealed class TransitionAction : AvaloniaObject, IAction, IAsyncAction
         AvaloniaProperty.Register<TransitionAction, TransitionMode>(
             nameof(Mode),
             defaultBindingMode: BindingMode.OneTime,
-            defaultValue: TransitionMode.Unknown);
+            defaultValue: TransitionMode.Dialog);
 
     public IServiceProvider Dic
     {

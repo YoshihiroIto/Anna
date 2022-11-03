@@ -43,56 +43,40 @@ public sealed class CompressionService : ICompressionService
         long fileCount;
 
         using (var zip = new ZipFile(archiveFilePath))
-        {
             fileCount = zip.Count;
-        }
 
         using var folders = new TempBuffer<(string Path, DateTime TimeStamp)>(512);
 
-        var buffer = ArrayPool<byte>.Shared.Rent(64 * 1024);
+        // decompress files
+        using var inputFile = File.OpenRead(archiveFilePath);
+        using var zipInput = new ZipInputStream(inputFile);
 
-        try
+        var processed = 0;
+
+        while (zipInput.GetNextEntry() is {} entry)
         {
-            // decompress files
-            using var inputFileStream = File.OpenRead(archiveFilePath);
-            using var zipInputStream = new ZipInputStream(inputFileStream);
-
-            var processed = 0;
-
-            while (zipInputStream.GetNextEntry() is {} entry)
+            if (entry.IsDirectory)
             {
-                if (entry.IsDirectory)
-                {
-                    var folderPath = Path.GetDirectoryName(Path.Combine(destFolderPath, entry.Name)) ??
-                                     throw new NullReferenceException();
+                var folderPath = Path.GetDirectoryName(Path.Combine(destFolderPath, entry.Name)) ??
+                                 throw new NullReferenceException();
 
-                    Directory.CreateDirectory(folderPath);
+                Directory.CreateDirectory(folderPath);
 
-                    folders.Add((Path: folderPath, TimeStamp: entry.DateTime));
-                }
-                else
-                {
-                    if (buffer.Length < entry.Size)
-                    {
-                        ArrayPool<byte>.Shared.Return(buffer);
-                        buffer = ArrayPool<byte>.Shared.Rent((int)entry.Size);
-                    }
-
-                    _ = zipInputStream.Read(buffer, 0, buffer.Length);
-
-                    var filePath = Path.Combine(destFolderPath, entry.Name);
-                    FileSystemHelper.WriteSpan(filePath, buffer.AsSpan(0, (int)entry.Size));
-                    File.SetLastWriteTimeUtc(filePath, entry.DateTime);
-                }
-
-                ++processed;
-
-                onProgress(progressOffset + (double)processed / fileCount);
+                folders.Add((Path: folderPath, TimeStamp: entry.DateTime));
             }
-        }
-        finally
-        {
-            ArrayPool<byte>.Shared.Return(buffer);
+            else
+            {
+                var filePath = Path.Combine(destFolderPath, entry.Name);
+
+                using (var file = File.OpenWrite(filePath))
+                    zipInput.CopyTo(file);
+
+                File.SetLastWriteTimeUtc(filePath, entry.DateTime);
+            }
+
+            ++processed;
+
+            onProgress(progressOffset + (double)processed / fileCount);
         }
 
         // set folder timestamp

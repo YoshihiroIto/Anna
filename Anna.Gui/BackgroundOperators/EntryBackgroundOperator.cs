@@ -10,9 +10,16 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 namespace Anna.Gui.BackgroundOperators;
 
 public class EntryBackgroundOperator : HasArgDisposableNotificationObject
-    <EntryBackgroundOperator, (IEntriesStats Stats, IFileProcessable FileProcessable)>
+    <EntryBackgroundOperator, (IEntriesStats Stats, IFileProcessable FileProcessable,
+        EntryBackgroundOperator.ProgressModes ProgressMode)>
     , IBackgroundOperator
 {
+    public enum ProgressModes
+    {
+        Stats,
+        Direct,
+    }
+
     #region Progress
 
     private double _Progress;
@@ -61,12 +68,28 @@ public class EntryBackgroundOperator : HasArgDisposableNotificationObject
 
     private void OnFileProcessed(object? sender, EventArgs e)
     {
-        Interlocked.Increment(ref _fileProcessedCount);
-        UpdateProgress();
+        switch (Arg.ProgressMode)
+        {
+            case ProgressModes.Stats:
+                Interlocked.Increment(ref _fileProcessedCount);
+                UpdateProgress();
+                break;
+
+            case ProgressModes.Direct:
+                var fpe = (FileProcessedDirectEventArgs)e;
+                Progress = fpe.Progress;
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     private void UpdateProgress()
     {
+        if (Arg.ProgressMode != ProgressModes.Stats)
+            return;
+        
         Progress = _fileCount == 0
             ? 0
             : Math.Min(0.999999, (double)_fileProcessedCount / _fileCount);

@@ -89,6 +89,12 @@
                                       WindowType="{x:Type dialogs:SortModeAndOrderDialog}" />
         </behaviors1:MessageTrigger>
 
+        <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.CompressEntry}" Messenger="{Binding Messenger}">
+            <actions:TransitionAction Dic="{Binding Dic}"
+                                      Mode="Dialog"
+                                      WindowType="{x:Type dialogs:CompressEntryDialog}" />
+        </behaviors1:MessageTrigger>
+
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.DecompressEntry}" Messenger="{Binding Messenger}">
             <actions:TransitionAction Dic="{Binding Dic}"
                                       Mode="Dialog"

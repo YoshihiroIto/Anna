@@ -313,9 +313,49 @@ public sealed class FolderPanelHotkey : HotkeyBase
         receiver.Folder.CreateEntry(isFolder, viewModel.ResultFilePath, true);
     }
 
-    private static ValueTask CompressEntryAsync(IFolderPanelHotkeyReceiver receiver)
+    private async ValueTask CompressEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
+        if (receiver.TargetEntries.Length == 0)
+            return;
+
+        var stats = Dic.GetInstance(EntriesStats.T, receiver.TargetEntries);
+
+        using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
+            CompressEntryDialogViewModel.T,
+            (
+                receiver.Folder.Path,
+                receiver.TargetEntries,
+                stats
+            ),
+            MessageKey.CompressEntry);
+
+        if (viewModel.DialogResult != DialogResultTypes.Ok)
+        {
+            stats.Dispose();
+            return;
+        }
+
         throw new NotImplementedException();
+
+#if false
+        var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
+        var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T,
+            (
+                receiver.Messenger,
+                receiver.TargetEntries.Cast<IEntry>(),
+                destFolder,
+                copyOrMove
+            ));
+
+        var @operator = Dic.GetInstance(
+            EntryBackgroundOperator.T,
+            (
+                (IEntriesStats)stats,
+                (IFileProcessable)worker
+            ));
+
+        await receiver.BackgroundWorker.PushOperatorAsync(@operator);
+#endif
     }
 
     private async ValueTask DecompressEntryAsync(IFolderPanelHotkeyReceiver receiver)

@@ -25,10 +25,6 @@
       <ProjectReference Include="..\Anna.Localization\Anna.Localization.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Views\Windows\Dialogs\DecompressEntryDialog.axaml.cs">
-        <DependentUpon>DecompressEntryDialog.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Views\Controls\EditableTextBlock.cs">
         <DependentUpon>EditableTextBlock.axaml</DependentUpon>
       </Compile>

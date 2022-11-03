@@ -14,7 +14,9 @@ public sealed class NopEntriesStats : IEntriesStats
 {
     public static readonly IEntriesStats Instance = new NopEntriesStats();
 
+#pragma warning disable 0067
     public event PropertyChangedEventHandler? PropertyChanged;
+#pragma warning restore 0067
     public bool IsInMeasuring => false;
     public int FileCount => 0;
     public int FolderCount => 0;

@@ -14,4 +14,8 @@
       <ProjectReference Include="..\Anna.Service\Anna.Service.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Moq" Version="4.18.2" />
+    </ItemGroup>
+
 </Project>

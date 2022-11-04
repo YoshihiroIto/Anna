@@ -34,7 +34,7 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewMo
 
     public async ValueTask<string> ReadTextArchive()
     {
-        return await Task.Run(() => Dic.GetInstance<ICompressionService>().ReadMetaString(Model.Path));
+        return await Task.Run(() => Dic.GetInstance<ICompressorService>().ReadMetaString(Model.Path));
     }
 
     public async ValueTask<string> ReadTextDefault()

@@ -4,9 +4,9 @@ using Jewelry.Memory;
 using Jewelry.Text;
 using System.Runtime.CompilerServices;
 
-namespace Anna.Service.Compression;
+namespace Anna.Service.Compressor;
 
-public sealed class CompressionService : ICompressionService
+public sealed class CompressorService : ICompressorService
 {
     public void Compress(IEnumerable<string> sourceEntryPaths, string destArchiveFilePath, Action onFileProcessed)
     {

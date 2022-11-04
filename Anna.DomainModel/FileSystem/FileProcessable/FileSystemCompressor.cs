@@ -24,7 +24,7 @@ public sealed class FileSystemCompressor
 
     public void Invoke()
     {
-        _dic.GetInstance<ICompressionService>().Compress(
+        _dic.GetInstance<ICompressorService>().Compress(
             _arg.SourceEntryPaths,
             _arg.DestArchiveFilePath,
             () => FileProcessed?.Invoke(this, EventArgs.Empty));

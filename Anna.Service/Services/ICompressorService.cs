@@ -1,6 +1,6 @@
 ﻿namespace Anna.Service.Services;
 
-public interface ICompressionService
+public interface ICompressorService
 {
     void Compress(IEnumerable<string> sourceEntryPaths, string destArchiveFilePath, Action onFileProcessed);
     

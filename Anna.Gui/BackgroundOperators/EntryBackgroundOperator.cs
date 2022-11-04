@@ -14,6 +14,8 @@ public class EntryBackgroundOperator : HasArgDisposableNotificationObject
         EntryBackgroundOperator.ProgressModes ProgressMode)>
     , IBackgroundOperator
 {
+    public string Name => nameof(EntryBackgroundOperator) + ":" + Arg.FileProcessable;
+    
     public enum ProgressModes
     {
         Stats,

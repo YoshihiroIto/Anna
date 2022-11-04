@@ -9,6 +9,8 @@ namespace Anna.Gui.BackgroundOperators;
 public class DelegateBackgroundOperator : HasArgDisposableNotificationObject<DelegateBackgroundOperator, Action>
     , IBackgroundOperator
 {
+    public string Name => nameof(DelegateBackgroundOperator);
+    
     #region Progress
 
     private double _Progress;

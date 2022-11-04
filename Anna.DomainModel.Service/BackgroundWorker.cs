@@ -1,5 +1,6 @@
 ﻿using Anna.Foundation;
 using Anna.Service.Interfaces;
+using Anna.Service.Services;
 using Anna.Service.Workers;
 using Reactive.Bindings.Extensions;
 using System.Threading.Channels;
@@ -66,7 +67,12 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
             try
             {
                 using var d = @operator.ObserveProperty(x => x.Progress).Subscribe(x => Progress = x);
+                
+                Dic.GetInstance<ILogService>().Information($"{nameof(BackgroundWorker)}.{nameof(ChannelLoopAsync)} : Start {@operator.Name}");
+                
                 await @operator.ExecuteAsync().ConfigureAwait(false);
+                
+                Dic.GetInstance<ILogService>().Information($"{nameof(BackgroundWorker)}.{nameof(ChannelLoopAsync)} : End   {@operator.Name}");
             }
             catch (Exception e)
             {

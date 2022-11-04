@@ -70,7 +70,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
 
         if (_hotkeys.ContainsKey(k))
         {
-            Dic.GetInstance<ILogService>().Warning("Already registered");
+            Dic.GetInstance<ILoggerService>().Warning("Already registered");
             return;
         }
 
@@ -108,7 +108,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
         }
         catch
         {
-            Dic.GetInstance<ILogService>()
+            Dic.GetInstance<ILoggerService>()
                 .Warning($"${nameof(HotkeyBase)}.${nameof(OpenFileByEditorAsync)}: FailedToStartEditor, {index}, {targetFilepath}");
 
             using var viewModel = await messenger.RaiseTransitionAsync(
@@ -130,7 +130,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
         }
         catch
         {
-            Dic.GetInstance<ILogService>()
+            Dic.GetInstance<ILoggerService>()
                 .Warning($"${nameof(HotkeyBase)}.${nameof(StartAssociatedAppAsync)}: FailedToStartEditor, {targetFilepath}");
 
             using var viewModel = await messenger.RaiseTransitionAsync(

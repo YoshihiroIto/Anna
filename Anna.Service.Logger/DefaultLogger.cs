@@ -4,13 +4,13 @@ using Serilog.Events;
 using Serilog.Exceptions;
 using System.Diagnostics;
 
-namespace Anna.Service.Log;
+namespace Anna.Service.Logger;
 
-public sealed class DefaultLog : ILogService
+public sealed class DefaultLogger : ILoggerService
 {
     private readonly Serilog.Core.Logger _logger;
     
-    public DefaultLog(string logOutputDir)
+    public DefaultLogger(string logOutputDir)
     {
         // https://qiita.com/soi/items/e74918a924c02e3a3097
 

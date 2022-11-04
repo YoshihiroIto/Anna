@@ -4,7 +4,7 @@ using Anna.DomainModel.Service;
 using Anna.Gui;
 using Anna.Gui.Views.Windows.Base;
 using Anna.Service.Compression;
-using Anna.Service.Log;
+using Anna.Service.Logger;
 using Anna.Service.ObjectLifetimeChecker;
 using Anna.Service.Repository;
 using Anna.Service.Services;
@@ -17,16 +17,16 @@ namespace Anna.ServiceProvider;
 
 public sealed class DefaultServiceProvider : ServiceProviderBase
 {
-    private readonly ILogService _log;
+    private readonly ILoggerService _logger;
 
     private DefaultServiceProvider(string logOutputDir, string appConfigFilePath)
     {
         Register(logOutputDir, appConfigFilePath);
 
-        _log = GetInstance<ILogService>();
-        _log.Start("Application");
+        _logger = GetInstance<ILoggerService>();
+        _logger.Start("Application");
 
-        GetInstance<IObjectLifetimeCheckerService>().Start(s => _log.Error(s));
+        GetInstance<IObjectLifetimeCheckerService>().Start(s => _logger.Error(s));
         GetInstance<AppConfig>().Load();
         GetInstance<KeyConfig>().Load();
         GetInstance<JumpFolderConfig>().Load();
@@ -43,8 +43,8 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         Dispose();
 
         checker.End();
-        _log.End("Application");
-        _log.Destroy();
+        _logger.End("Application");
+        _logger.Destroy();
     }
 
     public static DefaultServiceProvider Create(string[] args)
@@ -86,7 +86,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
             new KeyConfig(GetInstance<IObjectSerializerService>()) { FilePath = keyConfigFilePath });
         RegisterSingleton(() =>
             new JumpFolderConfig(GetInstance<IObjectSerializerService>()) { FilePath = jumpFolderConfigFilePath });
-        RegisterSingleton<ILogService>(() => new DefaultLog(logOutputDir));
+        RegisterSingleton<ILoggerService>(() => new DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
         RegisterSingleton<IFileSystemIsAccessibleService, FileSystemIsAccessibleService>();
         RegisterSingleton<IFolderHistoryService, FolderHistoryService>();
@@ -111,7 +111,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         Register<IBackgroundWorker, BackgroundWorker>(Lifestyle.Transient);
 
         // property injection
-        RegisterInitializer<WindowBase>(d => d.Log = GetInstance<ILogService>());
+        RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerService>());
 
         GetRegistration(typeof(IBackgroundWorker))!.Registration
             .SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,

@@ -1,6 +1,6 @@
 ﻿namespace Anna.Service.Services;
 
-public interface ILogService
+public interface ILoggerService
 {
     public void Destroy();
 

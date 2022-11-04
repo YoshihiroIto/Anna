@@ -10,7 +10,7 @@ public sealed class TestServiceProvider : ServiceProviderBase
     public TestServiceProvider()
     {
         RegisterSingleton(Mock.Of<IObjectLifetimeCheckerService>);
-        RegisterSingleton(Mock.Of<ILogService>);
+        RegisterSingleton(Mock.Of<ILoggerService>);
         RegisterSingleton(Mock.Of<IBackgroundWorker>);
         RegisterSingleton(Mock.Of<IFolderHistoryService>);
 

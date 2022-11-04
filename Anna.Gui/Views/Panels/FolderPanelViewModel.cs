@@ -253,7 +253,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
             ),
             MessageKey.Confirmation);
 
-        Dic.GetInstance<ILogService>().Warning(e.Exception.Message);
+        Dic.GetInstance<ILoggerService>().Warning(e.Exception.Message);
     }
 
     private async void OnEntryExplicitlyCreated(object? sender, EntryExplicitlyCreatedEventArgs e)

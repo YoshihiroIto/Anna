@@ -25,7 +25,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Anna.DomainModel\Anna.DomainModel.csproj" />
-      <ProjectReference Include="..\Anna.Service.Log\Anna.Service.Log.csproj" />
+      <ProjectReference Include="..\Anna.Service.Logger\Anna.Service.Logger.csproj" />
       <ProjectReference Include="..\Anna.TestFoundation\Anna.TestFoundation.csproj" />
     </ItemGroup>
 

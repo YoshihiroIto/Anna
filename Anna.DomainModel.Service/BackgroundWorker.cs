@@ -82,12 +82,12 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
             {
                 using var d = @operator.ObserveProperty(x => x.Progress).Subscribe(x => Progress = x);
 
-                Dic.GetInstance<ILogService>()
+                Dic.GetInstance<ILoggerService>()
                     .Information($"{nameof(BackgroundWorker)}.{nameof(ChannelLoopAsync)} : Start {@operator.Name}");
 
                 await @operator.ExecuteAsync().ConfigureAwait(false);
 
-                Dic.GetInstance<ILogService>()
+                Dic.GetInstance<ILoggerService>()
                     .Information($"{nameof(BackgroundWorker)}.{nameof(ChannelLoopAsync)} : End   {@operator.Name}");
             }
             catch (Exception e)

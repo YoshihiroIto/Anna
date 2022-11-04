@@ -19,12 +19,12 @@ public class WindowBase : Window
     public WindowBaseViewModel ViewModel => _ViewModel ?? throw new InvalidOperationException();
     protected WindowBaseViewModel? _ViewModel;
     
-    protected internal ILogService Log { get; set; } = null!;
+    protected internal ILoggerService Logger { get; set; } = null!;
 
     public WindowBase()
     {
-        Loaded += (_, _) => Log.Start(GetType().Name);
-        Closed += (_, _) => Log.End(GetType().Name);
+        Loaded += (_, _) => Logger.Start(GetType().Name);
+        Closed += (_, _) => Logger.End(GetType().Name);
         
         PropertyChanged += (_, e) =>
         {

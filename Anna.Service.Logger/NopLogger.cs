@@ -1,8 +1,8 @@
 ﻿using Anna.Service.Services;
 
-namespace Anna.Service.Log;
+namespace Anna.Service.Logger;
 
-public sealed class NopLog : ILogService
+public sealed class NopLogger : ILoggerService
 {
     public void Destroy() {}
     public void Verbose(string message) {}

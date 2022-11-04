@@ -7,16 +7,16 @@ namespace Anna.Service.Repository;
 
 public sealed class FileSystemObjectSerializer : IObjectSerializerService
 {
-    private readonly ILogService _log;
+    private readonly ILoggerService _logger;
 
     public static readonly JsonSerializerOptions Options = new()
     {
         WriteIndented = true, Converters = { new JsonStringEnumConverter() }
     };
     
-    public FileSystemObjectSerializer(ILogService log)
+    public FileSystemObjectSerializer(ILoggerService logger)
     {
-        _log = log;
+        _logger = logger;
     }
 
     public async ValueTask<(T obj, ResultCode code)> ReadAsync<T>(string path, Func<T> defaultGenerator)
@@ -37,7 +37,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _log.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(ReadAsync)}: {e.Message}");
+            _logger.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(ReadAsync)}: {e.Message}");
         }
 
         return (defaultGenerator(), ResultCode.Error);
@@ -60,7 +60,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _log.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(Read)}: {e.Message}");
+            _logger.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(Read)}: {e.Message}");
         }
 
         return (defaultGenerator(), ResultCode.Error);
@@ -78,7 +78,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _log.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(WriteAsync)}: {e.Message}");
+            _logger.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(WriteAsync)}: {e.Message}");
         }
 
         return ResultCode.Error;
@@ -95,7 +95,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _log.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(Write)}: {e.Message}");
+            _logger.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(Write)}: {e.Message}");
         }
 
         return ResultCode.Error;

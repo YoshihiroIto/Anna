@@ -67,7 +67,7 @@ public abstract class FileSystemCopier : IFileProcessable
         }
         catch (OperationCanceledException)
         {
-            Dic.GetInstance<ILogService>().Information($"{nameof(FileSystemCopier)}.{nameof(Invoke)} -- Canceled");
+            Dic.GetInstance<ILoggerService>().Information($"{nameof(FileSystemCopier)}.{nameof(Invoke)} -- Canceled");
         }
         finally
         {

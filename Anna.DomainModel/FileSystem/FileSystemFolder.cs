@@ -140,7 +140,7 @@ public sealed class FileSystemFolder : Folder
             .AddTo(_watchTrash);
 
         watcher.Errors
-            .Subscribe(x => Dic.GetInstance<ILogService>().Error(x.GetException().ToString()))
+            .Subscribe(x => Dic.GetInstance<ILoggerService>().Error(x.GetException().ToString()))
             .AddTo(_watchTrash);
     }
 

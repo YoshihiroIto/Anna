@@ -24,6 +24,7 @@ public sealed class InfoPanelViewModel : HasModelViewModelBase<InfoPanelViewMode
     public ReactivePropertySlim<long> SelectedTotalSize { get; }
     public ReadOnlyReactivePropertySlim<bool> IsInProcessing { get; }
     public ReadOnlyReactivePropertySlim<double> Progress { get; }
+    public ReadOnlyReactivePropertySlim<string> ExecutingOperator { get; }
 
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily { get; }
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
@@ -67,6 +68,12 @@ public sealed class InfoPanelViewModel : HasModelViewModelBase<InfoPanelViewMode
             .Select(x => x * 100)
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash);
+        
+        ExecutingOperator = Model.BackgroundWorker
+            .ObserveProperty(x => x.ExecutingOperator)
+            .ObserveOnUIDispatcher()
+            .ToReadOnlyReactivePropertySlim("")
             .AddTo(Trash);
         
         ViewerFontFamily = Dic.GetInstance<AppConfig>().Data

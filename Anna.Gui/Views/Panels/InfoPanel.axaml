@@ -24,18 +24,22 @@
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Right">
-            <ProgressBar Width="100"
-                         IsVisible="{Binding IsInProcessing.Value}"
-                         Maximum="100"
-                         Minimum="0"
-                         ProgressTextFormat="{}{1:0}%"
-                         ShowProgressText="True"
-                         Value="{Binding Progress.Value}" />
+            <StackPanel>
+                <TextBlock HorizontalAlignment="Right" Text="{Binding ExecutingOperator.Value}" />
+                <ProgressBar Width="100"
+                             HorizontalAlignment="Right"
+                             IsVisible="{Binding IsInProcessing.Value}"
+                             Maximum="100"
+                             Minimum="0"
+                             ProgressTextFormat="{}{1:0}%"
+                             ShowProgressText="True"
+                             Value="{Binding Progress.Value}" />
+            </StackPanel>
         </StackPanel>
 
         <Grid ColumnDefinitions="Auto, Auto"
-              ColumnSpan=""
-              RowDefinitions="Auto,Auto,Auto,Auto">
+              RowDefinitions="Auto,Auto,Auto,Auto"
+              ColumnSpan="">
             <TextBlock Grid.Row="0"
                        Grid.Column="0"
                        HorizontalAlignment="Right"

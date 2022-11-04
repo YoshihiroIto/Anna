@@ -9,6 +9,7 @@ public interface IBackgroundWorker : INotifyPropertyChanged, IIsTransient
     
     bool IsInProcessing { get; }
     double Progress { get; }
+    public string ExecutingOperator { get; }
 
     ValueTask PushOperatorAsync(IBackgroundOperator @operator);
 }

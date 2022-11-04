@@ -36,6 +36,18 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
 
     #endregion
 
+    #region ExecutingOperator
+
+    private string _ExecutingOperator = "";
+
+    public string ExecutingOperator
+    {
+        get => _ExecutingOperator;
+        set => SetProperty(ref _ExecutingOperator, value);
+    }
+
+    #endregion
+
     private readonly Channel<IBackgroundOperator> _channel =
         Channel.CreateUnbounded<IBackgroundOperator>(
             new UnboundedChannelOptions { SingleReader = true });
@@ -64,19 +76,27 @@ public sealed class BackgroundWorker : DisposableNotificationObject, IBackground
             if (_channel.Reader.TryRead(out var @operator) == false)
                 continue;
 
+            ExecutingOperator = @operator.Name;
+
             try
             {
                 using var d = @operator.ObserveProperty(x => x.Progress).Subscribe(x => Progress = x);
-                
-                Dic.GetInstance<ILogService>().Information($"{nameof(BackgroundWorker)}.{nameof(ChannelLoopAsync)} : Start {@operator.Name}");
-                
+
+                Dic.GetInstance<ILogService>()
+                    .Information($"{nameof(BackgroundWorker)}.{nameof(ChannelLoopAsync)} : Start {@operator.Name}");
+
                 await @operator.ExecuteAsync().ConfigureAwait(false);
-                
-                Dic.GetInstance<ILogService>().Information($"{nameof(BackgroundWorker)}.{nameof(ChannelLoopAsync)} : End   {@operator.Name}");
+
+                Dic.GetInstance<ILogService>()
+                    .Information($"{nameof(BackgroundWorker)}.{nameof(ChannelLoopAsync)} : End   {@operator.Name}");
             }
             catch (Exception e)
             {
                 ExceptionThrown?.Invoke(this, new ExceptionThrownEventArgs(e));
+            }
+            finally
+            {
+                ExecutingOperator = "";
             }
 
             Progress = 100;

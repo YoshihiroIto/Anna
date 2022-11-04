@@ -109,7 +109,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
         catch
         {
             Dic.GetInstance<ILogService>()
-                .Warning($"OpenFileByEditorAsync: FailedToStartEditor, {index}, {targetFilepath}");
+                .Warning($"${nameof(HotkeyBase)}.${nameof(OpenFileByEditorAsync)}: FailedToStartEditor, {index}, {targetFilepath}");
 
             using var viewModel = await messenger.RaiseTransitionAsync(
                 ConfirmationDialogViewModel.T,
@@ -131,7 +131,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
         catch
         {
             Dic.GetInstance<ILogService>()
-                .Warning($"StartAssociatedAppAsync: FailedToStartEditor, {targetFilepath}");
+                .Warning($"${nameof(HotkeyBase)}.${nameof(StartAssociatedAppAsync)}: FailedToStartEditor, {targetFilepath}");
 
             using var viewModel = await messenger.RaiseTransitionAsync(
                 ConfirmationDialogViewModel.T,

@@ -1,7 +1,9 @@
 ﻿using Anna.Service.Services;
-using ICSharpCode.SharpZipLib.Zip;
 using Jewelry.Memory;
 using Jewelry.Text;
+using SharpCompress.Archives;
+using SharpCompress.Common;
+using SharpCompress.Writers;
 using System.Runtime.CompilerServices;
 
 namespace Anna.Service.Compressor;
@@ -10,24 +12,23 @@ public sealed class CompressorService : ICompressorService
 {
     public void Compress(IEnumerable<string> sourceEntryPaths, string destArchiveFilePath, Action onFileProcessed)
     {
-        using var zipOutput = new ZipOutputStream(File.Create(destArchiveFilePath));
+        using var zip = File.OpenWrite(destArchiveFilePath);
+        using var zipWriter = WriterFactory.Open(zip, ArchiveType.Zip, CompressionType.Deflate);
 
         var baseFolder = Path.GetDirectoryName(destArchiveFilePath) ?? throw new NullReferenceException();
 
         foreach (var targetEntryPath in sourceEntryPaths)
         {
             if (File.Exists(targetEntryPath))
-                CompressEntry(zipOutput,
+                CompressEntry(zipWriter,
                     baseFolder,
                     targetEntryPath,
                     File.GetLastWriteTime(targetEntryPath),
                     true,
                     onFileProcessed);
             else
-                CompressFolder(zipOutput, baseFolder, targetEntryPath, onFileProcessed);
+                CompressFolder(zipWriter, baseFolder, targetEntryPath, onFileProcessed);
         }
-
-        zipOutput.Finish();
     }
 
     public void Decompress(IEnumerable<string> archiveFilePaths, string destFolderPath, Action<double> onProgress)
@@ -54,28 +55,27 @@ public sealed class CompressorService : ICompressorService
     [SkipLocalsInit]
     public string ReadMetaString(string archiveFilePath)
     {
-        using var zFile = new ZipFile(archiveFilePath);
+        using var zip = ArchiveFactory.Open(archiveFilePath);
 
         using var lsb = new LiteStringBuilder(stackalloc char[256 * 1024]);
-
         lsb.AppendLine(archiveFilePath);
-        lsb.AppendLine($"{zFile.Count} entries");
+        lsb.AppendLine($"{zip.Entries.Count()} entries");
         lsb.AppendLine("");
         lsb.AppendLine("    Original    Compressed   Ratio  Method      Timestamp             Name");
         lsb.AppendLine("------------  ------------  ------  ----------  --------------------  ----------");
 
-        foreach (ZipEntry e in zFile)
+        foreach (var e in zip.Entries)
         {
             var ratio = e.Size == 0 ? 0d : 100d * e.CompressedSize / e.Size;
 
             lsb.AppendLine(
-                $"{e.Size,12:#,0}  {e.CompressedSize,12:#,0}  {ratio,5:0.0}%  {e.CompressionMethod,-10}  {e.DateTime,-20}  {e.Name}");
+                $"{e.Size,12:#,0}  {e.CompressedSize,12:#,0}  {ratio,5:0.0}%  {e.CompressionType,-10}  {e.LastModifiedTime,-20}  {e.Key}");
         }
 
         return lsb.ToString();
     }
 
-    private static void CompressFolder(ZipOutputStream zipOutput, string baseFolder, string targetPath,
+    private static void CompressFolder(IWriter zipOutput, string baseFolder, string targetPath,
         Action onFileProcessed)
     {
         var di = new DirectoryInfo(targetPath);
@@ -89,25 +89,20 @@ public sealed class CompressorService : ICompressorService
         }
     }
 
-    private static void CompressEntry(ZipOutputStream zipOutput, string baseFolder, string targetPath,
+    private static void CompressEntry(IWriter zipOutput, string baseFolder, string targetPath,
         DateTime targetTimeStamp, bool isFile, Action onFileProcessed)
     {
         var zippedEntryPath = Path.GetRelativePath(baseFolder, targetPath);
-
-        var entry = new ZipEntry(isFile ? zippedEntryPath : zippedEntryPath + "/") { DateTime = targetTimeStamp };
-
+        
         if (isFile == false)
-            entry.CompressionMethod = CompressionMethod.Stored;
-
-        zipOutput.PutNextEntry(entry);
-
-        if (isFile)
+            zipOutput.Write(zippedEntryPath + "/", ForFolder, targetTimeStamp);
+        else
         {
-            using var targetFile = File.OpenRead(targetPath);
-            targetFile.CopyTo(zipOutput);
-
-            onFileProcessed();
+            using var file = File.OpenRead(targetPath);
+            zipOutput.Write(zippedEntryPath, file, targetTimeStamp);
         }
+
+        onFileProcessed();
     }
 
     private static void DecompressInternal(
@@ -116,51 +111,23 @@ public sealed class CompressorService : ICompressorService
     {
         Directory.CreateDirectory(destFolderPath);
 
-        long fileCount;
-
-        using (var zip = new ZipFile(archiveFilePath))
-            fileCount = zip.Count;
-
-        using var folders = new TempBuffer<(string Path, DateTime TimeStamp)>(512);
-
-        // decompress files
-        using var inputFile = File.OpenRead(archiveFilePath);
-        using var zipInput = new ZipInputStream(inputFile);
+        using var zip = ArchiveFactory.Open(archiveFilePath);
+        var options = new ExtractionOptions { Overwrite = true, ExtractFullPath = true, PreserveFileTime = true };
 
         var processed = 0;
+        var fileCount = zip.Entries.Count();
 
-        while (zipInput.GetNextEntry() is {} entry)
+        foreach (var entry in zip.Entries)
         {
-            if (entry.IsDirectory)
+            if (entry.IsDirectory == false)
             {
-                var folderPath = Path.GetDirectoryName(Path.Combine(destFolderPath, entry.Name)) ??
-                                 throw new NullReferenceException();
-
-                Directory.CreateDirectory(folderPath);
-
-                folders.Add((Path: folderPath, TimeStamp: entry.DateTime));
-            }
-            else
-            {
-                var filePath = Path.Combine(destFolderPath, entry.Name);
-                var folderPath = Path.GetDirectoryName(filePath) ?? throw new NullReferenceException();
-
-                if (Directory.Exists(folderPath) == false)
-                    Directory.CreateDirectory(folderPath);
-
-                using (var file = File.OpenWrite(filePath))
-                    zipInput.CopyTo(file);
-
-                File.SetLastWriteTimeUtc(filePath, entry.DateTime);
+                entry.WriteToDirectory(destFolderPath, options);
             }
 
             ++processed;
-
             onProgress(progressOffset + (double)processed / fileCount);
         }
-
-        // set folder timestamp
-        foreach (var folder in folders.Buffer)
-            Directory.SetLastWriteTimeUtc(folder.Path, folder.TimeStamp);
     }
+
+    private static readonly MemoryStream ForFolder = new();
 }

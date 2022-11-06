@@ -30,13 +30,6 @@ public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<FolderWi
     public FolderWindowViewModel(IServiceProvider dic)
         : base(dic)
     {
-        Observable
-            .FromEventPattern(
-                h => Dic.GetInstance<ResourcesHolder>().CultureChanged += h,
-                h => Dic.GetInstance<ResourcesHolder>().CultureChanged -= h)
-            .Subscribe(_ => RaisePropertyChanged(nameof(R)))
-            .AddTo(Trash);
-
         ToEnglishCommand = new DelegateCommand(() => Dic.GetInstance<AppConfig>().Data.Culture = Cultures.En);
         ToJapaneseCommand = new DelegateCommand(() => Dic.GetInstance<AppConfig>().Data.Culture = Cultures.Ja);
 

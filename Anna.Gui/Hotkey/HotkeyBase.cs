@@ -94,11 +94,11 @@ public abstract class HotkeyBase : DisposableNotificationObject
         return false;
     }
 
-    protected async ValueTask OpenAppAsync(
-        int index, string targetFilepath, int targetLineIndex, Messenger messenger)
+    protected async ValueTask OpenAppAsync(AppConfigData.ExternalApp app,
+        string targetFilepath, string targetFileFolder, int targetLineIndex, Messenger messenger)
     {
-        var editor = Dic.GetInstance<AppConfig>().Data.FindEditor(index);
-        var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilepath, targetLineIndex);
+        var editor = Dic.GetInstance<AppConfig>().Data.FindExternalApp(app);
+        var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilepath, targetFileFolder, targetLineIndex);
 
         try
         {
@@ -109,7 +109,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
         catch
         {
             Dic.GetInstance<ILoggerService>()
-                .Warning($"{nameof(HotkeyBase)}.{nameof(OpenAppAsync)}: FailedToStartEditor, {index}, {targetFilepath}");
+                .Warning($"{nameof(HotkeyBase)}.{nameof(OpenAppAsync)}: FailedToStartEditor, {app}, {targetFilepath}");
 
             using var _ = await messenger.RaiseTransitionAsync(
                 ConfirmationDialogViewModel.T,
@@ -131,7 +131,8 @@ public abstract class HotkeyBase : DisposableNotificationObject
         catch
         {
             Dic.GetInstance<ILoggerService>()
-                .Warning($"{nameof(HotkeyBase)}.{nameof(StartAssociatedAppAsync)}: FailedToStartEditor, {targetFilepath}");
+                .Warning(
+                    $"{nameof(HotkeyBase)}.{nameof(StartAssociatedAppAsync)}: FailedToStartEditor, {targetFilepath}");
 
             using var _ = await messenger.RaiseTransitionAsync(
                 ConfirmationDialogViewModel.T,

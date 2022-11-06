@@ -35,13 +35,14 @@ public static class ProcessHelper
         Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = path });
     }
 
-    public static string MakeEditorArguments(string options, string targetFilepath, int lineIndex)
+    public static string MakeEditorArguments(string options, string targetFilePath, string targetFileFolder, int lineIndex)
     {
         if (options == "")
-            return "\"" + targetFilepath + "\"";
+            return "\"" + targetFilePath + "\"";
 
         return options
-            .Replace("%F", targetFilepath)
-            .Replace("%L", lineIndex.ToString());
+            .Replace("%CurrentFile%", targetFilePath)
+            .Replace("%CurrentFolder%", targetFileFolder)
+            .Replace("%CurrentFileLine%", lineIndex.ToString());
     }
 }

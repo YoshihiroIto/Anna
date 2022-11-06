@@ -48,9 +48,13 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.JumpToRootFolder, s => JumpToRootFolderAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.OpenEntry, s => OpenEntryAsync((IFolderPanelHotkeyReceiver)s) },
-            { Operations.OpenApp1, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, 1) },
-            { Operations.OpenApp2, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, 2) },
+            { Operations.OpenApp1, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
+            { Operations.OpenApp2, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((IFolderPanelHotkeyReceiver)s) },
+            {
+                Operations.OpenTerminal,
+                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.Terminal)
+            },
             { Operations.PreviewEntry, s => PreviewEntryAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.CopyEntry, s => CopyOrMoveEntryAsync((IFolderPanelHotkeyReceiver)s, CopyOrMove.Copy) },
@@ -146,11 +150,14 @@ public sealed class FolderPanelHotkey : HotkeyBase
             MessageKey.PreviewDisplay);
     }
 
-    private ValueTask OpenAppAsync(IFolderPanelHotkeyReceiver receiver, int index)
+    private ValueTask OpenAppAsync(IFolderPanelHotkeyReceiver receiver, AppConfigData.ExternalApp app)
     {
-        return receiver.CurrentEntry.IsFolder
-            ? ValueTask.CompletedTask
-            : OpenAppAsync(index, receiver.CurrentEntry.Path, 1, receiver.Messenger);
+        return OpenAppAsync(
+            app,
+            receiver.CurrentEntry.Path,
+            receiver.Folder.Path,
+            1,
+            receiver.Messenger);
     }
 
     private ValueTask OpenAssociatedAppAsync(IFolderPanelHotkeyReceiver receiver)
@@ -170,7 +177,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         return MoveFolderAsync(rootFolder, receiver);
     }
-    
+
     private async ValueTask MoveFolderAsync(string? destPath, IFolderPanelHotkeyReceiver receiver)
     {
         if (destPath is null)

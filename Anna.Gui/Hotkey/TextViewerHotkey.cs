@@ -5,6 +5,7 @@ using Anna.Gui.Views.Windows;
 using Avalonia;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
@@ -22,9 +23,10 @@ public sealed class TextViewerHotkey : HotkeyBase
         return new Dictionary<Operations, Func<IHotkeyReceiver, ValueTask>>
         {
             { Operations.OpenEntry, s => CloseAsync((ITextViewerHotkeyReceiver)s) },
-            { Operations.OpenApp1, s => OpenFileByEditorAsync((ITextViewerHotkeyReceiver)s, 1) },
-            { Operations.OpenApp2, s => OpenFileByEditorAsync((ITextViewerHotkeyReceiver)s, 2) },
+            { Operations.OpenApp1, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
+            { Operations.OpenApp2, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((ITextViewerHotkeyReceiver)s) },
+            { Operations.OpenTerminal, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.Terminal) },
             { Operations.MoveCursorUp, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Up) },
             { Operations.MoveCursorDown, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Down) },
             { Operations.MoveCursorLeft, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Left) },
@@ -38,9 +40,11 @@ public sealed class TextViewerHotkey : HotkeyBase
             new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
-    private ValueTask OpenFileByEditorAsync(ITextViewerHotkeyReceiver receiver, int index)
+    private ValueTask OpenAppAsync(ITextViewerHotkeyReceiver receiver, AppConfigData.ExternalApp app)
     {
-        return OpenAppAsync(index, receiver.TargetFilepath, receiver.LineIndex, receiver.Messenger);
+        var targetFolderPath = Path.GetDirectoryName(receiver.TargetFilepath) ?? "";
+        
+        return OpenAppAsync(app, receiver.TargetFilepath, targetFolderPath, receiver.LineIndex, receiver.Messenger);
     }
 
     private ValueTask OpenAssociatedAppAsync(ITextViewerHotkeyReceiver receiver)

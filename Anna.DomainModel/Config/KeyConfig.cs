@@ -50,6 +50,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.Enter, KeyModifiers.None, Operations.OpenEntry),
             new(Key.Enter, KeyModifiers.Shift, Operations.OpenApp1),
             new(Key.Enter, metaKey, Operations.OpenAssociatedApp),
+            new(Key.Z, metaKey | KeyModifiers.Shift, Operations.OpenTerminal),
             new(Key.V, KeyModifiers.None, Operations.PreviewEntry),
             //
             new(Key.C, KeyModifiers.None, Operations.CopyEntry),
@@ -95,6 +96,7 @@ public enum Operations
     OpenApp1,
     OpenApp2,
     OpenAssociatedApp,
+    OpenTerminal,
     PreviewEntry,
     //
     CopyEntry,
@@ -112,5 +114,5 @@ public enum Operations
     OpenTrashCan,
     //
     OpenAnna,
-    CloseAnna
+    CloseAnna,
 }

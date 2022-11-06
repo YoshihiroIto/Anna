@@ -22,6 +22,12 @@ public sealed class AppConfigData : ConfigData
 
     public const double DefaultViewerFontSize = 14;
 
+    public enum ExternalApp
+    {
+        Terminal,
+        App1,
+        App2,
+    }
 
     #region Culture
 
@@ -35,6 +41,32 @@ public sealed class AppConfigData : ConfigData
 
     #endregion
 
+
+    #region TerminalApp
+
+    private string _TerminalApp = "";
+
+    public string TerminalApp
+    {
+        get => _TerminalApp;
+        set => SetProperty(ref _TerminalApp, value);
+    }
+
+    #endregion
+
+
+    #region TerminalAppOptions
+
+    private string _TerminalAppOptions = "";
+
+    public string TerminalAppOptions
+    {
+        get => _TerminalAppOptions;
+        set => SetProperty(ref _TerminalAppOptions, value);
+    }
+
+    #endregion
+    
 
     #region Editor1
 
@@ -51,12 +83,12 @@ public sealed class AppConfigData : ConfigData
 
     #region Editor1Options
 
-    private string _editor1Options = "";
+    private string _Editor1Options = "";
 
     public string Editor1Options
     {
-        get => _editor1Options;
-        set => SetProperty(ref _editor1Options, value);
+        get => _Editor1Options;
+        set => SetProperty(ref _Editor1Options, value);
     }
 
     #endregion
@@ -100,6 +132,7 @@ public sealed class AppConfigData : ConfigData
 
     #endregion
 
+    
     #region ViewerFontFamily
 
     private FontFamily _ViewerFontFamily = DefaultViewerFontFamily;
@@ -140,12 +173,13 @@ public sealed class AppConfigData : ConfigData
     #endregion
 
 
-    public (string Editor, string Options) FindEditor(int index)
+    public (string Editor, string Options) FindExternalApp(ExternalApp externalApp)
     {
-        return index switch
+        return externalApp switch
         {
-            1 => (Editor1, Editor1Options),
-            2 => (Editor2, Editor2Options),
+            ExternalApp.App1 => (Editor1, Editor1Options),
+            ExternalApp.App2 => (Editor2, Editor2Options),
+            ExternalApp.Terminal => (TerminalApp, TerminalAppOptions),
             _ => throw new IndexOutOfRangeException()
         };
     }

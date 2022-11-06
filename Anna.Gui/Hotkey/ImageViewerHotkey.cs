@@ -36,13 +36,13 @@ public sealed class ImageViewerHotkey : HotkeyBase
 
     private ValueTask OpenAppAsync(IImageViewerHotkeyReceiver receiver, AppConfigData.ExternalApp app)
     {
-        var targetFolderPath = Path.GetDirectoryName(receiver.TargetFilepath) ?? "";
+        var targetFolderPath = Path.GetDirectoryName(receiver.TargetFilePath) ?? "";
         
-        return OpenAppAsync(app, receiver.TargetFilepath, targetFolderPath, 1, receiver.Messenger);
+        return OpenAppAsync(app, receiver.TargetFilePath, targetFolderPath, 1, receiver.Messenger);
     }
 
     private ValueTask OpenFileByAppAsync(IImageViewerHotkeyReceiver receiver)
     {
-        return StartAssociatedAppAsync(receiver.TargetFilepath, receiver.Messenger);
+        return StartAssociatedAppAsync(receiver.TargetFilePath, receiver.Messenger);
     }
 }

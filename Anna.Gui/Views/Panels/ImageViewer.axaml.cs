@@ -13,7 +13,7 @@ namespace Anna.Gui.Views.Panels;
 
 public sealed partial class ImageViewer : UserControl, IImageViewerHotkeyReceiver
 {
-    public string TargetFilepath => ViewModel.Model.Path;
+    public string TargetFilePath => ViewModel.Model.Path;
     
     private ImageViewerViewModel ViewModel => _viewModel ?? throw new NullReferenceException();
     private ImageViewerViewModel? _viewModel;

@@ -17,12 +17,12 @@ namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class SelectFileCopyActionDialogViewModel : HasModelWindowBaseViewModel<
     SelectFileCopyActionDialogViewModel,
-    (string SrcFilepath, string DestFilepath, bool IsSameActionThereafter)>
+    (string SrcFilePath, string DestFilePath, bool IsSameActionThereafter)>
 {
     public FileSystemCopier.CopyActionWhenExistsResult Result { get; private set; } =
         new(ExistsCopyFileActions.Skip, "", false, false);
 
-    public string FileName => Path.GetFileName(Model.SrcFilepath);
+    public string FileName => Path.GetFileName(Model.SrcFilePath);
 
     public string SrcFolder { get; }
     public DateTime SrcTimeStamp { get; }
@@ -43,14 +43,14 @@ public sealed class SelectFileCopyActionDialogViewModel : HasModelWindowBaseView
     public SelectFileCopyActionDialogViewModel(IServiceProvider dic)
         : base(dic)
     {
-        var newInfo = new FileInfo(Model.SrcFilepath);
-        var destInfo = new FileInfo(Model.DestFilepath);
+        var newInfo = new FileInfo(Model.SrcFilePath);
+        var destInfo = new FileInfo(Model.DestFilePath);
 
-        SrcFolder = Path.GetDirectoryName(Model.SrcFilepath) ?? "";
+        SrcFolder = Path.GetDirectoryName(Model.SrcFilePath) ?? "";
         SrcTimeStamp = newInfo.LastWriteTime;
         SrcSize = StringHelper.MakeSizeString(newInfo.Length);
 
-        DestFolder = Path.GetDirectoryName(Model.DestFilepath) ?? "";
+        DestFolder = Path.GetDirectoryName(Model.DestFilePath) ?? "";
         DestTimeStamp = destInfo.LastWriteTime;
         DestSize = StringHelper.MakeSizeString(destInfo.Length);
 
@@ -98,7 +98,7 @@ public sealed class SelectFileCopyActionDialogViewModel : HasModelWindowBaseView
                     InputEntryNameDialogViewModel.T,
                     (
                         DestFolder,
-                        Path.GetFileName(Model.DestFilepath),
+                        Path.GetFileName(Model.DestFilePath),
                         Resources.DialogTitle_ChangeEntryName,
                         true,
                         true

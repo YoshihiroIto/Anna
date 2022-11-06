@@ -95,21 +95,22 @@ public abstract class HotkeyBase : DisposableNotificationObject
     }
 
     protected async ValueTask OpenAppAsync(AppConfigData.ExternalApp app,
-        string targetFilepath, string targetFileFolder, int targetLineIndex, Messenger messenger)
+        string targetFilePath, string targetFileFolder, int targetLineIndex, Messenger messenger)
     {
         var editor = Dic.GetInstance<AppConfig>().Data.FindExternalApp(app);
-        var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilepath, targetFileFolder, targetLineIndex);
+        var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilePath, targetFileFolder, targetLineIndex);
 
         try
         {
             ProcessHelper.Execute(editor.ExternalApp, arguments);
 
+            // close preview dialog
             await messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
         }
         catch
         {
             Dic.GetInstance<ILoggerService>()
-                .Warning($"{nameof(HotkeyBase)}.{nameof(OpenAppAsync)}: FailedToStartEditor, {app}, {targetFilepath}");
+                .Warning($"{nameof(HotkeyBase)}.{nameof(OpenAppAsync)}: FailedToStartEditor, {app}, {targetFilePath}");
 
             using var _ = await messenger.RaiseTransitionAsync(
                 ConfirmationDialogViewModel.T,
@@ -122,17 +123,17 @@ public abstract class HotkeyBase : DisposableNotificationObject
         }
     }
 
-    protected async ValueTask StartAssociatedAppAsync(string targetFilepath, Messenger messenger)
+    protected async ValueTask StartAssociatedAppAsync(string targetFilePath, Messenger messenger)
     {
         try
         {
-            ProcessHelper.RunAssociatedApp(targetFilepath);
+            ProcessHelper.RunAssociatedApp(targetFilePath);
         }
         catch
         {
             Dic.GetInstance<ILoggerService>()
                 .Warning(
-                    $"{nameof(HotkeyBase)}.{nameof(StartAssociatedAppAsync)}: FailedToStartEditor, {targetFilepath}");
+                    $"{nameof(HotkeyBase)}.{nameof(StartAssociatedAppAsync)}: FailedToStartEditor, {targetFilePath}");
 
             using var _ = await messenger.RaiseTransitionAsync(
                 ConfirmationDialogViewModel.T,

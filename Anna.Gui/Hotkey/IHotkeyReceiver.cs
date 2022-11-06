@@ -30,11 +30,11 @@ public interface ITextViewerHotkeyReceiver : IHotkeyReceiver
     public ScrollViewer ScrollViewer { get; }
     public double CalcLineHeight();
     
-    public string TargetFilepath { get; }
+    public string TargetFilePath { get; }
     public int LineIndex { get; }
 }
 
 public interface IImageViewerHotkeyReceiver : IHotkeyReceiver
 {
-    public string TargetFilepath { get; }
+    public string TargetFilePath { get; }
 }

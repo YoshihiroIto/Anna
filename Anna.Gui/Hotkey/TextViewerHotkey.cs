@@ -42,14 +42,14 @@ public sealed class TextViewerHotkey : HotkeyBase
 
     private ValueTask OpenAppAsync(ITextViewerHotkeyReceiver receiver, AppConfigData.ExternalApp app)
     {
-        var targetFolderPath = Path.GetDirectoryName(receiver.TargetFilepath) ?? "";
+        var targetFolderPath = Path.GetDirectoryName(receiver.TargetFilePath) ?? "";
         
-        return OpenAppAsync(app, receiver.TargetFilepath, targetFolderPath, receiver.LineIndex, receiver.Messenger);
+        return OpenAppAsync(app, receiver.TargetFilePath, targetFolderPath, receiver.LineIndex, receiver.Messenger);
     }
 
     private ValueTask OpenAssociatedAppAsync(ITextViewerHotkeyReceiver receiver)
     {
-        return StartAssociatedAppAsync(receiver.TargetFilepath, receiver.Messenger);
+        return StartAssociatedAppAsync(receiver.TargetFilePath, receiver.Messenger);
     }
 
     private static ValueTask ScrollAsync(ITextViewerHotkeyReceiver receiver, Directions dir)

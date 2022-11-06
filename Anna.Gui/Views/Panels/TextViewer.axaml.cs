@@ -27,7 +27,7 @@ public sealed partial class TextViewer : UserControl, ITextViewerHotkeyReceiver
         (ControlHelper.FindOwnerWindow(this) as WindowBase)?.ViewModel.Messenger ??
         throw new NullReferenceException();
 
-    public string TargetFilepath => ViewModel.Model.Path;
+    public string TargetFilePath => ViewModel.Model.Path;
     public int LineIndex => (int)(ScrollViewer.Offset.Y / CalcLineHeight()) + 1;
 
     public TextEditor TextEditor { get; private set; } = null!;

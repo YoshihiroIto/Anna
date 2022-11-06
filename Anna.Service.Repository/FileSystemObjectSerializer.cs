@@ -37,7 +37,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _logger.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(ReadAsync)}: {e.Message}");
+            _logger.Error($"{nameof(FileSystemObjectSerializer)}.{nameof(ReadAsync)}: {e.Message}");
         }
 
         return (defaultGenerator(), ResultCode.Error);
@@ -60,7 +60,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _logger.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(Read)}: {e.Message}");
+            _logger.Error($"{nameof(FileSystemObjectSerializer)}.{nameof(Read)}: {e.Message}");
         }
 
         return (defaultGenerator(), ResultCode.Error);
@@ -78,7 +78,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _logger.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(WriteAsync)}: {e.Message}");
+            _logger.Error($"{nameof(FileSystemObjectSerializer)}.{nameof(WriteAsync)}: {e.Message}");
         }
 
         return ResultCode.Error;
@@ -95,7 +95,7 @@ public sealed class FileSystemObjectSerializer : IObjectSerializerService
         }
         catch (Exception e)
         {
-            _logger.Error($"${nameof(FileSystemObjectSerializer)}.${nameof(Write)}: {e.Message}");
+            _logger.Error($"{nameof(FileSystemObjectSerializer)}.{nameof(Write)}: {e.Message}");
         }
 
         return ResultCode.Error;

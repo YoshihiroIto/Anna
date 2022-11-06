@@ -65,9 +65,10 @@ public sealed class KeyConfigData : ConfigData
             new(Key.U, KeyModifiers.None, Operations.DecompressEntry),
             //
             new(Key.G, KeyModifiers.Shift, Operations.EmptyTrashCan),
-            new(Key.G, KeyModifiers.Control, Operations.OpenTrashCan),
+            new(Key.G, metaKey, Operations.OpenTrashCan),
             //
             new(Key.W, KeyModifiers.Shift, Operations.OpenAnna),
+            new(Key.W, metaKey, Operations.CloseAnna),
         };
     }
 
@@ -110,5 +111,6 @@ public enum Operations
     EmptyTrashCan,
     OpenTrashCan,
     //
-    OpenAnna
+    OpenAnna,
+    CloseAnna
 }

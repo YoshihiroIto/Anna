@@ -68,6 +68,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.OpenTrashCan, s => OpenTrashCanAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.OpenAnna, s => OpenAnnaAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.CloseAnna, s => CloseAnnaAsync((IFolderPanelHotkeyReceiver)s) },
         };
     }
 
@@ -396,6 +397,12 @@ public sealed class FolderPanelHotkey : HotkeyBase
     private ValueTask OpenAnnaAsync(IFolderPanelHotkeyReceiver receiver)
     {
         Dic.GetInstance<App>().AddFolder(receiver.Folder.Path);
+        return ValueTask.CompletedTask;
+    }
+
+    private ValueTask CloseAnnaAsync(IFolderPanelHotkeyReceiver receiver)
+    {
+        Dic.GetInstance<App>().RemoveFolder(receiver.Folder);
         return ValueTask.CompletedTask;
     }
 }

@@ -244,7 +244,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
 
     private async void OnBackgroundWorkerExceptionThrown(object? sender, ExceptionThrownEventArgs e)
     {
-        using var viewModel = await Messenger.RaiseTransitionAsync(
+        using var _ = await Messenger.RaiseTransitionAsync(
             ConfirmationDialogViewModel.T,
             (
                 Resources.AppName,

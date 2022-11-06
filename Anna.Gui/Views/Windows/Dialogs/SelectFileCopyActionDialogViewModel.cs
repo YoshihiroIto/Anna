@@ -96,13 +96,8 @@ public sealed class SelectFileCopyActionDialogViewModel : HasModelWindowBaseView
             {
                 using var viewModel = await Messenger.RaiseTransitionAsync(
                     InputEntryNameDialogViewModel.T,
-                    (
-                        DestFolder,
-                        Path.GetFileName(Model.DestFilePath),
-                        Resources.DialogTitle_ChangeEntryName,
-                        true,
-                        true
-                    ),
+                    (DestFolder, Path.GetFileName(Model.DestFilePath), Resources.DialogTitle_ChangeEntryName, true,
+                        true),
                     MessageKey.InputEntryName);
 
                 switch (viewModel.DialogResult)

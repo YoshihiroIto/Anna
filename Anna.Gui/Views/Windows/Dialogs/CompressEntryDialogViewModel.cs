@@ -71,10 +71,7 @@ public sealed class CompressEntryDialogViewModel : HasModelWindowBaseViewModel<C
         {
             using var viewModel = await Messenger.RaiseTransitionAsync(
                 SelectFolderDialogViewModel.T,
-                (
-                    Model.CurrentFolderPath,
-                    0
-                ),
+                (Model.CurrentFolderPath, 0),
                 MessageKey.SelectFolder);
 
             DestFolder.Value = viewModel.ResultPath;
@@ -85,7 +82,7 @@ public sealed class CompressEntryDialogViewModel : HasModelWindowBaseViewModel<C
                 DestArchiveName.Value.EndsWith(".zip", StringComparison.OrdinalIgnoreCase)
                     ? DestArchiveName.Value
                     : DestArchiveName.Value + ".zip";
-            
+
             ResultDestFolder = DestFolder.Value;
             DialogResult = DialogResultTypes.Ok;
 

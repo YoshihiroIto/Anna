@@ -18,7 +18,9 @@ internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
 {
     public static readonly ConfirmedFileSystemCopier T = default!;
 
-    private readonly (Messenger Messenger, IEnumerable<IEntry> SourceEntries, string DestPath, CopyOrMove CopyOrMove) _arg;
+    private readonly (Messenger Messenger, IEnumerable<IEntry> SourceEntries, string DestPath, CopyOrMove CopyOrMove)
+        _arg;
+
     private FastSpinLock _lockObj;
 
     public ConfirmedFileSystemCopier(IServiceProvider dic)
@@ -47,11 +49,7 @@ internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
 
             using var viewModel = _arg.Messenger.RaiseTransition(
                 SelectFileCopyActionDialogViewModel.T,
-                (
-                    srcPath,
-                    destPath,
-                    result.IsFirst
-                ),
+                (srcPath, destPath, result.IsFirst),
                 MessageKey.SelectFileCopy);
 
             result = viewModel.Result;
@@ -81,13 +79,7 @@ internal sealed class ConfirmedFileSystemCopier : FileSystemCopier,
 
             using var viewModel = _arg.Messenger.RaiseTransition(
                 InputEntryNameDialogViewModel.T,
-                (
-                    folder,
-                    fileName,
-                    Resources.DialogTitle_ChangeEntryName,
-                    true,
-                    true
-                ),
+                (folder, fileName, Resources.DialogTitle_ChangeEntryName, true, true),
                 MessageKey.InputEntryName);
 
             if (viewModel.DialogResult == DialogResultTypes.Cancel)

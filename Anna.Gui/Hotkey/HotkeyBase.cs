@@ -82,7 +82,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
         if (Dic.GetInstance<IFileSystemIsAccessibleService>().IsAccessible(path))
             return true;
 
-        using var viewModel = await messenger.RaiseTransitionAsync(
+        using var _ = await messenger.RaiseTransitionAsync(
             ConfirmationDialogViewModel.T,
             (
                 Resources.AppName,

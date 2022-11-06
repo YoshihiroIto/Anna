@@ -50,11 +50,9 @@ public sealed class JumpFolderDialogViewModel : HasModelWindowBaseViewModel<Jump
 
                     using var viewModel = await Messenger.RaiseTransitionAsync(
                         ConfirmationDialogViewModel.T,
-                        (
-                            Resources.AppName,
+                        (Resources.AppName,
                             string.Format(Resources.Message_ConfirmDelete, SelectedPath.Value.Model.Path),
-                            DialogResultTypes.Yes | DialogResultTypes.No
-                        ),
+                            DialogResultTypes.Yes | DialogResultTypes.No),
                         MessageKey.Confirmation);
 
                     if (viewModel.DialogResult == DialogResultTypes.Yes)

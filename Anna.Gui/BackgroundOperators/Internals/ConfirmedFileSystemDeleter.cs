@@ -51,14 +51,11 @@ internal sealed class ConfirmedFileSystemDeleter : FileSystemDeleter
 
             using var viewModel = _arg.Messenger.RaiseTransition(
                 ConfirmationDialogViewModel.T,
-                (
-                    Resources.AppName,
-                    string.Format(Resources.Message_ReadOnlyConfirmDelete, info.FullName),
+                (Resources.AppName, string.Format(Resources.Message_ReadOnlyConfirmDelete, info.FullName),
                     DialogResultTypes.Yes |
                     DialogResultTypes.No |
                     DialogResultTypes.AllDelete |
-                    DialogResultTypes.Cancel
-                ),
+                    DialogResultTypes.Cancel),
                 MessageKey.Confirmation);
 
             switch (viewModel.DialogResult)
@@ -102,12 +99,8 @@ internal sealed class ConfirmedFileSystemDeleter : FileSystemDeleter
 
             using var viewModel = _arg.Messenger.RaiseTransition(
                 ConfirmationDialogViewModel.T,
-                (
-                    Resources.AppName,
-                    string.Format(Resources.Message_AccessFailureOnDelete, info.FullName),
-                    DialogResultTypes.Retry |
-                    DialogResultTypes.Cancel
-                ),
+                (Resources.AppName, string.Format(Resources.Message_AccessFailureOnDelete, info.FullName),
+                    DialogResultTypes.Retry | DialogResultTypes.Cancel),
                 MessageKey.Confirmation);
 
             switch (viewModel.DialogResult)

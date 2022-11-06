@@ -68,10 +68,7 @@ public sealed class DecompressEntryDialogViewModel : HasModelWindowBaseViewModel
         {
             using var viewModel = await Messenger.RaiseTransitionAsync(
                 SelectFolderDialogViewModel.T,
-                (
-                    Model.CurrentFolderPath,
-                    0
-                ),
+                (Model.CurrentFolderPath, 0),
                 MessageKey.SelectFolder);
 
             DestFolder.Value = viewModel.ResultPath;
@@ -89,10 +86,7 @@ public sealed class DecompressEntryDialogViewModel : HasModelWindowBaseViewModel
     {
         using var viewModel = await Messenger.RaiseTransitionAsync(
             JumpFolderDialogViewModel.T,
-            (
-                Model.CurrentFolderPath,
-                Dic.GetInstance<JumpFolderConfig>().Data
-            ),
+            (Model.CurrentFolderPath, Dic.GetInstance<JumpFolderConfig>().Data),
             MessageKey.JumpFolder);
 
         if (viewModel.DialogResult != DialogResultTypes.Ok)

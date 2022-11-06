@@ -6,6 +6,8 @@ using Anna.Gui.Foundations;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Localization;
+using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Reactive.Linq;
@@ -17,6 +19,8 @@ namespace Anna.Gui.Views.Windows;
 public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<FolderWindowViewModel,
     (Folder Folder, int Dummy)>
 {
+    public ReadOnlyReactivePropertySlim<string> Title { get; }
+    
     public FolderPanelViewModel FolderPanelViewModel { get; }
     public InfoPanelViewModel InfoPanelViewModel { get; }
 
@@ -40,6 +44,11 @@ public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<FolderWi
             .AddTo(Trash);
 
         FolderPanelViewModel = dic.GetInstance(FolderPanelViewModel.T, Model.Folder)
+            .AddTo(Trash);
+
+        Title = FolderPanelViewModel.CurrentFolderPath
+            .Select(x => $"{x} -- {Resources.AppName}")
+            .ToReadOnlyReactivePropertySlim("")
             .AddTo(Trash);
 
         dic.GetInstance<App>().Folders.CollectionChangedAsObservable()

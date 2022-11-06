@@ -32,12 +32,13 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     public readonly FolderPanelHotkey Hotkey;
 
     public ReactivePropertySlim<int> CursorIndex { get; }
-
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
+    public IObservable<string> CurrentFolderPath { get; }
 
     private EntryViewModel? _oldEntry;
-    private readonly bool _isBufferingUpdate = false;
     private int _OnEntryExplicitlyCreatedRunning;
+    
+    private readonly bool _isBufferingUpdate = false;
 
     public FolderPanelViewModel(IServiceProvider dic)
         : base(dic)
@@ -46,6 +47,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
+        CurrentFolderPath = Model.ObserveProperty(x => x.Path);
 
         Model.BackgroundWorkerExceptionThrown += OnBackgroundWorkerExceptionThrown;
         Trash.Add(() => Model.BackgroundWorkerExceptionThrown -= OnBackgroundWorkerExceptionThrown);

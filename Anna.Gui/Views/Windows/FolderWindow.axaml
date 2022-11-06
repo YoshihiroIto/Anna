@@ -9,7 +9,7 @@
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                   xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
                   xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
-                  Title="{ReflectionBinding R.AppName}"
+                  Title="{Binding Title.Value}"
                   Width="1000"
                   Height="600"
                   MinWidth="400"

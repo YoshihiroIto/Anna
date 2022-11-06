@@ -15,8 +15,8 @@ public sealed class FileSystemFolder : Folder
 
     private readonly CompositeDisposable _watchTrash = new();
 
-    internal FileSystemFolder(string path, IServiceProvider dic)
-        : base(path, dic)
+    internal FileSystemFolder(IServiceProvider dic, string path)
+        : base(dic, path)
     {
         UpdateWatcher(path);
 

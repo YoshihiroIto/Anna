@@ -66,6 +66,8 @@ public sealed class FolderPanelHotkey : HotkeyBase
             //
             { Operations.EmptyTrashCan, s => EmptyTrashCanAsync((IFolderPanelHotkeyReceiver)s) },
             { Operations.OpenTrashCan, s => OpenTrashCanAsync((IFolderPanelHotkeyReceiver)s) },
+            //
+            { Operations.OpenAnna, s => OpenAnnaAsync((IFolderPanelHotkeyReceiver)s) },
         };
     }
 
@@ -166,6 +168,17 @@ public sealed class FolderPanelHotkey : HotkeyBase
         var rootFolder = receiver.Folder.FindRootPath();
 
         return MoveFolderAsync(rootFolder, receiver);
+    }
+    
+    private async ValueTask MoveFolderAsync(string? destPath, IFolderPanelHotkeyReceiver receiver)
+    {
+        if (destPath is null)
+            return;
+
+        if (await CheckIsAccessibleAsync(destPath, receiver.Messenger) == false)
+            return;
+
+        receiver.Folder.Path = destPath;
     }
 
     private async ValueTask CopyOrMoveEntryAsync(IFolderPanelHotkeyReceiver receiver, CopyOrMove copyOrMove)
@@ -380,14 +393,9 @@ public sealed class FolderPanelHotkey : HotkeyBase
         return ValueTask.CompletedTask;
     }
 
-    private async ValueTask MoveFolderAsync(string? destPath, IFolderPanelHotkeyReceiver receiver)
+    private ValueTask OpenAnnaAsync(IFolderPanelHotkeyReceiver receiver)
     {
-        if (destPath is null)
-            return;
-
-        if (await CheckIsAccessibleAsync(destPath, receiver.Messenger) == false)
-            return;
-
-        receiver.Folder.Path = destPath;
+        Dic.GetInstance<App>().AddFolder(receiver.Folder.Path);
+        return ValueTask.CompletedTask;
     }
 }

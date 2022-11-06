@@ -100,7 +100,7 @@ public abstract class Folder : DisposableNotificationObject
     public abstract void CreateEntry(bool isFolder, string path, bool isInvokeEntryExplicitlyCreated);
     public abstract void RenameEntry(Entry entry, string newName, bool isInvokeEntryExplicitlyCreated);
 
-    protected Folder(string path, IServiceProvider dic)
+    protected Folder(IServiceProvider dic, string path)
         : base(dic)
     {
         BackgroundWorker = dic.GetInstance<IBackgroundWorker>();// create new

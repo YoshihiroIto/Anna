@@ -68,53 +68,53 @@ public sealed class AppConfigData : ConfigData
     #endregion
     
 
-    #region Editor1
+    #region ExternalApp1
 
-    private string _Editor1 = "";
+    private string _ExternalApp1 = "";
 
-    public string Editor1
+    public string ExternalApp1
     {
-        get => _Editor1;
-        set => SetProperty(ref _Editor1, value);
+        get => _ExternalApp1;
+        set => SetProperty(ref _ExternalApp1, value);
     }
 
     #endregion
 
 
-    #region Editor1Options
+    #region ExternalApp1Options
 
-    private string _Editor1Options = "";
+    private string _ExternalApp1Options = "";
 
-    public string Editor1Options
+    public string ExternalApp1Options
     {
-        get => _Editor1Options;
-        set => SetProperty(ref _Editor1Options, value);
+        get => _ExternalApp1Options;
+        set => SetProperty(ref _ExternalApp1Options, value);
     }
 
     #endregion
 
 
-    #region Editor2
+    #region ExternalApp2
 
-    private string _Editor2 = "";
+    private string _ExternalApp2 = "";
 
-    public string Editor2
+    public string ExternalApp2
     {
-        get => _Editor2;
-        set => SetProperty(ref _Editor2, value);
+        get => _ExternalApp2;
+        set => SetProperty(ref _ExternalApp2, value);
     }
 
     #endregion
 
 
-    #region Editor2Options
+    #region ExternalApp2Options
 
-    private string _editor2Options = "";
+    private string _ExternalApp2Options = "";
 
-    public string Editor2Options
+    public string ExternalApp2Options
     {
-        get => _editor2Options;
-        set => SetProperty(ref _editor2Options, value);
+        get => _ExternalApp2Options;
+        set => SetProperty(ref _ExternalApp2Options, value);
     }
 
     #endregion
@@ -173,12 +173,12 @@ public sealed class AppConfigData : ConfigData
     #endregion
 
 
-    public (string Editor, string Options) FindExternalApp(ExternalApp externalApp)
+    public (string ExternalApp, string Options) FindExternalApp(ExternalApp externalApp)
     {
         return externalApp switch
         {
-            ExternalApp.App1 => (Editor1, Editor1Options),
-            ExternalApp.App2 => (Editor2, Editor2Options),
+            ExternalApp.App1 => (ExternalApp1, ExternalApp1Options),
+            ExternalApp.App2 => (ExternalApp2, ExternalApp2Options),
             ExternalApp.Terminal => (TerminalApp, TerminalAppOptions),
             _ => throw new IndexOutOfRangeException()
         };

@@ -48,8 +48,8 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.JumpToRootFolder, s => JumpToRootFolderAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.OpenEntry, s => OpenEntryAsync((IFolderPanelHotkeyReceiver)s) },
-            { Operations.OpenApp1, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
-            { Operations.OpenApp2, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
+            { Operations.OpenExternal1, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
+            { Operations.OpenExternal2, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((IFolderPanelHotkeyReceiver)s) },
             {
                 Operations.OpenTerminal,

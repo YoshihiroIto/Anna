@@ -21,8 +21,8 @@ public sealed class ImageViewerHotkey : HotkeyBase
         return new Dictionary<Operations, Func<IHotkeyReceiver, ValueTask>>
         {
             { Operations.OpenEntry, s => CloseAsync((IImageViewerHotkeyReceiver)s) },
-            { Operations.OpenApp1, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
-            { Operations.OpenApp2, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
+            { Operations.OpenExternal1, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
+            { Operations.OpenExternal2, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
             { Operations.OpenAssociatedApp, s => OpenFileByAppAsync((IImageViewerHotkeyReceiver)s) },
             { Operations.OpenTerminal, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, AppConfigData.ExternalApp.Terminal) },
         };

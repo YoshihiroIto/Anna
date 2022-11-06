@@ -23,8 +23,8 @@ public sealed class TextViewerHotkey : HotkeyBase
         return new Dictionary<Operations, Func<IHotkeyReceiver, ValueTask>>
         {
             { Operations.OpenEntry, s => CloseAsync((ITextViewerHotkeyReceiver)s) },
-            { Operations.OpenApp1, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
-            { Operations.OpenApp2, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
+            { Operations.OpenExternal1, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
+            { Operations.OpenExternal2, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((ITextViewerHotkeyReceiver)s) },
             { Operations.OpenTerminal, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.Terminal) },
             { Operations.MoveCursorUp, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Up) },

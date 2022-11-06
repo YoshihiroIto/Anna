@@ -102,7 +102,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
 
         try
         {
-            ProcessHelper.Execute(editor.Editor, arguments);
+            ProcessHelper.Execute(editor.ExternalApp, arguments);
 
             await messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
         }
@@ -115,7 +115,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
                 ConfirmationDialogViewModel.T,
                 (
                     Resources.AppName,
-                    string.Format(Resources.Message_FailedToStartEditor, editor.Editor),
+                    string.Format(Resources.Message_FailedToStartEditor, editor.ExternalApp),
                     DialogResultTypes.Ok
                 ),
                 MessageKey.Confirmation);

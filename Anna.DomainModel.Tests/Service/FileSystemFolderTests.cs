@@ -18,13 +18,13 @@ public sealed class FileSystemFolderTests : IDisposable
     [Fact]
     public void Start_and_finish_successfully()
     {
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(".");
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, ".");
     }
 
     [Fact]
     public void Initial()
     {
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(_tempFolder.RootPath);
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, _tempFolder.RootPath);
 
         Assert.Equal(_tempFolder.RootPath, folder.Path);
         Assert.Equal(SortModes.Name, folder.SortMode);
@@ -35,7 +35,7 @@ public sealed class FileSystemFolderTests : IDisposable
     public async Task Root_folder_does_not_contain_parent_folder_in_entry()
     {
         using var folder = _dic.GetInstance<DomainModelOperator>()
-            .CreateFolder(Path.GetPathRoot(_tempFolder.RootPath) ?? throw new NullReferenceException());
+            .CreateFolder(0, Path.GetPathRoot(_tempFolder.RootPath) ?? throw new NullReferenceException());
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
@@ -53,7 +53,7 @@ public sealed class FileSystemFolderTests : IDisposable
         foreach (var file in files0)
             _tempFolder.CreateFile(file);
 
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(_tempFolder.RootPath);
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, _tempFolder.RootPath);
 
         var filesWithParentDir = new List<string> { ".." };
         filesWithParentDir.AddRange(files0);
@@ -74,7 +74,7 @@ public sealed class FileSystemFolderTests : IDisposable
         foreach (var file in files0)
             _tempFolder.CreateFile(file);
 
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(_tempFolder.RootPath);
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, _tempFolder.RootPath);
 
         var files1 = new[] { "fileD.dat", "fileE.dat", "fileF.dat" };
 
@@ -101,7 +101,7 @@ public sealed class FileSystemFolderTests : IDisposable
         foreach (var file in files0)
             _tempFolder.CreateFile(file);
 
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(_tempFolder.RootPath);
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, _tempFolder.RootPath);
 
         File.Delete(Path.Combine(_tempFolder.RootPath, "fileB.dat"));
 
@@ -125,7 +125,7 @@ public sealed class FileSystemFolderTests : IDisposable
         foreach (var file in files0)
             _tempFolder.CreateFile(file);
 
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(_tempFolder.RootPath);
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, _tempFolder.RootPath);
 
         File.Move(Path.Combine(_tempFolder.RootPath, "fileC.dat"), Path.Combine(_tempFolder.RootPath, "fileZ.dat"));
 
@@ -152,7 +152,7 @@ public sealed class FileSystemFolderTests : IDisposable
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(_tempFolder.RootPath);
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, _tempFolder.RootPath);
 
         folder.Entries[3].IsSelected = true;
 
@@ -173,7 +173,7 @@ public sealed class FileSystemFolderTests : IDisposable
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(_tempFolder.RootPath);
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, _tempFolder.RootPath);
 
         folder.Entries[3].IsSelected = true;
 
@@ -194,7 +194,7 @@ public sealed class FileSystemFolderTests : IDisposable
 
         await Task.Delay(TimeSpan.FromMilliseconds(30));
 
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(_tempFolder.RootPath);
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, _tempFolder.RootPath);
 
         File.Move(Path.Combine(_tempFolder.RootPath, "fileC.dat"), Path.Combine(_tempFolder.RootPath, "fileZ.dat"));
 
@@ -206,7 +206,7 @@ public sealed class FileSystemFolderTests : IDisposable
     [Fact]
     public void ParentPath()
     {
-        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(_tempFolder.RootPath);
+        using var folder = _dic.GetInstance<DomainModelOperator>().CreateFolder(0, _tempFolder.RootPath);
         
         Assert.Equal("..", folder.Entries[0].Name);
         Assert.Equal("..", folder.Entries[0].NameWithExtension);

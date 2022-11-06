@@ -12,8 +12,8 @@ public sealed class DomainModelOperator
         _dic = dic;
     }
 
-    public Folder CreateFolder(string path)
+    public Folder CreateFolder(int id, string path)
     {
-        return new FileSystemFolder(_dic, path);
+        return new FileSystemFolder(_dic, id, path);
     }
 }

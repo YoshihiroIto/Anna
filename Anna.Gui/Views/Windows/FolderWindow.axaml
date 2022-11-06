@@ -31,6 +31,7 @@
 
     <Interaction.Behaviors>
         <behaviors:WindowDisposeDataContextOnClosedBehavior />
+        <behaviors:FolderWindowPositionBehavior Dic="{Binding Dic}" />
 
         <behaviors1:MessageTrigger MessageKey="{x:Static windows:MessageKey.Close}" Messenger="{Binding Messenger}">
             <actions:WindowActionAction />

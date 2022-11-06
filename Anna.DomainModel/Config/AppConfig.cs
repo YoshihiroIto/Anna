@@ -160,6 +160,19 @@ public sealed class AppConfigData : ConfigData
     #endregion
 
 
+    #region FolderWindows
+
+    private ObservableCollection<FolderWindowConfigData> _FolderWindows = new();
+
+    public ObservableCollection<FolderWindowConfigData> FolderWindows
+    {
+        get => _FolderWindows;
+        set => SetProperty(ref _FolderWindows, value);
+    }
+
+    #endregion
+
+
     #region DestinationFolders
 
     private ObservableCollection<string> _DestinationFolders = new();
@@ -171,7 +184,7 @@ public sealed class AppConfigData : ConfigData
     }
 
     #endregion
-
+    
 
     public (string ExternalApp, string Options) FindExternalApp(ExternalApp externalApp)
     {
@@ -191,3 +204,5 @@ public sealed class AppConfigData : ConfigData
             Culture = CulturesExtensions.TryParse(lang, true, out var result) ? result : Cultures.En;
     }
 }
+
+public record FolderWindowConfigData(int Id, int X, int Y, double Width, double Height);

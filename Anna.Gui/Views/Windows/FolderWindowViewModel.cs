@@ -19,6 +19,8 @@ namespace Anna.Gui.Views.Windows;
 public sealed class FolderWindowViewModel : HasModelWindowBaseViewModel<FolderWindowViewModel,
     (Folder Folder, int Dummy)>
 {
+    public int Id => Model.Folder.Id;
+    
     public ReadOnlyReactivePropertySlim<string> Title { get; }
     
     public FolderPanelViewModel FolderPanelViewModel { get; }

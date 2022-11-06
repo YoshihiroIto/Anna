@@ -17,6 +17,8 @@ public abstract class Folder : DisposableNotificationObject
 
     public EventHandler? EntrySizeChanged;
 
+    public readonly int Id;
+
     public abstract bool IsRoot { get; }
     public bool IsInEntriesUpdating { get; private set; }
 
@@ -100,9 +102,11 @@ public abstract class Folder : DisposableNotificationObject
     public abstract void CreateEntry(bool isFolder, string path, bool isInvokeEntryExplicitlyCreated);
     public abstract void RenameEntry(Entry entry, string newName, bool isInvokeEntryExplicitlyCreated);
 
-    protected Folder(IServiceProvider dic, string path)
+    protected Folder(IServiceProvider dic, int id, string path)
         : base(dic)
     {
+        Id = id;
+        
         BackgroundWorker = dic.GetInstance<IBackgroundWorker>();// create new
         (BackgroundWorker as IDisposable)?.AddTo(Trash);
 

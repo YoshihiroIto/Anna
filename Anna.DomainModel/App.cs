@@ -18,13 +18,26 @@ public sealed class App : DisposableNotificationObject
 
     public void AddFolder(string path)
     {
-        _folders.Add(Dic.GetInstance<DomainModelOperator>().CreateFolder(path));
+        _folders.Add(Dic.GetInstance<DomainModelOperator>().CreateFolder(FindUnusedFinderId(), path));
     }
 
     public void RemoveFolder(Folder folder)
     {
-        folder.Dispose();
+        if (_folders.Remove(folder))
+            folder.Dispose();
+    }
 
-        _folders.Remove(folder);
+    private int FindUnusedFinderId()
+    {
+        if (_folders.Count == 0)
+            return 0;
+
+        var usedIds = _folders.Select(x => x.Id).ToHashSet();
+
+        for (var i = 0;; ++i)
+        {
+            if (usedIds.Contains(i) == false)
+                return i;
+        }
     }
 }

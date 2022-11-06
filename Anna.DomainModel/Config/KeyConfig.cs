@@ -50,7 +50,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.Enter, KeyModifiers.None, Operations.OpenEntry),
             new(Key.Enter, KeyModifiers.Shift, Operations.OpenExternal1),
             new(Key.Enter, metaKey, Operations.OpenAssociatedApp),
-            new(Key.Z, metaKey | KeyModifiers.Shift, Operations.OpenTerminal),
+            new(Key.F3, KeyModifiers.None, Operations.OpenTerminal),
             new(Key.V, KeyModifiers.None, Operations.PreviewEntry),
             //
             new(Key.C, KeyModifiers.None, Operations.CopyEntry),

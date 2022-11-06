@@ -24,7 +24,7 @@ public sealed class TextViewerHotkey : HotkeyBase
             { Operations.OpenEntry, s => CloseAsync((ITextViewerHotkeyReceiver)s) },
             { Operations.OpenEntryByEditor1, s => OpenFileByEditorAsync((ITextViewerHotkeyReceiver)s, 1) },
             { Operations.OpenEntryByEditor2, s => OpenFileByEditorAsync((ITextViewerHotkeyReceiver)s, 2) },
-            { Operations.OpenEntryByApp, s => OpenFileByAppAsync((ITextViewerHotkeyReceiver)s) },
+            { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((ITextViewerHotkeyReceiver)s) },
             { Operations.MoveCursorUp, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Up) },
             { Operations.MoveCursorDown, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Down) },
             { Operations.MoveCursorLeft, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Left) },
@@ -40,10 +40,10 @@ public sealed class TextViewerHotkey : HotkeyBase
 
     private ValueTask OpenFileByEditorAsync(ITextViewerHotkeyReceiver receiver, int index)
     {
-        return OpenFileByEditorAsync(index, receiver.TargetFilepath, receiver.LineIndex, receiver.Messenger);
+        return OpenAssociatedAppAsync(index, receiver.TargetFilepath, receiver.LineIndex, receiver.Messenger);
     }
 
-    private ValueTask OpenFileByAppAsync(ITextViewerHotkeyReceiver receiver)
+    private ValueTask OpenAssociatedAppAsync(ITextViewerHotkeyReceiver receiver)
     {
         return StartAssociatedAppAsync(receiver.TargetFilepath, receiver.Messenger);
     }

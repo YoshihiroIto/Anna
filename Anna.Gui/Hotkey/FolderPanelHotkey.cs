@@ -50,7 +50,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.OpenEntry, s => OpenEntryAsync((IFolderPanelHotkeyReceiver)s) },
             { Operations.OpenEntryByEditor1, s => OpenEntryByEditorAsync((IFolderPanelHotkeyReceiver)s, 1) },
             { Operations.OpenEntryByEditor2, s => OpenEntryByEditorAsync((IFolderPanelHotkeyReceiver)s, 2) },
-            { Operations.OpenEntryByApp, s => OpenEntryByAppAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((IFolderPanelHotkeyReceiver)s) },
             { Operations.PreviewEntry, s => PreviewEntryAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.CopyEntry, s => CopyOrMoveEntryAsync((IFolderPanelHotkeyReceiver)s, CopyOrMove.Copy) },
@@ -150,10 +150,10 @@ public sealed class FolderPanelHotkey : HotkeyBase
     {
         return receiver.CurrentEntry.IsFolder
             ? ValueTask.CompletedTask
-            : OpenFileByEditorAsync(index, receiver.CurrentEntry.Path, 1, receiver.Messenger);
+            : OpenAssociatedAppAsync(index, receiver.CurrentEntry.Path, 1, receiver.Messenger);
     }
 
-    private ValueTask OpenEntryByAppAsync(IFolderPanelHotkeyReceiver receiver)
+    private ValueTask OpenAssociatedAppAsync(IFolderPanelHotkeyReceiver receiver)
     {
         return StartAssociatedAppAsync(receiver.CurrentEntry.Path, receiver.Messenger);
     }

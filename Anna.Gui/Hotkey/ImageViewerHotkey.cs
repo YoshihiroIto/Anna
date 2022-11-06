@@ -20,8 +20,8 @@ public sealed class ImageViewerHotkey : HotkeyBase
         return new Dictionary<Operations, Func<IHotkeyReceiver, ValueTask>>
         {
             { Operations.OpenEntry, s => CloseAsync((IImageViewerHotkeyReceiver)s) },
-            { Operations.OpenEntryByEditor1, s => OpenFileByEditorAsync((IImageViewerHotkeyReceiver)s, 1) },
-            { Operations.OpenEntryByEditor2, s => OpenFileByEditorAsync((IImageViewerHotkeyReceiver)s, 2) },
+            { Operations.OpenApp1, s => OpenFileByEditorAsync((IImageViewerHotkeyReceiver)s, 1) },
+            { Operations.OpenApp2, s => OpenFileByEditorAsync((IImageViewerHotkeyReceiver)s, 2) },
             { Operations.OpenAssociatedApp, s => OpenFileByAppAsync((IImageViewerHotkeyReceiver)s) },
         };
     }
@@ -34,7 +34,7 @@ public sealed class ImageViewerHotkey : HotkeyBase
 
     private ValueTask OpenFileByEditorAsync(IImageViewerHotkeyReceiver receiver, int index)
     {
-        return OpenAssociatedAppAsync(index, receiver.TargetFilepath, 1, receiver.Messenger);
+        return OpenAppAsync(index, receiver.TargetFilepath, 1, receiver.Messenger);
     }
 
     private ValueTask OpenFileByAppAsync(IImageViewerHotkeyReceiver receiver)

@@ -48,7 +48,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.OemPipe, KeyModifiers.None, Operations.JumpToRootFolder),
             //
             new(Key.Enter, KeyModifiers.None, Operations.OpenEntry),
-            new(Key.Enter, KeyModifiers.Shift, Operations.OpenEntryByEditor1),
+            new(Key.Enter, KeyModifiers.Shift, Operations.OpenApp1),
             new(Key.Enter, metaKey, Operations.OpenAssociatedApp),
             new(Key.V, KeyModifiers.None, Operations.PreviewEntry),
             //
@@ -92,8 +92,8 @@ public enum Operations
     JumpToRootFolder,
     //
     OpenEntry,
-    OpenEntryByEditor1,
-    OpenEntryByEditor2,
+    OpenApp1,
+    OpenApp2,
     OpenAssociatedApp,
     PreviewEntry,
     //

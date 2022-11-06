@@ -22,8 +22,8 @@ public sealed class TextViewerHotkey : HotkeyBase
         return new Dictionary<Operations, Func<IHotkeyReceiver, ValueTask>>
         {
             { Operations.OpenEntry, s => CloseAsync((ITextViewerHotkeyReceiver)s) },
-            { Operations.OpenEntryByEditor1, s => OpenFileByEditorAsync((ITextViewerHotkeyReceiver)s, 1) },
-            { Operations.OpenEntryByEditor2, s => OpenFileByEditorAsync((ITextViewerHotkeyReceiver)s, 2) },
+            { Operations.OpenApp1, s => OpenFileByEditorAsync((ITextViewerHotkeyReceiver)s, 1) },
+            { Operations.OpenApp2, s => OpenFileByEditorAsync((ITextViewerHotkeyReceiver)s, 2) },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((ITextViewerHotkeyReceiver)s) },
             { Operations.MoveCursorUp, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Up) },
             { Operations.MoveCursorDown, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Down) },
@@ -40,7 +40,7 @@ public sealed class TextViewerHotkey : HotkeyBase
 
     private ValueTask OpenFileByEditorAsync(ITextViewerHotkeyReceiver receiver, int index)
     {
-        return OpenAssociatedAppAsync(index, receiver.TargetFilepath, receiver.LineIndex, receiver.Messenger);
+        return OpenAppAsync(index, receiver.TargetFilepath, receiver.LineIndex, receiver.Messenger);
     }
 
     private ValueTask OpenAssociatedAppAsync(ITextViewerHotkeyReceiver receiver)

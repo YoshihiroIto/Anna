@@ -48,8 +48,8 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.JumpToRootFolder, s => JumpToRootFolderAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.OpenEntry, s => OpenEntryAsync((IFolderPanelHotkeyReceiver)s) },
-            { Operations.OpenEntryByEditor1, s => OpenEntryByEditorAsync((IFolderPanelHotkeyReceiver)s, 1) },
-            { Operations.OpenEntryByEditor2, s => OpenEntryByEditorAsync((IFolderPanelHotkeyReceiver)s, 2) },
+            { Operations.OpenApp1, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, 1) },
+            { Operations.OpenApp2, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, 2) },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((IFolderPanelHotkeyReceiver)s) },
             { Operations.PreviewEntry, s => PreviewEntryAsync((IFolderPanelHotkeyReceiver)s) },
             //
@@ -146,11 +146,11 @@ public sealed class FolderPanelHotkey : HotkeyBase
             MessageKey.PreviewDisplay);
     }
 
-    private ValueTask OpenEntryByEditorAsync(IFolderPanelHotkeyReceiver receiver, int index)
+    private ValueTask OpenAppAsync(IFolderPanelHotkeyReceiver receiver, int index)
     {
         return receiver.CurrentEntry.IsFolder
             ? ValueTask.CompletedTask
-            : OpenAssociatedAppAsync(index, receiver.CurrentEntry.Path, 1, receiver.Messenger);
+            : OpenAppAsync(index, receiver.CurrentEntry.Path, 1, receiver.Messenger);
     }
 
     private ValueTask OpenAssociatedAppAsync(IFolderPanelHotkeyReceiver receiver)

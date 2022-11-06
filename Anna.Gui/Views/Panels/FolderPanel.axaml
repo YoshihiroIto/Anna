@@ -146,6 +146,13 @@
                         <TextBlock Classes="entry"
                                    Width="{Binding $parent[panels:FolderPanel].Layout.ExtensionWidth}"
                                    Text="{Binding Extension.Value}" />
+
+                        <TextBlock Classes="entry"
+                                   Width="{Binding $parent[panels:FolderPanel].Layout.SizeWidth}"
+                                   HorizontalAlignment="Right"
+                                   IsVisible="{Binding $parent[panels:FolderPanel].Layout.IsVisibleSize}"
+                                   Text="{Binding Size.Value,
+                                                  StringFormat='{}{0:#,0}'}" />
                     </StackPanel>
                 </DataTemplate>
             </templateSelectors:EntryDataTemplateSelector.FileDataTemplate>
@@ -160,6 +167,13 @@
                         <TextBlock Classes="entry"
                                    Width="{Binding $parent[panels:FolderPanel].Layout.NameWithExtensionWidth}"
                                    Text="{Binding NameWithExtension.Value}" />
+
+                        <TextBlock Classes="entry"
+                                   Width="{Binding $parent[panels:FolderPanel].Layout.SizeWidth}"
+                                   HorizontalAlignment="Right"
+                                   IsVisible="{Binding $parent[panels:FolderPanel].Layout.IsVisibleSize}"
+                                   Text="{Binding Size.Value,
+                                                  StringFormat='{}{0:#,0}'}" />
                     </StackPanel>
                 </DataTemplate>
             </templateSelectors:EntryDataTemplateSelector.FolderDataTemplate>

@@ -23,6 +23,29 @@ public class NotificationObject : INotifyPropertyChanged
         return true;
     }
 
+    protected bool SetFlagProperty(ref uint storage, uint flag, bool value, [CallerMemberName] string propertyName = "")
+    {
+        if (value)
+        {
+            if ((storage & flag) != 0)
+                return false;
+
+            storage |= flag;
+        }
+        else
+        {
+            if ((storage & flag) == 0)
+                return false;
+
+            storage &= ~flag;
+        }
+
+        if (PropertyChanged is not null)
+            RaisePropertyChanged(propertyName);
+
+        return true;
+    }
+
     protected void RaisePropertyChanged([CallerMemberName] string propertyName = "")
     {
         if (PropertyChanged is null)

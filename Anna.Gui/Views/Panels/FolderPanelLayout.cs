@@ -49,44 +49,6 @@ public sealed class FolderPanelLayout : NotificationObject
     #endregion
 
 
-    #region NameCount
-
-    private int _NameCount = 16;
-
-    public int NameCount
-    {
-        get => _NameCount;
-        set
-        {
-            if (SetProperty(ref _NameCount, value))
-                return;
-
-            UpdateItemSize();
-        }
-    }
-
-    #endregion
-
-
-    #region ExtensionCount
-
-    private int _ExtensionCount = 5;
-
-    public int ExtensionCount
-    {
-        get => _ExtensionCount;
-        set
-        {
-            if (SetProperty(ref _ExtensionCount, value))
-                return;
-
-            UpdateItemSize();
-        }
-    }
-
-    #endregion
-
-
     #region ItemWidth
 
     private double _ItemWidth;
@@ -115,7 +77,7 @@ public sealed class FolderPanelLayout : NotificationObject
 
     #region NameWidth
 
-    private double _NameWidth = 220;
+    private double _NameWidth;
 
     public double NameWidth
     {
@@ -128,7 +90,7 @@ public sealed class FolderPanelLayout : NotificationObject
 
     #region ExtensionWidth
 
-    private double _ExtensionWidth = 40;
+    private double _ExtensionWidth;
 
     public double ExtensionWidth
     {
@@ -142,7 +104,7 @@ public sealed class FolderPanelLayout : NotificationObject
     #region NameWithExtensionWidth
 
     // Must be NameWidth + ExtensionWidth
-    private double _NameWithExtensionWidth = 260;
+    private double _NameWithExtensionWidth;
 
     public double NameWithExtensionWidth
     {
@@ -152,13 +114,47 @@ public sealed class FolderPanelLayout : NotificationObject
 
     #endregion
 
-    
+
+    #region SizeWidth
+
+    private double _SizeWidth;
+
+    public double SizeWidth
+    {
+        get => _SizeWidth;
+        private set => SetProperty(ref _SizeWidth, value);
+    }
+
+    #endregion
+
+
+    public bool IsVisibleSize
+    {
+        get => (_flags & FlagIsVisibleSize) != 0;
+        set => SetFlagProperty(ref _flags, FlagIsVisibleSize, value);
+    }
+
+    public bool IsVisibleTimeStamp
+    {
+        get => (_flags & FlagIsVisibleTimeStamp) != 0;
+        set => SetFlagProperty(ref _flags, FlagIsVisibleTimeStamp, value);
+    }
+
+    private uint _flags = FlagIsVisibleSize | FlagIsVisibleTimeStamp;
+
+    private const uint FlagIsVisibleSize = 1 << 0;
+    private const uint FlagIsVisibleTimeStamp = 1 << 1;
+
     private double _charaWidth;
 
     public static Thickness ItemMargin { get; } = new(0, 0, 32, 0);
     public static Thickness SelectedMarkMargin { get; } = new(0, 0, 2, 0);
-    
+
     private static readonly Dictionary<int, Size> ItemHeightCache = new();
+
+    private const int NameCount = 16;
+    private const int ExtensionCount = 5;
+    private const int SizeCount = 10;
 
     public FolderPanelLayout()
     {
@@ -191,13 +187,16 @@ public sealed class FolderPanelLayout : NotificationObject
         NameWidth = NameCount * _charaWidth;
         ExtensionWidth = ExtensionCount * _charaWidth;
         NameWithExtensionWidth = NameWidth + ExtensionWidth;
+        SizeWidth = SizeCount * _charaWidth;
 
         ItemWidth = value.Height +// SelectedMark width
                     SelectedMarkMargin.Left +
                     SelectedMarkMargin.Right +
                     ItemMargin.Left +
-                    ItemMargin.Right +
-                    NameWithExtensionWidth;
+                    (NameCount + ExtensionCount) * _charaWidth +
+                    (IsVisibleSize ? SizeCount * _charaWidth : 0) +
+                    ItemMargin.Right;
+
         ItemHeight = value.Height;
     }
 }

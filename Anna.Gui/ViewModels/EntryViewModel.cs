@@ -16,6 +16,9 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry
     public ReadOnlyReactivePropertySlim<string> NameWithExtension => _NameWithExtension ??= SetupNameWithExtension();
     public ReadOnlyReactivePropertySlim<string> Name => _Name ??= SetupName();
     public ReadOnlyReactivePropertySlim<string> Extension => _Extension ??= SetupExtension();
+    public ReadOnlyReactivePropertySlim<string> Size => _Size ??= SetupSize();
+    public ReadOnlyReactivePropertySlim<string> Date => _Date ??= SetupDate();
+    public ReadOnlyReactivePropertySlim<string> Time => _Time ??= SetupTime();
     public ReadOnlyReactivePropertySlim<FileAttributes> Attributes => _Attributes ??= SetupAttributes();
     public ReadOnlyReactivePropertySlim<bool> IsSelected => _IsSelected ??= SetupIsSelected();
 
@@ -23,7 +26,11 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry
     private ReadOnlyReactivePropertySlim<string>? _NameWithExtension;
     private ReadOnlyReactivePropertySlim<string>? _Name;
     private ReadOnlyReactivePropertySlim<string>? _Extension;
+    private ReadOnlyReactivePropertySlim<string>? _Size;
+    private ReadOnlyReactivePropertySlim<string>? _Date;
+    private ReadOnlyReactivePropertySlim<string>? _Time;
     private ReadOnlyReactivePropertySlim<FileAttributes>? _Attributes;
+
     private ReadOnlyReactivePropertySlim<bool>? _IsSelected;
 
     public EntryViewModel(IServiceProvider dic)
@@ -61,6 +68,33 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry
         return Model.ObserveProperty(x => x.Extension)
             .ObserveOnUIDispatcher()
             .ToReadOnlyReactivePropertySlim(Model.Extension)
+            .AddTo(Trash);
+    }
+
+    private ReadOnlyReactivePropertySlim<string> SetupSize()
+    {
+        return Model.ObserveProperty(x => x.Size)
+            .ObserveOnUIDispatcher()
+            .Select(x => "12345")
+            .ToReadOnlyReactivePropertySlim("")
+            .AddTo(Trash);
+    }
+
+    private ReadOnlyReactivePropertySlim<string> SetupDate()
+    {
+        return Model.ObserveProperty(x => x.Timestamp)
+            .ObserveOnUIDispatcher()
+            .Select(x => x.ToLongDateString())
+            .ToReadOnlyReactivePropertySlim(Model.Timestamp.ToLongDateString())
+            .AddTo(Trash);
+    }
+
+    private ReadOnlyReactivePropertySlim<string> SetupTime()
+    {
+        return Model.ObserveProperty(x => x.Timestamp)
+            .ObserveOnUIDispatcher()
+            .Select(x => x.ToLongTimeString())
+            .ToReadOnlyReactivePropertySlim(Model.Timestamp.ToLongTimeString())
             .AddTo(Trash);
     }
 

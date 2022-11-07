@@ -39,7 +39,7 @@ public sealed class FolderPanelLayout : NotificationObject
         get => _FontSize;
         set
         {
-            if (SetProperty(ref _FontSize, value))
+            if (SetProperty(ref _FontSize, value) == false)
                 return;
 
             UpdateItemSize();

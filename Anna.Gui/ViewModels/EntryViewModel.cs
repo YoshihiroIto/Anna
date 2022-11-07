@@ -2,6 +2,7 @@
 using Anna.Service;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System.Globalization;
 using System.IO;
 using System.Reactive.Linq;
 using Entry=Anna.DomainModel.Entry;
@@ -17,8 +18,7 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry
     public ReadOnlyReactivePropertySlim<string> Name => _Name ??= SetupName();
     public ReadOnlyReactivePropertySlim<string> Extension => _Extension ??= SetupExtension();
     public ReadOnlyReactivePropertySlim<string> Size => _Size ??= SetupSize();
-    public ReadOnlyReactivePropertySlim<string> Date => _Date ??= SetupDate();
-    public ReadOnlyReactivePropertySlim<string> Time => _Time ??= SetupTime();
+    public ReadOnlyReactivePropertySlim<string> Timestamp => _Timestamp ??= SetupTimestamp();
     public ReadOnlyReactivePropertySlim<FileAttributes> Attributes => _Attributes ??= SetupAttributes();
     public ReadOnlyReactivePropertySlim<bool> IsSelected => _IsSelected ??= SetupIsSelected();
 
@@ -27,8 +27,7 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry
     private ReadOnlyReactivePropertySlim<string>? _Name;
     private ReadOnlyReactivePropertySlim<string>? _Extension;
     private ReadOnlyReactivePropertySlim<string>? _Size;
-    private ReadOnlyReactivePropertySlim<string>? _Date;
-    private ReadOnlyReactivePropertySlim<string>? _Time;
+    private ReadOnlyReactivePropertySlim<string>? _Timestamp;
     private ReadOnlyReactivePropertySlim<FileAttributes>? _Attributes;
 
     private ReadOnlyReactivePropertySlim<bool>? _IsSelected;
@@ -76,25 +75,16 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry
         return Model.ObserveProperty(x => x.Size)
             .ObserveOnUIDispatcher()
             .Select(x => "12345")
-            .ToReadOnlyReactivePropertySlim("")
+            .ToReadOnlyReactivePropertySlim("12345")
             .AddTo(Trash);
     }
 
-    private ReadOnlyReactivePropertySlim<string> SetupDate()
+    private ReadOnlyReactivePropertySlim<string> SetupTimestamp()
     {
         return Model.ObserveProperty(x => x.Timestamp)
             .ObserveOnUIDispatcher()
-            .Select(x => x.ToLongDateString())
-            .ToReadOnlyReactivePropertySlim(Model.Timestamp.ToLongDateString())
-            .AddTo(Trash);
-    }
-
-    private ReadOnlyReactivePropertySlim<string> SetupTime()
-    {
-        return Model.ObserveProperty(x => x.Timestamp)
-            .ObserveOnUIDispatcher()
-            .Select(x => x.ToLongTimeString())
-            .ToReadOnlyReactivePropertySlim(Model.Timestamp.ToLongTimeString())
+            .Select(x => x.ToString(CultureInfo.CurrentCulture))
+            .ToReadOnlyReactivePropertySlim(Model.Timestamp.ToString(CultureInfo.CurrentCulture))
             .AddTo(Trash);
     }
 

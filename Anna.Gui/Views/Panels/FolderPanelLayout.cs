@@ -126,6 +126,19 @@ public sealed class FolderPanelLayout : NotificationObject
     }
 
     #endregion
+    
+    
+    public FolderPanelViewModel? ViewModel
+    {
+        get => _ViewModel;
+        set
+        {
+            _ViewModel = value;
+
+            UpdateItemSize();
+        }
+    }
+    private FolderPanelViewModel? _ViewModel;
 
 
     public bool IsVisibleSize
@@ -140,26 +153,21 @@ public sealed class FolderPanelLayout : NotificationObject
         set => SetFlagProperty(ref _flags, FlagIsVisibleTimeStamp, value);
     }
 
+    private double _charaWidth;
+    
     private uint _flags = FlagIsVisibleSize | FlagIsVisibleTimeStamp;
 
     private const uint FlagIsVisibleSize = 1 << 0;
     private const uint FlagIsVisibleTimeStamp = 1 << 1;
-
-    private double _charaWidth;
 
     public static Thickness ItemMargin { get; } = new(0, 0, 32, 0);
     public static Thickness SelectedMarkMargin { get; } = new(0, 0, 2, 0);
 
     private static readonly Dictionary<int, Size> ItemHeightCache = new();
 
-    private const int NameCount = 16;
-    private const int ExtensionCount = 5;
-    private const int SizeCount = 10;
-
-    public FolderPanelLayout()
-    {
-        UpdateItemSize();
-    }
+    private int NameCount => _ViewModel?.NameCount ?? 16;
+    private int ExtensionCount => _ViewModel?.ExtensionCount ?? 5;
+    private int SizeCount => _ViewModel?.SizeCount ?? 10;
 
     private void UpdateItemSize()
     {

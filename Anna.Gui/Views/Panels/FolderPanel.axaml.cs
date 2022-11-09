@@ -66,7 +66,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     }
 
     private IntSize _ItemCellSize;
-    
+
     public FolderPanelViewModel ViewModel => _viewModel ?? throw new InvalidOperationException();
     private FolderPanelViewModel? _viewModel;
 
@@ -97,7 +97,10 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
         PropertyChanged += (_, e) =>
         {
             if (e.Property == DataContextProperty)
+            {
                 _viewModel = DataContext as FolderPanelViewModel ?? throw new NotSupportedException();
+                Layout.ViewModel = _viewModel;
+            }
         };
     }
 

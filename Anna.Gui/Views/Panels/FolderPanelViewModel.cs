@@ -34,6 +34,10 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     public ReactivePropertySlim<int> CursorIndex { get; }
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
     public IObservable<string> CurrentFolderPath { get; }
+    
+    public int NameCount => 16;
+    public int ExtensionCount => 5;
+    public int SizeCount => 10;
 
     private EntryViewModel? _oldEntry;
     private int _OnEntryExplicitlyCreatedRunning;

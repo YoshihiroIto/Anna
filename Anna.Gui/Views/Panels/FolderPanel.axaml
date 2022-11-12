@@ -149,8 +149,14 @@
 
                         <TextBlock Classes="entry"
                                    Width="{Binding $parent[panels:FolderPanel].Layout.SizeWidth}"
-                                   IsVisible="{Binding $parent[panels:FolderPanel].Layout.IsVisibleSize}"
-                                   Text="{Binding Size.Value}" />
+                                   IsVisible="{Binding $parent[panels:FolderPanel].Layout.IsVisibleSize}">
+                            <TextBlock.Text>
+                                <MultiBinding Converter="{x:Static converters:EntrySizeToStringConverter.Default}">
+                                    <Binding Path="Layout.SizeCount" RelativeSource="{RelativeSource FindAncestor, AncestorType=panels:FolderPanel}" />
+                                    <Binding Path="Size.Value" />
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </templateSelectors:EntryDataTemplateSelector.FileDataTemplate>
@@ -169,7 +175,8 @@
                         <TextBlock Classes="entry"
                                    Width="{Binding $parent[panels:FolderPanel].Layout.SizeWidth}"
                                    IsVisible="{Binding $parent[panels:FolderPanel].Layout.IsVisibleSize}"
-                                   Text="{Binding Size.Value}" />
+                                   Text="{Binding $parent[panels:FolderPanel].Layout.SizeCount,
+                                                  Converter={x:Static converters:FolderEntrySizeToStringConverter.Default}}" />
                     </StackPanel>
                 </DataTemplate>
             </templateSelectors:EntryDataTemplateSelector.FolderDataTemplate>

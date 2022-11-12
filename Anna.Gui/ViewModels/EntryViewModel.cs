@@ -1,12 +1,10 @@
-﻿using Anna.Foundation;
-using Anna.Gui.Foundations;
+﻿using Anna.Gui.Foundations;
 using Anna.Service;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Globalization;
 using System.IO;
 using System.Reactive.Linq;
-using System.Runtime.CompilerServices;
 using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.ViewModels;
@@ -19,7 +17,7 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entr
     public ReadOnlyReactivePropertySlim<string> NameWithExtension => _NameWithExtension ??= SetupNameWithExtension();
     public ReadOnlyReactivePropertySlim<string> Name => _Name ??= SetupName();
     public ReadOnlyReactivePropertySlim<string> Extension => _Extension ??= SetupExtension();
-    public ReadOnlyReactivePropertySlim<string> Size => _Size ??= SetupSize();
+    public ReadOnlyReactivePropertySlim<long> Size => _Size ??= SetupSize();
     public ReadOnlyReactivePropertySlim<string> Timestamp => _Timestamp ??= SetupTimestamp();
     public ReadOnlyReactivePropertySlim<FileAttributes> Attributes => _Attributes ??= SetupAttributes();
     public ReadOnlyReactivePropertySlim<bool> IsSelected => _IsSelected ??= SetupIsSelected();
@@ -28,7 +26,7 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entr
     private ReadOnlyReactivePropertySlim<string>? _NameWithExtension;
     private ReadOnlyReactivePropertySlim<string>? _Name;
     private ReadOnlyReactivePropertySlim<string>? _Extension;
-    private ReadOnlyReactivePropertySlim<string>? _Size;
+    private ReadOnlyReactivePropertySlim<long>? _Size;
     private ReadOnlyReactivePropertySlim<string>? _Timestamp;
     private ReadOnlyReactivePropertySlim<FileAttributes>? _Attributes;
 
@@ -72,12 +70,11 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entr
             .AddTo(Trash);
     }
 
-    private ReadOnlyReactivePropertySlim<string> SetupSize()
+    private ReadOnlyReactivePropertySlim<long> SetupSize()
     {
-        return Model.ObserveProperty(x => x.Size)
+        return Model.Entry.ObserveProperty(x => x.Size)
             .ObserveOnUIDispatcher()
-            .Select(x => "12345")
-            .ToReadOnlyReactivePropertySlim("12345")
+            .ToReadOnlyReactivePropertySlim(Model.Entry.Size)
             .AddTo(Trash);
     }
 
@@ -104,11 +101,4 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entr
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
     }
-    
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static string MakeSizeString(long size)
-    {
-        return $"{size:#,0}";
-    }
-    
 }

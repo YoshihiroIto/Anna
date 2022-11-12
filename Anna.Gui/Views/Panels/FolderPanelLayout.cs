@@ -126,8 +126,8 @@ public sealed class FolderPanelLayout : NotificationObject
     }
 
     #endregion
-    
-    
+
+
     public FolderPanelViewModel? ViewModel
     {
         get => _ViewModel;
@@ -138,6 +138,7 @@ public sealed class FolderPanelLayout : NotificationObject
             UpdateItemSize();
         }
     }
+
     private FolderPanelViewModel? _ViewModel;
 
 
@@ -154,7 +155,7 @@ public sealed class FolderPanelLayout : NotificationObject
     }
 
     private double _charaWidth;
-    
+
     private uint _flags = FlagIsVisibleSize | FlagIsVisibleTimeStamp;
 
     private const uint FlagIsVisibleSize = 1 << 0;
@@ -165,9 +166,9 @@ public sealed class FolderPanelLayout : NotificationObject
 
     private static readonly Dictionary<int, Size> ItemHeightCache = new();
 
-    private int NameCount => _ViewModel?.NameCount ?? 16;
-    private int ExtensionCount => _ViewModel?.ExtensionCount ?? 5;
-    private int SizeCount => _ViewModel?.SizeCount ?? 10;
+    public int NameCount => _ViewModel?.NameCount ?? 16;
+    public int ExtensionCount => _ViewModel?.ExtensionCount ?? 5;
+    public int SizeCount => _ViewModel?.SizeCount ?? 12;
 
     private void UpdateItemSize()
     {

@@ -1,5 +1,6 @@
 ﻿using Humanizer;
 using System.Buffers;
+using System.Runtime.CompilerServices;
 using UtfUnknown;
 
 namespace Anna.Foundation;
@@ -16,7 +17,7 @@ public static class StringHelper
             var readLength = await source.ReadAsync(buf).ConfigureAwait(false);
             if (readLength == 0)
                 return ("", true);
-            
+
             var encoding = CharsetDetector.DetectFromBytes(buf, 0, Math.Min(readLength, 4096));
             if (encoding?.Detected is null)
                 return ("", false);
@@ -30,12 +31,18 @@ public static class StringHelper
             ArrayPool<byte>.Shared.Return(buf);
         }
     }
-    
+
     public static string MakeSizeString(long size)
     {
-        var h = size.Bytes().Humanize("#.##");
+        var h = MakeSimpleSizeString(size);
         var b = $"{size:#,0} B";
-        
+
         return b == h ? b : $"{h} ({b})";
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string MakeSimpleSizeString(long size)
+    {
+        return size.Bytes().Humanize("#.00");
     }
 }

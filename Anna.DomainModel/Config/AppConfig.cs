@@ -205,4 +205,4 @@ public sealed class AppConfigData : ConfigData
     }
 }
 
-public record FolderWindowConfigData(int Id, int X, int Y, double Width, double Height);
+public sealed record FolderWindowConfigData(int Id, int X, int Y, double Width, double Height);

@@ -133,8 +133,17 @@ public sealed class FolderPanelLayout : NotificationObject
         get => _ViewModel;
         set
         {
+            if (_ViewModel == value)
+                return;
+            
+            if(_ViewModel is not null)
+                _ViewModel.ListModeChanged -= OnListModeChanged;
+            
             _ViewModel = value;
-
+            
+            if(_ViewModel is not null)
+                _ViewModel.ListModeChanged += OnListModeChanged;
+            
             UpdateItemSize();
         }
     }
@@ -196,7 +205,9 @@ public sealed class FolderPanelLayout : NotificationObject
         NameWidth = NameCount * _charaWidth;
         ExtensionWidth = ExtensionCount * _charaWidth;
         NameWithExtensionWidth = NameWidth + ExtensionWidth;
+        
         SizeWidth = SizeCount * _charaWidth;
+        IsVisibleSize = SizeCount > 0;
 
         ItemWidth = value.Height +// SelectedMark width
                     SelectedMarkMargin.Left +
@@ -207,5 +218,14 @@ public sealed class FolderPanelLayout : NotificationObject
                     ItemMargin.Right;
 
         ItemHeight = value.Height;
+        
+        RaisePropertyChanged(nameof(NameCount));
+        RaisePropertyChanged(nameof(ExtensionCount));
+        RaisePropertyChanged(nameof(SizeCount));
+    }
+    
+    private void OnListModeChanged(object? sender, EventArgs e)
+    {
+        UpdateItemSize();
     }
 }

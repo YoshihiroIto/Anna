@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
+using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
 using Anna.Gui.Hotkey;
@@ -14,6 +15,8 @@ using Anna.Service.Workers;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
@@ -35,18 +38,26 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
     public IObservable<string> CurrentFolderPath { get; }
 
-    public int NameCount => 16;
-    public int ExtensionCount => 5;
-    public int SizeCount => 12;
+    public int NameCount => _appConfig.Data.ListModeLayouts[_ListMode].Name;
+    public int ExtensionCount => _appConfig.Data.ListModeLayouts[_ListMode].Extension;
+    public int SizeCount => _appConfig.Data.ListModeLayouts[_ListMode].Size;
+
+    public event EventHandler? ListModeChanged;
 
     private EntryViewModel? _oldEntry;
     private int _OnEntryExplicitlyCreatedRunning;
 
+    public int _ListMode;
+
     private readonly bool _isBufferingUpdate = false;
+
+    private readonly AppConfig _appConfig;
 
     public FolderPanelViewModel(IServiceProvider dic)
         : base(dic)
     {
+        _appConfig = dic.GetInstance<AppConfig>();
+        
         Hotkey = dic.GetInstance<FolderPanelHotkey>().AddTo(Trash);
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
@@ -172,7 +183,12 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
 
     public void SetListMode(int index)
     {
-        throw new NotImplementedException();
+        if (_ListMode == index)
+            return;
+
+        _ListMode = index;
+        
+        ListModeChanged?.Invoke(this, EventArgs.Empty);
     }
     
     private EntryViewModel? UpdateCursorEntry(int index)

@@ -3,6 +3,7 @@ using Anna.Gui.Views.Windows.Base;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Input.Raw;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System;
@@ -14,7 +15,7 @@ public partial class JumpFolderDialog : WindowBase<JumpFolderDialogViewModel>
 {
     private bool IsEditing => _editingDepth > 0;
     private int _editingDepth;
-    
+
     public JumpFolderDialog()
     {
         InitializeComponent();
@@ -26,7 +27,7 @@ public partial class JumpFolderDialog : WindowBase<JumpFolderDialogViewModel>
     private void InitializeComponent()
     {
         AvaloniaXamlLoader.Load(this);
-        
+
         AddHandler(InputElement.KeyDownEvent, OnPreviewKeyDown, RoutingStrategies.Tunnel);
     }
 
@@ -54,7 +55,7 @@ public partial class JumpFolderDialog : WindowBase<JumpFolderDialogViewModel>
             e.Handled = true;
         }
         else
-            ViewModel.OnKeyDown(e);
+            ViewModel.OnKeyDown(e.Key);
     }
 
     private void PathOnPreviewPointerPress(object? sender, PointerPressedEventArgs e)
@@ -114,15 +115,15 @@ public partial class JumpFolderDialog : WindowBase<JumpFolderDialogViewModel>
 
     private void OnDoubleTapped(object? sender, TappedEventArgs e)
     {
-        ViewModel.OnKeyDown(new KeyEventArgs { Key = Key.Enter });
+        ViewModel.OnKeyDown(Key.Enter);
     }
-    
+
     private void EditButton_OnClick(object? sender, RoutedEventArgs e)
     {
         var button = sender as Button ?? throw new NullReferenceException();
 
         FindListBox().SelectedItem = button.DataContext;
-        
+
         EditSelectedItem();
         e.Handled = true;
     }

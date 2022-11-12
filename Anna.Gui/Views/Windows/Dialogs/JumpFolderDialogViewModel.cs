@@ -35,9 +35,9 @@ public sealed class JumpFolderDialogViewModel : HasModelWindowBaseViewModel<Jump
         SelectedPath = new ReactivePropertySlim<JumpFolderPathViewModel>(Paths[0]).AddTo(Trash);
     }
 
-    public async void OnKeyDown(KeyEventArgs e)
+    public async void OnKeyDown(Key key)
     {
-        switch (e.Key)
+        switch (key)
         {
             case Key.Enter:
                 await CloseAsync(SelectedPath.Value.Model.Path);
@@ -64,7 +64,7 @@ public sealed class JumpFolderDialogViewModel : HasModelWindowBaseViewModel<Jump
 
         foreach (var path in Model.Config.Paths)
         {
-            if (path.Key != e.Key)
+            if (path.Key != key)
                 continue;
 
             await CloseAsync(path.Path);

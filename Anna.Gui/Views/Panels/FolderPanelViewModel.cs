@@ -134,7 +134,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
         }
     }
 
-    public Entry[] CollectTargetEntries()
+    public IEnumerable<Entry> CollectTargetEntries()
     {
         var selectedEntries = Entries
             .Where(x => x.IsSelected.Value)
@@ -142,7 +142,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
             .ToArray();
 
         if (selectedEntries.Any())
-            return selectedEntries.Select(x => x.Entry).ToArray();
+            return selectedEntries.Select(x => x.Entry);
 
         if (CursorEntry.Value is null)
             return Array.Empty<Entry>();

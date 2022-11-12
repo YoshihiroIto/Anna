@@ -4,6 +4,7 @@ using Anna.Gui.Messaging;
 using Anna.Service.Workers;
 using Avalonia.Controls;
 using AvaloniaEdit;
+using System.Collections.Generic;
 using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Hotkey;
@@ -17,9 +18,9 @@ public interface IFolderPanelHotkeyReceiver : IHotkeyReceiver
 {
     Folder Folder { get; }
     Entry CurrentEntry { get; }
-    Entry[] TargetEntries { get; }
     IBackgroundWorker BackgroundWorker { get; }
     
+    IEnumerable<Entry> CollectTargetEntries();
     void MoveCursor(Directions dir);
     void ToggleSelectionCursorEntry(bool isMoveDown);
     void SetListMode(int index);

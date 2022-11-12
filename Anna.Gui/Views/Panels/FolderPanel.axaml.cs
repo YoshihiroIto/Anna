@@ -110,7 +110,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     Entry IFolderPanelHotkeyReceiver.CurrentEntry =>
         ViewModel.CursorEntry.Value?.Model.Entry ?? throw new InvalidOperationException();
 
-    Entry[] IFolderPanelHotkeyReceiver.TargetEntries => ViewModel.CollectTargetEntries();
+    IEnumerable<Entry> IFolderPanelHotkeyReceiver.CollectTargetEntries() => ViewModel.CollectTargetEntries();
     IBackgroundWorker IFolderPanelHotkeyReceiver.BackgroundWorker => ViewModel.Model.BackgroundWorker;
 
     void IFolderPanelHotkeyReceiver.MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);

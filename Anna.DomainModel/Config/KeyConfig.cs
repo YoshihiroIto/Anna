@@ -70,6 +70,11 @@ public sealed class KeyConfigData : ConfigData
             //
             new(Key.W, KeyModifiers.Shift, Operations.OpenAnna),
             new(Key.W, metaKey, Operations.CloseAnna),
+            //
+            new(Key.D1, KeyModifiers.Shift, Operations.SetListMode1),
+            new(Key.D2, KeyModifiers.Shift, Operations.SetListMode2),
+            new(Key.D3, KeyModifiers.Shift, Operations.SetListMode3),
+            new(Key.D4, KeyModifiers.Shift, Operations.SetListMode4),
         };
     }
 
@@ -115,4 +120,9 @@ public enum Operations
     //
     OpenAnna,
     CloseAnna,
+    //
+    SetListMode1,
+    SetListMode2,
+    SetListMode3,
+    SetListMode4,
 }

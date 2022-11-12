@@ -79,6 +79,11 @@ public sealed class FolderPanelHotkey : HotkeyBase
             //
             { Operations.OpenAnna, s => OpenAnnaAsync((IFolderPanelHotkeyReceiver)s) },
             { Operations.CloseAnna, s => CloseAnnaAsync((IFolderPanelHotkeyReceiver)s) },
+            //
+            { Operations.SetListMode1, s => SetListMode((IFolderPanelHotkeyReceiver)s, 1) },
+            { Operations.SetListMode2, s => SetListMode((IFolderPanelHotkeyReceiver)s, 2) },
+            { Operations.SetListMode3, s => SetListMode((IFolderPanelHotkeyReceiver)s, 3) },
+            { Operations.SetListMode4, s => SetListMode((IFolderPanelHotkeyReceiver)s, 4) },
         };
     }
 
@@ -417,6 +422,12 @@ public sealed class FolderPanelHotkey : HotkeyBase
     private ValueTask CloseAnnaAsync(IFolderPanelHotkeyReceiver receiver)
     {
         Dic.GetInstance<App>().RemoveFolder(receiver.Folder);
+        return ValueTask.CompletedTask;
+    }
+    
+    private static ValueTask SetListMode(IFolderPanelHotkeyReceiver receiver, int index)
+    {
+        receiver.SetListMode(index);
         return ValueTask.CompletedTask;
     }
 }

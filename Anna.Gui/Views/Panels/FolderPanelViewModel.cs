@@ -170,6 +170,11 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
             MoveCursor(Directions.Down);
     }
 
+    public void SetListMode(int index)
+    {
+        throw new NotImplementedException();
+    }
+    
     private EntryViewModel? UpdateCursorEntry(int index)
     {
         if (_oldEntry is not null)

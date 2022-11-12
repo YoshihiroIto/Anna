@@ -22,6 +22,7 @@ public interface IFolderPanelHotkeyReceiver : IHotkeyReceiver
     
     void MoveCursor(Directions dir);
     void ToggleSelectionCursorEntry(bool isMoveDown);
+    void SetListMode(int index);
 }
 
 public interface ITextViewerHotkeyReceiver : IHotkeyReceiver

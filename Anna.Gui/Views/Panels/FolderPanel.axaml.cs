@@ -116,6 +116,8 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     void IFolderPanelHotkeyReceiver.MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
     void IFolderPanelHotkeyReceiver.ToggleSelectionCursorEntry(bool isMoveDown) =>
         ViewModel.ToggleSelectionCursorEntry(isMoveDown);
+    void IFolderPanelHotkeyReceiver.SetListMode(int index) =>
+        ViewModel.SetListMode(index);
 
     private void UpdateItemCellSize()
     {

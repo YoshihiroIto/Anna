@@ -157,6 +157,10 @@
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
+
+                        <TextBlock Classes="entry"
+                                   Width="{Binding $parent[panels:FolderPanel].Layout.TimestampWidth}"
+                                   Text="{Binding Timestamp.Value}" />
                     </StackPanel>
                 </DataTemplate>
             </templateSelectors:EntryDataTemplateSelector.FileDataTemplate>
@@ -177,6 +181,10 @@
                                    IsVisible="{Binding $parent[panels:FolderPanel].Layout.IsVisibleSize}"
                                    Text="{Binding $parent[panels:FolderPanel].Layout.SizeCount,
                                                   Converter={x:Static converters:FolderEntrySizeToStringConverter.Default}}" />
+
+                        <TextBlock Classes="entry"
+                                   Width="{Binding $parent[panels:FolderPanel].Layout.TimestampWidth}"
+                                   Text="{Binding Timestamp.Value}" />
                     </StackPanel>
                 </DataTemplate>
             </templateSelectors:EntryDataTemplateSelector.FolderDataTemplate>

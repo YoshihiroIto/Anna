@@ -1,11 +1,13 @@
-﻿using Anna.Gui.Foundations;
-using Anna.Service;
+﻿using Anna.DomainModel.Config;
+using Anna.Gui.Foundations;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Reactive.Linq;
 using Entry=Anna.DomainModel.Entry;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.ViewModels;
 
@@ -32,9 +34,14 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entr
 
     private ReadOnlyReactivePropertySlim<bool>? _IsSelected;
 
+    private readonly string _timestampFormat;
+
     public EntryViewModel(IServiceProvider dic)
         : base(dic)
     {
+        _timestampFormat = dic.GetInstance<AppConfig>().Data.TimestampFormat;
+        if (_timestampFormat != "")
+            _timestampFormat = LeftMargin + _timestampFormat;
     }
 
     private ReactivePropertySlim<bool> SetupIsOnCursor()
@@ -82,8 +89,8 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entr
     {
         return Model.Entry.ObserveProperty(x => x.Timestamp)
             .ObserveOnUIDispatcher()
-            .Select(x => x.ToString(CultureInfo.CurrentCulture))
-            .ToReadOnlyReactivePropertySlim(Model.Entry.Timestamp.ToString(CultureInfo.CurrentCulture))
+            .Select(MakeTimestampString)
+            .ToReadOnlyReactivePropertySlim(MakeTimestampString(Model.Entry.Timestamp))
             .AddTo(Trash);
     }
 
@@ -101,4 +108,14 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entr
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
     }
+
+    private string MakeTimestampString(DateTime v)
+    {
+        if (_timestampFormat == "")
+            return LeftMargin + v.ToString(CultureInfo.CurrentUICulture);
+
+        return v.ToString(_timestampFormat);
+    }
+
+    private const string LeftMargin = " ";
 }

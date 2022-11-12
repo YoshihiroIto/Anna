@@ -41,6 +41,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     public int NameCount => _appConfig.Data.ListModeLayouts[_ListMode].Name;
     public int ExtensionCount => _appConfig.Data.ListModeLayouts[_ListMode].Extension;
     public int SizeCount => _appConfig.Data.ListModeLayouts[_ListMode].Size;
+    public int TimestampCount => _appConfig.Data.ListModeLayouts[_ListMode].Timestamp;
 
     public event EventHandler? ListModeChanged;
 

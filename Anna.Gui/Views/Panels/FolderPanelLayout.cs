@@ -128,6 +128,19 @@ public sealed class FolderPanelLayout : NotificationObject
     #endregion
 
 
+    #region TimestampWidth
+
+    private double _TimestampWidth;
+
+    public double TimestampWidth
+    {
+        get => _TimestampWidth;
+        private set => SetProperty(ref _TimestampWidth, value);
+    }
+
+    #endregion
+
+
     public FolderPanelViewModel? ViewModel
     {
         get => _ViewModel;
@@ -157,18 +170,18 @@ public sealed class FolderPanelLayout : NotificationObject
         set => SetFlagProperty(ref _flags, FlagIsVisibleSize, value);
     }
 
-    public bool IsVisibleTimeStamp
+    public bool IsVisibleTimestamp
     {
-        get => (_flags & FlagIsVisibleTimeStamp) != 0;
-        set => SetFlagProperty(ref _flags, FlagIsVisibleTimeStamp, value);
+        get => (_flags & FlagIsVisibleTimestamp) != 0;
+        set => SetFlagProperty(ref _flags, FlagIsVisibleTimestamp, value);
     }
 
     private double _charaWidth;
 
-    private uint _flags = FlagIsVisibleSize | FlagIsVisibleTimeStamp;
+    private uint _flags = FlagIsVisibleSize | FlagIsVisibleTimestamp;
 
     private const uint FlagIsVisibleSize = 1 << 0;
-    private const uint FlagIsVisibleTimeStamp = 1 << 1;
+    private const uint FlagIsVisibleTimestamp = 1 << 1;
 
     public static Thickness ItemMargin { get; } = new(0, 0, 32, 0);
     public static Thickness SelectedMarkMargin { get; } = new(0, 0, 2, 0);
@@ -178,6 +191,7 @@ public sealed class FolderPanelLayout : NotificationObject
     public int NameCount => _ViewModel?.NameCount ?? 16;
     public int ExtensionCount => _ViewModel?.ExtensionCount ?? 5;
     public int SizeCount => _ViewModel?.SizeCount ?? 12;
+    public int TimestampCount => _ViewModel?.TimestampCount ?? 12;
 
     private void UpdateItemSize()
     {
@@ -208,6 +222,9 @@ public sealed class FolderPanelLayout : NotificationObject
         
         SizeWidth = SizeCount * _charaWidth;
         IsVisibleSize = SizeCount > 0;
+        
+        TimestampWidth = TimestampCount * _charaWidth;
+        IsVisibleTimestamp = TimestampCount > 0;
 
         ItemWidth = value.Height +// SelectedMark width
                     SelectedMarkMargin.Left +
@@ -215,6 +232,7 @@ public sealed class FolderPanelLayout : NotificationObject
                     ItemMargin.Left +
                     (NameCount + ExtensionCount) * _charaWidth +
                     (IsVisibleSize ? SizeCount * _charaWidth : 0) +
+                    (IsVisibleTimestamp ? TimestampCount * _charaWidth : 0) +
                     ItemMargin.Right;
 
         ItemHeight = value.Height;
@@ -222,6 +240,7 @@ public sealed class FolderPanelLayout : NotificationObject
         RaisePropertyChanged(nameof(NameCount));
         RaisePropertyChanged(nameof(ExtensionCount));
         RaisePropertyChanged(nameof(SizeCount));
+        RaisePropertyChanged(nameof(TimestampCount));
     }
     
     private void OnListModeChanged(object? sender, EventArgs e)

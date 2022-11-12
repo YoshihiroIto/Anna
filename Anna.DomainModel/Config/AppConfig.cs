@@ -160,6 +160,19 @@ public sealed class AppConfigData : ConfigData
     #endregion
 
 
+    #region TimestampFormat
+
+    private string _TimestampFormat = "";
+
+    public string TimestampFormat
+    {
+        get => _TimestampFormat;
+        set => SetProperty(ref _TimestampFormat, value);
+    }
+
+    #endregion
+
+
     #region FolderWindows
 
     private ObservableCollection<FolderWindowConfigData> _FolderWindows = new();
@@ -218,14 +231,17 @@ public sealed class AppConfigData : ConfigData
 
         ListModeLayouts = new ListModeLayout[]
         {
-            new( 16, 5, 12, 16),
+            new( 16, 5, 12, 20),
             new( 16, 5, 12, 0),
             new( 16, 5, 0, 0),
             new( 8, 4, 0, 0),
         };
+
+        if (Culture == Cultures.Ja)
+            TimestampFormat = "yyyy/MM/dd HH:mm:ss";
     }
 }
 
 public sealed record FolderWindowConfigData(int Id, int X, int Y, double Width, double Height);
 
-public sealed record ListModeLayout(int Name, int Extension, int Size, int TimeStamp);
+public sealed record ListModeLayout(int Name, int Extension, int Size, int Timestamp);

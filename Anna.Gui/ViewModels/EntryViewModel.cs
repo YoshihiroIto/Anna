@@ -1,17 +1,19 @@
-﻿using Anna.Gui.Foundations;
+﻿using Anna.Foundation;
+using Anna.Gui.Foundations;
 using Anna.Service;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System.Globalization;
 using System.IO;
 using System.Reactive.Linq;
+using System.Runtime.CompilerServices;
 using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.ViewModels;
 
-public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry>
+public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entry Entry, int Dummy)>
 {
-    public bool IsFolder => Model.IsFolder;
+    public bool IsFolder => Model.Entry.IsFolder;
 
     public ReactivePropertySlim<bool> IsOnCursor => _IsOnCursor ??= SetupIsOnCursor();
     public ReadOnlyReactivePropertySlim<string> NameWithExtension => _NameWithExtension ??= SetupNameWithExtension();
@@ -44,29 +46,29 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry
 
     private ReadOnlyReactivePropertySlim<string> SetupNameWithExtension()
     {
-        return Model.ObserveProperty(x => x.NameWithExtension)
+        return Model.Entry.ObserveProperty(x => x.NameWithExtension)
             .ObserveOnUIDispatcher()
-            .Select(x => Model.IsFolder ? Path.AltDirectorySeparatorChar + x : x)
+            .Select(x => Model.Entry.IsFolder ? Path.AltDirectorySeparatorChar + x : x)
             .ToReadOnlyReactivePropertySlim(
-                Model.IsFolder
-                    ? Path.AltDirectorySeparatorChar + Model.NameWithExtension
-                    : Model.NameWithExtension)
+                Model.Entry.IsFolder
+                    ? Path.AltDirectorySeparatorChar + Model.Entry.NameWithExtension
+                    : Model.Entry.NameWithExtension)
             .AddTo(Trash);
     }
 
     private ReadOnlyReactivePropertySlim<string> SetupName()
     {
-        return Model.ObserveProperty(x => x.Name)
+        return Model.Entry.ObserveProperty(x => x.Name)
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(Model.Name)
+            .ToReadOnlyReactivePropertySlim(Model.Entry.Name)
             .AddTo(Trash);
     }
 
     private ReadOnlyReactivePropertySlim<string> SetupExtension()
     {
-        return Model.ObserveProperty(x => x.Extension)
+        return Model.Entry.ObserveProperty(x => x.Extension)
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(Model.Extension)
+            .ToReadOnlyReactivePropertySlim(Model.Entry.Extension)
             .AddTo(Trash);
     }
 
@@ -81,26 +83,32 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, Entry
 
     private ReadOnlyReactivePropertySlim<string> SetupTimestamp()
     {
-        return Model.ObserveProperty(x => x.Timestamp)
+        return Model.Entry.ObserveProperty(x => x.Timestamp)
             .ObserveOnUIDispatcher()
             .Select(x => x.ToString(CultureInfo.CurrentCulture))
-            .ToReadOnlyReactivePropertySlim(Model.Timestamp.ToString(CultureInfo.CurrentCulture))
+            .ToReadOnlyReactivePropertySlim(Model.Entry.Timestamp.ToString(CultureInfo.CurrentCulture))
             .AddTo(Trash);
     }
 
     private ReadOnlyReactivePropertySlim<FileAttributes> SetupAttributes()
     {
-        return Model.ObserveProperty(x => x.Attributes)
+        return Model.Entry.ObserveProperty(x => x.Attributes)
             .ObserveOnUIDispatcher()
-            .ToReadOnlyReactivePropertySlim(Model.Attributes)
+            .ToReadOnlyReactivePropertySlim(Model.Entry.Attributes)
             .AddTo(Trash);
     }
 
     private ReadOnlyReactivePropertySlim<bool> SetupIsSelected()
     {
-        return Model
-            .ObserveProperty(x => x.IsSelected)
+        return Model.Entry.ObserveProperty(x => x.IsSelected)
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static string MakeSizeString(long size)
+    {
+        return $"{size:#,0}";
+    }
+    
 }

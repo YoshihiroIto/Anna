@@ -34,14 +34,14 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     public ReactivePropertySlim<int> CursorIndex { get; }
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
     public IObservable<string> CurrentFolderPath { get; }
-    
+
     public int NameCount => 16;
     public int ExtensionCount => 5;
     public int SizeCount => 10;
 
     private EntryViewModel? _oldEntry;
     private int _OnEntryExplicitlyCreatedRunning;
-    
+
     private readonly bool _isBufferingUpdate = false;
 
     public FolderPanelViewModel(IServiceProvider dic)
@@ -88,13 +88,14 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
                 Entries = Model.Entries
                     .ToReadOnlyReactiveCollection(
                         bufferedCollectionChanged,
-                        dic.GetInstance<EntryViewModel, Entry>)
+                        entry => dic.GetInstance<EntryViewModel, (Entry, int)>((entry, 0)))
                     .AddTo(Trash);
             }
             else
             {
                 Entries = Model.Entries
-                    .ToReadOnlyReactiveCollection(dic.GetInstance<EntryViewModel, Entry>)
+                    .ToReadOnlyReactiveCollection(
+                        entry => dic.GetInstance<EntryViewModel, (Entry, int)>((entry, 0)))
                     .AddTo(Trash);
             }
 
@@ -129,15 +130,15 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
             .ToArray();
 
         if (selectedEntries.Any())
-            return selectedEntries;
+            return selectedEntries.Select(x => x.Entry).ToArray();
 
         if (CursorEntry.Value is null)
             return Array.Empty<Entry>();
 
-        if (CursorEntry.Value.Model.IsSelectable == false)
+        if (CursorEntry.Value.Model.Entry.IsSelectable == false)
             return Array.Empty<Entry>();
 
-        return new[] { CursorEntry.Value.Model };
+        return new[] { CursorEntry.Value.Model.Entry };
     }
 
     public void MoveCursor(Directions dir)
@@ -161,7 +162,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
         if (CursorEntry.Value is null)
             return;
 
-        var entry = CursorEntry.Value.Model;
+        var entry = CursorEntry.Value.Model.Entry;
         if (entry.IsSelectable)
             entry.IsSelected = !entry.IsSelected;
 
@@ -214,7 +215,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     {
         for (var i = 0; i != Entries.Count; ++i)
         {
-            if (Entries[i].Model.Path != path)
+            if (Entries[i].Model.Entry.Path != path)
                 continue;
 
             CursorIndex.Value = i;

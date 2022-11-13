@@ -175,12 +175,12 @@ public sealed class AppConfigData : ConfigData
 
     #region FolderWindows
 
-    private ObservableCollection<FolderWindowConfigData> _FolderWindows = new();
+    private ListModeLayout[] _ListModeLayouts = Array.Empty<ListModeLayout>();
 
-    public ObservableCollection<FolderWindowConfigData> FolderWindows
+    public ListModeLayout[] ListModeLayouts
     {
-        get => _FolderWindows;
-        set => SetProperty(ref _FolderWindows, value);
+        get => _ListModeLayouts;
+        set => SetProperty(ref _ListModeLayouts, value);
     }
 
     #endregion
@@ -188,12 +188,12 @@ public sealed class AppConfigData : ConfigData
 
     #region FolderWindows
 
-    private ListModeLayout[] _ListModeLayouts = Array.Empty<ListModeLayout>();
+    private ObservableCollection<FolderWindowConfigData> _FolderWindows = new();
 
-    public ListModeLayout[] ListModeLayouts
+    public ObservableCollection<FolderWindowConfigData> FolderWindows
     {
-        get => _ListModeLayouts;
-        set => SetProperty(ref _ListModeLayouts, value);
+        get => _FolderWindows;
+        set => SetProperty(ref _FolderWindows, value);
     }
 
     #endregion
@@ -231,14 +231,17 @@ public sealed class AppConfigData : ConfigData
 
         ListModeLayouts = new ListModeLayout[]
         {
-            new( 16, 5, 12, 20),
-            new( 16, 5, 12, 0),
-            new( 16, 5, 0, 0),
-            new( 8, 4, 0, 0),
+            new(16, 5, 12, 20), new(16, 5, 12, 0), new(16, 5, 0, 0), new(8, 4, 0, 0),
         };
 
         if (Culture == Cultures.Ja)
             TimestampFormat = "yyyy/MM/dd HH:mm:ss";
+
+        if (OperatingSystem.IsWindows())
+        {
+            TerminalApp = "cmd";
+            TerminalAppOptions = "/K \"cd /d %CurrentFolder%\"";
+        }
     }
 }
 

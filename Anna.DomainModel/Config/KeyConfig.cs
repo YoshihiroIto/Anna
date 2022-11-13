@@ -31,8 +31,6 @@ public sealed class KeyConfigData : ConfigData
 
     public override void SetDefault(IDefaultValueService defaultValue)
     {
-        var metaKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
-
         Keys = new KeyData[]
         {
             new(Key.S, KeyModifiers.None, Operations.SortEntry),
@@ -50,7 +48,7 @@ public sealed class KeyConfigData : ConfigData
             //
             new(Key.Enter, KeyModifiers.None, Operations.OpenEntry),
             new(Key.Enter, KeyModifiers.Shift, Operations.OpenExternal1),
-            new(Key.Enter, metaKey, Operations.OpenAssociatedApp),
+            new(Key.Enter, defaultValue.MetaKey, Operations.OpenAssociatedApp),
             new(Key.F3, KeyModifiers.None, Operations.OpenTerminal),
             new(Key.V, KeyModifiers.None, Operations.PreviewEntry),
             //
@@ -67,10 +65,10 @@ public sealed class KeyConfigData : ConfigData
             new(Key.U, KeyModifiers.None, Operations.DecompressEntry),
             //
             new(Key.G, KeyModifiers.Shift, Operations.EmptyTrashCan),
-            new(Key.G, metaKey, Operations.OpenTrashCan),
+            new(Key.G, defaultValue.MetaKey, Operations.OpenTrashCan),
             //
             new(Key.W, KeyModifiers.Shift, Operations.OpenAnna),
-            new(Key.W, metaKey, Operations.CloseAnna),
+            new(Key.W, defaultValue.MetaKey, Operations.CloseAnna),
             //
             new(Key.D1, KeyModifiers.Shift, Operations.SetListMode1),
             new(Key.D2, KeyModifiers.Shift, Operations.SetListMode2),

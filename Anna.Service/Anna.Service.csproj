@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Anna.Constants\Anna.Constants.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    </ItemGroup>
+
 </Project>

@@ -27,7 +27,7 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewMo
 
     public async ValueTask<string> ReadText()
     {
-        return Constants.Constants.SupportedArchiveFormats.Contains(Model.Extension)
+        return Constants.Constants.IsSupportedArchiveFormat(Model.Extension)
             ? await ReadTextArchive()
             : await ReadTextDefault();
     }
@@ -53,7 +53,7 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewMo
         : base(dic)
     {
         Hotkey = dic.GetInstance<TextViewerHotkey>().AddTo(Trash);
-        ShowLineNumbers = Constants.Constants.SupportedArchiveFormats.Contains(Model.Extension) == false;
+        ShowLineNumbers = Constants.Constants.IsSupportedArchiveFormat(Model.Extension) == false;
 
         ViewerFontFamily = Dic.GetInstance<AppConfig>().Data
             .ObserveProperty(x => x.ViewerFontFamily)

@@ -129,7 +129,7 @@ public sealed class Entry : NotificationObject, IEntry
     public bool IsFolder => (Attributes & FileAttributes.Directory) == FileAttributes.Directory;
 
     public FileEntryFormat Format =>
-        Constants.Constants.SupportedImageFormats.Contains(Extension) ? FileEntryFormat.Image : FileEntryFormat.Text;
+        Constants.Constants.IsSupportedImageFormat(Extension) ? FileEntryFormat.Image : FileEntryFormat.Text;
 
     public bool IsSelectable => IsParentFolder == false;
 

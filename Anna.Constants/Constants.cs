@@ -1,4 +1,5 @@
 ﻿using NetEscapades.EnumGenerators;
+using System.Runtime.CompilerServices;
 
 namespace Anna.Constants;
 
@@ -112,9 +113,20 @@ public enum ExternalApp
 public static class Constants
 {
     public const uint ListModeCount = 5;
-    
-    // todo: ReadOnlyHashSet
-    public static readonly HashSet<string> SupportedImageFormats = new(StringComparer.OrdinalIgnoreCase)
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsSupportedImageFormat(string extension)
+    {
+        return SupportedImageFormats.Contains(extension);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsSupportedArchiveFormat(string extension)
+    {
+        return SupportedArchiveFormats.Contains(extension);
+    }
+
+    private static readonly HashSet<string> SupportedImageFormats = new(StringComparer.OrdinalIgnoreCase)
     {
         ".jpeg",
         ".jpg",
@@ -132,7 +144,6 @@ public static class Constants
         ".nef",
         ".arw"
     };
-    
-    // todo: ReadOnlyHashSet
-    public static readonly HashSet<string> SupportedArchiveFormats = new(StringComparer.OrdinalIgnoreCase) { ".zip" };
+
+    private static readonly HashSet<string> SupportedArchiveFormats = new(StringComparer.OrdinalIgnoreCase) { ".zip" };
 }

@@ -119,7 +119,6 @@
 
         <Style Selector="StackPanel.entry" x:DataType="viewModels1:EntryViewModel">
             <Setter Property="Height" Value="{Binding $parent[panels:FolderPanel].Layout.ItemHeight}" />
-            <Setter Property="Margin" Value="{x:Static panels:FolderPanelLayout.ItemMargin}" />
             <Setter Property="Orientation" Value="Horizontal" />
         </Style>
 

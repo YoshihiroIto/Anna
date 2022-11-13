@@ -148,16 +148,20 @@ public sealed class FolderPanelLayout : NotificationObject
         {
             if (_ViewModel == value)
                 return;
-            
-            if(_ViewModel is not null)
+
+            if (_ViewModel is not null)
                 _ViewModel.ListModeChanged -= OnListModeChanged;
-            
+
             _ViewModel = value;
-            
-            if(_ViewModel is not null)
+
+            if (_ViewModel is not null)
                 _ViewModel.ListModeChanged += OnListModeChanged;
-            
+
             UpdateItemSize();
+
+            //////////////////////////////////////////////////////////////
+            void OnListModeChanged(object? sender, EventArgs e)
+                => UpdateItemSize();
         }
     }
 
@@ -183,7 +187,6 @@ public sealed class FolderPanelLayout : NotificationObject
     private const uint FlagIsVisibleSize = 1 << 0;
     private const uint FlagIsVisibleTimestamp = 1 << 1;
 
-    public static Thickness ItemMargin { get; } = new(0, 0, 32, 0);
     public static Thickness SelectedMarkMargin { get; } = new(0, 0, 2, 0);
 
     private static readonly Dictionary<int, Size> ItemHeightCache = new();
@@ -219,32 +222,28 @@ public sealed class FolderPanelLayout : NotificationObject
         NameWidth = NameCount * _charaWidth;
         ExtensionWidth = ExtensionCount * _charaWidth;
         NameWithExtensionWidth = NameWidth + ExtensionWidth;
-        
+
         SizeWidth = SizeCount * _charaWidth;
         IsVisibleSize = SizeCount > 0;
-        
+
         TimestampWidth = TimestampCount * _charaWidth;
         IsVisibleTimestamp = TimestampCount > 0;
+
+        var itemMargin = _charaWidth * 4;
 
         ItemWidth = value.Height +// SelectedMark width
                     SelectedMarkMargin.Left +
                     SelectedMarkMargin.Right +
-                    ItemMargin.Left +
                     (NameCount + ExtensionCount) * _charaWidth +
                     (IsVisibleSize ? SizeCount * _charaWidth : 0) +
                     (IsVisibleTimestamp ? TimestampCount * _charaWidth : 0) +
-                    ItemMargin.Right;
+                    itemMargin;
 
         ItemHeight = value.Height;
-        
+
         RaisePropertyChanged(nameof(NameCount));
         RaisePropertyChanged(nameof(ExtensionCount));
         RaisePropertyChanged(nameof(SizeCount));
         RaisePropertyChanged(nameof(TimestampCount));
-    }
-    
-    private void OnListModeChanged(object? sender, EventArgs e)
-    {
-        UpdateItemSize();
     }
 }

@@ -21,7 +21,7 @@
              FontSize="{Binding $self.Layout.FontSize}"
              ItemCellSize="{Binding ItemCellSize.Value,
                                     Mode=OneWayToSource}"
-             SelectedIndex="{Binding $self.SelectedIndex}"
+             SelectedEntryIndex="{Binding $self.SelectedEntryIndex}"
              mc:Ignorable="d">
     <UserControl.Styles>
         <StyleInclude Source="/Views/Resources/Styles.axaml" />

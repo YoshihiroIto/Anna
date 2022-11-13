@@ -25,13 +25,13 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
         set => SetValue(ItemTemplateProperty, value);
     }
 
-    public static readonly StyledProperty<int> SelectedIndexProperty =
-        AvaloniaProperty.Register<FolderPanel, int>(nameof(SelectedIndex));
+    public static readonly StyledProperty<int> SelectedEntryIndexProperty =
+        AvaloniaProperty.Register<FolderPanel, int>(nameof(SelectedEntryIndex));
 
-    public int SelectedIndex
+    public int SelectedEntryIndex
     {
-        get => GetValue(SelectedIndexProperty);
-        set => SetValue(SelectedIndexProperty, value);
+        get => GetValue(SelectedEntryIndexProperty);
+        set => SetValue(SelectedEntryIndexProperty, value);
     }
 
     public static readonly StyledProperty<int> PageIndexProperty =
@@ -68,7 +68,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
 
     static FolderPanel()
     {
-        SelectedIndexProperty.Changed.Subscribe(e => (e.Sender as FolderPanel)?.UpdatePageIndex(true));
+        SelectedEntryIndexProperty.Changed.Subscribe(e => (e.Sender as FolderPanel)?.UpdatePageIndex(true));
     }
 
     public FolderPanel()
@@ -136,7 +136,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
 
     private bool UpdatePageIndex(bool isRaiseEvenWhenChanged)
     {
-        var newPageIndex = SelectedIndex / (ItemCellSize.Width * ItemCellSize.Height);
+        var newPageIndex = SelectedEntryIndex / Math.Max(1, ItemCellSize.Width * ItemCellSize.Height);
 
         if (PageIndex == newPageIndex)
             return false;

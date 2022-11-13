@@ -160,8 +160,8 @@ internal sealed class EntriesBag : Control
         var itemSize = new Size(_layout.ItemWidth, _layout.ItemHeight);
         var viewHeight = finalSize.Height;
 
-        var x = 0.0;
-        var y = 0.0;
+        var x = 0d;
+        var y = 0d;
 
         var pageRange = CurrentPageRange(_currentEntries);
 
@@ -175,7 +175,7 @@ internal sealed class EntriesBag : Control
             if (y + itemSize.Height >= viewHeight)
             {
                 x += itemSize.Width;
-                y = 0;
+                y = 0d;
             }
 
             child.Arrange(new Rect(new Point(x, y), itemSize));

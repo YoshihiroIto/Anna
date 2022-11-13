@@ -72,7 +72,7 @@
 
         <panels:FolderPanel Margin="0,8,0,0"
                             DataContext="{Binding FolderPanelViewModel}"
-                            SelectedIndex="{Binding CursorIndex.Value}">
+                            SelectedEntryIndex="{Binding CursorIndex.Value}">
             <Interaction.Behaviors>
                 <behaviors:InputElementFocusBehavior />
             </Interaction.Behaviors>

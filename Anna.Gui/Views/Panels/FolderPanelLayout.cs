@@ -179,8 +179,8 @@ public sealed class FolderPanelLayout : NotificationObject
         get => (_flags & FlagIsVisibleTimestamp) != 0;
         set => SetFlagProperty(ref _flags, FlagIsVisibleTimestamp, value);
     }
-
-    private double _charaWidth;
+    
+    internal double ItemMargin { get; private set; }
 
     private uint _flags = FlagIsVisibleSize | FlagIsVisibleTimestamp;
 
@@ -217,27 +217,27 @@ public sealed class FolderPanelLayout : NotificationObject
             ItemHeightCache.Add(key, value);
         }
 
-        _charaWidth = value.Width;
+        var charaWidth = value.Width;
 
-        NameWidth = NameCount * _charaWidth;
-        ExtensionWidth = ExtensionCount * _charaWidth;
+        NameWidth = NameCount * charaWidth;
+        ExtensionWidth = ExtensionCount * charaWidth;
         NameWithExtensionWidth = NameWidth + ExtensionWidth;
 
-        SizeWidth = SizeCount * _charaWidth;
+        SizeWidth = SizeCount * charaWidth;
         IsVisibleSize = SizeCount > 0;
 
-        TimestampWidth = TimestampCount * _charaWidth;
+        TimestampWidth = TimestampCount * charaWidth;
         IsVisibleTimestamp = TimestampCount > 0;
 
-        var itemMargin = _charaWidth * 4;
+        ItemMargin = charaWidth * 4;
 
         ItemWidth = value.Height +// SelectedMark width
                     SelectedMarkMargin.Left +
                     SelectedMarkMargin.Right +
-                    (NameCount + ExtensionCount) * _charaWidth +
-                    (IsVisibleSize ? SizeCount * _charaWidth : 0) +
-                    (IsVisibleTimestamp ? TimestampCount * _charaWidth : 0) +
-                    itemMargin;
+                    (NameCount + ExtensionCount) * charaWidth +
+                    (IsVisibleSize ? SizeCount * charaWidth : 0) +
+                    (IsVisibleTimestamp ? TimestampCount * charaWidth : 0) +
+                    ItemMargin;
 
         ItemHeight = value.Height;
 

@@ -2,6 +2,7 @@
 using Anna.Service.Services;
 using Avalonia.Input;
 using System.Diagnostics;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Config;
 
@@ -9,8 +10,8 @@ public sealed class JumpFolderConfig : ConfigBase<JumpFolderConfigData>
 {
     public const string FileName = "JumpFolder.json";
 
-    public JumpFolderConfig(IObjectSerializerService objectSerializer, IDefaultValueService defaultValue)
-        : base(objectSerializer, defaultValue)
+    public JumpFolderConfig(IServiceProvider dic)
+        : base(dic)
     {
     }
 }

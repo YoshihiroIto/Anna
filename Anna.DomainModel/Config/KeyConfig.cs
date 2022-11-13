@@ -1,6 +1,7 @@
 ﻿using Anna.Service.Services;
 using Avalonia.Input;
 using System.Diagnostics;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Config;
 
@@ -8,8 +9,8 @@ public sealed class KeyConfig : ConfigBase<KeyConfigData>
 {
     public const string FileName = "Key.json";
 
-    public KeyConfig(IObjectSerializerService objectSerializer, IDefaultValueService defaultValue)
-        : base(objectSerializer, defaultValue)
+    public KeyConfig(IServiceProvider dic)
+        : base(dic)
     {
     }
 }

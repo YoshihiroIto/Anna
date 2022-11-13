@@ -36,7 +36,7 @@ public sealed class ListModeTests : IDisposable
             
             await w.PressKeyAsync(key, RawInputModifiers.Shift);
             await Task.Delay(50);
-            Assert.Equal(mode, w.ViewModel.Dic.GetInstance<AppConfig>().Data.LastListMode );
+            Assert.Equal(mode, _fixture.App.Dic.GetInstance<AppConfig>().Data.LastListMode );
         });
     }
 }

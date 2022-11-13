@@ -1,5 +1,6 @@
 ﻿using Anna.Foundation;
 using Anna.Service.Services;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Config;
 
@@ -30,22 +31,20 @@ public class ConfigBase<T> : NotificationObject
 
     #endregion
     
-    private readonly IObjectSerializerService _objectSerializer;
-    private readonly IDefaultValueService _defaultValue;
-
-    public ConfigBase(IObjectSerializerService objectSerializer, IDefaultValueService defaultValue)
+    private readonly IServiceProvider _dic;
+    
+    public ConfigBase(IServiceProvider dic)
     {
-        _objectSerializer = objectSerializer;
-        _defaultValue = defaultValue;
+        _dic = dic;
     }
 
     public void Load()
     {
-        var result = _objectSerializer.Read(FilePath,
+        var result = _dic.GetInstance<IObjectSerializerService>().Read(FilePath,
             () =>
             {
                 var data = new T();
-                data.SetDefault(_defaultValue);
+                data.SetDefault(_dic.GetInstance<IDefaultValueService>());
                 return data;
             });
 
@@ -56,7 +55,7 @@ public class ConfigBase<T> : NotificationObject
     
     public void Save()
     {
-        _objectSerializer.Write(FilePath, Data);
+        _dic.GetInstance<IObjectSerializerService>().Write(FilePath, Data);
     }
     
     public virtual void Loaded(){}

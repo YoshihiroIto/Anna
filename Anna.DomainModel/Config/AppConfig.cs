@@ -4,13 +4,14 @@ using Avalonia.Media;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text.Json.Serialization;
+using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel.Config;
 
 public sealed class AppConfig : ConfigBase<AppConfigData>
 {
-    public AppConfig(IObjectSerializerService objectSerializer, IDefaultValueService defaultValue)
-        : base(objectSerializer, defaultValue)
+    public AppConfig(IServiceProvider dic)
+        : base(dic)
     {
     }
 

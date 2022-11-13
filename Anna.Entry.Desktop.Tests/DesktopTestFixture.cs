@@ -1,6 +1,7 @@
 ﻿using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Service.Repository;
+using Anna.Service.Services;
 using Anna.TestFoundation;
 using System.Text.Json;
 using Xunit;
@@ -35,7 +36,7 @@ public sealed class DesktopTestFixture : IDisposable
 
         {
             var c = new JumpFolderConfigData();
-            c.SetDefault();
+            c.SetDefault(App.Dic.GetInstance<IDefaultValueService>());
 
             var json = JsonSerializer.Serialize(c, FileSystemObjectSerializer.Options);
             File.WriteAllText(ConfigFolder.JumpFolderConfigFilePath, json);

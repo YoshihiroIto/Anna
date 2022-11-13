@@ -68,40 +68,28 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
 
     private void Register(string logOutputDir, string appConfigFilePath)
     {
-        RegisterSingleton<IObjectLifetimeCheckerService,
-#if DEBUG
-            DefaultObjectLifetimeChecker
-#else
-            NopObjectLifetimeChecker
-#endif
-        >();
-
         var configFolder = Path.GetDirectoryName(appConfigFilePath) ?? "";
+        var keyConfigFilePath = Path.Combine(configFolder, KeyConfig.FileName);
+        var jumpFolderConfigFilePath = Path.Combine(configFolder, JumpFolderConfig.FileName);
 
-        RegisterSingleton(() =>
-            new AppConfig(GetInstance<IObjectSerializerService>(), GetInstance<IDefaultValueService>())
-            {
-                FilePath = appConfigFilePath
-            });
-        RegisterSingleton(() =>
-            new KeyConfig(GetInstance<IObjectSerializerService>(), GetInstance<IDefaultValueService>())
-            {
-                FilePath = Path.Combine(configFolder, KeyConfig.FileName)
-            });
-        RegisterSingleton(() =>
-            new JumpFolderConfig(GetInstance<IObjectSerializerService>(), GetInstance<IDefaultValueService>())
-            {
-                FilePath = Path.Combine(configFolder, JumpFolderConfig.FileName)
-            });
+        RegisterSingleton(() => new AppConfig(this) { FilePath = appConfigFilePath });
+        RegisterSingleton(() => new KeyConfig(this) { FilePath = keyConfigFilePath });
+        RegisterSingleton(() => new JumpFolderConfig(this) { FilePath = jumpFolderConfigFilePath });
+        RegisterSingleton<App>();
+        RegisterSingleton<ResourcesHolder>();
+        RegisterSingleton<DomainModelOperator>();
 
         RegisterSingleton<ILoggerService>(() => new DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
         RegisterSingleton<IFileSystemIsAccessibleService, FileSystemIsAccessibleService>();
         RegisterSingleton<IFolderHistoryService, FolderHistoryService>();
         RegisterSingleton<ICompressorService, CompressorService>();
-        RegisterSingleton<App>();
-        RegisterSingleton<ResourcesHolder>();
-        RegisterSingleton<DomainModelOperator>();
+
+#if DEBUG
+        RegisterSingleton<IObjectLifetimeCheckerService, DefaultObjectLifetimeChecker>();
+#else
+        RegisterSingleton<IObjectLifetimeCheckerService, NopObjectLifetimeChecker>();
+#endif
 
         if (OperatingSystem.IsWindows())
         {
@@ -119,14 +107,14 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
             RegisterSingleton<IDefaultValueService, Service.Linux.DefaultValueService>();
         }
 
+        // transient
         Register<IBackgroundWorker, BackgroundWorker>(Lifestyle.Transient);
 
         // property injection
         RegisterInitializer<WindowBase>(d => d.Logger = GetInstance<ILoggerService>());
 
         GetRegistration(typeof(IBackgroundWorker))!.Registration
-            .SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent,
-                "dispose manually.");
+            .SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, "dispose manually.");
 
         Options.ResolveUnregisteredConcreteTypes = true;
 

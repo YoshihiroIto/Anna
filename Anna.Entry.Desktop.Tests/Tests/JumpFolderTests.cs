@@ -1,5 +1,6 @@
 ﻿using Anna.DomainModel.Config;
 using Anna.Service.Repository;
+using Anna.Service.Services;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
@@ -84,7 +85,7 @@ public sealed class JumpFolderTests : IDisposable
         configFolder.CreateFolder("FolderA");
 
         var c = new JumpFolderConfigData();
-        c.SetDefault();
+        c.SetDefault(_fixture.App.Dic.GetInstance<IDefaultValueService>());
         var a = c.Paths.First(x => x.Key == Key.A);
         a.Path = Path.Combine(configFolder.WorkPath, "FolderA");
 
@@ -121,7 +122,7 @@ public sealed class JumpFolderTests : IDisposable
         var configFolder = _fixture.ConfigFolder;
 
         var c = new JumpFolderConfigData();
-        c.SetDefault();
+        c.SetDefault(_fixture.App.Dic.GetInstance<IDefaultValueService>());
         var f1 = c.Paths.First(x => x.Key == Key.F1);
         f1.Path = "ABC";
 

@@ -12,6 +12,7 @@
              xmlns:templateSelectors="clr-namespace:Anna.Gui.Views.TemplateSelectors"
              xmlns:viewModels1="clr-namespace:Anna.Gui.ViewModels"
              xmlns:windows="clr-namespace:Anna.Gui.Views.Windows"
+             xmlns:controls="clr-namespace:Anna.Gui.Views.Controls"
              d:DesignHeight="450"
              d:DesignWidth="450"
              x:CompileBindings="True"
@@ -190,5 +191,5 @@
         </templateSelectors:EntryDataTemplateSelector>
     </panels:FolderPanel.ItemTemplate>
 
-    <panels:EntriesControl />
+    <controls:EntriesBag />
 </UserControl>

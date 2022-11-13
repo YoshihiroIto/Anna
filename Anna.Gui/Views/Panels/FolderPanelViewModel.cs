@@ -47,7 +47,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     private EntryViewModel? _oldEntry;
     private int _OnEntryExplicitlyCreatedRunning;
 
-    public int _ListMode;
+    public uint _ListMode;
 
     private readonly bool _isBufferingUpdate = false;
 
@@ -57,7 +57,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
         : base(dic)
     {
         _appConfig = dic.GetInstance<AppConfig>();
-        
+
         Hotkey = dic.GetInstance<FolderPanelHotkey>().AddTo(Trash);
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
@@ -181,16 +181,19 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
             MoveCursor(Directions.Down);
     }
 
-    public void SetListMode(int index)
+    public void SetListMode(uint index)
     {
+        if (index >= Constants.Constants.ListModeCount)
+            throw new ArgumentOutOfRangeException(nameof(index));
+
         if (_ListMode == index)
             return;
 
         _ListMode = index;
-        
+
         ListModeChanged?.Invoke(this, EventArgs.Empty);
     }
-    
+
     private EntryViewModel? UpdateCursorEntry(int index)
     {
         if (_oldEntry is not null)

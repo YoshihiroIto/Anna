@@ -48,11 +48,16 @@ public class ConfigBase<T> : NotificationObject
             });
 
         Data = result.obj;
+        
+        Loaded();
     }
+    
     public void Save()
     {
         _objectSerializer.Write(FilePath, Data);
     }
+    
+    public virtual void Loaded(){}
 }
 
 public abstract class ConfigData : NotificationObject

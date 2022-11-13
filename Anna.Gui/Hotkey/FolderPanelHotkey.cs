@@ -435,7 +435,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         return ValueTask.CompletedTask;
     }
 
-    private static ValueTask SetListMode(IFolderPanelHotkeyReceiver receiver, int index)
+    private static ValueTask SetListMode(IFolderPanelHotkeyReceiver receiver, uint index)
     {
         receiver.SetListMode(index);
         return ValueTask.CompletedTask;

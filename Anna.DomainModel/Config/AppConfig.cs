@@ -13,6 +13,12 @@ public sealed class AppConfig : ConfigBase<AppConfigData>
         : base(objectSerializer)
     {
     }
+
+    public override void Loaded()
+    {
+        if (Data.IsValidListModeLayouts == false)
+            Data.SetDefaultListModeLayouts();
+    }
 }
 
 public sealed class AppConfigData : ConfigData
@@ -21,6 +27,8 @@ public sealed class AppConfigData : ConfigData
         new(new Uri("avares://Anna.Gui/Assets/UDEVGothicNF-Regular.ttf"), "UDEV Gothic NF");
 
     public const double DefaultViewerFontSize = 14;
+
+    internal bool IsValidListModeLayouts => ListModeLayouts.Length == Constants.Constants.ListModeCount;
 
     #region Culture
 
@@ -222,10 +230,7 @@ public sealed class AppConfigData : ConfigData
         if (lang != "")
             Culture = CulturesExtensions.TryParse(lang, true, out var result) ? result : Cultures.En;
 
-        ListModeLayouts = new ListModeLayout[]
-        {
-            new(16, 5, 12, 20), new(16, 5, 12, 0), new(16, 5, 0, 0), new(8, 4, 0, 0),
-        };
+        SetDefaultListModeLayouts();
 
         if (Culture == Cultures.Ja)
             TimestampFormat = "yyyy/MM/dd HH:mm:ss";
@@ -235,6 +240,14 @@ public sealed class AppConfigData : ConfigData
             TerminalApp = "cmd";
             TerminalAppOptions = "/K \"cd /d %CurrentFolder%\"";
         }
+    }
+    
+    internal void SetDefaultListModeLayouts()
+    {
+        ListModeLayouts = new ListModeLayout[]
+        {
+            new(16, 5, 12, 20), new(16, 5, 12, 0), new(16, 5, 0, 0), new(8, 4, 0, 0),
+        };
     }
 }
 

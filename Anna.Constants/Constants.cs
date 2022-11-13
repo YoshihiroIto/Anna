@@ -111,6 +111,8 @@ public enum ExternalApp
 
 public static class Constants
 {
+    public const uint ListModeCount = 4;
+    
     // todo: ReadOnlyHashSet
     public static readonly HashSet<string> SupportedImageFormats = new(StringComparer.OrdinalIgnoreCase)
     {

@@ -23,7 +23,7 @@ public interface IFolderPanelHotkeyReceiver : IHotkeyReceiver
     IEnumerable<Entry> CollectTargetEntries();
     void MoveCursor(Directions dir);
     void ToggleSelectionCursorEntry(bool isMoveDown);
-    void SetListMode(int index);
+    void SetListMode(uint index);
 }
 
 public interface ITextViewerHotkeyReceiver : IHotkeyReceiver

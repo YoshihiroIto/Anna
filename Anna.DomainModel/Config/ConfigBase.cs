@@ -31,10 +31,12 @@ public class ConfigBase<T> : NotificationObject
     #endregion
     
     private readonly IObjectSerializerService _objectSerializer;
+    private readonly IDefaultValueService _defaultValue;
 
-    public ConfigBase(IObjectSerializerService objectSerializer)
+    public ConfigBase(IObjectSerializerService objectSerializer, IDefaultValueService defaultValue)
     {
         _objectSerializer = objectSerializer;
+        _defaultValue = defaultValue;
     }
 
     public void Load()
@@ -43,7 +45,7 @@ public class ConfigBase<T> : NotificationObject
             () =>
             {
                 var data = new T();
-                data.SetDefault();
+                data.SetDefault(_defaultValue);
                 return data;
             });
 
@@ -62,5 +64,5 @@ public class ConfigBase<T> : NotificationObject
 
 public abstract class ConfigData : NotificationObject
 {
-    public abstract void SetDefault();
+    public abstract void SetDefault(IDefaultValueService defaultValue);
 }

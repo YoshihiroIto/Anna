@@ -9,8 +9,8 @@ public sealed class JumpFolderConfig : ConfigBase<JumpFolderConfigData>
 {
     public const string FileName = "JumpFolder.json";
 
-    public JumpFolderConfig(IObjectSerializerService objectSerializer)
-        : base(objectSerializer)
+    public JumpFolderConfig(IObjectSerializerService objectSerializer, IDefaultValueService defaultValue)
+        : base(objectSerializer, defaultValue)
     {
     }
 }
@@ -29,7 +29,7 @@ public sealed class JumpFolderConfigData : ConfigData
 
     #endregion
 
-    public override void SetDefault()
+    public override void SetDefault(IDefaultValueService defaultValue)
     {
         const int count =
             (Key.F12 - Key.F1) +

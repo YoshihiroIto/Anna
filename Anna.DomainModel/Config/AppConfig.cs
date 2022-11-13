@@ -9,8 +9,8 @@ namespace Anna.DomainModel.Config;
 
 public sealed class AppConfig : ConfigBase<AppConfigData>
 {
-    public AppConfig(IObjectSerializerService objectSerializer)
-        : base(objectSerializer)
+    public AppConfig(IObjectSerializerService objectSerializer, IDefaultValueService defaultValue)
+        : base(objectSerializer, defaultValue)
     {
     }
 
@@ -237,7 +237,7 @@ public sealed class AppConfigData : ConfigData
         };
     }
 
-    public override void SetDefault()
+    public override void SetDefault(IDefaultValueService defaultValue)
     {
         var lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         if (lang != "")
@@ -248,11 +248,8 @@ public sealed class AppConfigData : ConfigData
         if (Culture == Cultures.Ja)
             TimestampFormat = "yyyy/MM/dd HH:mm:ss";
 
-        if (OperatingSystem.IsWindows())
-        {
-            TerminalApp = "cmd";
-            TerminalAppOptions = "/K \"cd /d %CurrentFolder%\"";
-        }
+        TerminalApp = defaultValue.TerminalApp;
+        TerminalAppOptions = defaultValue.TerminalAppOptions;
     }
     
     internal void SetDefaultListModeLayouts()

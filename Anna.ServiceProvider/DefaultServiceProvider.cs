@@ -77,15 +77,23 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         >();
 
         var configFolder = Path.GetDirectoryName(appConfigFilePath) ?? "";
-        var keyConfigFilePath = Path.Combine(configFolder, KeyConfig.FileName);
-        var jumpFolderConfigFilePath = Path.Combine(configFolder, JumpFolderConfig.FileName);
 
         RegisterSingleton(() =>
-            new AppConfig(GetInstance<IObjectSerializerService>()) { FilePath = appConfigFilePath });
+            new AppConfig(GetInstance<IObjectSerializerService>(), GetInstance<IDefaultValueService>())
+            {
+                FilePath = appConfigFilePath
+            });
         RegisterSingleton(() =>
-            new KeyConfig(GetInstance<IObjectSerializerService>()) { FilePath = keyConfigFilePath });
+            new KeyConfig(GetInstance<IObjectSerializerService>(), GetInstance<IDefaultValueService>())
+            {
+                FilePath = Path.Combine(configFolder, KeyConfig.FileName)
+            });
         RegisterSingleton(() =>
-            new JumpFolderConfig(GetInstance<IObjectSerializerService>()) { FilePath = jumpFolderConfigFilePath });
+            new JumpFolderConfig(GetInstance<IObjectSerializerService>(), GetInstance<IDefaultValueService>())
+            {
+                FilePath = Path.Combine(configFolder, JumpFolderConfig.FileName)
+            });
+
         RegisterSingleton<ILoggerService>(() => new DefaultLogger(logOutputDir));
         RegisterSingleton<IObjectSerializerService, FileSystemObjectSerializer>();
         RegisterSingleton<IFileSystemIsAccessibleService, FileSystemIsAccessibleService>();
@@ -94,19 +102,22 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         RegisterSingleton<App>();
         RegisterSingleton<ResourcesHolder>();
         RegisterSingleton<DomainModelOperator>();
-        RegisterSingleton<ITrashCanService>(() =>
+
+        if (OperatingSystem.IsWindows())
         {
-            if (OperatingSystem.IsWindows())
-                return GetInstance<Service.Windows.TrashCanService>();
-
-            if (OperatingSystem.IsMacOS())
-                return GetInstance<Service.MacOS.TrashCanService>();
-
-            if (OperatingSystem.IsLinux())
-                return GetInstance<Service.Linux.TrashCanService>();
-
-            throw new PlatformNotSupportedException();
-        });
+            RegisterSingleton<ITrashCanService, Service.Windows.TrashCanService>();
+            RegisterSingleton<IDefaultValueService, Service.Windows.DefaultValueService>();
+        }
+        else if (OperatingSystem.IsMacOS())
+        {
+            RegisterSingleton<ITrashCanService, Service.MacOS.TrashCanService>();
+            RegisterSingleton<IDefaultValueService, Service.MacOS.DefaultValueService>();
+        }
+        else if (OperatingSystem.IsLinux())
+        {
+            RegisterSingleton<ITrashCanService, Service.Linux.TrashCanService>();
+            RegisterSingleton<IDefaultValueService, Service.Linux.DefaultValueService>();
+        }
 
         Register<IBackgroundWorker, BackgroundWorker>(Lifestyle.Transient);
 

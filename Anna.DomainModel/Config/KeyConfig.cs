@@ -8,8 +8,8 @@ public sealed class KeyConfig : ConfigBase<KeyConfigData>
 {
     public const string FileName = "Key.json";
 
-    public KeyConfig(IObjectSerializerService objectSerializer)
-        : base(objectSerializer)
+    public KeyConfig(IObjectSerializerService objectSerializer, IDefaultValueService defaultValue)
+        : base(objectSerializer, defaultValue)
     {
     }
 }
@@ -28,7 +28,7 @@ public sealed class KeyConfigData : ConfigData
 
     #endregion
 
-    public override void SetDefault()
+    public override void SetDefault(IDefaultValueService defaultValue)
     {
         var metaKey = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
 

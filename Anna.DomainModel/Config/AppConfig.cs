@@ -173,7 +173,7 @@ public sealed class AppConfigData : ConfigData
     #endregion
 
 
-    #region FolderWindows
+    #region ListModeLayouts
 
     private ListModeLayout[] _ListModeLayouts = Array.Empty<ListModeLayout>();
 

@@ -94,7 +94,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
         return false;
     }
 
-    protected async ValueTask OpenAppAsync(AppConfigData.ExternalApp app,
+    protected async ValueTask OpenAppAsync(ExternalApp app,
         string targetFilePath, string targetFileFolder, int targetLineIndex, Messenger messenger)
     {
         var editor = Dic.GetInstance<AppConfig>().Data.FindExternalApp(app);

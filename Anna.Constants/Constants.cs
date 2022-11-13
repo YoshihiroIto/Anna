@@ -102,6 +102,13 @@ public enum DialogResultTypes
     OpenTrashCan = 1 << 21,
 }
 
+public enum ExternalApp
+{
+    Terminal,
+    App1,
+    App2,
+}
+
 public static class Constants
 {
     // todo: ReadOnlyHashSet

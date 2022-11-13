@@ -23,10 +23,10 @@ public sealed class TextViewerHotkey : HotkeyBase
         return new Dictionary<Operations, Func<IHotkeyReceiver, ValueTask>>
         {
             { Operations.OpenEntry, s => CloseAsync((ITextViewerHotkeyReceiver)s) },
-            { Operations.OpenExternal1, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
-            { Operations.OpenExternal2, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
+            { Operations.OpenExternal1, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, ExternalApp.App1) },
+            { Operations.OpenExternal2, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, ExternalApp.App2) },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((ITextViewerHotkeyReceiver)s) },
-            { Operations.OpenTerminal, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, AppConfigData.ExternalApp.Terminal) },
+            { Operations.OpenTerminal, s => OpenAppAsync((ITextViewerHotkeyReceiver)s, ExternalApp.Terminal) },
             { Operations.MoveCursorUp, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Up) },
             { Operations.MoveCursorDown, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Down) },
             { Operations.MoveCursorLeft, s => ScrollAsync((ITextViewerHotkeyReceiver)s, Directions.Left) },
@@ -40,7 +40,7 @@ public sealed class TextViewerHotkey : HotkeyBase
             new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
-    private ValueTask OpenAppAsync(ITextViewerHotkeyReceiver receiver, AppConfigData.ExternalApp app)
+    private ValueTask OpenAppAsync(ITextViewerHotkeyReceiver receiver, ExternalApp app)
     {
         var targetFolderPath = Path.GetDirectoryName(receiver.TargetFilePath) ?? "";
         

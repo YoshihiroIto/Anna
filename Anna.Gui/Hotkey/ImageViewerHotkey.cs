@@ -1,4 +1,5 @@
-﻿using Anna.DomainModel.Config;
+﻿using Anna.Constants;
+using Anna.DomainModel.Config;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows;
 using System;
@@ -21,10 +22,10 @@ public sealed class ImageViewerHotkey : HotkeyBase
         return new Dictionary<Operations, Func<IHotkeyReceiver, ValueTask>>
         {
             { Operations.OpenEntry, s => CloseAsync((IImageViewerHotkeyReceiver)s) },
-            { Operations.OpenExternal1, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App1) },
-            { Operations.OpenExternal2, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, AppConfigData.ExternalApp.App2) },
+            { Operations.OpenExternal1, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, ExternalApp.App1) },
+            { Operations.OpenExternal2, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, ExternalApp.App2) },
             { Operations.OpenAssociatedApp, s => OpenFileByAppAsync((IImageViewerHotkeyReceiver)s) },
-            { Operations.OpenTerminal, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, AppConfigData.ExternalApp.Terminal) },
+            { Operations.OpenTerminal, s => OpenAppAsync((IImageViewerHotkeyReceiver)s, ExternalApp.Terminal) },
         };
     }
 
@@ -34,7 +35,7 @@ public sealed class ImageViewerHotkey : HotkeyBase
             new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
-    private ValueTask OpenAppAsync(IImageViewerHotkeyReceiver receiver, AppConfigData.ExternalApp app)
+    private ValueTask OpenAppAsync(IImageViewerHotkeyReceiver receiver, ExternalApp app)
     {
         var targetFolderPath = Path.GetDirectoryName(receiver.TargetFilePath) ?? "";
         

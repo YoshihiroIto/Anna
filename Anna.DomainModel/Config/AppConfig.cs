@@ -22,13 +22,6 @@ public sealed class AppConfigData : ConfigData
 
     public const double DefaultViewerFontSize = 14;
 
-    public enum ExternalApp
-    {
-        Terminal,
-        App1,
-        App2,
-    }
-
     #region Culture
 
     private Cultures _Culture;

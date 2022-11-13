@@ -50,16 +50,16 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.OpenEntry, s => OpenEntryAsync((IFolderPanelHotkeyReceiver)s) },
             {
                 Operations.OpenExternal1,
-                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.App1)
+                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.App1)
             },
             {
                 Operations.OpenExternal2,
-                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.App2)
+                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.App2)
             },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((IFolderPanelHotkeyReceiver)s) },
             {
                 Operations.OpenTerminal,
-                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, AppConfigData.ExternalApp.Terminal)
+                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.Terminal)
             },
             { Operations.PreviewEntry, s => PreviewEntryAsync((IFolderPanelHotkeyReceiver)s) },
             //
@@ -161,7 +161,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
             MessageKey.PreviewDisplay);
     }
 
-    private ValueTask OpenAppAsync(IFolderPanelHotkeyReceiver receiver, AppConfigData.ExternalApp app)
+    private ValueTask OpenAppAsync(IFolderPanelHotkeyReceiver receiver, ExternalApp app)
     {
         return OpenAppAsync(
             app,

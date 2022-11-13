@@ -176,7 +176,7 @@ public sealed class AppConfigData : ConfigData
 
     #region LastListMode
 
-    private uint _LastListMode;
+    private uint _LastListMode = 2;
 
     public uint LastListMode
     {
@@ -259,7 +259,11 @@ public sealed class AppConfigData : ConfigData
     {
         ListModeLayouts = new ListModeLayout[]
         {
-            new(16, 5, 12, 20), new(16, 5, 12, 0), new(16, 5, 0, 0), new(8, 4, 0, 0),
+            new(28, 5, 12, 20),
+            new(16, 5, 12, 20),
+            new(16, 5, 12, 0),
+            new(16, 5, 0, 0),
+            new(8, 4, 0, 0),
         };
     }
 }

@@ -75,6 +75,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.D2, KeyModifiers.Shift, Operations.SetListMode2),
             new(Key.D3, KeyModifiers.Shift, Operations.SetListMode3),
             new(Key.D4, KeyModifiers.Shift, Operations.SetListMode4),
+            new(Key.D5, KeyModifiers.Shift, Operations.SetListMode5),
         };
     }
 
@@ -125,4 +126,5 @@ public enum Operations
     SetListMode2,
     SetListMode3,
     SetListMode4,
+    SetListMode5,
 }

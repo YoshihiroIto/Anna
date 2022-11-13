@@ -84,6 +84,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.SetListMode2, s => SetListMode((IFolderPanelHotkeyReceiver)s, 1) },
             { Operations.SetListMode3, s => SetListMode((IFolderPanelHotkeyReceiver)s, 2) },
             { Operations.SetListMode4, s => SetListMode((IFolderPanelHotkeyReceiver)s, 3) },
+            { Operations.SetListMode5, s => SetListMode((IFolderPanelHotkeyReceiver)s, 4) },
         };
     }
 

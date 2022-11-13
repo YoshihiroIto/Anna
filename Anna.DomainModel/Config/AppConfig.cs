@@ -174,6 +174,19 @@ public sealed class AppConfigData : ConfigData
     #endregion
 
 
+    #region LastListMode
+
+    private uint _LastListMode;
+
+    public uint LastListMode
+    {
+        get => _LastListMode;
+        set => SetProperty(ref _LastListMode, value);
+    }
+
+    #endregion
+
+
     #region ListModeLayouts
 
     private ListModeLayout[] _ListModeLayouts = Array.Empty<ListModeLayout>();

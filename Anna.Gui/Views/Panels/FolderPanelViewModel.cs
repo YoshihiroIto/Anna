@@ -58,6 +58,8 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     {
         _appConfig = dic.GetInstance<AppConfig>();
 
+        _ListMode = _appConfig.Data.LastListMode;
+
         Hotkey = dic.GetInstance<FolderPanelHotkey>().AddTo(Trash);
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
@@ -190,7 +192,8 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
             return;
 
         _ListMode = index;
-
+        
+        _appConfig.Data.LastListMode = _ListMode;
         ListModeChanged?.Invoke(this, EventArgs.Empty);
     }
 

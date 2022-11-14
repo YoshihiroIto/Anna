@@ -3,6 +3,7 @@ using Anna.DomainModel.Config;
 using Anna.DomainModel.Service;
 using Anna.Gui;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Service.Clipboard;
 using Anna.Service.Compressor;
 using Anna.Service.Logger;
 using Anna.Service.ObjectLifetimeChecker;
@@ -84,6 +85,7 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         RegisterSingleton<IFileSystemIsAccessibleService, FileSystemIsAccessibleService>();
         RegisterSingleton<IFolderHistoryService, FolderHistoryService>();
         RegisterSingleton<ICompressorService, CompressorService>();
+        RegisterSingleton<IClipboardService, ClipboardService>();
 
 #if DEBUG
         RegisterSingleton<IObjectLifetimeCheckerService, DefaultObjectLifetimeChecker>();

@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.Linux", "Anna.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.Compressor", "Anna.Service.Compressor\Anna.Service.Compressor.csproj", "{3345650C-2C1C-41E0-9225-0FF4C381F982}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anna.Service.Clipboard", "Anna.Service.Clipboard\Anna.Service.Clipboard.csproj", "{E956B526-FA27-4BE2-B60A-1C83C8F6B846}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{3345650C-2C1C-41E0-9225-0FF4C381F982}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3345650C-2C1C-41E0-9225-0FF4C381F982}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3345650C-2C1C-41E0-9225-0FF4C381F982}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E956B526-FA27-4BE2-B60A-1C83C8F6B846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E956B526-FA27-4BE2-B60A-1C83C8F6B846}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E956B526-FA27-4BE2-B60A-1C83C8F6B846}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E956B526-FA27-4BE2-B60A-1C83C8F6B846}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

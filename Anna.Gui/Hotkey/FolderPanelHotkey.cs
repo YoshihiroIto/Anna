@@ -11,9 +11,6 @@ using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service.Interfaces;
 using Anna.Service.Services;
-using Avalonia;
-using Avalonia.Input;
-using Avalonia.Input.Platform;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,8 +23,6 @@ namespace Anna.Gui.Hotkey;
 
 public sealed class FolderPanelHotkey : HotkeyBase
 {
-    private static IClipboard AppClipboard => Application.Current?.Clipboard ?? throw new NullReferenceException();
-    
     public FolderPanelHotkey(IServiceProvider dic)
         : base(dic)
     {
@@ -440,22 +435,15 @@ public sealed class FolderPanelHotkey : HotkeyBase
         return ValueTask.CompletedTask;
     }
 
-    private static async ValueTask CopyToClipboardAsync(IFolderPanelHotkeyReceiver receiver)
+    private ValueTask CopyToClipboardAsync(IFolderPanelHotkeyReceiver receiver)
     {
-        var targetEntryPaths = receiver.CollectTargetEntries().Select(x => x.Path).ToArray();
-        if (targetEntryPaths.Length == 0)
-            return;
-
-        var dataObject = new DataObject();
-        dataObject.Set(DataFormats.FileNames, targetEntryPaths);
-
-        await AppClipboard.SetDataObjectAsync(dataObject);
+        return Dic.GetInstance<IClipboardService>()
+            .SetFilesAsync(receiver.CollectTargetEntries().Select(x => x.Path));
     }
 
     private async ValueTask PasteClipboardAsync(IFolderPanelHotkeyReceiver receiver)
     {
-        if (await AppClipboard.GetDataAsync(DataFormats.FileNames) is not List<string> targetEntryPaths)
-            return;
+        var targetEntryPaths = await Dic.GetInstance<IClipboardService>().GetFilesAsync();
 
         var targetIEntries = targetEntryPaths.Select(IEntry.Create).ToArray();
         var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
@@ -467,17 +455,11 @@ public sealed class FolderPanelHotkey : HotkeyBase
             ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
         receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
     }
-    
-    private static async ValueTask CopyEntryInfoToClipboardAsync(IFolderPanelHotkeyReceiver receiver)
+
+    private ValueTask CopyEntryInfoToClipboardAsync(IFolderPanelHotkeyReceiver receiver)
     {
-        var targetEntryPaths = receiver.CollectTargetEntries().Select(x => x.Path).ToArray();
-        if (targetEntryPaths.Length == 0)
-            return;
-
-        var dataObject = new DataObject();
-        dataObject.Set(DataFormats.Text, string.Join('\n', targetEntryPaths));
-
-        await AppClipboard.SetDataObjectAsync(dataObject);
+        return Dic.GetInstance<IClipboardService>()
+            .SetTextAsync(string.Join('\n', receiver.CollectTargetEntries().Select(x => x.Path)));
     }
 
     private static ValueTask SetListModeAsync(IFolderPanelHotkeyReceiver receiver, uint index)

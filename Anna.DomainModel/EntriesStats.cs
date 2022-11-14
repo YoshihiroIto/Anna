@@ -5,7 +5,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.DomainModel;
 
-public sealed class EntriesStats : HasArgDisposableNotificationObject<EntriesStats, Entry[]>, IEntriesStats
+public sealed class EntriesStats : HasArgDisposableNotificationObject<EntriesStats, IEntry[]>, IEntriesStats
 {
     #region IsInMeasuring
 
@@ -107,7 +107,7 @@ public sealed class EntriesStats : HasArgDisposableNotificationObject<EntriesSta
         _mre.Wait(_cts.Token);
     }
 
-    private void MeasureInternal(Entry[] targets)
+    private void MeasureInternal(IEntry[] targets)
     {
         foreach (var target in targets)
         {

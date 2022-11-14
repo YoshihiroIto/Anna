@@ -11,17 +11,23 @@ using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
 using Anna.Service.Interfaces;
 using Anna.Service.Services;
+using Avalonia;
+using Avalonia.Input;
+using Avalonia.Input.Platform;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using IEntry=Anna.Service.Interfaces.IEntry;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
 namespace Anna.Gui.Hotkey;
 
 public sealed class FolderPanelHotkey : HotkeyBase
 {
+    private static IClipboard AppClipboard => Application.Current?.Clipboard ?? throw new NullReferenceException();
+    
     public FolderPanelHotkey(IServiceProvider dic)
         : base(dic)
     {
@@ -48,19 +54,10 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.JumpToRootFolder, s => JumpToRootFolderAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.OpenEntry, s => OpenEntryAsync((IFolderPanelHotkeyReceiver)s) },
-            {
-                Operations.OpenExternal1,
-                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.App1)
-            },
-            {
-                Operations.OpenExternal2,
-                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.App2)
-            },
+            { Operations.OpenExternal1, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.App1) },
+            { Operations.OpenExternal2, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.App2) },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((IFolderPanelHotkeyReceiver)s) },
-            {
-                Operations.OpenTerminal,
-                s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.Terminal)
-            },
+            { Operations.OpenTerminal, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.Terminal) },
             { Operations.PreviewEntry, s => PreviewEntryAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.CopyEntry, s => CopyOrMoveEntryAsync((IFolderPanelHotkeyReceiver)s, CopyOrMove.Copy) },
@@ -79,6 +76,9 @@ public sealed class FolderPanelHotkey : HotkeyBase
             //
             { Operations.OpenAnna, s => OpenAnnaAsync((IFolderPanelHotkeyReceiver)s) },
             { Operations.CloseAnna, s => CloseAnnaAsync((IFolderPanelHotkeyReceiver)s) },
+            //
+            { Operations.CopyToClipboard, s => CopyToClipboardAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.PasteClipboard, s => PasteClipboardAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.SetListMode1, s => SetListModeAsync((IFolderPanelHotkeyReceiver)s, 0) },
             { Operations.SetListMode2, s => SetListModeAsync((IFolderPanelHotkeyReceiver)s, 1) },
@@ -204,11 +204,11 @@ public sealed class FolderPanelHotkey : HotkeyBase
     private async ValueTask CopyOrMoveEntryAsync(IFolderPanelHotkeyReceiver receiver, CopyOrMove copyOrMove)
     {
         var targetEntries = receiver.CollectTargetEntries().ToArray();
-           
         if (targetEntries.Length == 0)
             return;
 
-        var stats = Dic.GetInstance(EntriesStats.T, targetEntries);
+        var targetIEntries = targetEntries.Cast<IEntry>().ToArray();
+        var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
 
         using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             CopyOrMoveEntryDialogViewModel.T,
@@ -223,7 +223,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
         var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T,
-            (receiver.Messenger, targetEntries.Cast<IEntry>(), destFolder, copyOrMove));
+            (receiver.Messenger, (IEnumerable<IEntry>)targetIEntries, destFolder, copyOrMove));
 
         var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
             ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
@@ -233,11 +233,12 @@ public sealed class FolderPanelHotkey : HotkeyBase
     private async ValueTask DeleteEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var targetEntries = receiver.CollectTargetEntries().ToArray();
-        
+
         if (targetEntries.Length == 0)
             return;
 
-        var stats = Dic.GetInstance(EntriesStats.T, targetEntries);
+        var targetIEntries = targetEntries.Cast<IEntry>().ToArray();
+        var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
 
         using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             DeleteEntryDialogViewModel.T,
@@ -252,7 +253,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var resultMode = viewModel.ResultMode;
         var worker = Dic.GetInstance(ConfirmedFileSystemDeleter.T,
-            (receiver.Messenger, targetEntries.Cast<IEntry>(), resultMode));
+            (receiver.Messenger, (IEnumerable<IEntry>)targetIEntries, resultMode));
 
         var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
             ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
@@ -262,7 +263,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
     private static async ValueTask RenameEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var targetEntries = receiver.CollectTargetEntries();
-        
+
         string? lastRemovePath = null;
 
         foreach (var targetEntry in targetEntries)
@@ -323,11 +324,12 @@ public sealed class FolderPanelHotkey : HotkeyBase
     private async ValueTask CompressEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var targetEntries = receiver.CollectTargetEntries().ToArray();
-        
+
         if (targetEntries.Length == 0)
             return;
 
-        var stats = Dic.GetInstance(EntriesStats.T, targetEntries);
+        var targetIEntries = targetEntries.Cast<IEntry>().ToArray();
+        var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
 
         using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             CompressEntryDialogViewModel.T,
@@ -354,11 +356,12 @@ public sealed class FolderPanelHotkey : HotkeyBase
     private async ValueTask DecompressEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var targetEntries = receiver.CollectTargetEntries().ToArray();
-        
+
         if (targetEntries.Length == 0)
             return;
 
-        using var stats = Dic.GetInstance(EntriesStats.T, targetEntries);
+        var targetIEntries = targetEntries.Cast<IEntry>().ToArray();
+        using var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
 
         using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             DecompressEntryDialogViewModel.T,
@@ -434,6 +437,34 @@ public sealed class FolderPanelHotkey : HotkeyBase
     {
         Dic.GetInstance<App>().RemoveFolder(receiver.Folder);
         return ValueTask.CompletedTask;
+    }
+
+    private static async ValueTask CopyToClipboardAsync(IFolderPanelHotkeyReceiver receiver)
+    {
+        var targetEntryPaths = receiver.CollectTargetEntries().Select(x => x.Path).ToArray();
+        if (targetEntryPaths.Length == 0)
+            return;
+
+        var dataObject = new DataObject();
+        dataObject.Set(DataFormats.FileNames, targetEntryPaths);
+
+        await AppClipboard.SetDataObjectAsync(dataObject);
+    }
+
+    private async ValueTask PasteClipboardAsync(IFolderPanelHotkeyReceiver receiver)
+    {
+        if (await AppClipboard.GetDataAsync(DataFormats.FileNames) is not List<string> targetEntryPaths)
+            return;
+
+        var targetIEntries = targetEntryPaths.Select(IEntry.Create).ToArray();
+        var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
+
+        var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T,
+            (receiver.Messenger, (IEnumerable<IEntry>)targetIEntries, receiver.Folder.Path, CopyOrMove.Copy));
+
+        var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
+            ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
+        receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
     }
 
     private static ValueTask SetListModeAsync(IFolderPanelHotkeyReceiver receiver, uint index)

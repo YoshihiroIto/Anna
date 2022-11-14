@@ -70,6 +70,9 @@ public sealed class KeyConfigData : ConfigData
             new(Key.W, KeyModifiers.Shift, Operations.OpenAnna),
             new(Key.W, platformValue.MetaKey, Operations.CloseAnna),
             //
+            new(Key.C, platformValue.MetaKey, Operations.CopyToClipboard),
+            new(Key.V, platformValue.MetaKey, Operations.PasteClipboard),
+            //
             new(Key.D1, KeyModifiers.Shift, Operations.SetListMode1),
             new(Key.D2, KeyModifiers.Shift, Operations.SetListMode2),
             new(Key.D3, KeyModifiers.Shift, Operations.SetListMode3),
@@ -120,6 +123,9 @@ public enum Operations
     //
     OpenAnna,
     CloseAnna,
+    //
+    CopyToClipboard,
+    PasteClipboard,
     //
     SetListMode1,
     SetListMode2,

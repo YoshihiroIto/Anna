@@ -32,7 +32,7 @@ public sealed class FileSystemServiceTests : IDisposable
             var srcPath = Path.Combine(_tempFolder.RootPath, srcName);
             File.SetAttributes(srcPath, FileAttributes.ReadOnly);
 
-            var srcEntry = new TestEntry(srcPath, false, 0);
+            var srcEntry = new TestEntry(srcPath, false, 0, true);
 
             var fso = new DefaultFileSystemCopier(_dic, new IEntry[] { srcEntry }, dstFolderPath, CopyOrMove.Copy);
             fso.Invoke();
@@ -60,7 +60,7 @@ public sealed class FileSystemServiceTests : IDisposable
             var srcPath = Path.Combine(_tempFolder.RootPath, srcName);
             File.SetAttributes(srcPath, FileAttributes.ReadOnly);
 
-            var srcEntry = new TestEntry(srcPath, true, 0);
+            var srcEntry = new TestEntry(srcPath, true, 0, true);
 
             var fso = new DefaultFileSystemCopier(_dic, new IEntry[] { srcEntry }, dstFolderPath, CopyOrMove.Copy);
             fso.Invoke();
@@ -83,8 +83,8 @@ public sealed class FileSystemServiceTests : IDisposable
 
         var dstFolderPath = Path.Combine(_tempFolder.RootPath, "dst");
 
-        var srcEntry0 = new TestEntry(Path.Combine(_tempFolder.RootPath, "a"), false, 0);
-        var srcEntry1 = new TestEntry(Path.Combine(_tempFolder.RootPath, "x"), true, 0);
+        var srcEntry0 = new TestEntry(Path.Combine(_tempFolder.RootPath, "a"), false, 0, true);
+        var srcEntry1 = new TestEntry(Path.Combine(_tempFolder.RootPath, "x"), true, 0, true);
 
         var fso = new DefaultFileSystemCopier(_dic, new IEntry[] { srcEntry0, srcEntry1 }, dstFolderPath, CopyOrMove.Copy);
         fso.Invoke();
@@ -100,4 +100,4 @@ public sealed class FileSystemServiceTests : IDisposable
     }
 }
 
-internal sealed record TestEntry(string Path, bool IsFolder, long Size) : IEntry;
+internal sealed record TestEntry(string Path, bool IsFolder, long Size, bool IsSelectable) : IEntry;

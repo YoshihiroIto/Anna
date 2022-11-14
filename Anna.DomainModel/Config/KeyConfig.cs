@@ -72,6 +72,7 @@ public sealed class KeyConfigData : ConfigData
             //
             new(Key.C, platformValue.MetaKey, Operations.CopyToClipboard),
             new(Key.V, platformValue.MetaKey, Operations.PasteClipboard),
+            new(Key.B, platformValue.MetaKey, Operations.CopyEntryInfoToClipboard),
             //
             new(Key.D1, KeyModifiers.Shift, Operations.SetListMode1),
             new(Key.D2, KeyModifiers.Shift, Operations.SetListMode2),
@@ -126,6 +127,7 @@ public enum Operations
     //
     CopyToClipboard,
     PasteClipboard,
+    CopyEntryInfoToClipboard,
     //
     SetListMode1,
     SetListMode2,

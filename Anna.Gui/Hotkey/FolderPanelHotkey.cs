@@ -79,6 +79,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
             //
             { Operations.CopyToClipboard, s => CopyToClipboardAsync((IFolderPanelHotkeyReceiver)s) },
             { Operations.PasteClipboard, s => PasteClipboardAsync((IFolderPanelHotkeyReceiver)s) },
+            { Operations.CopyEntryInfoToClipboard, s => CopyEntryInfoToClipboardAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.SetListMode1, s => SetListModeAsync((IFolderPanelHotkeyReceiver)s, 0) },
             { Operations.SetListMode2, s => SetListModeAsync((IFolderPanelHotkeyReceiver)s, 1) },
@@ -465,6 +466,18 @@ public sealed class FolderPanelHotkey : HotkeyBase
         var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
             ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
         receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
+    }
+    
+    private static async ValueTask CopyEntryInfoToClipboardAsync(IFolderPanelHotkeyReceiver receiver)
+    {
+        var targetEntryPaths = receiver.CollectTargetEntries().Select(x => x.Path).ToArray();
+        if (targetEntryPaths.Length == 0)
+            return;
+
+        var dataObject = new DataObject();
+        dataObject.Set(DataFormats.Text, string.Join('\n', targetEntryPaths));
+
+        await AppClipboard.SetDataObjectAsync(dataObject);
     }
 
     private static ValueTask SetListModeAsync(IFolderPanelHotkeyReceiver receiver, uint index)

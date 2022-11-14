@@ -44,7 +44,7 @@ public class ConfigBase<T> : NotificationObject
             () =>
             {
                 var data = new T();
-                data.SetDefault(_dic.GetInstance<IDefaultValueService>());
+                data.SetDefault(_dic.GetInstance<IPlatformValueService>());
                 return data;
             });
 
@@ -63,5 +63,5 @@ public class ConfigBase<T> : NotificationObject
 
 public abstract class ConfigData : NotificationObject
 {
-    public abstract void SetDefault(IDefaultValueService defaultValue);
+    public abstract void SetDefault(IPlatformValueService platformValue);
 }

@@ -94,17 +94,17 @@ public sealed class DefaultServiceProvider : ServiceProviderBase
         if (OperatingSystem.IsWindows())
         {
             RegisterSingleton<ITrashCanService, Service.Windows.TrashCanService>();
-            RegisterSingleton<IDefaultValueService, Service.Windows.DefaultValueService>();
+            RegisterSingleton<IPlatformValueService, Service.Windows.PlatformValueService>();
         }
         else if (OperatingSystem.IsMacOS())
         {
             RegisterSingleton<ITrashCanService, Service.MacOS.TrashCanService>();
-            RegisterSingleton<IDefaultValueService, Service.MacOS.DefaultValueService>();
+            RegisterSingleton<IPlatformValueService, Service.MacOS.PlatformValueService>();
         }
         else if (OperatingSystem.IsLinux())
         {
             RegisterSingleton<ITrashCanService, Service.Linux.TrashCanService>();
-            RegisterSingleton<IDefaultValueService, Service.Linux.DefaultValueService>();
+            RegisterSingleton<IPlatformValueService, Service.Linux.PlatformValueService>();
         }
 
         // transient

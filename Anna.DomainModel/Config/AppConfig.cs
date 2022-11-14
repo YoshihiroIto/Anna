@@ -238,7 +238,7 @@ public sealed class AppConfigData : ConfigData
         };
     }
 
-    public override void SetDefault(IDefaultValueService defaultValue)
+    public override void SetDefault(IPlatformValueService platformValue)
     {
         var lang = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
         if (lang != "")
@@ -249,8 +249,8 @@ public sealed class AppConfigData : ConfigData
         if (Culture == Cultures.Ja)
             TimestampFormat = "yyyy/MM/dd HH:mm:ss";
 
-        TerminalApp = defaultValue.TerminalApp;
-        TerminalAppOptions = defaultValue.TerminalAppOptions;
+        TerminalApp = platformValue.DefaultTerminalApp;
+        TerminalAppOptions = platformValue.DefaultTerminalAppOptions;
     }
     
     internal void SetDefaultListModeLayouts()

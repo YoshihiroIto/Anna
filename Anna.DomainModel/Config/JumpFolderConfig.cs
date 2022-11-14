@@ -30,7 +30,7 @@ public sealed class JumpFolderConfigData : ConfigData
 
     #endregion
 
-    public override void SetDefault(IDefaultValueService defaultValue)
+    public override void SetDefault(IPlatformValueService platformValue)
     {
         const int count =
             (Key.F12 - Key.F1) +

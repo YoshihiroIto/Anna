@@ -29,7 +29,7 @@ public sealed class KeyConfigData : ConfigData
 
     #endregion
 
-    public override void SetDefault(IDefaultValueService defaultValue)
+    public override void SetDefault(IPlatformValueService platformValue)
     {
         Keys = new KeyData[]
         {
@@ -48,7 +48,7 @@ public sealed class KeyConfigData : ConfigData
             //
             new(Key.Enter, KeyModifiers.None, Operations.OpenEntry),
             new(Key.Enter, KeyModifiers.Shift, Operations.OpenExternal1),
-            new(Key.Enter, defaultValue.MetaKey, Operations.OpenAssociatedApp),
+            new(Key.Enter, platformValue.MetaKey, Operations.OpenAssociatedApp),
             new(Key.F3, KeyModifiers.None, Operations.OpenTerminal),
             new(Key.V, KeyModifiers.None, Operations.PreviewEntry),
             //
@@ -65,10 +65,10 @@ public sealed class KeyConfigData : ConfigData
             new(Key.U, KeyModifiers.None, Operations.DecompressEntry),
             //
             new(Key.G, KeyModifiers.Shift, Operations.EmptyTrashCan),
-            new(Key.G, defaultValue.MetaKey, Operations.OpenTrashCan),
+            new(Key.G, platformValue.MetaKey, Operations.OpenTrashCan),
             //
             new(Key.W, KeyModifiers.Shift, Operations.OpenAnna),
-            new(Key.W, defaultValue.MetaKey, Operations.CloseAnna),
+            new(Key.W, platformValue.MetaKey, Operations.CloseAnna),
             //
             new(Key.D1, KeyModifiers.Shift, Operations.SetListMode1),
             new(Key.D2, KeyModifiers.Shift, Operations.SetListMode2),

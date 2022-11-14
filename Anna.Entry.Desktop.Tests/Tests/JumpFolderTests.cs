@@ -85,7 +85,7 @@ public sealed class JumpFolderTests : IDisposable
         configFolder.CreateFolder("FolderA");
 
         var c = new JumpFolderConfigData();
-        c.SetDefault(_fixture.App.Dic.GetInstance<IDefaultValueService>());
+        c.SetDefault(_fixture.App.Dic.GetInstance<IPlatformValueService>());
         var a = c.Paths.First(x => x.Key == Key.A);
         a.Path = Path.Combine(configFolder.WorkPath, "FolderA");
 
@@ -122,7 +122,7 @@ public sealed class JumpFolderTests : IDisposable
         var configFolder = _fixture.ConfigFolder;
 
         var c = new JumpFolderConfigData();
-        c.SetDefault(_fixture.App.Dic.GetInstance<IDefaultValueService>());
+        c.SetDefault(_fixture.App.Dic.GetInstance<IPlatformValueService>());
         var f1 = c.Paths.First(x => x.Key == Key.F1);
         f1.Path = "ABC";
 

@@ -36,7 +36,7 @@ public sealed class DesktopTestFixture : IDisposable
 
         {
             var c = new JumpFolderConfigData();
-            c.SetDefault(App.Dic.GetInstance<IDefaultValueService>());
+            c.SetDefault(App.Dic.GetInstance<IPlatformValueService>());
 
             var json = JsonSerializer.Serialize(c, FileSystemObjectSerializer.Options);
             File.WriteAllText(ConfigFolder.JumpFolderConfigFilePath, json);

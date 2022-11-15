@@ -25,20 +25,12 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
     }
     private void AssociatedObjectOnAttachedToVisualTree(object? sender, VisualTreeAttachmentEventArgs e)
     {
-        var parent = AssociatedObject?.Parent;
+        _ = AssociatedObject ?? throw new NullReferenceException();
 
-        while (parent is not null)
-        {
-            if (parent is Window parentWindow)
-            {
-                _parentWindow = parentWindow;
-                break;
-            }
-
-            parent = parent.Parent;
-        }
+        _parentWindow = ControlHelper.FindOwnerWindow(AssociatedObject);
 
         _parentWindow?.AddHandler(InputElement.KeyDownEvent, OnPreviewKeyDown, RoutingStrategies.Tunnel);
+        AssociatedObject?.AddHandler(DragDrop.DropEvent, OnDrop);
     }
 
     protected override void OnDetaching()

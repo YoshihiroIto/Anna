@@ -1,6 +1,4 @@
-﻿using System.Dynamic;
-
-namespace Anna.Service.Interfaces;
+﻿namespace Anna.Service.Interfaces;
 
 public interface IEntry
 {

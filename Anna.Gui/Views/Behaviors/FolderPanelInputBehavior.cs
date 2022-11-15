@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
-using System;
 using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Behaviors;
@@ -54,22 +53,19 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
 
     private async ValueTask OnPreviewKeyDown(object? sender, KeyEventArgs e)
     {
+        if (AssociatedObject is null)
+            return;
+        
         if (FocusManager.Instance?.Current is MenuItem)
             return;
 
-        var viewModel = AssociatedObject?.ViewModel;
+        var viewModel = AssociatedObject.ViewModel;
 
-        if (viewModel is not null)
-        {
-            await DispatcherHelper.DoEventsAsync();
+        await DispatcherHelper.DoEventsAsync();
 
-            if (viewModel.Model.IsInEntriesUpdating)
-                return;
-        }
+        if (viewModel.Model.IsInEntriesUpdating)
+            return;
 
-        var hotkey = viewModel?.Hotkey;
-        
-        if (hotkey is not null)
-            await hotkey.OnKeyDownAsync(AssociatedObject ?? throw new NullReferenceException(), e);
+        await viewModel.Hotkey.OnKeyDownAsync(AssociatedObject, e);
     }
 }

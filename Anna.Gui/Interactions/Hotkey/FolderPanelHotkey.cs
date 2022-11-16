@@ -445,15 +445,13 @@ public sealed class FolderPanelHotkey : HotkeyBase
     {
         var targetEntryPaths = await Dic.GetInstance<IClipboardService>().GetFilesAsync();
 
-        var targetIEntries = targetEntryPaths.Select(IEntry.Create).ToArray();
-        var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
-
-        var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T,
-            (receiver.Messenger, (IEnumerable<IEntry>)targetIEntries, receiver.Folder.Path, CopyOrMove.Copy));
-
-        var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
-            ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
-        receiver.BackgroundWorker.PushOperatorAsync(@operator).Forget();
+        InteractionCommon.Copy(
+            Dic,
+            receiver.Messenger,
+            receiver.BackgroundWorker,
+            targetEntryPaths,
+            receiver.Folder.Path
+        );
     }
 
     private ValueTask CopyEntryInfoToClipboardAsync(IFolderPanelHotkeyReceiver receiver)

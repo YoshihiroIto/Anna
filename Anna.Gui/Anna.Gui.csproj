@@ -35,7 +35,4 @@
         <DependentUpon>EditableTextBlock.axaml</DependentUpon>
       </Compile>
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Interactions" />
-    </ItemGroup>
 </Project>

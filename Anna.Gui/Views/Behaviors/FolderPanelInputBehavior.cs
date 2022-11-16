@@ -31,7 +31,7 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
         _parentWindow = ControlHelper.FindOwnerWindow(AssociatedObject);
 
         _parentWindow?.AddHandler(InputElement.KeyDownEvent, OnPreviewKeyDown, RoutingStrategies.Tunnel);
-        AssociatedObject?.AddHandler(DragDrop.DropEvent, OnDrop);
+        _parentWindow?.AddHandler(DragDrop.DropEvent, OnDrop);
     }
 
     protected override void OnDetaching()
@@ -40,7 +40,7 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
             AssociatedObject.AttachedToVisualTree -= AssociatedObjectOnAttachedToVisualTree;
 
         _parentWindow?.RemoveHandler(InputElement.KeyDownEvent, OnPreviewKeyDown);
-        AssociatedObject?.RemoveHandler(DragDrop.DropEvent, OnDrop);
+        _parentWindow?.RemoveHandler(DragDrop.DropEvent, OnDrop);
 
         base.OnDetaching();
     }

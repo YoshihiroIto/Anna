@@ -13,6 +13,14 @@ public class FolderPanelDrop: DisposableNotificationObject
 
     public ValueTask OnFileDropAsync(IFileDropReceiver receiver, IEnumerable<string> filePaths)
     {
+        InteractionCommon.Copy(
+            Dic,
+            receiver.Messenger,
+            receiver.BackgroundWorker,
+            filePaths,
+            receiver.Folder.Path
+        );
+        
         return ValueTask.CompletedTask;
     }
 }

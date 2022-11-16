@@ -17,7 +17,6 @@
              d:DesignWidth="450"
              x:CompileBindings="True"
              x:DataType="panels:FolderPanelViewModel"
-             DragDrop.AllowDrop="True"
              FontFamily="{Binding $self.Layout.FontFamily}"
              FontSize="{Binding $self.Layout.FontSize}"
              ItemCellSize="{Binding ItemCellSize.Value,

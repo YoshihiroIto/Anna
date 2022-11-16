@@ -1,6 +1,6 @@
 ﻿using Anna.DomainModel;
 using Anna.Gui.Foundations;
-using Anna.Gui.Hotkey;
+using Anna.Gui.Interactions.Hotkey;
 using Anna.Service;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;

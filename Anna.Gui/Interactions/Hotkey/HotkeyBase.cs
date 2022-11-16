@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
-namespace Anna.Gui.Hotkey;
+namespace Anna.Gui.Interactions.Hotkey;
 
 public abstract class HotkeyBase : DisposableNotificationObject
 {

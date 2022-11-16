@@ -1,7 +1,7 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
-using Anna.Gui.Hotkey;
+using Anna.Gui.Interactions.Hotkey;
 using Anna.Gui.Views.Windows;
 using Avalonia.Controls;
 using Avalonia.Input;

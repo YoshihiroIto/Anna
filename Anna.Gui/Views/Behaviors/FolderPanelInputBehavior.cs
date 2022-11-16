@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
+using System;
 using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Behaviors;
@@ -12,7 +13,7 @@ namespace Anna.Gui.Views.Behaviors;
 public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
 {
     private Window? _parentWindow;
-    
+
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -39,6 +40,7 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
             AssociatedObject.AttachedToVisualTree -= AssociatedObjectOnAttachedToVisualTree;
 
         _parentWindow?.RemoveHandler(InputElement.KeyDownEvent, OnPreviewKeyDown);
+        AssociatedObject?.RemoveHandler(DragDrop.DropEvent, OnDrop);
 
         base.OnDetaching();
     }
@@ -47,7 +49,7 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
     {
         if (AssociatedObject is null)
             return;
-        
+
         if (FocusManager.Instance?.Current is MenuItem)
             return;
 
@@ -59,5 +61,21 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
             return;
 
         await viewModel.Hotkey.OnKeyDownAsync(AssociatedObject, e);
+    }
+
+    private async ValueTask OnDrop(object? sender, DragEventArgs e)
+    {
+        if (AssociatedObject is null)
+            return;
+
+        if (e.Data.Contains(DataFormats.FileNames) == false)
+            return;
+
+        var fileNames = e.Data.GetFileNames();
+        if (fileNames is null)
+            return;
+        
+        var viewModel = AssociatedObject.ViewModel;
+        await viewModel.Drop.OnFileDropAsync(AssociatedObject, fileNames);
     }
 }

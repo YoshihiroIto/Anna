@@ -8,7 +8,7 @@ using System.IO;
 using System.Threading.Tasks;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
-namespace Anna.Gui.Hotkey;
+namespace Anna.Gui.Interactions.Hotkey;
 
 public sealed class ImageViewerHotkey : HotkeyBase
 {

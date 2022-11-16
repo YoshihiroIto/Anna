@@ -7,7 +7,7 @@ using AvaloniaEdit;
 using System.Collections.Generic;
 using Entry=Anna.DomainModel.Entry;
 
-namespace Anna.Gui.Hotkey;
+namespace Anna.Gui.Interactions.Hotkey;
 
 public interface IHotkeyReceiver
 {

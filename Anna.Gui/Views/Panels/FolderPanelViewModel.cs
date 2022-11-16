@@ -3,7 +3,8 @@ using Anna.DomainModel;
 using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
-using Anna.Gui.Hotkey;
+using Anna.Gui.Interactions.Drop;
+using Anna.Gui.Interactions.Hotkey;
 using Anna.Gui.Interfaces;
 using Anna.Gui.Messaging;
 using Anna.Gui.ViewModels;
@@ -32,6 +33,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
     public readonly FolderPanelHotkey Hotkey;
+    public readonly FolderPanelDrop Drop;
 
     public ReactivePropertySlim<int> CursorIndex { get; }
     public ReactivePropertySlim<IntSize> ItemCellSize { get; }
@@ -61,6 +63,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
         _ListMode = _appConfig.Data.LastListMode;
 
         Hotkey = dic.GetInstance<FolderPanelHotkey>().AddTo(Trash);
+        Drop = dic.GetInstance<FolderPanelDrop>().AddTo(Trash);
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);

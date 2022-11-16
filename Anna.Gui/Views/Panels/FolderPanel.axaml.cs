@@ -2,7 +2,8 @@
 using Anna.DomainModel;
 using Anna.Foundation;
 using Anna.Gui.Messaging;
-using Anna.Gui.Hotkey;
+using Anna.Gui.Interactions.Drop;
+using Anna.Gui.Interactions.Hotkey;
 using Anna.Service.Workers;
 using Avalonia;
 using Avalonia.Controls;
@@ -14,7 +15,7 @@ using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceiver
+public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceiver, IFileDropReceiver
 {
     public static readonly StyledProperty<IDataTemplate?> ItemTemplateProperty =
         AvaloniaProperty.Register<FolderPanel, IDataTemplate?>(nameof(ItemTemplate));
@@ -99,20 +100,21 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
             }
         };
     }
+    
+    public Folder Folder => ViewModel.Model;
 
-    Messenger IHotkeyReceiver.Messenger => ViewModel.Messenger;
-    Folder IFolderPanelHotkeyReceiver.Folder => ViewModel.Model;
+    public Messenger Messenger => ViewModel.Messenger;
 
-    Entry IFolderPanelHotkeyReceiver.CurrentEntry =>
+    public Entry CurrentEntry =>
         ViewModel.CursorEntry.Value?.Model.Entry ?? throw new InvalidOperationException();
 
-    IEnumerable<Entry> IFolderPanelHotkeyReceiver.CollectTargetEntries() => ViewModel.CollectTargetEntries();
-    IBackgroundWorker IFolderPanelHotkeyReceiver.BackgroundWorker => ViewModel.Model.BackgroundWorker;
+    public IEnumerable<Entry> CollectTargetEntries() => ViewModel.CollectTargetEntries();
+    public IBackgroundWorker BackgroundWorker => ViewModel.Model.BackgroundWorker;
 
-    void IFolderPanelHotkeyReceiver.MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
-    void IFolderPanelHotkeyReceiver.ToggleSelectionCursorEntry(bool isMoveDown) =>
+    public void MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
+    public void ToggleSelectionCursorEntry(bool isMoveDown) =>
         ViewModel.ToggleSelectionCursorEntry(isMoveDown);
-    void IFolderPanelHotkeyReceiver.SetListMode(uint index) =>
+    public void SetListMode(uint index) =>
         ViewModel.SetListMode(index);
 
     private void UpdateItemCellSize()

@@ -2,8 +2,8 @@
 using Anna.DomainModel.Config;
 using Anna.Foundation;
 using Anna.Gui.Foundations;
+using Anna.Gui.Interactions.Hotkey;
 using Anna.Gui.Interfaces;
-using Anna.Gui.Hotkey;
 using Anna.Localization;
 using Anna.Service;
 using Avalonia.Media;

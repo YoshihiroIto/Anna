@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using IEntry=Anna.Service.Interfaces.IEntry;
 using IServiceProvider=Anna.Service.IServiceProvider;
 
-namespace Anna.Gui.Hotkey;
+namespace Anna.Gui.Interactions.Hotkey;
 
 public sealed class FolderPanelHotkey : HotkeyBase
 {

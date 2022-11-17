@@ -1,6 +1,7 @@
 ﻿using Anna.Constants;
 using Anna.DomainModel;
 using Anna.Gui.Messaging;
+using Anna.Service.Interfaces;
 using Anna.Service.Workers;
 using Avalonia.Controls;
 using AvaloniaEdit;
@@ -20,7 +21,7 @@ public interface IFolderPanelHotkeyReceiver : IHotkeyReceiver
     Entry CurrentEntry { get; }
     IBackgroundWorker BackgroundWorker { get; }
     
-    IEnumerable<Entry> CollectTargetEntries();
+    IEnumerable<IEntry> CollectTargetEntries();
     void MoveCursor(Directions dir);
     void ToggleSelectionCursorEntry(bool isMoveDown);
     void SetListMode(uint index);

@@ -5,6 +5,7 @@ using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Panels;
 using Anna.Gui.Views.Windows.Base;
+using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
@@ -18,7 +19,7 @@ using IServiceProvider=Anna.Service.IServiceProvider;
 namespace Anna.Gui.Views.Windows.Dialogs;
 
 public sealed class DecompressEntryDialogViewModel : HasModelWindowBaseViewModel<DecompressEntryDialogViewModel,
-    (string CurrentFolderPath, Entry[] Targets, EntriesStats Stats)>
+    (string CurrentFolderPath, IEntry[] Targets, EntriesStats Stats)>
 {
     public string ResultDestFolder { get; private set; } = "";
 

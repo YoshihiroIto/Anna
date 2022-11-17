@@ -6,6 +6,7 @@ public interface IEntry
     long Size { get; }
     bool IsFolder { get; }
     bool IsSelectable { get; }
+    string NameWithExtension { get; }
 
     public static IEntry Create(string path)
     {
@@ -16,6 +17,9 @@ public interface IEntry
 
         return new DtEntry(path, isFolder, size, true);
     }
-    
-    private sealed record DtEntry(string Path, bool IsFolder, long Size, bool IsSelectable) : IEntry;
+
+    private sealed record DtEntry(string Path, bool IsFolder, long Size, bool IsSelectable) : IEntry
+    {
+        public string NameWithExtension => System.IO.Path.GetFileName(Path);
+    }
 }

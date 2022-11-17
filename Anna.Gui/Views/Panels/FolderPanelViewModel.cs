@@ -11,6 +11,7 @@ using Anna.Gui.ViewModels;
 using Anna.Gui.Views.Windows;
 using Anna.Gui.Views.Windows.Dialogs;
 using Anna.Localization;
+using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using Anna.Service.Workers;
 using Reactive.Bindings;
@@ -138,7 +139,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
         }
     }
 
-    public IEnumerable<Entry> CollectTargetEntries()
+    public IEnumerable<IEntry> CollectTargetEntries()
     {
         var selectedEntries = Entries
             .Where(x => x.IsSelected.Value)

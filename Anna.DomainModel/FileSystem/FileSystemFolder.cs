@@ -1,4 +1,5 @@
 ﻿using Anna.Foundation;
+using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using Reactive.Bindings.Extensions;
 using System.Reactive.Disposables;
@@ -88,7 +89,7 @@ public sealed class FileSystemFolder : Folder
             InvokeEntryExplicitlyCreated(path);
     }
 
-    public override void RenameEntry(Entry entry, string newName, bool isInvokeEntryExplicitlyCreated)
+    public override void RenameEntry(IEntry entry, string newName, bool isInvokeEntryExplicitlyCreated)
     {
         var destPath = System.IO.Path.Combine(
             System.IO.Path.GetDirectoryName(entry.Path) ?? throw new NullReferenceException(),

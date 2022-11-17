@@ -1,5 +1,6 @@
 ﻿using Anna.Constants;
 using Anna.Foundation;
+using Anna.Service.Interfaces;
 using Anna.Service.Services;
 using Anna.Service.Workers;
 using Jewelry.Memory;
@@ -100,7 +101,7 @@ public abstract class Folder : DisposableNotificationObject
     public abstract Stream OpenRead(string path);
     public abstract Task<byte[]> ReadAllAsync(string path);
     public abstract void CreateEntry(bool isFolder, string path, bool isInvokeEntryExplicitlyCreated);
-    public abstract void RenameEntry(Entry entry, string newName, bool isInvokeEntryExplicitlyCreated);
+    public abstract void RenameEntry(IEntry entry, string newName, bool isInvokeEntryExplicitlyCreated);
 
     protected Folder(IServiceProvider dic, int id, string path)
         : base(dic)

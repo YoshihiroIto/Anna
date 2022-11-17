@@ -203,8 +203,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         if (targetEntries.Length == 0)
             return;
 
-        var targetIEntries = targetEntries.Cast<IEntry>().ToArray();
-        var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
+        var stats = Dic.GetInstance(EntriesStats.T, targetEntries);
 
         using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             CopyOrMoveEntryDialogViewModel.T,
@@ -219,7 +218,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var destFolder = PathStringHelper.MakeFullPath(viewModel.ResultDestFolder, receiver.Folder.Path);
         var worker = Dic.GetInstance(ConfirmedFileSystemCopier.T,
-            (receiver.Messenger, (IEnumerable<IEntry>)targetIEntries, destFolder, copyOrMove));
+            (receiver.Messenger, (IEnumerable<IEntry>)targetEntries, destFolder, copyOrMove));
 
         var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
             ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
@@ -229,12 +228,10 @@ public sealed class FolderPanelHotkey : HotkeyBase
     private async ValueTask DeleteEntryAsync(IFolderPanelHotkeyReceiver receiver)
     {
         var targetEntries = receiver.CollectTargetEntries().ToArray();
-
         if (targetEntries.Length == 0)
             return;
 
-        var targetIEntries = targetEntries.Cast<IEntry>().ToArray();
-        var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
+        var stats = Dic.GetInstance(EntriesStats.T, targetEntries);
 
         using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             DeleteEntryDialogViewModel.T,
@@ -249,7 +246,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
 
         var resultMode = viewModel.ResultMode;
         var worker = Dic.GetInstance(ConfirmedFileSystemDeleter.T,
-            (receiver.Messenger, (IEnumerable<IEntry>)targetIEntries, resultMode));
+            (receiver.Messenger, (IEnumerable<IEntry>)targetEntries, resultMode));
 
         var @operator = Dic.GetInstance(EntryBackgroundOperator.T,
             ((IEntriesStats)stats, (IFileProcessable)worker, EntryBackgroundOperator.ProgressModes.Stats));
@@ -324,8 +321,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         if (targetEntries.Length == 0)
             return;
 
-        var targetIEntries = targetEntries.Cast<IEntry>().ToArray();
-        var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
+        var stats = Dic.GetInstance(EntriesStats.T, targetEntries);
 
         using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             CompressEntryDialogViewModel.T,
@@ -356,8 +352,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
         if (targetEntries.Length == 0)
             return;
 
-        var targetIEntries = targetEntries.Cast<IEntry>().ToArray();
-        using var stats = Dic.GetInstance(EntriesStats.T, targetIEntries);
+        using var stats = Dic.GetInstance(EntriesStats.T, targetEntries);
 
         using var viewModel = await receiver.Messenger.RaiseTransitionAsync(
             DecompressEntryDialogViewModel.T,

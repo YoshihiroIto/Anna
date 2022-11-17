@@ -2,6 +2,7 @@
 using Anna.Gui.Views.Panels;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Reactive.Bindings.Extensions;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,12 @@ namespace Anna.Gui.Views.Controls;
 
 internal sealed class EntriesBag : Control
 {
+    public event EventHandler<PointerPressedEventArgs>? EntryPointerPressed
+    {
+        add => _recyclingChildrenPool.EntryPointerPressed += value;
+        remove => _recyclingChildrenPool.EntryPointerPressed -= value;
+    }
+    
     private readonly CompositeDisposable _entriesObservers = new();
     private readonly Dictionary<EntryViewModel, Control> _childrenControls = new();
     private readonly RecyclingChildrenPool _recyclingChildrenPool = new();
@@ -48,6 +55,7 @@ internal sealed class EntriesBag : Control
                     _parent = newParent;
                     _layout = newParent.Layout ?? throw new NullReferenceException();
                     _recyclingChildrenPool.ItemTemplate = newParent.ItemTemplate ?? throw new NullReferenceException();
+                    _recyclingChildrenPool.Parent = newParent;
                 }
             }
         };

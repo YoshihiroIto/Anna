@@ -191,5 +191,5 @@
         </templateSelectors:EntryDataTemplateSelector>
     </panels:FolderPanel.ItemTemplate>
 
-    <controls:EntriesBag />
+    <controls:EntriesBag EntryPointerPressed="EntriesBag_OnEntryPointerPressed" />
 </UserControl>

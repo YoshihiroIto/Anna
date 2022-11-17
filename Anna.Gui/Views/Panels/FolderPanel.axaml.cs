@@ -4,10 +4,12 @@ using Anna.Foundation;
 using Anna.Gui.Messaging;
 using Anna.Gui.Interactions.Drop;
 using Anna.Gui.Interactions.Hotkey;
+using Anna.Gui.ViewModels;
 using Anna.Service.Workers;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System;
 using System.Collections.Generic;
@@ -149,5 +151,21 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
             PageIndexChanged?.Invoke(this, EventArgs.Empty);
 
         return true;
+    }
+    
+    private void EntriesBag_OnEntryPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        _ = sender ?? throw new NullReferenceException();
+        
+        var control = (Control)sender;
+        
+        SetCurrentEntry(control.DataContext as EntryViewModel ?? throw new NullReferenceException());
+    }
+
+    private void SetCurrentEntry(EntryViewModel entryViewModel)
+    {
+        var index = ViewModel.Model.Entries.IndexOf(entryViewModel.Model.Entry);
+
+        ViewModel.CursorIndex.Value = index;
     }
 }

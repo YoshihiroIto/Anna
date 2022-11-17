@@ -1,15 +1,20 @@
 ﻿using Anna.Gui.ViewModels;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace Anna.Gui.Views.Panels;
 
 internal sealed class RecyclingChildrenPool
 {
+    public event EventHandler<PointerPressedEventArgs>? EntryPointerPressed;
+    
     public IDataTemplate? ItemTemplate { get; set; }
+    public FolderPanel? Parent { get; set; }
     
     private readonly Stack<Control> _folderPool = new();
     private readonly Stack<Control> _filePool = new();
@@ -38,6 +43,7 @@ internal sealed class RecyclingChildrenPool
 
                 child.DataContext = entry;
                 child.IsVisible = true;
+                child.PointerPressed += ChildOnPointerPressed;
 
                 return (child, null, true);
             }
@@ -47,6 +53,7 @@ internal sealed class RecyclingChildrenPool
 
                 child.DataContext = entry;
                 child.IsVisible = true;
+                child.PointerPressed += ChildOnPointerPressed;
 
                 return (child, null, false);
             }
@@ -59,14 +66,21 @@ internal sealed class RecyclingChildrenPool
         
         child.IsVisible = false;
         child.DataContext = null;
+        child.PointerPressed -= ChildOnPointerPressed;
 
         var pool = FindPool(entry);
         pool.Push(child);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Stack<Control> FindPool(EntryViewModel entry)
     {
         return entry.IsFolder ? _folderPool : _filePool;
+    }
+
+    private void ChildOnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        EntryPointerPressed?.Invoke(sender, e);
     }
 }
 

@@ -5,6 +5,7 @@ using Anna.Gui.Messaging;
 using Anna.Gui.Interactions.Drop;
 using Anna.Gui.Interactions.Hotkey;
 using Anna.Gui.ViewModels;
+using Anna.Service.Interfaces;
 using Anna.Service.Workers;
 using Avalonia;
 using Avalonia.Controls;
@@ -13,6 +14,7 @@ using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Entry=Anna.DomainModel.Entry;
 
 namespace Anna.Gui.Views.Panels;
@@ -102,7 +104,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
             }
         };
     }
-    
+
     public Folder Folder => ViewModel.Model;
 
     public Messenger Messenger => ViewModel.Messenger;
@@ -110,7 +112,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     public Entry CurrentEntry =>
         ViewModel.CursorEntry.Value?.Model.Entry ?? throw new InvalidOperationException();
 
-    public IEnumerable<Entry> CollectTargetEntries() => ViewModel.CollectTargetEntries();
+    public IEnumerable<IEntry> CollectTargetEntries() => ViewModel.CollectTargetEntries();
     public IBackgroundWorker BackgroundWorker => ViewModel.Model.BackgroundWorker;
 
     public void MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
@@ -152,20 +154,34 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
 
         return true;
     }
-    
+
     private void EntriesBag_OnEntryPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         _ = sender ?? throw new NullReferenceException();
-        
+
         var control = (Control)sender;
+        var entryViewModel = control.DataContext as EntryViewModel ?? throw new NullReferenceException();
         
-        SetCurrentEntry(control.DataContext as EntryViewModel ?? throw new NullReferenceException());
+        var index = ViewModel.Model.Entries.IndexOf(entryViewModel.Model.Entry);
+        ViewModel.CursorIndex.Value = index;
     }
 
-    private void SetCurrentEntry(EntryViewModel entryViewModel)
+    private async void EntriesBag_OnEntryPointerMoved(object? sender, PointerEventArgs e)
     {
-        var index = ViewModel.Model.Entries.IndexOf(entryViewModel.Model.Entry);
+        var isLeftButtonPressed = e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
+        var iRightButtonPressed = e.GetCurrentPoint(this).Properties.IsRightButtonPressed;
 
-        ViewModel.CursorIndex.Value = index;
+        if ((isLeftButtonPressed || iRightButtonPressed) == false)
+            return;
+
+        var targets = ViewModel.CollectTargetEntries().Select(x => x.Path).ToArray();
+
+        var dragData = new DataObject();
+        dragData.Set(DataFormats.FileNames, targets);
+
+        if (isLeftButtonPressed)
+            await DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy | DragDropEffects.Link);
+        else if (iRightButtonPressed)
+            await DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
     }
 }

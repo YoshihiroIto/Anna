@@ -18,6 +18,11 @@ internal sealed class EntriesBag : Control
         add => _recyclingChildrenPool.EntryPointerPressed += value;
         remove => _recyclingChildrenPool.EntryPointerPressed -= value;
     }
+    public event EventHandler<PointerEventArgs>? EntryPointerMoved
+    {
+        add => _recyclingChildrenPool.EntryPointerMoved += value;
+        remove => _recyclingChildrenPool.EntryPointerMoved -= value;
+    }
     
     private readonly CompositeDisposable _entriesObservers = new();
     private readonly Dictionary<EntryViewModel, Control> _childrenControls = new();

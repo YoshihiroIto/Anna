@@ -12,6 +12,7 @@ namespace Anna.Gui.Views.Panels;
 internal sealed class RecyclingChildrenPool
 {
     public event EventHandler<PointerPressedEventArgs>? EntryPointerPressed;
+    public event EventHandler<PointerEventArgs>? EntryPointerMoved;
     
     public IDataTemplate? ItemTemplate { get; set; }
     public FolderPanel? Parent { get; set; }
@@ -44,6 +45,7 @@ internal sealed class RecyclingChildrenPool
                 child.DataContext = entry;
                 child.IsVisible = true;
                 child.PointerPressed += ChildOnPointerPressed;
+                child.PointerMoved += ChildOnPointerMoved;
 
                 return (child, null, true);
             }
@@ -54,6 +56,7 @@ internal sealed class RecyclingChildrenPool
                 child.DataContext = entry;
                 child.IsVisible = true;
                 child.PointerPressed += ChildOnPointerPressed;
+                child.PointerMoved += ChildOnPointerMoved;
 
                 return (child, null, false);
             }
@@ -67,6 +70,7 @@ internal sealed class RecyclingChildrenPool
         child.IsVisible = false;
         child.DataContext = null;
         child.PointerPressed -= ChildOnPointerPressed;
+        child.PointerMoved -= ChildOnPointerMoved;
 
         var pool = FindPool(entry);
         pool.Push(child);
@@ -81,6 +85,11 @@ internal sealed class RecyclingChildrenPool
     private void ChildOnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         EntryPointerPressed?.Invoke(sender, e);
+    }
+    
+    private void ChildOnPointerMoved(object? sender, PointerEventArgs e)
+    {
+        EntryPointerMoved?.Invoke(sender, e);
     }
 }
 

@@ -17,6 +17,7 @@ public sealed class ClipboardService : IClipboardService
         
         var dataObject = new DataObject();
         dataObject.Set(DataFormats.FileNames, filePathsArray);
+        dataObject.Set(DataFormats.Text, string.Join('\n', filePathsArray.Select(Path.GetFileName)));
 
         await AppClipboard.SetDataObjectAsync(dataObject);
     }

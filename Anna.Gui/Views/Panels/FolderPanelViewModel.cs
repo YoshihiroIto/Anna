@@ -69,26 +69,34 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
         CurrentFolderPath = Model.ObserveProperty(x => x.Path);
-
-        Model.BackgroundWorkerExceptionThrown += OnBackgroundWorkerExceptionThrown;
-        Trash.Add(() => Model.BackgroundWorkerExceptionThrown -= OnBackgroundWorkerExceptionThrown);
-
-        Model.EntryExplicitlyCreated += OnEntryExplicitlyCreated;
-        Trash.Add(() => Model.EntryExplicitlyCreated -= OnEntryExplicitlyCreated);
-
+        
+        CursorEntry = CursorIndex
+            .ObserveOnUIDispatcher()
+            .Select(UpdateCursorEntry)
+            .ToReadOnlyReactivePropertySlim()
+            .AddTo(Trash);
+        
         var oldPath = Model.Path;
+
+        Observable
+            .FromEventPattern<ExceptionThrownEventArgs>(
+                h => Model.BackgroundWorkerExceptionThrown += h,
+                h => Model.BackgroundWorkerExceptionThrown -= h)
+            .Subscribe(x => OnBackgroundWorkerExceptionThrown(x.Sender, x.EventArgs))
+            .AddTo(Trash);
+        
+        Observable
+            .FromEventPattern<EntryExplicitlyCreatedEventArgs>(
+                h => Model.EntryExplicitlyCreated += h,
+                h => Model.EntryExplicitlyCreated -= h)
+            .Subscribe(x => OnEntryExplicitlyCreated(x.Sender, x.EventArgs))
+            .AddTo(Trash);
 
         Observable
             .FromEventPattern(
                 h => Dic.GetInstance<ResourcesHolder>().CultureChanged += h,
                 h => Dic.GetInstance<ResourcesHolder>().CultureChanged -= h)
             .Subscribe(_ => RaisePropertyChanged(nameof(R)))
-            .AddTo(Trash);
-
-        CursorEntry = CursorIndex
-            .ObserveOnUIDispatcher()
-            .Select(UpdateCursorEntry)
-            .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
 
         lock (Model.EntriesUpdatingLockObj)
@@ -196,7 +204,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
             return;
 
         _ListMode = index;
-        
+
         _appConfig.Data.LastListMode = _ListMode;
         ListModeChanged?.Invoke(this, EventArgs.Empty);
     }

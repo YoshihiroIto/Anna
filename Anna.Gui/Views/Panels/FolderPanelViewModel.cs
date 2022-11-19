@@ -28,6 +28,8 @@ namespace Anna.Gui.Views.Panels;
 
 public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelViewModel, Folder>, ILocalizableViewModel
 {
+    public event EventHandler? ListModeChanged;
+    
     public ReadOnlyReactiveCollection<EntryViewModel> Entries { get; }
     public ReadOnlyReactivePropertySlim<EntryViewModel?> CursorEntry { get; }
 
@@ -45,15 +47,11 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     public int SizeCount => _appConfig.Data.ListModeLayouts[_ListMode].Size;
     public int TimestampCount => _appConfig.Data.ListModeLayouts[_ListMode].Timestamp;
 
-    public event EventHandler? ListModeChanged;
-
+    private uint _ListMode;
     private EntryViewModel? _oldEntry;
     private int _OnEntryExplicitlyCreatedRunning;
-
-    public uint _ListMode;
-
+    
     private readonly bool _isBufferingUpdate = false;
-
     private readonly AppConfig _appConfig;
 
     public FolderPanelViewModel(IServiceProvider dic)
@@ -69,13 +67,13 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
         ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
         CurrentFolderPath = Model.ObserveProperty(x => x.Path);
-        
+
         CursorEntry = CursorIndex
             .ObserveOnUIDispatcher()
             .Select(UpdateCursorEntry)
             .ToReadOnlyReactivePropertySlim()
             .AddTo(Trash);
-        
+
         var oldPath = Model.Path;
 
         Observable
@@ -84,7 +82,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
                 h => Model.BackgroundWorkerExceptionThrown -= h)
             .Subscribe(x => OnBackgroundWorkerExceptionThrown(x.Sender, x.EventArgs))
             .AddTo(Trash);
-        
+
         Observable
             .FromEventPattern<EntryExplicitlyCreatedEventArgs>(
                 h => Model.EntryExplicitlyCreated += h,
@@ -292,11 +290,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     {
         using var _ = await Messenger.RaiseTransitionAsync(
             ConfirmationDialogViewModel.T,
-            (
-                Resources.AppName,
-                e.Exception.Message,
-                DialogResultTypes.Ok
-            ),
+            (Resources.AppName, e.Exception.Message, DialogResultTypes.Ok),
             MessageKey.Confirmation);
 
         Dic.GetInstance<ILoggerService>().Warning(e.Exception.Message);

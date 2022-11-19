@@ -1,4 +1,5 @@
 ﻿using Anna.Gui.ViewModels;
+using Anna.Gui.Views.Foundations;
 using Anna.Gui.Views.Panels;
 using Avalonia;
 using Avalonia.Controls;

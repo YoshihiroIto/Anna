@@ -21,35 +21,14 @@ namespace Anna.Gui.Views.Panels;
 
 public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceiver, IFileDropReceiver
 {
-    public static readonly StyledProperty<IDataTemplate?> ItemTemplateProperty =
+    internal static readonly StyledProperty<IDataTemplate?> ItemTemplateProperty =
         AvaloniaProperty.Register<FolderPanel, IDataTemplate?>(nameof(ItemTemplate));
 
-    public IDataTemplate? ItemTemplate
-    {
-        get => GetValue(ItemTemplateProperty);
-        set => SetValue(ItemTemplateProperty, value);
-    }
-
-    public static readonly StyledProperty<int> SelectedEntryIndexProperty =
+    internal static readonly StyledProperty<int> SelectedEntryIndexProperty =
         AvaloniaProperty.Register<FolderPanel, int>(nameof(SelectedEntryIndex));
 
-    public int SelectedEntryIndex
-    {
-        get => GetValue(SelectedEntryIndexProperty);
-        set => SetValue(SelectedEntryIndexProperty, value);
-    }
-
-    public static readonly StyledProperty<int> PageIndexProperty =
+    internal static readonly StyledProperty<int> PageIndexProperty =
         AvaloniaProperty.Register<FolderPanel, int>(nameof(PageIndex));
-
-    public int PageIndex
-    {
-        get => GetValue(PageIndexProperty);
-        set => SetValue(PageIndexProperty, value);
-    }
-
-    internal event EventHandler? PageIndexChanged;
-    internal event EventHandler? ItemCellSizeChanged;
 
     internal static readonly DirectProperty<FolderPanel, FolderPanelLayout> LayoutProperty =
         AvaloniaProperty.RegisterDirect<FolderPanel, FolderPanelLayout>(nameof(FolderPanelLayout),
@@ -58,7 +37,26 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     internal static readonly DirectProperty<FolderPanel, IntSize> ItemCellSizeProperty =
         AvaloniaProperty.RegisterDirect<FolderPanel, IntSize>(nameof(ItemCellSize), o => o.ItemCellSize);
 
-    internal FolderPanelLayout Layout { get; } = new();
+    internal IDataTemplate? ItemTemplate
+    {
+        get => GetValue(ItemTemplateProperty);
+        set => SetValue(ItemTemplateProperty, value);
+    }
+
+    internal int SelectedEntryIndex
+    {
+        get => GetValue(SelectedEntryIndexProperty);
+        set => SetValue(SelectedEntryIndexProperty, value);
+    }
+
+    internal int PageIndex
+    {
+        get => GetValue(PageIndexProperty);
+        set => SetValue(PageIndexProperty, value);
+    }
+
+    internal event EventHandler? PageIndexChanged;
+    internal event EventHandler? ItemCellSizeChanged;
 
     internal IntSize ItemCellSize
     {
@@ -68,8 +66,20 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
 
     private IntSize _ItemCellSize;
 
-    public FolderPanelViewModel ViewModel => _viewModel ?? throw new InvalidOperationException();
+    internal FolderPanelViewModel ViewModel => _viewModel ?? throw new InvalidOperationException();
     private FolderPanelViewModel? _viewModel;
+
+    internal FolderPanelLayout Layout { get; } = new();
+    
+    public Folder Folder => ViewModel.Model;
+    public Messenger Messenger => ViewModel.Messenger;
+    public Entry CurrentEntry => ViewModel.CursorEntry.Value?.Model.Entry ?? throw new InvalidOperationException();
+    public IBackgroundWorker BackgroundWorker => ViewModel.Model.BackgroundWorker;
+    public IEnumerable<IEntry> CollectTargetEntries() => ViewModel.CollectTargetEntries();
+    
+    public void MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
+    public void ToggleSelectionCursorEntry(bool isMoveDown) => ViewModel.ToggleSelectionCursorEntry(isMoveDown);
+    public void SetListMode(uint index) => ViewModel.SetListMode(index);
 
     static FolderPanel()
     {
@@ -104,22 +114,6 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
             }
         };
     }
-
-    public Folder Folder => ViewModel.Model;
-
-    public Messenger Messenger => ViewModel.Messenger;
-
-    public Entry CurrentEntry =>
-        ViewModel.CursorEntry.Value?.Model.Entry ?? throw new InvalidOperationException();
-
-    public IEnumerable<IEntry> CollectTargetEntries() => ViewModel.CollectTargetEntries();
-    public IBackgroundWorker BackgroundWorker => ViewModel.Model.BackgroundWorker;
-
-    public void MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
-    public void ToggleSelectionCursorEntry(bool isMoveDown) =>
-        ViewModel.ToggleSelectionCursorEntry(isMoveDown);
-    public void SetListMode(uint index) =>
-        ViewModel.SetListMode(index);
 
     private void UpdateItemCellSize()
     {
@@ -161,7 +155,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
 
         var control = (Control)sender;
         var entryViewModel = control.DataContext as EntryViewModel ?? throw new NullReferenceException();
-        
+
         var index = ViewModel.Model.Entries.IndexOf(entryViewModel.Model.Entry);
         ViewModel.CursorIndex.Value = index;
     }

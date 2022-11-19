@@ -1,4 +1,5 @@
 ﻿using Anna.Gui.ViewModels;
+using Anna.Gui.Views.Panels;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Anna.Gui.Views.Panels;
+namespace Anna.Gui.Views.Foundations;
 
 internal sealed class RecyclingChildrenPool
 {

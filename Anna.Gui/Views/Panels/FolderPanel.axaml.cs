@@ -31,8 +31,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
         AvaloniaProperty.Register<FolderPanel, int>(nameof(PageIndex));
 
     internal static readonly DirectProperty<FolderPanel, FolderPanelLayout> LayoutProperty =
-        AvaloniaProperty.RegisterDirect<FolderPanel, FolderPanelLayout>(nameof(FolderPanelLayout),
-            o => o.Layout);
+        AvaloniaProperty.RegisterDirect<FolderPanel, FolderPanelLayout>(nameof(FolderPanelLayout), o => o.Layout);
 
     internal static readonly DirectProperty<FolderPanel, IntSize> ItemCellSizeProperty =
         AvaloniaProperty.RegisterDirect<FolderPanel, IntSize>(nameof(ItemCellSize), o => o.ItemCellSize);
@@ -70,13 +69,13 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     private FolderPanelViewModel? _viewModel;
 
     internal FolderPanelLayout Layout { get; } = new();
-    
+
     public Folder Folder => ViewModel.Model;
     public Messenger Messenger => ViewModel.Messenger;
     public Entry CurrentEntry => ViewModel.CursorEntry.Value?.Model.Entry ?? throw new InvalidOperationException();
     public IBackgroundWorker BackgroundWorker => ViewModel.Model.BackgroundWorker;
     public IEnumerable<IEntry> CollectTargetEntries() => ViewModel.CollectTargetEntries();
-    
+
     public void MoveCursor(Directions dir) => ViewModel.MoveCursor(dir);
     public void ToggleSelectionCursorEntry(bool isMoveDown) => ViewModel.ToggleSelectionCursorEntry(isMoveDown);
     public void SetListMode(uint index) => ViewModel.SetListMode(index);
@@ -163,9 +162,9 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     private async void EntriesBag_OnEntryPointerMoved(object? sender, PointerEventArgs e)
     {
         var isLeftButtonPressed = e.GetCurrentPoint(this).Properties.IsLeftButtonPressed;
-        var iRightButtonPressed = e.GetCurrentPoint(this).Properties.IsRightButtonPressed;
+        var isRightButtonPressed = e.GetCurrentPoint(this).Properties.IsRightButtonPressed;
 
-        if ((isLeftButtonPressed || iRightButtonPressed) == false)
+        if ((isLeftButtonPressed || isRightButtonPressed) == false)
             return;
 
         var targets = ViewModel.CollectTargetEntries().Select(x => x.Path).ToArray();
@@ -173,9 +172,10 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
         var dragData = new DataObject();
         dragData.Set(DataFormats.FileNames, targets);
 
-        if (isLeftButtonPressed)
-            await DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy | DragDropEffects.Link);
-        else if (iRightButtonPressed)
-            await DragDrop.DoDragDrop(e, dragData, DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
+        await DragDrop.DoDragDrop(e,
+            dragData,
+            isLeftButtonPressed ? DragDropEffects.Copy | DragDropEffects.Link :
+            isRightButtonPressed ? DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link :
+            throw new InvalidOperationException());
     }
 }

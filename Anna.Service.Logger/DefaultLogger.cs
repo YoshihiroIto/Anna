@@ -32,8 +32,10 @@ public sealed class DefaultLogger : ILoggerService
             .Enrich.WithAssemblyVersion()
             .Enrich.WithMemoryUsage()
             .Enrich.WithExceptionDetails()
+#if DEBUG
             .WriteTo.Console(outputTemplate: template)
             .WriteTo.Debug(outputTemplate: template)
+#endif
             .WriteTo.File(logFilePath,
                 LogEventLevel.Verbose,
                 outputTemplate: template,

@@ -1,4 +1,5 @@
 ﻿using Anna.Gui.Foundations;
+using Anna.Gui.Views.Controls;
 using Anna.Gui.Views.Panels;
 using Avalonia;
 using Avalonia.Controls;
@@ -31,7 +32,9 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
         _parentWindow = ControlHelper.FindOwnerWindow(AssociatedObject);
 
         _parentWindow?.AddHandler(InputElement.KeyDownEvent, OnPreviewKeyDown, RoutingStrategies.Tunnel);
+        _parentWindow?.AddHandler(InputElement.PointerMovedEvent, OnPointerMoved);
         _parentWindow?.AddHandler(DragDrop.DropEvent, OnDrop);
+        _parentWindow?.AddHandler(DragDrop.DragOverEvent, OnDragOver);
     }
 
     protected override void OnDetaching()
@@ -40,7 +43,9 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
             AssociatedObject.AttachedToVisualTree -= AssociatedObjectOnAttachedToVisualTree;
 
         _parentWindow?.RemoveHandler(InputElement.KeyDownEvent, OnPreviewKeyDown);
+        _parentWindow?.RemoveHandler(InputElement.PointerMovedEvent, OnPointerMoved);
         _parentWindow?.RemoveHandler(DragDrop.DropEvent, OnDrop);
+        _parentWindow?.RemoveHandler(DragDrop.DragOverEvent, OnDragOver);
 
         base.OnDetaching();
     }
@@ -63,6 +68,35 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
         await viewModel.Hotkey.OnKeyDownAsync(AssociatedObject, e);
     }
 
+    private void OnPointerMoved(object? sender, EventArgs e)
+    {
+        if (AssociatedObject is null)
+            return;
+        
+        var ownerWindow = ControlHelper.FindOwnerWindow(AssociatedObject);
+        
+        DragDrop.SetAllowDrop(ownerWindow, true);
+    }
+
+    private void OnDragOver(object? sender, DragEventArgs e)
+    {
+        if (AssociatedObject is null)
+            return;
+        
+        var ownerWindow = ControlHelper.FindOwnerWindow(AssociatedObject);
+
+        if (e.Data.Get(DropDataFormat.FolderPanel) is FolderPanel dropSource)
+        {
+            if (ReferenceEquals(AssociatedObject, dropSource))
+            {
+                DragDrop.SetAllowDrop(ownerWindow, false);
+                return;
+            }
+        }
+        
+        DragDrop.SetAllowDrop(ownerWindow, e.Data.Contains(DataFormats.FileNames));
+    }
+
     private async ValueTask OnDrop(object? sender, DragEventArgs e)
     {
         if (AssociatedObject is null)
@@ -75,7 +109,6 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
         if (fileNames is null)
             return;
         
-        var viewModel = AssociatedObject.ViewModel;
-        await viewModel.Drop.OnFileDropAsync(AssociatedObject, fileNames);
+        await AssociatedObject.ViewModel.Drop.OnFileDropAsync(AssociatedObject, fileNames);
     }
 }

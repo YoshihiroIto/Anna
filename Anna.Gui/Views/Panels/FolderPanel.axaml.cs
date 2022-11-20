@@ -5,6 +5,7 @@ using Anna.Gui.Messaging;
 using Anna.Gui.Interactions.Drop;
 using Anna.Gui.Interactions.Hotkey;
 using Anna.Gui.ViewModels;
+using Anna.Gui.Views.Controls;
 using Anna.Service.Interfaces;
 using Anna.Service.Workers;
 using Avalonia;
@@ -173,6 +174,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
 
         var dragData = new DataObject();
         dragData.Set(DataFormats.FileNames, targets);
+        dragData.Set(DropDataFormat.FolderPanel, this);
 
         await DragDrop.DoDragDrop(e,
             dragData,

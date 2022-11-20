@@ -1,5 +1,7 @@
 ﻿using Anna.DomainModel.Config;
+using Anna.Foundation;
 using Anna.Gui.Foundations;
+using Jewelry.Collections;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using System;
@@ -34,14 +36,18 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entr
 
     private ReadOnlyReactivePropertySlim<bool>? _IsSelected;
 
-    private readonly string _timestampFormat;
+    private static string? _timestampFormat;
+    private const string LeftMargin = " ";
 
     public EntryViewModel(IServiceProvider dic)
         : base(dic)
     {
-        _timestampFormat = dic.GetInstance<AppConfig>().Data.TimestampFormat;
-        if (_timestampFormat != "")
-            _timestampFormat = LeftMargin + _timestampFormat;
+        if (_timestampFormat is null)
+        {
+            var f = dic.GetInstance<AppConfig>().Data.TimestampFormat;
+            if (f != "")
+                _timestampFormat = LeftMargin + f;
+        }
     }
 
     private ReactivePropertySlim<bool> SetupIsOnCursor()
@@ -109,13 +115,23 @@ public sealed class EntryViewModel : HasModelViewModelBase<EntryViewModel, (Entr
             .AddTo(Trash);
     }
 
-    private string MakeTimestampString(DateTime v)
+    private static string MakeTimestampString(DateTime timestamp)
     {
-        if (_timestampFormat == "")
-            return LeftMargin + v.ToString(CultureInfo.CurrentUICulture);
+        var truncateTimeStamp = timestamp.Truncate(TimeSpan.FromSeconds(1));
 
-        return v.ToString(_timestampFormat);
+        if (_timestampFormat is null)
+            return LeftMargin + truncateTimeStamp.ToString(CultureInfo.CurrentUICulture);
+
+        var key = truncateTimeStamp.GetHashCode();
+
+        if (TimestampStrings.TryGetValue(key, out var timestampString) == false)
+        {
+            timestampString = truncateTimeStamp.ToString(_timestampFormat);
+            TimestampStrings.Add(key, timestampString);
+        }
+
+        return timestampString;
     }
 
-    private const string LeftMargin = " ";
+    private static readonly LruCache<int, string> TimestampStrings = new(10000);
 }

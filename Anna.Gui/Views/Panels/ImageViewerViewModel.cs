@@ -1,6 +1,7 @@
 ﻿using Anna.DomainModel;
 using Anna.Gui.Foundations;
 using Anna.Gui.Interactions.Hotkey;
+using Anna.Gui.Interfaces;
 using Anna.Service;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed class ImageViewerViewModel : HasModelViewModelBase<ImageViewerViewModel, Entry>
+public sealed class ImageViewerViewModel : HasModelViewModelBase<ImageViewerViewModel, Entry>, IViewerViewModel
 {
-    public readonly ImageViewerHotkey Hotkey;
+    public HotkeyBase Hotkey { get; }
 
     #region Image
 

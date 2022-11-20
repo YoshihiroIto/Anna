@@ -8,12 +8,15 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              x:DataType="panels:ImageViewerViewModel"
-             KeyDown="OnKeyDown"
              mc:Ignorable="d">
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->
         <panels:ImageViewerViewModel />
     </Design.DataContext>
+
+    <Interaction.Behaviors>
+        <behaviors:ViewerBehavior />
+    </Interaction.Behaviors>
 
     <Image FocusAdorner="{x:Null}"
            Source="{Binding Image}"

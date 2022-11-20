@@ -1,11 +1,7 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
-using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Interactions.Hotkey;
-using Anna.Gui.Views.Windows;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using AvaloniaEdit;
@@ -100,21 +96,7 @@ public sealed partial class TextViewer : UserControl, ITextViewerHotkeyReceiver
 
         TextEditor.Text = await ViewModel.ReadText();
 
-        TextEditor.AddHandler(KeyDownEvent, OnKeyDown, RoutingStrategies.Tunnel);
         TextEditor.TextArea.Focus();
-    }
-
-    private async void OnKeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Escape)
-        {
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
-            e.Handled = true;
-        }
-        else
-        {
-            await ViewModel.Hotkey.OnKeyDownAsync(this, e);
-        }
     }
 
     private void SetupTextMate()

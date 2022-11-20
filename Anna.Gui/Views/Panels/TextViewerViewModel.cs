@@ -14,14 +14,15 @@ using Anna.Service.Services;
 
 namespace Anna.Gui.Views.Panels;
 
-public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewModel, Entry>, ILocalizableViewModel
+public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewModel, Entry>, 
+    ILocalizableViewModel, IViewerViewModel
 {
+    public HotkeyBase Hotkey { get; }
+    
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 
-    public readonly TextViewerHotkey Hotkey;
-
     public bool ShowLineNumbers { get; init; }
-    
+
     public ReadOnlyReactivePropertySlim<FontFamily> ViewerFontFamily { get; }
     public ReadOnlyReactivePropertySlim<double> ViewerFontSize { get; }
 

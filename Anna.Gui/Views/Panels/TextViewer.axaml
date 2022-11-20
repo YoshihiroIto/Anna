@@ -1,11 +1,11 @@
-﻿<!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
-<UserControl x:Class="Anna.Gui.Views.Panels.TextViewer"
+﻿<UserControl x:Class="Anna.Gui.Views.Panels.TextViewer"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:avaloniaEdit="https://github.com/avaloniaui/avaloniaedit"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:panels="clr-namespace:Anna.Gui.Views.Panels"
+             xmlns:behaviors="clr-namespace:Anna.Gui.Views.Behaviors"
              d:DesignHeight="450"
              d:DesignWidth="800"
              x:CompileBindings="True"
@@ -13,11 +13,14 @@
              FontFamily="{Binding ViewerFontFamily.Value}"
              FontSize="{Binding ViewerFontSize.Value}"
              mc:Ignorable="d">
-    <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->
         <panels:TextViewerViewModel />
     </Design.DataContext>
+
+    <Interaction.Behaviors>
+        <behaviors:ViewerBehavior />
+    </Interaction.Behaviors>
 
     <UserControl.Styles>
         <StyleInclude Source="/Views/Resources/Styles.axaml" />

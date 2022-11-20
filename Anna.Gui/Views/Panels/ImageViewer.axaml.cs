@@ -1,10 +1,7 @@
 ﻿using Anna.Gui.Foundations;
 using Anna.Gui.Messaging;
-using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Interactions.Hotkey;
-using Anna.Gui.Views.Windows;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using System;
 using WindowBase=Anna.Gui.Views.Windows.Base.WindowBase;
@@ -36,18 +33,5 @@ public sealed partial class ImageViewer : UserControl, IImageViewerHotkeyReceive
             if (e.Property == DataContextProperty)
                 _viewModel = DataContext as ImageViewerViewModel ?? throw new NotSupportedException();
         };
-    }
-
-    private async void OnKeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Escape)
-        {
-            await Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
-            e.Handled = true;
-        }
-        else
-        {
-            await ViewModel.Hotkey.OnKeyDownAsync(this, e);
-        }
     }
 }

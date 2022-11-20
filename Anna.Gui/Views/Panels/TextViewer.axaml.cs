@@ -1,6 +1,4 @@
-﻿using Anna.Gui.Foundations;
-using Anna.Gui.Messaging;
-using Anna.Gui.Interactions.Hotkey;
+﻿using Anna.Gui.Interactions.Hotkey;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
@@ -10,7 +8,6 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using TextMateSharp.Grammars;
-using WindowBase=Anna.Gui.Views.Windows.Base.WindowBase;
 
 namespace Anna.Gui.Views.Panels;
 
@@ -19,11 +16,6 @@ public sealed partial class TextViewer : UserControl, ITextViewerHotkeyReceiver
     private TextViewerViewModel ViewModel => _viewModel ?? throw new NullReferenceException();
     private TextViewerViewModel? _viewModel;
 
-    public Messenger Messenger =>
-        (ControlHelper.FindOwnerWindow(this) as WindowBase)?.ViewModel.Messenger ??
-        throw new NullReferenceException();
-
-    public string TargetFilePath => ViewModel.Model.Path;
     public int LineIndex => (int)(ScrollViewer.Offset.Y / CalcLineHeight()) + 1;
 
     public TextEditor TextEditor { get; private set; } = null!;

@@ -1,6 +1,5 @@
 ﻿using Anna.Gui.Interactions.Hotkey;
 using Anna.Gui.Interfaces;
-using Anna.Gui.Messaging;
 using Anna.Gui.Messaging.Messages;
 using Anna.Gui.Views.Windows;
 using Avalonia.Controls;
@@ -14,15 +13,13 @@ namespace Anna.Gui.Views.Behaviors;
 
 public sealed class ViewerBehavior : Behavior<UserControl>
 {
-    private Messenger ParentMessenger => HotkeyReceiver.Messenger;
-
-    private IHotkeyReceiver HotkeyReceiver
+    private IViewerHotkeyReceiver HotkeyReceiver
     {
         get
         {
             _ = AssociatedObject ?? throw new NullReferenceException();
 
-            return (IHotkeyReceiver)AssociatedObject ?? throw new NullReferenceException();
+            return (IViewerHotkeyReceiver)AssociatedObject ?? throw new NullReferenceException();
         }
     }
 
@@ -44,15 +41,14 @@ public sealed class ViewerBehavior : Behavior<UserControl>
 
     private async void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        var viewModel = AssociatedObject?.DataContext as IViewerViewModel ?? throw new NullReferenceException();
-
         if (e.Key == Key.Escape)
         {
-            await ParentMessenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
+            await HotkeyReceiver.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
             e.Handled = true;
         }
         else
         {
+            var viewModel = AssociatedObject?.DataContext as IViewerViewModel ?? throw new NullReferenceException();
             await viewModel.Hotkey.OnKeyDownAsync(HotkeyReceiver, e);
         }
     }

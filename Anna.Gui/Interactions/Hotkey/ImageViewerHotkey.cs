@@ -31,14 +31,13 @@ public sealed class ImageViewerHotkey : HotkeyBase
 
     private static async ValueTask CloseAsync(IImageViewerHotkeyReceiver receiver)
     {
-        await receiver.Messenger.RaiseAsync(
-            new WindowActionMessage(WindowAction.Close, MessageKey.Close));
+        await receiver.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
     private ValueTask OpenAppAsync(IImageViewerHotkeyReceiver receiver, ExternalApp app)
     {
         var targetFolderPath = Path.GetDirectoryName(receiver.TargetFilePath) ?? "";
-        
+
         return OpenAppAsync(app, receiver.TargetFilePath, targetFolderPath, 1, receiver.Messenger);
     }
 

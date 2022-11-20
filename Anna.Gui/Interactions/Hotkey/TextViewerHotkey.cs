@@ -36,14 +36,13 @@ public sealed class TextViewerHotkey : HotkeyBase
 
     private static async ValueTask CloseAsync(ITextViewerHotkeyReceiver receiver)
     {
-        await receiver.Messenger.RaiseAsync(
-            new WindowActionMessage(WindowAction.Close, MessageKey.Close));
+        await receiver.Messenger.RaiseAsync(new WindowActionMessage(WindowAction.Close, MessageKey.Close));
     }
 
     private ValueTask OpenAppAsync(ITextViewerHotkeyReceiver receiver, ExternalApp app)
     {
         var targetFolderPath = Path.GetDirectoryName(receiver.TargetFilePath) ?? "";
-        
+
         return OpenAppAsync(app, receiver.TargetFilePath, targetFolderPath, receiver.LineIndex, receiver.Messenger);
     }
 

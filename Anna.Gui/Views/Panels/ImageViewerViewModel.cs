@@ -14,6 +14,7 @@ namespace Anna.Gui.Views.Panels;
 public sealed class ImageViewerViewModel : HasModelViewModelBase<ImageViewerViewModel, Entry>, IViewerViewModel
 {
     public HotkeyBase Hotkey { get; }
+    public string TargetFilePath => Model.Path;
 
     #region Image
 

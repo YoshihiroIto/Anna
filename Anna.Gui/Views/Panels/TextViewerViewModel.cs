@@ -18,6 +18,7 @@ public sealed class TextViewerViewModel : HasModelViewModelBase<TextViewerViewMo
     ILocalizableViewModel, IViewerViewModel
 {
     public HotkeyBase Hotkey { get; }
+    public string TargetFilePath => Model.Path;
     
     public Resources R => Dic.GetInstance<ResourcesHolder>().Instance;
 

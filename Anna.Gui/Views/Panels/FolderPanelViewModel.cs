@@ -39,7 +39,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
     public readonly FolderPanelDrop Drop;
 
     public ReactivePropertySlim<int> CursorIndex { get; }
-    public ReactivePropertySlim<IntSize> ItemCellSize { get; }
+    public ReactivePropertySlim<IntSize> ItemCellCount { get; }
     public IObservable<string> CurrentFolderPath { get; }
 
     public int NameCount => _appConfig.Data.ListModeLayouts[_ListMode].Name;
@@ -65,7 +65,7 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
         Drop = dic.GetInstance<FolderPanelDrop>().AddTo(Trash);
 
         CursorIndex = new ReactivePropertySlim<int>().AddTo(Trash);
-        ItemCellSize = new ReactivePropertySlim<IntSize>().AddTo(Trash);
+        ItemCellCount = new ReactivePropertySlim<IntSize>().AddTo(Trash);
         CurrentFolderPath = Model.ObserveProperty(x => x.Path);
 
         CursorEntry = CursorIndex
@@ -170,8 +170,8 @@ public sealed class FolderPanelViewModel : HasModelViewModelBase<FolderPanelView
         {
             Directions.Up => CursorIndex.Value - 1,
             Directions.Down => CursorIndex.Value + 1,
-            Directions.Left => CursorIndex.Value - ItemCellSize.Value.Height,
-            Directions.Right => CursorIndex.Value + ItemCellSize.Value.Height,
+            Directions.Left => CursorIndex.Value - ItemCellCount.Value.Height,
+            Directions.Right => CursorIndex.Value + ItemCellCount.Value.Height,
             _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
         };
 

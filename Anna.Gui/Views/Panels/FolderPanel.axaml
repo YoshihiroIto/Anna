@@ -19,7 +19,7 @@
              x:DataType="panels:FolderPanelViewModel"
              FontFamily="{Binding $self.Layout.FontFamily}"
              FontSize="{Binding $self.Layout.FontSize}"
-             ItemCellSize="{Binding ItemCellSize.Value,
+             ItemCellCount="{Binding ItemCellCount.Value,
                                     Mode=OneWayToSource}"
              SelectedEntryIndex="{Binding $self.SelectedEntryIndex}"
              mc:Ignorable="d">

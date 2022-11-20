@@ -50,13 +50,13 @@ internal sealed class EntriesBag : Control
                 if (e.OldValue is FolderPanel oldParent)
                 {
                     oldParent.PageIndexChanged -= OnPageIndexChanged;
-                    oldParent.ItemCellSizeChanged -= OnItemCellSizeChanged;
+                    oldParent.ItemCellCountChanged -= OnItemCellCountChanged;
                 }
 
                 if (e.NewValue is FolderPanel newParent)
                 {
                     newParent.PageIndexChanged += OnPageIndexChanged;
-                    newParent.ItemCellSizeChanged += OnItemCellSizeChanged;
+                    newParent.ItemCellCountChanged += OnItemCellCountChanged;
 
                     _parent = newParent;
                     _layout = newParent.Layout ?? throw new NullReferenceException();
@@ -74,7 +74,7 @@ internal sealed class EntriesBag : Control
         UpdateChildren();
     }
 
-    private void OnItemCellSizeChanged(object? sender, EventArgs e)
+    private void OnItemCellCountChanged(object? sender, EventArgs e)
     {
         UpdateChildren();
     }
@@ -92,10 +92,10 @@ internal sealed class EntriesBag : Control
     {
         _ = _parent ?? throw new NullReferenceException();
 
-        var entryCountPerPage = _parent.ItemCellSize.Width * _parent.ItemCellSize.Height;
+        var entryCountPerPage = _parent.ItemCellCount.Width * _parent.ItemCellCount.Height;
 
         var start = entryCountPerPage * _parent.PageIndex;
-        var end = Math.Min(entries.Count, entryCountPerPage * (_parent.PageIndex + 1) + _parent.ItemCellSize.Height);
+        var end = Math.Min(entries.Count, entryCountPerPage * (_parent.PageIndex + 1) + _parent.ItemCellCount.Height);
 
         return (start, end);
     }

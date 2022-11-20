@@ -33,8 +33,8 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     internal static readonly DirectProperty<FolderPanel, FolderPanelLayout> LayoutProperty =
         AvaloniaProperty.RegisterDirect<FolderPanel, FolderPanelLayout>(nameof(FolderPanelLayout), o => o.Layout);
 
-    internal static readonly DirectProperty<FolderPanel, IntSize> ItemCellSizeProperty =
-        AvaloniaProperty.RegisterDirect<FolderPanel, IntSize>(nameof(ItemCellSize), o => o.ItemCellSize);
+    internal static readonly DirectProperty<FolderPanel, IntSize> ItemCellCountProperty =
+        AvaloniaProperty.RegisterDirect<FolderPanel, IntSize>(nameof(ItemCellCount), o => o.ItemCellCount);
 
     internal IDataTemplate? ItemTemplate
     {
@@ -55,15 +55,15 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     }
 
     internal event EventHandler? PageIndexChanged;
-    internal event EventHandler? ItemCellSizeChanged;
+    internal event EventHandler? ItemCellCountChanged;
 
-    internal IntSize ItemCellSize
+    internal IntSize ItemCellCount
     {
-        get => _ItemCellSize;
-        private set => SetAndRaise(ItemCellSizeProperty, ref _ItemCellSize, value);
+        get => _itemCellCount;
+        private set => SetAndRaise(ItemCellCountProperty, ref _itemCellCount, value);
     }
 
-    private IntSize _ItemCellSize;
+    private IntSize _itemCellCount;
 
     internal FolderPanelViewModel ViewModel => _viewModel ?? throw new InvalidOperationException();
     private FolderPanelViewModel? _viewModel;
@@ -89,7 +89,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     {
         InitializeComponent();
 
-        LayoutUpdated += (_, _) => UpdateItemCellSize();
+        LayoutUpdated += (_, _) => UpdateItemCellCount();
 
         PropertyChanged += (_, e) =>
         {
@@ -114,15 +114,15 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
         };
     }
 
-    private void UpdateItemCellSize()
+    private void UpdateItemCellCount()
     {
         var changed = false;
 
-        var s = new IntSize((int)(Bounds.Width / Layout.ItemWidth), (int)(Bounds.Height / Layout.ItemHeight));
+        var count = new IntSize((int)(Bounds.Width / Layout.ItemWidth), (int)(Bounds.Height / Layout.ItemHeight));
 
-        if (s != ItemCellSize)
+        if (count != ItemCellCount)
         {
-            ItemCellSize = s;
+            ItemCellCount = count;
             changed = true;
         }
 
@@ -130,12 +130,12 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
             changed = true;
 
         if (changed)
-            ItemCellSizeChanged?.Invoke(this, EventArgs.Empty);
+            ItemCellCountChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private bool UpdatePageIndex(bool isRaiseEvenWhenChanged)
     {
-        var newPageIndex = SelectedEntryIndex / Math.Max(1, ItemCellSize.Width * ItemCellSize.Height);
+        var newPageIndex = SelectedEntryIndex / Math.Max(1, ItemCellCount.Width * ItemCellCount.Height);
 
         if (PageIndex == newPageIndex)
             return false;

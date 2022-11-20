@@ -8,4 +8,7 @@ public interface IPlatformValueService
     
     string DefaultTerminalApp { get; }
     string DefaultTerminalAppOptions { get; }
+    
+    string DefaultFileManagerApp { get; }
+    string DefaultFileManagerAppOptions { get; }
 }

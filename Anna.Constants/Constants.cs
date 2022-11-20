@@ -106,6 +106,7 @@ public enum DialogResultTypes
 public enum ExternalApp
 {
     Terminal,
+    FileManager,
     App1,
     App2,
 }

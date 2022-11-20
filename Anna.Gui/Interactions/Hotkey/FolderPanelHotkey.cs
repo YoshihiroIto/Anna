@@ -53,6 +53,7 @@ public sealed class FolderPanelHotkey : HotkeyBase
             { Operations.OpenExternal2, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.App2) },
             { Operations.OpenAssociatedApp, s => OpenAssociatedAppAsync((IFolderPanelHotkeyReceiver)s) },
             { Operations.OpenTerminal, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.Terminal) },
+            { Operations.OpenFileManager, s => OpenAppAsync((IFolderPanelHotkeyReceiver)s, ExternalApp.FileManager) },
             { Operations.PreviewEntry, s => PreviewEntryAsync((IFolderPanelHotkeyReceiver)s) },
             //
             { Operations.CopyEntry, s => CopyOrMoveEntryAsync((IFolderPanelHotkeyReceiver)s, CopyOrMove.Copy) },

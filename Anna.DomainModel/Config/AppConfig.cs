@@ -70,6 +70,32 @@ public sealed class AppConfigData : ConfigData
     #endregion
 
 
+    #region FileManagerApp
+
+    private string _FileManagerApp = "";
+
+    public string FileManagerApp
+    {
+        get => _FileManagerApp;
+        set => SetProperty(ref _FileManagerApp, value);
+    }
+
+    #endregion
+
+
+    #region FileManagerAppOptions
+
+    private string _FileManagerAppOptions = "";
+
+    public string FileManagerAppOptions
+    {
+        get => _FileManagerAppOptions;
+        set => SetProperty(ref _FileManagerAppOptions, value);
+    }
+
+    #endregion
+
+
     #region ExternalApp1
 
     private string _ExternalApp1 = "";
@@ -231,9 +257,10 @@ public sealed class AppConfigData : ConfigData
     {
         return externalApp switch
         {
+            ExternalApp.Terminal => (TerminalApp, TerminalAppOptions),
+            ExternalApp.FileManager => (FileManagerApp, FileManagerAppOptions),
             ExternalApp.App1 => (ExternalApp1, ExternalApp1Options),
             ExternalApp.App2 => (ExternalApp2, ExternalApp2Options),
-            ExternalApp.Terminal => (TerminalApp, TerminalAppOptions),
             _ => throw new IndexOutOfRangeException()
         };
     }
@@ -251,6 +278,9 @@ public sealed class AppConfigData : ConfigData
 
         TerminalApp = platformValue.DefaultTerminalApp;
         TerminalAppOptions = platformValue.DefaultTerminalAppOptions;
+
+        FileManagerApp = platformValue.DefaultFileManagerApp;
+        FileManagerAppOptions = platformValue.DefaultFileManagerAppOptions;
     }
     
     internal void SetDefaultListModeLayouts()

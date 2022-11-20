@@ -9,4 +9,7 @@ public sealed class PlatformValueService : IPlatformValueService
     
     public string DefaultTerminalApp => "";
     public string DefaultTerminalAppOptions => "";
+
+    public string DefaultFileManagerApp => "";
+    public string DefaultFileManagerAppOptions => "";
 }

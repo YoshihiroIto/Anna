@@ -50,6 +50,7 @@ public sealed class KeyConfigData : ConfigData
             new(Key.Enter, KeyModifiers.Shift, Operations.OpenExternal1),
             new(Key.Enter, platformValue.MetaKey, Operations.OpenAssociatedApp),
             new(Key.F3, KeyModifiers.None, Operations.OpenTerminal),
+            new(Key.Z, platformValue.MetaKey | KeyModifiers.Shift, Operations.OpenFileManager),
             new(Key.V, KeyModifiers.None, Operations.PreviewEntry),
             //
             new(Key.C, KeyModifiers.None, Operations.CopyEntry),
@@ -106,6 +107,7 @@ public enum Operations
     OpenExternal2,
     OpenAssociatedApp,
     OpenTerminal,
+    OpenFileManager,
     PreviewEntry,
     //
     CopyEntry,

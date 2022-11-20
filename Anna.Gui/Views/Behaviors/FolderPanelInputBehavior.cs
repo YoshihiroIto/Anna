@@ -85,9 +85,9 @@ public sealed class FolderPanelInputBehavior : Behavior<FolderPanel>
         
         var ownerWindow = ControlHelper.FindOwnerWindow(AssociatedObject);
 
-        if (e.Data.Get(DropDataFormat.FolderPanel) is FolderPanel dropSource)
+        if (e.Data.Get(DropDataFormat.FolderPanel) is DropDataFormat.FolderPanelData dropSource)
         {
-            if (ReferenceEquals(AssociatedObject, dropSource))
+            if (ReferenceEquals(AssociatedObject, dropSource.FolderPanel))
             {
                 DragDrop.SetAllowDrop(ownerWindow, false);
                 return;

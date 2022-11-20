@@ -81,6 +81,9 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     public void ToggleSelectionCursorEntry(bool isMoveDown) => ViewModel.ToggleSelectionCursorEntry(isMoveDown);
     public void SetListMode(uint index) => ViewModel.SetListMode(index);
 
+    private Point _dragStartPosition;
+    private bool _isInDragging;
+
     static FolderPanel()
     {
         SelectedEntryIndexProperty.Changed.Subscribe(e => (e.Sender as FolderPanel)?.UpdatePageIndex(true));
@@ -120,7 +123,7 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
         var changed = false;
 
         var count = new IntSize(
-            Math.Max(1,(int)((Bounds.Width + Layout.ItemMargin) / Layout.ItemWidth)),
+            Math.Max(1, (int)((Bounds.Width + Layout.ItemMargin) / Layout.ItemWidth)),
             (int)(Bounds.Height / Layout.ItemHeight));
 
         if (count != ItemCellCount)
@@ -160,6 +163,9 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
 
         var index = ViewModel.Model.Entries.IndexOf(entryViewModel.Model.Entry);
         ViewModel.CursorIndex.Value = index;
+
+        _dragStartPosition = e.GetPosition(this);
+        _isInDragging = false;
     }
 
     private async void EntriesBag_OnEntryPointerMoved(object? sender, PointerEventArgs e)
@@ -170,11 +176,22 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
         if ((isLeftButtonPressed || isRightButtonPressed) == false)
             return;
 
+        if (_isInDragging == false)
+        {
+            var position = e.GetPosition(this);
+            var distanceSq = (position.X - _dragStartPosition.X) * (position.X - _dragStartPosition.X) +
+                             (position.Y - _dragStartPosition.Y) * (position.Y - _dragStartPosition.Y);
+            if (distanceSq < 16 * 16)
+                return;
+
+            _isInDragging = true;
+        }
+
         var targets = ViewModel.CollectTargetEntries().Select(x => x.Path).ToArray();
 
         var dragData = new DataObject();
         dragData.Set(DataFormats.FileNames, targets);
-        dragData.Set(DropDataFormat.FolderPanel, this);
+        dragData.Set(DropDataFormat.FolderPanel, new DropDataFormat.FolderPanelData(this));
 
         await DragDrop.DoDragDrop(e,
             dragData,

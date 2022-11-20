@@ -118,7 +118,9 @@ public sealed partial class FolderPanel : UserControl, IFolderPanelHotkeyReceive
     {
         var changed = false;
 
-        var count = new IntSize((int)(Bounds.Width / Layout.ItemWidth), (int)(Bounds.Height / Layout.ItemHeight));
+        var count = new IntSize(
+            Math.Max(1,(int)((Bounds.Width + Layout.ItemMargin) / Layout.ItemWidth)),
+            (int)(Bounds.Height / Layout.ItemHeight));
 
         if (count != ItemCellCount)
         {

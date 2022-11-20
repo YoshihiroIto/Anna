@@ -56,8 +56,6 @@ internal sealed class RecyclingChildrenPool
 
                 child.DataContext = entry;
                 child.IsVisible = true;
-                child.PointerPressed += ChildOnPointerPressed;
-                child.PointerMoved += ChildOnPointerMoved;
 
                 return (child, null, false);
             }
@@ -70,8 +68,6 @@ internal sealed class RecyclingChildrenPool
         
         child.IsVisible = false;
         child.DataContext = null;
-        child.PointerPressed -= ChildOnPointerPressed;
-        child.PointerMoved -= ChildOnPointerMoved;
 
         var pool = FindPool(entry);
         pool.Push(child);

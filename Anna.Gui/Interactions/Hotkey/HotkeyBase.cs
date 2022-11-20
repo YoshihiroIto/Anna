@@ -84,11 +84,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
 
         using var _ = await messenger.RaiseTransitionAsync(
             ConfirmationDialogViewModel.T,
-            (
-                Resources.AppName,
-                string.Format(Resources.Message_AccessDenied, path),
-                DialogResultTypes.Ok
-            ),
+            (Resources.AppName, string.Format(Resources.Message_AccessDenied, path), DialogResultTypes.Ok),
             MessageKey.Confirmation);
 
         return false;
@@ -98,7 +94,8 @@ public abstract class HotkeyBase : DisposableNotificationObject
         string targetFilePath, string targetFileFolder, int targetLineIndex, Messenger messenger)
     {
         var editor = Dic.GetInstance<AppConfig>().Data.FindExternalApp(app);
-        var arguments = ProcessHelper.MakeEditorArguments(editor.Options, targetFilePath, targetFileFolder, targetLineIndex);
+        var arguments =
+            ProcessHelper.MakeEditorArguments(editor.Options, targetFilePath, targetFileFolder, targetLineIndex);
 
         try
         {
@@ -114,11 +111,8 @@ public abstract class HotkeyBase : DisposableNotificationObject
 
             using var _ = await messenger.RaiseTransitionAsync(
                 ConfirmationDialogViewModel.T,
-                (
-                    Resources.AppName,
-                    string.Format(Resources.Message_FailedToStartEditor, editor.ExternalApp),
-                    DialogResultTypes.Ok
-                ),
+                (Resources.AppName, string.Format(Resources.Message_FailedToStartEditor, editor.ExternalApp),
+                    DialogResultTypes.Ok),
                 MessageKey.Confirmation);
         }
     }
@@ -137,11 +131,7 @@ public abstract class HotkeyBase : DisposableNotificationObject
 
             using var _ = await messenger.RaiseTransitionAsync(
                 ConfirmationDialogViewModel.T,
-                (
-                    Resources.AppName,
-                    Resources.Message_FailedToStartAssociatedApp,
-                    DialogResultTypes.Ok
-                ),
+                (Resources.AppName, Resources.Message_FailedToStartAssociatedApp, DialogResultTypes.Ok),
                 MessageKey.Confirmation);
         }
     }

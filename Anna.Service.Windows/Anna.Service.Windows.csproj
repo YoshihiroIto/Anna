@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Jewelry" Version="2.0.8" />
+      <PackageReference Include="Jewelry" Version="2.0.9" />
     </ItemGroup>
 
 </Project>

@@ -14,7 +14,7 @@
 
     <ItemGroup>
       <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-      <PackageReference Include="Jewelry" Version="2.0.8" />
+      <PackageReference Include="Jewelry" Version="2.0.9" />
       <PackageReference Include="Mono.Options" Version="6.12.0.148" />
       <PackageReference Include="NaturalSort.Extension" Version="4.0.0" />
       <PackageReference Include="ReactiveProperty" Version="8.1.2" />

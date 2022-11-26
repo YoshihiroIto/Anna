@@ -18,7 +18,10 @@
                   d:DesignWidth="400"
                   x:CompileBindings="True"
                   x:DataType="windows:FolderWindowViewModel"
+                  Background="Transparent"
                   DragDrop.AllowDrop="True"
+                  ExtendClientAreaToDecorationsHint="True"
+                  TransparencyLevelHint="AcrylicBlur"
                   WindowStartupLocation="CenterScreen"
                   mc:Ignorable="d">
     <Design.DataContext>
@@ -40,43 +43,48 @@
     </Interaction.Behaviors>
 
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="{ReflectionBinding R.Menu_File}">
-                <MenuItem Header="{ReflectionBinding R.Menu_File_Open}" />
-                <Separator />
-                <MenuItem Header="{ReflectionBinding R.Menu_File_Settings}" />
-                <Separator />
-                <MenuItem Command="{Binding ToEnglishCommand}" Header="English" />
-                <MenuItem Command="{Binding ToJapaneseCommand}" Header="日本語" />
-                <Separator />
-                <MenuItem Header="{ReflectionBinding R.Menu_File_Exit}" />
-            </MenuItem>
+        <Grid DockPanel.Dock="Top" IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder IsHitTestVisible="False">
+                <ExperimentalAcrylicBorder.Material>
+                    <ExperimentalAcrylicMaterial BackgroundSource="Digger"
+                                                 MaterialOpacity="0.35"
+                                                 TintColor="Black"
+                                                 TintOpacity="1" />
+                </ExperimentalAcrylicBorder.Material>
+            </ExperimentalAcrylicBorder>
 
-            <MenuItem Header="{ReflectionBinding R.Menu_View}">
-                <MenuItem Header="{ReflectionBinding R.Menu_View_SortEntry}" />
-            </MenuItem>
+            <TextBlock Margin="8,5,0,4"
+                       FontSize="16"
+                       Text="{Binding Title.Value}" />
+        </Grid>
 
-            <MenuItem Header="{ReflectionBinding R.Menu_Help}">
-                <MenuItem Header="{ReflectionBinding R.Menu_Help_About}" />
-            </MenuItem>
-        </Menu>
+        <Grid>
+            <ExperimentalAcrylicBorder IsHitTestVisible="False">
+                <ExperimentalAcrylicBorder.Material>
+                    <ExperimentalAcrylicMaterial BackgroundSource="Digger"
+                                                 MaterialOpacity="0.65"
+                                                 TintColor="Black"
+                                                 TintOpacity="1" />
+                </ExperimentalAcrylicBorder.Material>
+            </ExperimentalAcrylicBorder>
 
-        <Rectangle Classes="horizontal-splitter" DockPanel.Dock="Top" />
+            <DockPanel>
+                <panels:InfoPanel Margin="0,8,0,0"
+                                  DataContext="{Binding InfoPanelViewModel}"
+                                  DockPanel.Dock="Top" />
 
-        <panels:InfoPanel Margin="0,8,0,0"
-                          DataContext="{Binding InfoPanelViewModel}"
-                          DockPanel.Dock="Top" />
+                <Rectangle Classes="horizontal-splitter"
+                           Margin="0,8,0,0"
+                           DockPanel.Dock="Top" />
 
-        <Rectangle Classes="horizontal-splitter"
-                   Margin="0,8,0,0"
-                   DockPanel.Dock="Top" />
-
-        <panels:FolderPanel Margin="0,8,0,0"
-                            DataContext="{Binding FolderPanelViewModel}"
-                            SelectedEntryIndex="{Binding CursorIndex.Value}">
-            <Interaction.Behaviors>
-                <behaviors:InputElementFocusBehavior />
-            </Interaction.Behaviors>
-        </panels:FolderPanel>
+                <panels:FolderPanel Margin="0,8,0,0"
+                                    DataContext="{Binding FolderPanelViewModel}"
+                                    SelectedEntryIndex="{Binding CursorIndex.Value}">
+                    <Interaction.Behaviors>
+                        <behaviors:InputElementFocusBehavior />
+                    </Interaction.Behaviors>
+                </panels:FolderPanel>
+            </DockPanel>
+        </Grid>
     </DockPanel>
 </base1:WindowBase>

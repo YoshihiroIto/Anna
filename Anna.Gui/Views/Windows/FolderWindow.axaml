@@ -69,6 +69,11 @@
             </ExperimentalAcrylicBorder>
 
             <DockPanel>
+                <panels:ToolBar DockPanel.Dock="Left" />
+
+                <Rectangle Classes="vertical-splitter"
+                           DockPanel.Dock="Left" />
+
                 <panels:InfoPanel Margin="0,8,0,0"
                                   DataContext="{Binding InfoPanelViewModel}"
                                   DockPanel.Dock="Top" />

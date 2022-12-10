@@ -8,6 +8,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              x:DataType="panels:ImageViewerViewModel"
+             RenderOptions.BitmapInterpolationMode="HighQuality"
              mc:Ignorable="d">
     <Design.DataContext>
         <!--  ReSharper disable once Xaml.ConstructorWarning  -->

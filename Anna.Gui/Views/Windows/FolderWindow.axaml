@@ -18,8 +18,10 @@
                   d:DesignWidth="400"
                   x:CompileBindings="True"
                   x:DataType="windows:FolderWindowViewModel"
-                  Background="Transparent"
+                  Background="{x:Null}"
+                  BorderThickness="1"
                   DragDrop.AllowDrop="True"
+                  ExtendClientAreaChromeHints="PreferSystemChrome"
                   ExtendClientAreaToDecorationsHint="True"
                   TransparencyLevelHint="AcrylicBlur"
                   WindowStartupLocation="CenterScreen"
@@ -71,8 +73,7 @@
             <DockPanel>
                 <panels:ToolBar DockPanel.Dock="Left" />
 
-                <Rectangle Classes="vertical-splitter"
-                           DockPanel.Dock="Left" />
+                <Rectangle Classes="vertical-splitter" DockPanel.Dock="Left" />
 
                 <panels:InfoPanel Margin="0,8,0,0"
                                   DataContext="{Binding InfoPanelViewModel}"
